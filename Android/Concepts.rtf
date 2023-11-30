@@ -497,8 +497,7 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 				It is also possible to add a dependency that applies only to an specific product flavor and a build type with the following syntax\
 \
 					val flavorNameBuildTypeApi by configuration.creating\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 					val flavorNameBuildTypeRuntimeOnly by configuration.creating\
+					val flavorNameBuildTypeRuntimeOnly by configuration.creating\
 \
 					dependencies \{\
 						flavorNameBuildTypeApi(\'93some:articat:1\'94)\
@@ -513,8 +512,7 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 					\}		\
 			\
 				It is possible to pass arguments to annotation processors by extending the interface \'93CommandLineArgumentProvider\'94\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 	Plugins\
@@ -541,6 +539,32 @@ Applying external plugins with same version to subprojects}}\'94)\
 			All Plugins has extension, this is how we can configure them and usually we access to those extension using a DSL however, when using an AGP plugin we access the plugin extensions via the \'93android\'94, \
 			\'93java\'94 or \'93kotlin\'94 block and depending on any other block we might have other blocks but inside these functions blocks we can call the plugin extensions, for example the AGP has two extensions(at least			that I know) the first \'93ApplicationAndroidComponentsExtenstion\'94, this extension gives us the opportunity to customize the process of building build type and product flavors, the second \'93ApplicationExtension\'94			this one gives us access to functions like \'93defaultConfig\'94 etc. For the \'93com.android.library\'94 we have an extension of \'93LibraryExtension\'94 which allows to have access to functions such as 			\'93defaultConfig\'94/\'93targetSDK\'94, we can call this extension from our custom plugins to be able to configure them with the following syntax in the custom plugin \'93target.extension.configure<ThePluginExension>\'94,\
 			there is a \'93BaseExtension\'94 that we can use to configure basically any plugin from a custom/local/convention plugin but it is not recommended to use it, so we are going to need to know the plugin 			extension if we need to configure/customize the build further\
+\
+			You can call extensions from a custom plugin with the following syntax\
+				project.extensions.configure<ExtensionTypeClass> \{ // you have access to blocks like: defaultConfig \{ \} which belongs to application and library plugin etc \}\
+\
+				// or\
+\
+				val extensions = project.extensions.getByType<ExtensionTypeClass>()\
+				\
+				extensions.apply \{ // you have access to blocks like: defaultConfig \{ \} which belongs to application and library plugin etc \}\
+		\
+			The following are the most common Android extensions we might need to use, but each plugin most likely will let us access new/different extensions\
+\
+				CommonExtensions\
+				LibraryExtension and ApplicationExtension are Childs of this interface, this gives us access to block such as \'93defaultConfig\'94, \'93compileOptions\'94, \'93buildTypes\'94, \'93productFlavors\'94 and 				configurations like \'93compileSdk\'94				\
+\
+				LibraryExtension\
+				You have to apply the Android Library plugin to be able to consume these extensions, gives you access to configurations/blocks as the above extensions with the addition of at least				another configuration which will be available in the \'93defaultConfig\'94 block called \'93targetSdk\'94\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 				ApplicationExtension\
+				You have to apply the Application plugin to be able to consume these extensions, gives you access to configurations/blocks as the above extensions with the addition of at least				another configuration which will be available in the \'93defaultConfig\'94 block called \'93targetSdk\'94\
+\
+				ApplicationAndroidComponentsExtension (https://medium.com/androiddevelopers/new-apis-in-the-android-gradle-plugin-f5325742e614)\
+				this extension gives you access to the Variant Api which lets you call functions like \'93onVariants\'94, \'93beforeVariants\'94, \'93onFinalizeDsl\'94, this API help us customize build further\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 			\
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 	Configurations Glossary\
