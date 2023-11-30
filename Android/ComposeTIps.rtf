@@ -1,0 +1,146 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2757
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww30040\viewh17760\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+Tips with compose \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Create a Text With a Gradient (From ADS 22)\
+\
+	1. Create list of colors(gradient)\
+	\
+	val gradient = listOf(Color(0xff71D78E), Color(0xff548FE3))\
+\
+	2. Apply it to text composable\
+\
+	Text(text = \'93Example\'94, style = TextStyle(brush = Brush.linearGradient(gradient))\
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Animate visibility with AnimatedVIsibility wrapper composable  (From ADS 22)\
+\
+	\
+	1. Define the condition\
+\
+	val dynamicCondition = someState.shoudShowExample //this would be a boolean or a condition\
+\
+	2. Pass it to wrapper composable\
+\
+	AnimatedVisibility(visible= dynamicCondition) \{	\
+		SomeComposable()\
+	\}\
+	\
+Please note that in this example if the state is frequently changed like if this was depending on a LazyListState property called \'93firstVisibleItemIndex\'94 meaning every time the user scrolls it changes it should not be used in composable directly instead we should then wrap it inside a \'93derivedStateOf\'94 like the following\
+\
+	val dynamicCondition = remember \{ derivedStateOf \{ listState.firstVisibleItemIndex > 0 \}\}\
+\
+Use this when a state needs to make the composable react only when it crosses a certain threshold and the state changes continuously but the only thing that matters is the threshold.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Size Animations (From ADS 22)\
+\
+You can create size animations using a \'93mutableState\'94 variable that will be wrapped in a \'93updateTransition\'94 function which will return an object and from which we can call another function called \'93animateDp\'94, but there is other options to animate like animateDpAsSate, Animatable and UpdateTransition\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Draw text on a Canvas (From ADS22)\
+\
+We can access a canvas context when drawing in compose through different modifiers, in this context called \
+\'93drawScope\'94 we can execute different functions that will depend on the modifier that we chose but we can draw text inside the canvas\
+	\
+	val textMeasure = rememberTextMeasurer()\
+\
+	// inside some composable modifier(spacer is used a lot since it does not render anything than itself)\
+	// in this example we are using the \'93drawWithCache\'94 modifier\
+\
+	Modifier.drawWithCache \{\
+		val textResult =  textMeasurer.measure(AnnotatedString(\'93EmojiInHere\'94))\
+		onDrawBehind \{\
+			drawText(textResult)\
+		\}\
+	\}\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Draw Path With Different Styles\
+\
+When drawing a path inside a modifier you could draw it with different styles, at least you can use these two\
+\'93Fill\'94 and \'93Stroke\'94\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+AGSL\
+\
+Android Graphics Shading Language is used to make animated shades. They are easily incorporated in draw scope. It is based on GLSL(OpenGL). It Runs on Android T+. They run on GPU so they are very efficient(parallel pixel calculations)\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Use Shaders Previously\
+\
+Before AGSL in order to use shaders on Android you needed  a surface view with OpenGL\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Brush\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx8757\pardirnatural\partightenfactor0
+\cf0 In compose they describe how something is drawn on the screen: It determines the color that are drawn in the drawing area(circle, square, path)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+States\
+\
+In compose changing the value of a State object can make the composable recompose, there is three ways you can create a state\
+	\
+	1. <T>mutableStateOf(value:T): MutableState<T>. This wraps an initial value which you can change	and if it is passed to a composable it will recompose when it changes and it returns a mutableState	object\
+\
+	2. <T>derivedStateOf(calculation: ( ) -> T): State<T> The code inside the lambda can make the 	can change and we can decide whether to leave the state update or define a threshold and only 	update the state whenever threshold changes\
+\
+	3. <T>produceState(initialValue: T, producer: suspend ProducerStateScope<T>.() -> Unit): State<T>	Similar to derivedState but the lambda does not return anything and you use the lambda to update	the value of the state that is being returned, this is very useful when we need to convert non-compose	state to compose state, that is why the lambda is useful since all the logic that will update the state is 	inside it.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Live Literal is the Compose Hot-reload feature\
+\
+This feature is basically what allows composable previews to recompose faster or in realtime.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Composition Local\
+\
+Is a way to pass info(objects/values) down in a composables tree more easily. You can create two types of composition locals, but both has to be combined with \
+CompositionLocalProvider()\
+\
+	\ul compositionLocalOf\ulnone \
+	changes to the value inside the composition(index in our example) will cause only the composables consuming the value to recompose. However there is a cost\
+	in set up to be able to track all the composables that read this value so only them can be recomposed when needed\
+	\
+	val index = compositionLocalOf \{ 1 \}\
+	\
+	CompositionLocalProvider( index provides 2) \{\
+		// Composables can retrieve the value with the following: index.current\
+	\}\
+\
+	\ul staticCompositionLocalOf\ulnone \
+	Changes to the value inside this composition will cause all the composables inside the CompositionLocalProvider providing this composition to recompose. 	Should only be used when the value in this composition is highly unlikely to change\
+\
+	\
+	\
+\
+\
+\
+\
+\
+\
+\
+\
+}

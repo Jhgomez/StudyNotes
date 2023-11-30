@@ -1,0 +1,646 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2758
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\fmodern\fcharset0 Courier;
+\f3\fnil\fcharset0 HelveticaNeue-Medium;\f4\fswiss\fcharset0 Helvetica-Bold;\f5\froman\fcharset0 Times-Roman;
+}
+{\colortbl;\red255\green255\blue255;\red11\green12\blue12;\red255\green255\blue255;\red88\green118\blue71;
+\red32\green32\blue32;\red5\green36\blue44;\red23\green56\blue124;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c4706\c5098\c5490;\cssrgb\c100000\c100000\c100000;\csgenericrgb\c34510\c46275\c27843;
+\csgenericrgb\c12549\c12549\c12549;\cssrgb\c784\c18824\c22745;\cssrgb\c11373\c29412\c56078;\cssrgb\c0\c0\c0\c80000;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid1\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww30040\viewh17760\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+Software Development Life Cycle(SDLC)\
+Is a methodology that outlines the various stages involve in Android application development. By understating each phases\'92s requirement and activities, \
+developers can ensure that the app meets end user\'92s needs, performs as intended and is released on time and within budget. We can talk about 7 \
+:phases\
+	\
+	1. Planning: Here goals and objectives are defined, eg: create a simple new user friendly chat app that can handle millions of messages while 	having high performance. The should evaluate the feasibility of the project in terms of budget, resources and time.\
+\
+	2. Analysis: The team should gather information about app requirements from different stakeholders, like users. Like what type of interface or 	features the user would like to have. The goal is to understand needs of end-users, business requirements and technical specifications\
+\
+	3. Design: Team should ensure the app will meet the requirements gathered in the analysis phase. Includes several activities like creating the user	interface, designing the app\'92s architecture, defining the data model etc.\
+\
+	4. Implementation: The team develops the app. Includes activities like coding, testing and debugging.\
+	\
+	5. Testing: The team test the app to find any bugs, there is different types of testing like unit test, integration test, system testing and acceptance	testing.\
+\
+	6. Deployment: App is deployed and made available to end users. It involves activities like publishing app to Google Play Store, configure app for	different devices and platforms, documenting app. The team could write a user manual or help documentation to guide end-users on how to use it\
+\
+	7. Maintenance: The team maintain the app by providing updates, fixing bugs and addressing issues that may arise. It includes activities like app	performance monitoring, gather user feedback and releasing new versions. \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Gradle Enterprise = Develocity\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Resource Qualifiers\
+\
+Allows us to define different resource packages/folders that will be used to store/retrieve resources for a specific  in to display the right resource in \
+different situations such as in screen size or screen orientation, etc\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Fastlane\
+Is a suite of app automation tools, it can be used to do CI more specifically to sign and push apps apps to the playstore, it can also be used to create a \
+private apps, automate screenshots and manage beta deployments\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+StrictMode\
+Is a developer tool which detects things you might be doing by accident and brings them to your attention so you can fix them\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Input method editor(IME)\
+Is a user control that lets user enter text, like the keyboard on the screen\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Phases in Compose vs Phases in View System\
+\
+	View System\
+	Measure, Layout and drawing\
+\
+	Compose\
+	Composition, it creates a tree of composables. Layout, it measures and defines where they are going to be placed(measure, placement). Drawing\
+		\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Recomposition\
+\
+Is the process of calling your composables again when inputs change. The composables will go through the three phases: composition, layout and drawing\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Saved State Module\
+\
+System initiated process death is when the OS kills the process due to resource constraints or configuration change.\
+\
+Allows to use SavedStateHandle API as backup of system-initiated process death, meaning you can persist info using it and this API is basically a key-value\
+map which you can use to write/read values. There is different APIs in this module which we use depending on what it needs to be persisted as if you want\
+to persist state used in business logic, hold it in a ViewModel and save it using SavedStateHandle and for state used in UI logic, use \
+onSaveInstanceState/onRestoreInstanceState or rememberSaveable in Compose.\
+\
+Data stored in saved instance state is transient state that depends on user input or navigation such as scroll position of a list, the ID of the item the user wants\
+more detail about, the in-progress selection of user preferences or input in text fields\
+\
+You can accept a SavedStateHandle as a constructor argument to your ViewModel\
+\
+	Supported Types\
+	Data stored in DaveStateHandle is saved and restored as a \'93Bundle\'94, along with the rest of the \'93savedInstanceState\'94 for the activity or fragment. You \
+	store/retrieve the same data types as a \'93Bundle\'94, which are basically all Number class child(double, int, etc) string, charsequence, etc and all	Parcelable and Serializable child classes meaning you can implement this interfaces by adding @Parcelize Kotlin annotation or implementing 	Parcelable directly to be able to store a child class\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+A/B testing\
+\
+Is a way to improve an application by testing new features on a subset group of users, this helps us avoid code regression.\
+\
+	Firebase Remote Config\
+\
+	Allows us define a local variable with a default value that we can change remotely to change app appearance and behavior without reinstalling a 	new build. This tool will let you do quick roll-outs, provide variations on app\'92s user experience by app version, and do A/B testing\
+\
+	Firebase A/B Testing\
+	\
+	It lets us start an \'93experiment\'94, we can experiment with either notifications, remote config or in-app messaging. After choosing the type of test you have	to provide a description, define the subset of users by version, build number, languages and other options, You can select the experiment to track other	metrics in the objectives section. \
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Location\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs26 \cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sa330\partightenfactor0
+
+\fs30 \cf2 \cb3 Deciding between\'a0LocationManager\'a0or\'a0FusedLocationClient\'a0in Android is pretty easy, just go for FusedLocationClient, since it will save power and it is recommended as a best practice.\
+
+\f0\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+System Services\
+\
+Helps us expose the lower level hardware functionalities to the higher level Java API framework. We access system services through managers such as \
+Notifiaction manager, alarm manager, we can create different instances of each manager as needed and from different apps, activities or fragments but \
+the system will handle all request made by all of those managers instances using only one instance of a service, each service run on a system server and\
+there is different types of them, for example the display service which handles surface fingers interactions run on the system server however the camera\
+service run on the media server.\
+\
+	Creating a Custom Service\
+	it is possible by using the AOSP, since sometimes android could be installed in a different device other than a computer this is useful because it lets us \
+	provide new hardware functionality to developers, the following steps doesn\'92t cover installing drivers to Android Linux Kernel which would also be 	required before adding the following code:\
+\
+	1.- Create an Android Interface Definition Language(AIDL) You have to define an interface which will have the contract of what a client can do with/in	this service, it uses java syntax, it has to have an \'93.aidl\'94 file extension, and has to be placed in the \'93android.os\'94 package (framework/base/core/java/android/os)\
+\
+	2.- Create an implementation of the interface, it has to be \'93.java\'94 file but it will be implementing an interface with the same name as named in the	prev step but with \'93.stub\'94 added to it so \'93exampleInterface.stub\'94 would be the name of the interface, define this in the \'93com.android.server\'94 package	(framework/base/services/core/java/com/android/server). Note: Since it exists different server we could run it in a custom or just different server but 	how to do this is something we will have to find out if we ever need to do it\
+\
+	3. Add AIDL in Android MK, open frameworks/base/Android.mk file and add the AIDL file path of the service you just created 	like the following path: core/java/android/os/iCustomeService.aidl\
+\
+	4. Add/register your service in the server it will run in(at this moment I only know how to this only using the system server and not a custom server or 	just a different server other than the system server), the following code has to be added to the \'93SystemServer.java\'94 file(frameworks/base/services/java/com	/android/server):\
+	\
+		try \{\
+			Slog.i(TAG, \'93My custom service\'94)\
+			ServiceManager.addService(\'93Test\'94, new CustomService())\
+		\} catch (Throwable e) \{\
+			Slog.e(TAG, \'93Failure starting service\'94,e)\
+		\}\
+\
+	5.- Register service in \'93Context.java\'94 file, the file path is the following: \'93frameworks/base/core/java/android/content\'94, just add the following line of code:\
+	\
+		public static final CUSTOM_SERVICE = \'93service-name\'94;\
+\
+	6.- Register service in \'93SystemServerRegistry.java\'94 file. As previously mentioned the application doesn\'92t have direct access to the service instead this is	possible through a manager or several instances of the manager which will delegate all requests to a single/same instance of the custom service. This file	path is: \'93framework/base/core/java/android/app\'94. Just add the following code:\
+		\
+		registerService(\
+			Context.CUSTOM_SERVICE,\
+			CustomServiceMgr.class,\
+			new CacheServiceFetcher<CustomServiceMgr> \{\
+				@Override\
+				public CustomServiceMgr(ContextImpl ctx) \{\
+					return new CustomServiceMgr();\
+				\}\
+			\}\
+		) \
+\
+	7.- Create the manager class for service, the file/class can be named however but it is a \'93.java\'94 file, so it is a class, the path would be \'93framework/base/core/java/android/os\'94.\
+	\
+		public class CustomServiceMgr \{\
+			\
+			ICustomService mService = null;\
+			 \
+			private CustomServiceMgr getService() \{\
+				if (mService != null) return service\
+				try \{\
+					IBinder binder = ServiceManager.getService(Context.CUSTOM_SERVICE):\
+					mService = ICustomService.Stub.asInterface(binder);\
+					\
+				\} catch(Exception e) \{ \}\
+				\
+				return mService;\
+			\}\
+\
+			public String getServiceName() \{\
+				// here you can see all functionality is actually delegated to the service and is not processed in the manager itself\
+				return getService().getServiceName();\
+			\}\
+			\
+\
+			public int add(int a, int b) \{\
+				return getService().add(a, b); \
+				// just an example function available in the example service, we just want to demonstrate the manager delegates all computations to the service\
+			\}\
+			\
+		\}\
+\
+	8.- Use service in your app, \
+\
+		val manager = getSystemService(Context.CUSTOM_SERVICE) as CustomServiceMgr\
+		val name = manager.getServiceName()\
+		val sum = manager.add(1, 4)\
+		\
+		Log.i(TAG, sum)\
+		Log.i(TAG, name)\
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+reference: https://www.youtube.com/watch?v=egVnhfuVJYg&t=11s\
+\
+Use Compose Runtime to create a custom client library\
+\
+The process is when compiling composable functions the compose compiler injects a \'93Composer\'94 to each function, the composer then adds the composables info to a \'93Slot Table\'94\
+this table contain two things, the \'93slots\'94 which contain actual composables data and the \'93Groups\'94 which contain composables metadata, then the composer which is also recording\
+composables changes will pass all this info to the applier which creates the composables node tree, the nodes are created by the composables, this means the each composable \
+function emits a node, there are two types of nodes in Android Compose, one is \'93ComposeNode\'94 and the other is \'93ReusableComposeNode, and then the client integration which in\
+Compose is what you would know as the \'93setContent\'94 function will create a Recomposer which is in charge of monitoring state variables changes and inform the functions observing \
+that state of changes, the client integration also is in charge of getting the composables, create a frame clock, create initial composition, refresh the frame\
+\
+In the example provided Apache POI was used to enable custom Nodes to write/create a power point file/slide from a custom composable. The following are the steps that we \
+need to follow in order to be able to accomplish the described task:\
+	\
+	1.- create custom nodes, by creating a contract/interface, we could just define a method called render, and a val property called children which would be a mutable list of	type of itself interface. Then we create the custom nodes by implementing this interface and we can add different properties to each node\
+	\
+	2.-  Create a custom applier by implementing from the  \'93AbstractApplier<T>(root: T)\'94 class that exists somewhere in the Jetpack Compose library and this provides a contract\
+	to insert, remove, move nodes to the three. The function of an applier is exactly that, inserting, removing, moving nodes in/to/out the tree and this info is received from the	slot table through the composer\
+\
+	3.- Create composables, the functions that will emit the nodes that we previously created, the following composable would be an example of a composable that is a \'93container\'94\
+	\
+\
+		@Composable\
+		fun Slide(content: @Composable () -> Unit) \{\
+			ComposeNode<MyCustomNode, MyCustomApplier>(\
+				factory = ::MyCustomNode,\
+				update = \{\},\
+				content = content\
+			)\
+		\}\
+\
+	4.- Client Integration: create a function that will be the entry point for our custom composables\
+	\
+		fun runCustomComposables(content: @Composable () -> Unit) = runBlocking \{\
+			val fameClock = BraodcastFrameClock()\
+			val recomposer = Recomposer(coroutineContext + framClock)\
+			val rootNode = SlideNode() // this Is the root of the compose node tree\
+\
+			//create initial composition\
+			val composition = Composition(\
+				applier = MyCustomApplier,\
+				parent = recomposer\
+			)\
+\
+			composition.setContent(content)\
+			\
+			// we would also need to create logic to observe changes, run recomposer, send frame to clock\
+\
+			rootNode.render()\
+		\}\
+\
+	5.- Use all previous component, just call it anywhere in the app\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+SDK Extensions\
+	\
+	Project Treble\
+	This project aimed to separate hardware specific code from the OS code,  that means the vendor implementation of an Android version was separated from the core OS framework\
+\
+	This helped to modularize system components as in the following diagram, each line is a \'93layer\'94\
+		\
+		Android Apps.  \'97\'97\'97\'97\'97\'97\'97\'97\'97  OEM Apps & Customizations\
+		Android OS framework(Modules, which are modularized system components live inside the framework) \'97 this can be updated independently of any OEM implementation		Vendor Implementation + Kernel\
+\
+Basically we the SDK has extensions which is how the SDK is updated, and by checking the extensions we can access to backwards compatibility to latest Android OS features available\
+In the SDK and in the API\
+\
+https://www.youtube.com/watch?v=OBpjDSA-3Vk&t=926s\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+@Composable\
+\
+This annotation more closely resembles a language keyword, it is not an annotation processor. Compose works with the aid of kotlin compiler plugin in the type checking and code generation\
+phases of kotlin: there is no annotation processor needed in order to use compose.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Configure your Build\
+When updating Android Studio you usually update AGP even though you can still use an old version of the AGP, that isn\'92t ideal and it could cause errors, but this means the Android Studio version\
+Could define the AGP version and the AGP version defines the Gradle version and AGP version defines the JDK version, although it should be no problem to use a higher version of the JDK for a\
+determined AGP version but not with a lower JDK version since it can throw errors when starting Gradle, since the plugins use different JDK versions it sometimes can be hard to use the right JDK\
+either way the idea is to use an equal or higher version of the JDK used on a given plugin\
+\
+	Build Glossary\
+	\
+		Build Types\
+		They define certain properties that Gradle uses when building and packaging an app. They are typically configured for different stages of the development lifecycle. For example, debug\
+		build type enables debug options and signs the app with the debug key, while the release type may shrink, obfuscate and sign the app with a release key for distribution\
+\
+		Product Flavors	\
+		They represent different versions of an app that you can be released to users, such as free and paid versions, you can customize product flavors to use different code and resources while		sharing and reusing the parts that are common to all versions of the app. They are optional and have to be created manually, they contrast with build types which are mandatory, since at 		least one is needed to create a build. \
+\
+		Build Variants\
+		Is the result of convincing build types with product flavors, they define the configuration that Gradle uses to build the app. \
+\
+		Manifest Entries\
+		It is possible to specify values for some properties of the manifest file in the build variant configuration. These build values override the existing values in the manifest file. Defining properties		in the build variant configuration allows us to create variants of the app with different application names, minimum SDK versions, or target an SDK version. When multiple manifest are present		the manifest merger tool merges manifest settings\
+\
+		Dependencies\
+		The build system manages project dependencies, they can be local or from remote repositories. This moves the responsibility of manually searching, downloading, and copy binary packages		of the dependencies into the project directory\
+\
+		Signing\
+		The build system lets you specify signing settings in the build configurations/build scripts and it can sign applications during the build process. The debug and release build types/build configurations		are signed with different keys and certificates, for example the debug build type key and certificate signs the build using known certificates to avoid a password prompt at build time in contrast 		with release builds which require the developer to define a signing configuration so the build tool can sign it, for that you need to create a release key if you don\'92t have one, a signed build		is required to distribute apps in most apps stores\
+\
+		Code and Resource Shrinking\
+		Build system lest us specify different ProGuard rules file for each build variant, the build system applies the appropriate set of rules to shrink the code and resources using tools such as R8 which		live inside the AGP\
+\
+		Multiple APK Support\
+		Build system lets us build different APKs that each contain only the code and resources it needed for example resource/code needed for a specific screen density or Application Binary		Interface(ABI). The recommended approach is to release a single SASB as it offers splitting by language in addition to screen density, while it avoids the need of uploading multiple artifacts to		an app store.\
+\
+	\
+	The following are the different build configuration files\
+		\
+		- The Gradle Wrapper file(gradle/wrapper/gradle-wrapper.properties)\
+		The Gradle wrapper(gradlew) is a small application included with your source code that downloads and launches Gradle itself. The property \'93distributionUrl\'94 describes which version of Gradle is		used to run your build. If you have different projects with different Gradle versions, Gradle creates copies of the Gradle daemon for each Gradle version, in addition to separate copies of each		JDK  used to run Gradle. This increases memory and CPU usage, potentially slowing your builds or impacting other work on the machine.\
+\
+		- The Gradle settings file\
+		The \'93settings.gradle.kts\'94 file (for the Kotlin DSL) or \'93settings.gradle\'94 (Groovy DSL) is in the root project directory. This settings file defines project-level repository settings and informs Gradle which		modules it should include when building your app. It can also conta\\in a \'93pluginManagement.repositories\'94 block which configures the repos Gradle uses to search or download the gradle plugins and		repos such as JCenter, Maven Central and Ivy. You can also use local repositories or define your own remote repos. They are the repos Gradle should use to look for its dependencies. It can also		contain \'93dependencyResolutionManagement.respositories\'94 block which configures the repos and dependencies used by all modules in your project, such as libraries that you are using to create 		your app. However, you should configure module-specific dependencies in each module-level build.gradle file. For new projects, Android Studio includes Google\'92s Maven and Maven Central by default.\
+\
+		- Top-level build file(project level)\
+		The top-level \'93build.gradle.kts\'94 is located in the root project directory. It typically defines the common version of plugins used by modules in your project such as the \'93com.android.application\'94 plugin		which is also known as the AGP or \'93com.android.library\'94 and \'93org.jetbrains.kotlin.android\'94, you can define a version and use \'93apply false\'94 in the project level plugin block when defining a plugin 		and this will add the plugin as a build dependency but not apply it to the current(root) project, don\'92t use this in sub-projects, for more info search \'93Applying external plugins with same version to 		subprojects\'94 in gradle documentation. If using buildsrc or build logic you have to define \'93com.android.application\'94 in project config file you can define it with version or without a version but include 		\'93apply false\'94, and also in the application config file use it but without applying a version if you\'92re using buildSrc or build-logic then you usually define an application plugin and in here you define 		the app plugin and the use this custom plugin only in the app build config, at the same time you have to define in buildsrc or build logic config file the agp dependency 		\'93com.android.tools.build:gradle:version\'94 inside either a \'93compileOnly\'94 or \'93implementation\'94 this is in KTS.
+\f2\fs26 \cf4 \cb5 \
+
+\f0\fs24 \cf0 \cb1 \
+		\
+		- Module-level build file\
+		The module-level \'93build.gradle.kts\'94 is located in each project module, individual module custom configuarionts/settings. In the app module build config we define build types and product flavors, here 		we can also override settings in the top-level(project) build script or in the \'93main/\'93 app manifest. Using the \'93defaultConfig\'94 block we can override some attributes defined in main/manifest, build types		are defined in the \'93buildTypes\'94 block using the function getByName(\'93release\'94) function, product flavors are defined in the \'93productFlavors\'94 block and using the create(\'93flavorName\'94) function inside it.\
+		If you need to override the source and target  java compatibility version you can it in the \'93compileOptions\'94 block and \'93kotlinOptions\'94 block. Also all modules should define a \'a8compileSDK\'a8 version in		this script level\
+\
+		- Gradle Properties File\
+		There is two properties files;\
+			\
+			- gradle.properties: this is where you can configure project-wide gradle settings such as the gradle daemon\'92s maximum heap size which depends on the Build Environment, you can search for			\'93Configuring the Build Environment\'94 in the gradle documentation to understand it better\
+\
+			- local.properties: Is reserved for properties specific to the AGP. Putting your own values in this file can cause problems, if you need to define your own local properties create a separate			 properties file and manually load it. This file Configures local environment properties for the build system, including:\
+					\
+				- ndk.dir: Path to NDK. This is deprecated. Any downloaded version of the NDK are installed in the \'93ndk\'94 directory within Android SDK directory\
+				- sdk.dir: Path to Android SDK\
+				- make.dir - path to CMake\
+				- ndk.symlinkdir: From Android Studio 3.5, creates a symlink to the NDK that can be shorter than the installed NDK path\
+				\
+\
+	Source Sets\
+		Android Studio logically groups source code and resources for each module into source sets. When you create a new module, AS creates a \'93main/\'93 source set within the module. A module\'92s \'93main/\'93 		source set includes the code and resources used by all its build variants/versions.\
+\
+		Additional source set directories are optional, if you have declared build variants you need to create the source sets, if you need specific code or resources for a product flavor or buildtype, manually. 		This will help inform Gradle to use specific code and resources when building a specific variant. The following are possible source set you can create to specify code and resources to build a variant\
+		\
+			src/buildType/ - Source set that includes code and resources only for a specific build type\
+		\
+			src/productFlavor/ - Source set that includes code and resources only for a specific product flavor. You can configure your build to combine multiple product flavors and for this you can create 			a source set like the following for each combination: src/productFlavor1ProductFlavor2\
+		\
+			src/productFlavorBuildType/ - Source set that includes code and resources only for a specific build variant. When you build the \'93fullDebug\'94(name is just an example of a flavor with build type)			version of your app, the build system merges code, settings, and resources from the following resource sets: \'93src/fullDebug/\'93(build variant source set), \'93src/debug/\'93(build type source set), 			\'93src/full/\'93(product flavor source set) and \'93src/main/\'93(common source set)\
+\
+			if different source sets contain different versions of the same file, Gradle uses the following priority priority order when deciding which file to use. The source  set on the left override tiles and 			settings he ones on the right:\
+		\
+			build variant > build type > product flavor > main source set > library dependency\
+\
+		When merging multiple manifests, gradle uses the same priority order so each build variant can define different components or permissions in the final manifest.\
+\
+	Version Catalogs\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	\uc0\u8259 	}Use them to specify common versions when you have multiple modules or multiple independent projects with common dependencies, search in grade documentation \'93Sharing dependency versions 		between projects\'94\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	\
+	Java Versions in Android Builds\
+		\
+		Glossary\
+			Java Development Kit - This contains tools such as a compiler, profiler, and archive creator which are used behind the scenes during your build to create your app. Libraries contacting APIs			 that you can call from your Kotlin or Java source code, note that not all functions are available on Android. The JVM, an interpreter that executes Java apps, this is used to run Android Studio 			IDE and the Gradle tool, the JVM is not used on Android devices or emulators.\
+\
+			JetBrains Runtime(JBR) - Is an enhanced JDK, distributed with Android Studio. It includes several optimizations for use in Studio and other JB products.\
+\
+\
+		Change JDK to run AS\
+			Even though is possible to change the JDK from the JBR, which is the default, to something else by changing the environment variable \'93STUDIO_JDK\'94 its not recommended\
+\
+		Choose which JDK runs the Gradle builds\
+			There are different ways but if you run Gradle using the buttons in AS, the JDK used is set in the AS settings. If you run Gradle in a terminal, either inside or outside AS, the JAVA_HOME			 enviroment variable(if set) determines which JDK Gralde uses to build it scripts and if variable is not set, uses the \'93java\'94 command on your PATH environment variable. For consistent result			 make sure JAVA_HOME and JDK version set in settings uses same JDK.\
+		\
+			When running a build, Gradle creates a process called a daemon to perform the actual build. This process can be reused, as long as the build are using the same JDK and Gradle version and 			this reduces the time to start a new JVM and initialize the build system. Starting different daemons consumes more CPU and memory\
+\
+		Which Java APIs can I use in my Java or Kotlin source code?\
+			An Android application can use some of the APIs defined in a JDK, but not all of them. The Android SDK defines implementations of many Java library functions as part of its available APIs. The			\'93compileSdk\'94 property specifies which Android SDK version to use when compiling your Kotlin or Java source code.\
+\
+			Basically the Android SDK is the same as the Android API and each version of Android can represent a version of the API/SDK and same way backwards, the API/SDK version represents a version of 			Android, for example: Android 14 represents API/SDK version 34. For each SDK/API(or Android version) version there is a compatible JDK version used to build the project, for example for			API 34/Android 14 you should use JDK 17. Desugaring is the process that will allows us to use a Java API that is available in the \'93compileSDK\'94 but is not available in the \'93minSDK\'94 			version, you might still be able to use the Java API you want to use through this feature called desugaring.\
+\
+		Which JDK compiles with my Java source code?\
+			The Java toolchain JDK contains the Java compiler, used to build Java source code. This JDK also runs the Kotlin compiler(which runs on a JVM), javadoc(tool to generate java documentaiont), and			tests run during the build. The JDK used to compile Java code and to run Gradle should be the same as the toolchain by default uses the same JDK as used to run Gradle(if inside AS it will be			 the JDK defined in settings and if running \'93manually\'94 from any terminal the JDK will depend on the \'93JAVA_HOME\'94 environment variable)  \
+\
+			This all means even thought the JDK used to run Gradle and the Toolchain JDK used to compile Java code can be the same they serve different purposes. This setting should be defined in			in each module build script and it can be change depending on if your code is pure Java or a combination of Kotlin and Java, for the first scenario use the \'93toolchain\'94 block inside a \'93java\'94 block			and use \'93languageVersin.set(JavaLanguageVersion.of(17))\'94, for the second scenario use the \'93kotlin\'94 block and use the function \'93jvmToolchain(17)\'94\
+\
+		Which Java language source features can I use in my Java source code?\
+			The \'93sourceCompatibility\'94 property determines which Java language features are available during compilation. It does not affect Kotlin source code. If not specified it defaults to the Java 			toolchain or JDK used to run Gradle. Is recommended to specify toolchain or \'93sourceCompatibility\'94. \
+		\
+		Which Java Binary/Bytecode features can be used when I compile my Kotlin or Java source?\
+			Specifying \'93targetCompatibility\'94 and \'93jvmTarget\'94 determines the Java class-format version used when generating bytecode from Java and Kotlin source. Some Kotlin features existed before 			Java equivalent features were added. With later \'93jvmTarget\'94 levels, the Kotlin compiler directly use the Java feature instead of create Kotlin\'92s compiler own way to represent these features, 			and this will result in better performance. \'93targetCompatibility\'94 defaults to the same value as \'93sourceCompatibility\'94, but if specified, must be greater than or equal to \'93sourceCompatibility\'94. 			\'93jvmTarget\'94 defaults to the toolchain version. You can take advantage of additional Java features by increasing \'93targetCompatibility\'94 and \'93jvmTarget\'94(they should have same version) but this			might force you to also increase your minimum Android SDK version to ensure the feature is available.\
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	\
+	Configure the app module\
+	\
+	The application ID is declared in this modules build script and this can be different for each build configuration/build variant. We also declare the namespace independent of the application ID\
+\
+		Set Application ID\
+		This ID looks like a Java or Kotlin package name, such as \'93com.example.myapp\'94. This ID uniquely identifies the app on the device and in the Google Play Store. Once app is published, you should		not change this ID if you do the Play Store treats the apps as a new different app. In some APIs this can be referred to as the package name as it used to be directly tied to the package name in 		the past. If using a web view consider using your package name as a prefix in your app ID as you might encounter problems if you don\'92t do so.\
+\
+		The rules for naming this setting, even though it looks very similar to a Kotlin or Java package name, are a bit more restrictive:\
+			- Has to have at least two segments(one or more dots)\
+			-Each segment must start with a letter\
+			-Can have alphanumeric characters or underscore\
+\
+		When setting this property is recommended to:\
+			-Keep the ID the same as the namespace. The distinction between these two properties can be a bit confusing but if you keep it the same you don\'92t have to worry about any of that\
+			-As mentioned don\'92t change ID after it has been published\
+			-If an app ID is not defined it automatically sets it to the same as the namespace, so be careful not to change the namespace as this could mean changing the app ID as well\
+\
+		Change the application ID for testing\
+			By default the build tools apply an application ID to your instrumentation test APK using the app ID for the given build variant appended with \'93.test\'94. You should not need to change this but if			you require to do so you can change it using the property \'93testApplicationId\'94\
+\
+		Set the Namespace\
+			Every Android module has a \'93namespace\'94, which is used as the kotlin or Java package name for its generated \'93R\'94(resources) and \'93BuildConfig\'94 classes. This property is set to the same value as 			package name you choose when you create the project.\
+		\
+		Change the Namespace\
+			If you are in the need to change this property\'92s default value, even though not recommended to avoid dealing with complexities, it is possible, you have to make sure the appId  is explicitly 			defined, so that changing namespace likewise change the app ID. \
+\
+			If you have set different values for \'93namespace\'94 and \'93applicationId\'94, the build tools copy the app ID into your app\'92s final manifest file at the end of the build. If you inspect the \'93AndroidManifest.xml\'94			file after a build, the \'93package\'94 attribute is set to the app ID. The merged manifest\'92s \'93package\'94 attribute is where Google Play Store and Android platform actually look to identify your app.\
+\
+		Change namespace for Testing\
+			The default namespace for the \'93androidTest\'94 and \'93test\'94 source sets is the main namespace, with \'93.test\'94 added at the end. If you need to change this for any reason you can set the 			\'93testNamespace\'94 property. You should not explicitly define the \'93nameSpace\'94 and the \'93testNamespace\'94 to the same value otherwise namespace collisions will occur.\
+		\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	(Special Topic not \'93directly\'94 related in configuring the build script but its necessary to know what an Android Library is, you can search \'93Create an Android Library\'94)\
+	Android Library\
+		Is structurally the same as an Android app module. It includes everything needed to build an app, including source code, resource files and an Android manifest. However instead of compiling into 		an APK(android package), it compiles into an Android Archive(AAR) file that you can use as a dependency for an Android app module. Unlike a JAR, AARf files offer the following functionality for		Android apps:\
+			-AAR files can contain Android resources and manifest file, this lets you bundle in/include shared resources like layouts and drawables in addition to Kotlin or Java classes and methods\
+			-Can contain C/C++ libraries for use by the app module\'92s C/C++ code\
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	\
+	Add build dependencies\
+		\
+		Dependency types\
+			Local library module dependency\
+				Declared as follows:                  implementation(project(\'93:myModule\'94)\
+			\
+			Local Binary dependency\
+				Gradle declares dependencies on JAR files inside your project\'92s \'93module_name/libs/\'93 directory. However you can declare individual files:\
+					implemtation(fileTree(mapOf(\'93dir\'94 to \'93libs\'94, \'93include\'94 to listOf(\'93*jar\'94))))\
+								or\
+					implementation(files(\'93libs/foo.jar\'94, \'93libs/bar.jar\'94))   \'97\'97 declaring individual files\
+\
+			Remote Binary dependency\
+				Declared as follows:			\
+					implementation(\'93com.example.android:app-magic:12.3\'94) which is the shorthand for implemation(group = \'93com.example.android\'94, name = \'93app-magic\'94, version = \'9312.3\'94)\
+				\
+				These dependencies requires you to declare an appropriate remote repo, where Gradle will look for the library. \
+\
+		Native Dependencies\
+			Depending on an AAR that exposes native libraries will automatically make them available to the build system used by \'93externalNativeBuild\'94.\
+\
+		Dependency configurations\
+			The following list contains all the functions we can use to declare dependencies in the \'93dependencies\'94 block:\
+			\
+				- implementation : Gradle adds the dependency to the compile class path and packages the dependency to the build output. However this tells Gradle you don\'92t want this dependency				to leak to other modules at compile time. The means the dependency is available to other modules only at runtime. Using this configuration instead of \'93api\'94 can result in significant 				build time improvements because it reduces the number of modules that the build system needs to recompile\
+\
+				- api : Is basically the same as \'93implementation\'94 with the difference that Gradle knows that the module wants to transitively export the dependency to other modules. So that it is 				available to them at both runtime and compile time. If the dependency changes its external API, Gradle recompiles all modules that have access to that dependency at compile time.\
+\
+				- compileOnly : adds dependency to compile classpath time but not runtime, meaning it is not included in the build output, this doesn\'92t work with AAR dependencies\
+\
+				- runtimeOnly : adds dependency to runtime(build output) which means it is not added to the compile classpath\
+\
+				- annotationProcessor : Adds dependency to annotation processor classpath. This will separate the compile and annotation processor classpath which  will improve performance\
+\
+				- lintChecks : This will run lint checks you want Gradle to run when building the project. This checks are not packed in your Android library project\
+\
+				- lintPublish : it must be called from an Android library. It packs/compiles lint checks into a \'93Lint.jar\'94 file and publish it to your Android library\
+\
+				Adding Dependencies To An Specific Build Variant or Test\
+				put the variant name in front/before the configuration which has to have its first letter capitalized example: flavornameImplementation, flavornameCompileOnly, flavornameAnnotationProcessor\
+\
+				It is also possible to add a dependency that applies only to an specific product flavor and a build type with the following syntax\
+\
+					val flavorNameBuildTypeApi by configuration.creating\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 					val flavorNameBuildTypeRuntimeOnly by configuration.creating\
+\
+					dependencies \{\
+						flavorNameBuildTypeApi(\'93some:articat:1\'94)\
+						flavorNameBuildTypeRuntimeOnly(\'93some:articat:2\'94)\
+					\}\
+				\
+				Adding a dependency that applies only to local test or instrumented test looks like the following respectively\
+					\
+					dependencies \{\
+						testImplementation(\'93some:articat:1\'94)\
+						androidInstrumentedTestImplementation(\'93some:articat:2\'94)\
+					\}		\
+			\
+				It is possible to pass arguments to annotation processors by extending the interface \'93CommandLineArgumentProvider\'94\
+\
+				\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+	Plugins\
+	You have two ways of declaring a plugin, one with a version and the other is without a version. The first way is useful when your you have a multi-project build and you want to apply the plugin to some or	all subprojects in your build, but not the root project, you can do this by using \'93apply false\'94 and this will also enable us to use the second way in subprojects which is using the \'93plugins\'94 block without the 	version in subprojects build script.(info found in Gradle documentation \'93{\field{\*\fldinst{HYPERLINK "https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl"}}{\fldrslt 
+\f3\fs25\fsmilli12750 \cf6 \cb3 \expnd0\expndtw0\kerning0
+Applying external plugins with same version to subprojects}}\'94)\
+	\
+		\'93org.jetbrains.kotlin.jvm\'94 or kotlin(\'93jvm\'94) - I found this plugin in a custom plugin called \'93JvmLibraryConventionPlugin\'94 and also in another called \'93KotlinLibraryPlugin\'94 both custom plugins implementation/setup was 		almost identical. The result of applying this plugin is a \'93pure\'94 Kotlin module, meaning without any Android SDk.\
+		\
+		\'93org.jetbrains.kotlin.android\'94 or \'93kotlin-android\'94 or kotlin(\'93android\'94) - they are basically the same since they both link to plugin \'93org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper\'94, these plugins are used to		be able to build modules with Android SDK code written in kotlin, plugin provides processes and settings the builder tools needs to perform a build. I have seen either or plugin applied to custom		plugins such as a custom application plugin, an Android library custom plugin, custom feature plugins and a Test custom plugin. Usually any module or custom plugin applying this plugin will define		a \'93targetSdk\'94 and \'93minSdk\'94, we use the follwowing dependency to resolve plugin. This plugin is resolved with this dependency \'93org.jetbrains.kotlin:kotlin-gradle-plugin:$\{version\}\'94 or \'93kotlin(gradle-plugin), $\{version\}\'94		inside a implementation function inside the dependencies block. I\'92ve always seen this plugin applied whenever the \'93android.application\'94 or \'93android.library\'94 is applied to the project buildscript\
+			\
+		The following two plugins version are resolved with the dependency of AGP \'93com.android.tools.build:gradle:8.1.2\'94\
+		\
+		\'93com.android.application\'94 - this is pretty much the AGP and as mentioned above in the gradle configuration files info it can be used in different custom plugins, it even can be repeated in some 		custom plugins applied to the application module build script, and I have seen it applied to the project build script which would make this plugin applied to all build scripts, so this means its 		declaration is repeated, but in the project build script it is applied with the \'93apply false\'94 modifier. This plugin will make the code in this module into a AAR instead of a JAR, this will allow us to \
+		call the library module as a dependency from another module in the project\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx20844\pardirnatural\partightenfactor0
+\cf0 		\'93com.android.library\'94 - This plugin turns your module into a library so you can reuse it(this is the info I found about it but its real use in some of the context I saw it is still not clear), I saw it declared in		project build script without a version and with \'93apply false\'94, also in custom plugins for the presentation layer custom plugins either a custom plugin for the old view system or for compose, and in an		Android library custom plugin. You can create Kotlin and Java library modules however you can only add resources and manifest files to an Android module. In some projects basically all modules 		apply this plugin. This is also part of the AGP\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+			
+\f4\b Extension
+\f0\b0 \
+			All Plugins has extension, this is how we can configure them and usually we access to those extension using a DSL however, when using an AGP plugin we access the plugin extensions via the \'93android\'94, \
+			\'93java\'94 or \'93kotlin\'94 block and depending on any other block we might have other blocks but inside these functions blocks we can call the plugin extensions, for example the AGP has two extensions(at least			that I know) the first \'93ApplicationAndroidComponentsExtenstion\'94, this extension gives us the opportunity to customize the process of building build type and product flavors, the second \'93ApplicationExtension\'94			this one gives us access to functions like \'93defaultConfig\'94 etc. For the \'93com.android.library\'94 we have an extension of \'93LibraryExtension\'94 which allows to have access to functions such as 			\'93defaultConfig\'94/\'93targetSDK\'94, we can call this extension from our custom plugins to be able to configure them with the following syntax in the custom plugin \'93target.extension.configure<ThePluginExension>\'94,\
+			there is a \'93BaseExtension\'94 that we can use to configure basically any plugin from a custom/local/convention plugin but it is not recommended to use it, so we are going to need to know the plugin 			extension if we need to configure/customize the build further\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+	Configurations Glossary\
+		\
+		minSdk - defines the minimum version of the Android platform on which the app will run, is identified by the platform API level identifier.\
+\
+		targetSdk - API level on which the app is designed to run. In some cases, this allows the app to use manifest elements or behaviors defined in the target API level\
+		\
+		versionCode - is a positive integer that the Android system uses to avoid an application to install an old version, meaning an app can only be upgraded but not downgraded. Make sure to always 		change this to a greater value as the Play Store won\'92t let you upload an APK you already used for previous version. This version is not displayed to the user. I have seen this and version name 		always defined together and have seen them declared inside a \'93Android.kt\'94 file in buildsrc or buildLogic module, this means it could be defined in different modules but have also found a case 		where the it is declared only once in the app level build source and no place else. (info found in \'93Publish your app/Version your app\'94)\
+	\
+		versionName - String used as a version number shown to the users. Can be a raw string or a reference to a string resource. This string should describe the app version as \
+		\'93<major>.<minor>.<point/patchLevel>\'94 or any other absolute or relative version identifier.\
+\
+		compileSdk - specifies which Android SDK/API version to use when compiling your kotlin or Java source code(the SDK contains some java libraries implementations)\
+\
+		jvmTarget - determines the Java class-format version used when generating bytecode for compiled Java and Kotlin source. When using a later version the Kotlin compiler can use features that		were added in Java after they existed in Kotlin resulting in a performance gain. It defaults to toolchain version, and remember toolchain version defaults to JDK used to run Gradle if that version is		not compatible then you should be prepared and have defined a toolchain resolver. \
+	\
+		sourceCompatibility - This defines what java features your app supports at runtime. This should be lower or equal than the JDK used to run Gradle but not greater, \
+\
+		targetCompatibility - By default it has the same value as sourceCompatibility(if set). This defines what version of Java the output(the bytecode) will have, this means the java version the class files needs to run		on a JVM so the Java version that the program is executed on has to be equal or higher that this but not lower other wise it will throw an exception at runtime. This value defines the minimum Java version 		the consumer of the project will need to run it. This is just a restriction to whoever is building the app from using the wrong Java version to build the app and it can be different from source compatibility\
+\
+		toolchain - this feature will make sure we\'92re using the right JDK version and download it if necessary. Also when using this flag ti will automatically set source and target compatibility.  It also provides		with java and kotlin compiler, basically it provides compilers capabilities\
+		\
+		compileSdk - determines the Java API/SDK framework that will be used to compile Java and Kotlin source\
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Tips\
+		- You can define common configuration of modules in the Root project/module, however the root project would have to apply \'93kotlin-android\'94 plugin, and then you have different options you can do		it directly in the root project script or from a function in a \'93buildsrc\'94 that takes an instance of an object of type Project and then use the block\
+			project.anroid \{ // android configurations \}\
+			\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	TestKit\
+	A Gradle tool that help us test the build logic, some people have wrote their test using Spock which is a testing framework\
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Composite builds Vs Buildsrc(both are build logic)\
+	One of the main disadvantages of \'93buildsrc\'94 is that any change in \'93buildsrc\'94 would invalidate the cached configuration of every module/project in the build, because this changes the classpath of the entire	build but this can be solved with composite builds, basically all you need to do is separate the build logic from the rest of the build via the \'93included build facility\'94 however there is a cost in using composite	builds and that is when an included build provides plugins used by the main build, Gradle needs to do which is unfortunately single-threaded. For every plugin request, Gradle needs to check the included 	builds for plugins that might be substituted in, however some people have opted to publish their plugins to their Artifactory instance so that they can be resolved as a Binary plugin/third party plugin, 	resolving a binary plugin is much faster than compiling(or pulling from the build cache) a plugin that lives in \'93buildsrc\'94/included build, on the other hand there is also a cost in using buildsrc and that is	any change in it will invalidate cache in this approach any build script changes only invalidates some tasks and not the that script cache.\
+	\
+	Normal dependency management is used when creating convention plugins(local plugins) which usually apply chore and community 
+\f4\b plugins without a version
+\f0\b0 , creating convention plugins is something	that is usually done in either or, composite builds or buildsrc, no matter your implementation for handling build logic there are different ways to be able to declare those plugins without a version, \
+	we are going to use the \'93org.jetbrains.kotlin.android\'94/\'93kotlin-android\'94 plugin just as an example, so inside a convention plugin, living either in the module of buildSrc or an included module in a composite	build module(usually called build-logic), we apply the mentioned plugin without a version and if we try apply this convention plugin in a script and build the entire project without making any configuration	the build will fail, so our first option is making some configurations in the \'93buildsrc\'94 or included module in the composite build root build script, first this script needs to apply at least the chore plugin of	\'91kotlin-dsl\'92 which will give us access to blocks like \'93dependencies\'94, it looks like the purpose of this plugin is to let us add configurations/dependencies to the build\'92s classpath in a more declarative way	but the idea is adding a dependency that will help us resolve the plugin version so we can define it either with a  \'93implemention(org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20\'94 or a 	\'93implementation(kotlin(\'93gradle-plugin\'94, \'931.8.20\'94),)\'94 inside a \'93dependency block\'94 if the \'93kotlin-dsl\'94 plugin is declared, other wise we can discard the \'93kotlin-dsl\'94 plugin and open a \'93buildscript\'94 block with a 	\'93dependencies\'94 block inside and a \'93classpath\'94 function inside and that substitutes the \'93implementation\'94 keyword in the previous approach but with the same values it had inside it. The second option is if 	we are not using buiildSrc or composite build then we can just go to the root project build script and basically either do the same as in the previous approach or instead declare the plugin with the version we 	want inside the plugins block with an \'93apply false\'94 and then declare the plugin without a version in the plugins block of any module/project needing it, this will cause Gradle to get the version from 	the root project build script declaration, this is usually done when build logic is not abstracted to a different module. There is one difference with \'93buildSrc\'94 and composite build, that is when declaring the used	plugins in the root module build script if we are using \'93buildSrc\'94 with the dependencies or classpath of the artifacts that will help us resolve the version we don\'92t to declare its version anywhere, however	if using composite builds we would declare those plugins in dependencies or in the classpath, for example the dependency \'93com.android.tools.build:gralde:8.1.2\'94 can resolve the version of	 \'93com.android.application\'94, \'93com.android.library\'94 and \'93com.androi.test\'94 plugins however if using composite build and declaring them in the root module build script we have to declare them with a version\
+	but this is not required in any other place we declare the plugins, meaning we should/could/would have two declarations of the plugins in the version catalog, one with a version to use it in this build script	and one without a version to use it any other place, and the version is the same for the dependency and for the plugins always.
+\f2\fs26 \cf4 \cb5 \
+
+\f0\fs24 \cf0 \cb1 )\
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Random data\
+	- According to some info I found, there is/was a concept called \'93project isolation\'94 which aimed to isolate each project since at some point in time build caching was applied to the build as a hole, meaning if 	any script changed anything the entire cache result is discarded and the entire sync is executed again.\
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Sharing Dependency versions between projects\
+	We have two options to manage this, first version catalog, second using a platform\
+		\
+		Version Catalog\
+		you can declare [libraries], [plugins] and [versions], in the versions you have the option to declare them as a \'93required version\'94 which is just a string and the other option is to declare them as 		{\field{\*\fldinst{HYPERLINK "https://docs.gradle.org/current/userguide/rich_versions.html#rich-version-constraints"}}{\fldrslt 
+\f1 \cf7 \cb3 \expnd0\expndtw0\kerning0
+\ul \ulc7 rich versions}} in which we can declare different parameters like \'93strictly\'94, \'93prefer\'92, etc\
+\
+		Platform\
+		refer to: 
+\f5 \cf8 \expnd0\expndtw0\kerning0
+ {\field{\*\fldinst{HYPERLINK "https://docs.gradle.org/current/userguide/platforms.html#sub:using-platform-to-control-transitive-deps"}}{\fldrslt 
+\f3 \cf6 \cb3 Using a platform to control transitive versions}}
+\f3\fs36 \cf6 \cb3 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs32 \cf6 \cb1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \kerning1\expnd0\expndtw0 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+\
+Version Catalogs\
+\
+\
+\
+\
+\
+\
+\
+		 	\
+		\
+		\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}
