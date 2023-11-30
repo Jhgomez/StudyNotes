@@ -391,7 +391,7 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 			Even though is possible to change the JDK from the JBR, which is the default, to something else by changing the environment variable \'93STUDIO_JDK\'94 its not recommended\
 \
 		Choose which JDK runs the Gradle builds\
-			There are different ways but if you run Gradle using the buttons in AS, the JDK used is set in the AS settings. If you run Gradle in a terminal, either inside or outside AS, the JAVA_HOME			 enviroment variable(if set) determines which JDK Gralde uses to build it scripts and if variable is not set, uses the \'93java\'94 command on your PATH environment variable. For consistent result			 make sure JAVA_HOME and JDK version set in settings uses same JDK.\
+			There are different ways but if you run Gradle using the buttons in AS, the JDK used is set in the AS settings. If you run Gradle in a terminal, either inside or outside AS, the JAVA_HOME			 enviroment variable(if set) determines which JDK Gralde uses to build it scripts and if variable is not set, uses the \'93java\'94 command on your PATH environment variable. For consistent result			 make sure JAVA_HOME and JDK version set in settings uses same JDK since if you run gradle from any button in Android Studio the version it will use will be the one in the IDE gradle settings\
 		\
 			When running a build, Gradle creates a process called a daemon to perform the actual build. This process can be reused, as long as the build are using the same JDK and Gradle version and 			this reduces the time to start a new JVM and initialize the build system. Starting different daemons consumes more CPU and memory\
 \
