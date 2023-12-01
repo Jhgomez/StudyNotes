@@ -1,4 +1,4 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2758
+{\rtf1\ansi\ansicpg1252\cocoartf2580
 \cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\fmodern\fcharset0 Courier;
 \f3\fswiss\fcharset0 Helvetica-Bold;\f4\fnil\fcharset0 HelveticaNeue-Medium;\f5\froman\fcharset0 Times-Roman;
 }
@@ -8,7 +8,7 @@
 \csgenericrgb\c12549\c12549\c12549;\cssrgb\c784\c18824\c22745;\cssrgb\c11373\c29412\c56078;\cssrgb\c0\c0\c0\c80000;}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid1\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
 {\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
-\margl1440\margr1440\vieww30040\viewh17760\viewkind0
+\margl1440\margr1440\vieww28600\viewh14700\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 \
@@ -537,6 +537,10 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 				You can find all the info about handling dependencies to local and remote binaries, libraries, local and remote repos in the gradle \'93dependency Management\'94. In here we can also find info 				on a Glossary that defines the following vocabulary (artifact, module, Component Metadata, etc)\
 \
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Configure Build Variants\
+	In order to be able to create a product flavor you have to define a flavor dimension which is basically a String value that you have to add to the \'93flavorDimensions\'94 property, if you only define one	dimension inside a module\'92s build script all product flavors will be added to this dimension, you can define more than one but then you have to explicitly define/declare which dimension a flavor	belongs to when declaring/creating it in the buildscript. You have access to all 				\
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 	Plugins\
 	You have two ways of declaring a plugin, one with a version and the other is without a version. The first way is useful when your you have a multi-project build and you want to apply the plugin to some or	all subprojects in your build, but not the root project, you can do this by using \'93apply false\'94 and this will also enable us to use the second way in subprojects which is using the \'93plugins\'94 block without the 	version in subprojects build script.(info found in Gradle documentation \'93{\field{\*\fldinst{HYPERLINK "https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl"}}{\fldrslt 
@@ -636,6 +640,10 @@ Applying external plugins with same version to subprojects}}\'94)\
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	Random data\
 	- According to some info I found, there is/was a concept called \'93project isolation\'94 which aimed to isolate each project since at some point in time build caching was applied to the build as a hole, meaning if 	any script changed anything the entire cache result is discarded and the entire sync is executed again.\
+\
+	If you need to configure multiple APK so they are distributed by the same app listing you can look for two documents \
+		1.- \'93Multiple APK support\'94/\'93How multiple APKs work\'94 \
+		2.- \'93Build multiple APKs\'94/ \'93Configure your build for multiple APKs\'94\
 \
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	Sharing Dependency versions between projects\
