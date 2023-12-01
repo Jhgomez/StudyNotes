@@ -1,4 +1,4 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2757
+{\rtf1\ansi\ansicpg1252\cocoartf2758
 \cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;\f2\fmodern\fcharset0 Courier;
 \f3\fswiss\fcharset0 ArialMT;\f4\fnil\fcharset0 HelveticaNeue;\f5\fnil\fcharset0 HelveticaNeue-Light;
 \f6\fnil\fcharset0 HelveticaNeue-Bold;}
@@ -114,13 +114,36 @@ Object classes can not have a constructor\
 	It can only have a subject of primitives or Enum, String and primitive wrapper classes. The default branch is optional, the break is optional but useful as all branches code is executed after the a matching 		branch is found and a break is not declared.\
 \
 Sealed Vs Enum\
-The compiler is informed of possible types(sealed class) or values(Enums)\
 \
-	Sealed Class\
-	Child classes can only exist inside the same file, they can add properties and methods, and they can have its own constructor. Used in case of more complex set of types/values\
+\pard\pardeftab720\partightenfactor0
+\cf2 	Java\
+	The compiler is informed of possible values(Enums)\
+\
+		Sealed Class/Interface(available since JDK 17``)\
+		Child classes can only exist inside the same file, they can add properties and methods, and they can have its own constructor. Used in case of more complex set of types/values. The child classes has		to have the final modifier or must be declared non-sealed which means this child class/interface can be extended/implemented by other classes.\
+		following\
+\
+			sealed interface/class Shape permits Circle \{\}\
+			final class Circle implements/extends Shape \{\}\
+		\
+		The permits declaration can be omitted if the child classes are defined in the same file, child classes can be defined in the same package or same module but not outside(in a different module)\
 	\
-	Enum\
-	The values are defined as objects so they are singletons, the constructor is the same on all however they can add properties and methods, methods inside the enum are final so they can not be overrides 		unless they are declared abstract specifically\
+		Enum\
+		The values are defined as constants, the constructor is the same on all however they can add properties and methods, it can contain \'93normal\'94 methods and abstract methods and both	\
+		can be overriden inside an enum possible value, the constructor, if provided, has to have package private(default) or private modifier\
+\pard\pardeftab720\partightenfactor0
+\cf2 \
+\
+\
+	Kotlin\
+	The compiler is informed of possible types(sealed class) or values(Enums)\
+\
+		Sealed Class/Interface\
+		Child classes can only exist inside the same file, they can add properties and methods, and they can have its own constructor. Used in case of more complex set of types/values\
+	\
+		Enum\
+		The values are defined as objects so they are singletons, the constructor is the same on all however they can add properties and methods, methods inside the enum are final so they can not be\
+		overrides 	unless they are declared abstract specifically\
 \
 * 
 \fs48 GIT
