@@ -1,6 +1,6 @@
 {\rtf1\ansi\ansicpg1252\cocoartf2758
 \cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\fmodern\fcharset0 Courier;
-\f3\fnil\fcharset0 HelveticaNeue-Medium;\f4\fswiss\fcharset0 Helvetica-Bold;\f5\froman\fcharset0 Times-Roman;
+\f3\fswiss\fcharset0 Helvetica-Bold;\f4\fnil\fcharset0 HelveticaNeue-Medium;\f5\froman\fcharset0 Times-Roman;
 }
 {\colortbl;\red255\green255\blue255;\red11\green12\blue12;\red255\green255\blue255;\red88\green118\blue71;
 \red32\green32\blue32;\red5\green36\blue44;\red23\green56\blue124;\red0\green0\blue0;}
@@ -491,7 +491,10 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 \
 				- lintPublish : it must be called from an Android library. It packs/compiles lint checks into a \'93Lint.jar\'94 file and publish it to your Android library\
 \
-				Adding Dependencies To An Specific Build Variant or Test\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f3\b \cf0 				Adding Dependencies To An Specific Build Variant or Test
+\f0\b0 \
 				put the variant name in front/before the configuration which has to have its first letter capitalized example: flavornameImplementation, flavornameCompileOnly, flavornameAnnotationProcessor\
 \
 				It is also possible to add a dependency that applies only to an specific product flavor and a build type with the following syntax\
@@ -512,12 +515,32 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 					\}		\
 			\
 				It is possible to pass arguments to annotation processors by extending the interface \'93CommandLineArgumentProvider\'94\
+				\
+				If using \'93Kept\'94 you can avoid compiling \'93KAPT\'94 again when rebuilding project by setting this flag in \'93gradle.properties\'94  \'93kept.include.compile.classpath=true\'94 from either the kapt block or				keptExtension adding this line \'93includeCompileClasspath = false\'94 (https://kotlinlang.org/docs/kapt.html#compile-avoidance-for-kapt)\
+\
+				
+\f3\b Exclude Transitive Dependencies
+\f0\b0 \
+				Transitive dependencies are the dependencies your dependencies depend on and you can exclude them with the following syntax\
+					implementation(\'93some-dependencie-artifact\'94) \{\
+						exclude(group = \'93com.example.imgTools\'94, module = \'93native\'94)\
+					\}\
+\
+				You can exclude this type of dependencies in your test by using the \'93TestedExtension\'94 with the following syntax\
+					android.testVariants.all \{\
+						compileConfiguration.exclude(group = \'93com.example.one\'94, module = \'93one\'94)\
+						runtimeConfiguration.exclude(group = \'93com.example.two\'94, module = \'93two\'94)\
+					\}\
+\
+				You can declare repositories URL and you can declare different URL\'92s in the same repositories.\
+				\
+				You can find all the info about handling dependencies to local and remote binaries, libraries, local and remote repos in the gradle \'93dependency Management\'94. In here we can also find info 				on a Glossary that defines the following vocabulary (artifact, module, Component Metadata, etc)\
 \
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 	Plugins\
 	You have two ways of declaring a plugin, one with a version and the other is without a version. The first way is useful when your you have a multi-project build and you want to apply the plugin to some or	all subprojects in your build, but not the root project, you can do this by using \'93apply false\'94 and this will also enable us to use the second way in subprojects which is using the \'93plugins\'94 block without the 	version in subprojects build script.(info found in Gradle documentation \'93{\field{\*\fldinst{HYPERLINK "https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl"}}{\fldrslt 
-\f3\fs25\fsmilli12750 \cf6 \cb3 \expnd0\expndtw0\kerning0
+\f4\fs25\fsmilli12750 \cf6 \cb3 \expnd0\expndtw0\kerning0
 Applying external plugins with same version to subprojects}}\'94)\
 	\
 		\'93org.jetbrains.kotlin.jvm\'94 or kotlin(\'93jvm\'94) - I found this plugin in a custom plugin called \'93JvmLibraryConventionPlugin\'94 and also in another called \'93KotlinLibraryPlugin\'94 both custom plugins implementation/setup was 		almost identical. The result of applying this plugin is a \'93pure\'94 Kotlin module, meaning without any Android SDk.\
@@ -534,7 +557,7 @@ Applying external plugins with same version to subprojects}}\'94)\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 			
-\f4\b Extension
+\f3\b Extension
 \f0\b0 \
 			All Plugins has extension, this is how we can configure them and usually we access to those extension using a DSL however, when using an AGP plugin we access the plugin extensions via the \'93android\'94, \
 			\'93java\'94 or \'93kotlin\'94 block and depending on any other block we might have other blocks but inside these functions blocks we can call the plugin extensions, for example the AGP has two extensions(at least			that I know) the first \'93ApplicationAndroidComponentsExtenstion\'94, this extension gives us the opportunity to customize the process of building build type and product flavors, the second \'93ApplicationExtension\'94			this one gives us access to functions like \'93defaultConfig\'94 etc. For the \'93com.android.library\'94 we have an extension of \'93LibraryExtension\'94 which allows to have access to functions such as 			\'93defaultConfig\'94/\'93targetSDK\'94, we can call this extension from our custom plugins to be able to configure them with the following syntax in the custom plugin \'93target.extension.configure<ThePluginExension>\'94,\
@@ -557,14 +580,12 @@ Applying external plugins with same version to subprojects}}\'94)\
 				LibraryExtension\
 				You have to apply the Android Library plugin to be able to consume these extensions, gives you access to configurations/blocks as the above extensions with the addition of at least				another configuration which will be available in the \'93defaultConfig\'94 block called \'93targetSdk\'94\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 				ApplicationExtension\
+				ApplicationExtension\
 				You have to apply the Application plugin to be able to consume these extensions, gives you access to configurations/blocks as the above extensions with the addition of at least				another configuration which will be available in the \'93defaultConfig\'94 block called \'93targetSdk\'94\
 \
 				ApplicationAndroidComponentsExtension (https://medium.com/androiddevelopers/new-apis-in-the-android-gradle-plugin-f5325742e614)\
 				this extension gives you access to the Variant Api which lets you call functions like \'93onVariants\'94, \'93beforeVariants\'94, \'93onFinalizeDsl\'94, this API help us customize build further\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 			\
+			\
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 	Configurations Glossary\
@@ -604,7 +625,7 @@ Applying external plugins with same version to subprojects}}\'94)\
 	One of the main disadvantages of \'93buildsrc\'94 is that any change in \'93buildsrc\'94 would invalidate the cached configuration of every module/project in the build, because this changes the classpath of the entire	build but this can be solved with composite builds, basically all you need to do is separate the build logic from the rest of the build via the \'93included build facility\'94 however there is a cost in using composite	builds and that is when an included build provides plugins used by the main build, Gradle needs to do which is unfortunately single-threaded. For every plugin request, Gradle needs to check the included 	builds for plugins that might be substituted in, however some people have opted to publish their plugins to their Artifactory instance so that they can be resolved as a Binary plugin/third party plugin, 	resolving a binary plugin is much faster than compiling(or pulling from the build cache) a plugin that lives in \'93buildsrc\'94/included build, on the other hand there is also a cost in using buildsrc and that is	any change in it will invalidate cache in this approach any build script changes only invalidates some tasks and not the that script cache.\
 	\
 	Normal dependency management is used when creating convention plugins(local plugins) which usually apply chore and community 
-\f4\b plugins without a version
+\f3\b plugins without a version
 \f0\b0 , creating convention plugins is something	that is usually done in either or, composite builds or buildsrc, no matter your implementation for handling build logic there are different ways to be able to declare those plugins without a version, \
 	we are going to use the \'93org.jetbrains.kotlin.android\'94/\'93kotlin-android\'94 plugin just as an example, so inside a convention plugin, living either in the module of buildSrc or an included module in a composite	build module(usually called build-logic), we apply the mentioned plugin without a version and if we try apply this convention plugin in a script and build the entire project without making any configuration	the build will fail, so our first option is making some configurations in the \'93buildsrc\'94 or included module in the composite build root build script, first this script needs to apply at least the chore plugin of	\'91kotlin-dsl\'92 which will give us access to blocks like \'93dependencies\'94, it looks like the purpose of this plugin is to let us add configurations/dependencies to the build\'92s classpath in a more declarative way	but the idea is adding a dependency that will help us resolve the plugin version so we can define it either with a  \'93implemention(org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20\'94 or a 	\'93implementation(kotlin(\'93gradle-plugin\'94, \'931.8.20\'94),)\'94 inside a \'93dependency block\'94 if the \'93kotlin-dsl\'94 plugin is declared, other wise we can discard the \'93kotlin-dsl\'94 plugin and open a \'93buildscript\'94 block with a 	\'93dependencies\'94 block inside and a \'93classpath\'94 function inside and that substitutes the \'93implementation\'94 keyword in the previous approach but with the same values it had inside it. The second option is if 	we are not using buiildSrc or composite build then we can just go to the root project build script and basically either do the same as in the previous approach or instead declare the plugin with the version we 	want inside the plugins block with an \'93apply false\'94 and then declare the plugin without a version in the plugins block of any module/project needing it, this will cause Gradle to get the version from 	the root project build script declaration, this is usually done when build logic is not abstracted to a different module. There is one difference with \'93buildSrc\'94 and composite build, that is when declaring the used	plugins in the root module build script if we are using \'93buildSrc\'94 with the dependencies or classpath of the artifacts that will help us resolve the version we don\'92t to declare its version anywhere, however	if using composite builds we would declare those plugins in dependencies or in the classpath, for example the dependency \'93com.android.tools.build:gralde:8.1.2\'94 can resolve the version of	 \'93com.android.application\'94, \'93com.android.library\'94 and \'93com.androi.test\'94 plugins however if using composite build and declaring them in the root module build script we have to declare them with a version\
 	but this is not required in any other place we declare the plugins, meaning we should/could/would have two declarations of the plugins in the version catalog, one with a version to use it in this build script	and one without a version to use it any other place, and the version is the same for the dependency and for the plugins always.
@@ -629,8 +650,8 @@ Applying external plugins with same version to subprojects}}\'94)\
 		refer to: 
 \f5 \cf8 \expnd0\expndtw0\kerning0
  {\field{\*\fldinst{HYPERLINK "https://docs.gradle.org/current/userguide/platforms.html#sub:using-platform-to-control-transitive-deps"}}{\fldrslt 
-\f3 \cf6 \cb3 Using a platform to control transitive versions}}
-\f3\fs36 \cf6 \cb3 \
+\f4 \cf6 \cb3 Using a platform to control transitive versions}}
+\f4\fs36 \cf6 \cb3 \
 \pard\pardeftab720\partightenfactor0
 
 \f1\fs32 \cf6 \cb1 \
