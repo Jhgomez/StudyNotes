@@ -443,6 +443,9 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 \
 		Change namespace for Testing\
 			The default namespace for the \'93androidTest\'94 and \'93test\'94 source sets is the main namespace, with \'93.test\'94 added at the end. If you need to change this for any reason you can set the 			\'93testNamespace\'94 property. You should not explicitly define the \'93nameSpace\'94 and the \'93testNamespace\'94 to the same value otherwise namespace collisions will occur.\
+\
+		Change The Test BuildType\
+			You can change \'93testBuildType\'94 by passing the build type you want your instrumented test to run on. By default all test run against debug build type\
 		\
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	(Special Topic not \'93directly\'94 related in configuring the build script but its necessary to know what an Android Library is, you can search \'93Create an Android Library\'94)\
@@ -538,7 +541,22 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 \
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	Configure Build Variants\
-	In order to be able to create a product flavor you have to define a flavor dimension which is basically a String value that you have to add to the \'93flavorDimensions\'94 property, if you only define one	dimension inside a module\'92s build script all product flavors will be added to this dimension, you can define more than one but then you have to explicitly define/declare which dimension a flavor	belongs to when declaring/creating it in the buildscript. You have access to all 				\
+\
+		Configure Build Types\
+			AS automatically creates a debug and release build type, you usually add more configurations to release type like \'93isMinifyEnable = true\'94 or \'93isResourceShrinking = true\'94, 			you can use \'93getByName\'94 function to add/modify existing build type or \'93create\'94 function to create one and \'93initWith\'94 function to copy configurations from other buildtype\
+		\
+		Configure Product Flavors\
+			You can use the same functions as in build types, \'93create\'94, \'93getByName\'94, \'93initWith\'94, inside this block. You have different options inside build types vs product flavors blocks and			there are quite a few different configurations you can set in each of those blocks but at least the \'93versionName\'94 and \'93versionCode\'94 can only be customized in this block\
+			In order to be able to create a product flavor you have to define a flavor dimension which is basically a String value that you have to add to the \'93flavorDimensions\'94 property, 			if you only define one dimension inside a module\'92s build script all product flavors will be added to this dimension, you can define more than one but then you have to explicitly			define/declare which dimension a flavor belongs to when declaring/creating it in the buildscript. \
+\
+			Gradle applies the build type after the product flavor, if we add app id suffix in both build type and product flavor the product flavor suffix will be added first and then the build type			suffix.\
+\
+			\
+\
+		Variant API	\
+			You can use the Variant API and/or Artifact API to call some extensions that will let you change things like the \'93versionCode\'94 in each build variant by using the block			 \'93androidComponents\'94(only available to build scripts applying the application or library plugin) this block is available in Gradle Kotlin \'93.kts\'94 files but if you\'92re using Groovy			 you access it by calling \'93android.applicationVariants.all\{ \}\'94 in here you have access to the variant API\
+		\
+				\
 \
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
@@ -619,6 +637,8 @@ Applying external plugins with same version to subprojects}}\'94)\
 	Tips\
 		- You can define common configuration of modules in the Root project/module, however the root project would have to apply \'93kotlin-android\'94 plugin, and then you have different options you can do		it directly in the root project script or from a function in a \'93buildsrc\'94 that takes an instance of an object of type Project and then use the block\
 			project.anroid \{ // android configurations \}\
+\
+		- {\field{\*\fldinst{HYPERLINK "https://developer.android.com/build/gradle-tips"}}{\fldrslt https://developer.android.com/build/gradle-tips}} read it for source set, gradle test options configurations and signing configs tips, add buildconfigfields to the buildconfig class and also add		resources directly from the buildscript. \
 			\
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	TestKit\
