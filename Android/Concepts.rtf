@@ -1,4 +1,4 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2580
+{\rtf1\ansi\ansicpg1252\cocoartf2758
 \cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\fmodern\fcharset0 Courier;
 \f3\fswiss\fcharset0 Helvetica-Bold;\f4\fnil\fcharset0 HelveticaNeue-Medium;\f5\froman\fcharset0 Times-Roman;
 }
@@ -8,7 +8,7 @@
 \csgenericrgb\c12549\c12549\c12549;\cssrgb\c784\c18824\c22745;\cssrgb\c11373\c29412\c56078;\cssrgb\c0\c0\c0\c80000;}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid1\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
 {\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
-\margl1440\margr1440\vieww28600\viewh14700\viewkind0
+\margl1440\margr1440\vieww30040\viewh17760\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 \
@@ -551,16 +551,36 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 \
 			Gradle applies the build type after the product flavor, if we add app id suffix in both build type and product flavor the product flavor suffix will be added first and then the build type			suffix.\
 \
-			\
-\
 		Variant API	\
 			You can use the Variant API and/or Artifact API to call some extensions that will let you change things like the \'93versionCode\'94 in each build variant by using the block			 \'93androidComponents\'94(only available to build scripts applying the application or library plugin) this block is available in Gradle Kotlin \'93.kts\'94 files but if you\'92re using Groovy			 you access it by calling \'93android.applicationVariants.all\{ \}\'94 in here you have access to the variant API\
 		\
-				\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Optimize Your build\
+		\
+		You can optimize your build by limiting what string and screen-density resources you use in your build type/product flavor use \'93resourceConfiguration(\'93en\'94, \'93xxhdpi\'94)\'94\
+		\
+		Convert images to WebP, this can reduce your images size and therefore can speed up your builds since images don\'92t need to be compressed at build-time to reduce its size, its benefits		are more sensible if your app uses a lot of images, however there is a small increase in CPU usage while decompressing WebP images\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 		Gradle automatically disables \'93isCrunchPngs = false\'94 in debug builds this improves build times since images won\'92t be compressed, if you are building a release version of the app		you should explicitly set this to true.\
+\
+		Try using the JVM parallel garbage collector, by adding this to the \'93jvmargs\'94 in the properties files, remember every argument you add to this field must with \'93-\'93, just add the following to enable		this feature \'93-XX:+UseParallelGC\'94 Setting arguments to this property can lead to a \'93Daemon disappeared\'94 failure, in order to fix this you have to add \'93-XX:MaxMetaspaceSize=256m\'94 and 		\'93-XX:+HeapDumpOnOutOfMemoryError\'94\
+\
+		You can change the memory limit if builds are too slow add jvmargs \'93-Xmx6g\'94 if you change the default limit you also have to add \'93-XX:MaxMetaspaceSize=1g\'94\
+\
+		You can try speeding up rebuilds by caching configuration phase results with \'93org.gradle.configuration-cache=true\'94 and in case a plugin is not capable of using this feature print warnings\
+		\'93org.gradle.configuration-cache.problems=warn\'94\
 \
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Profile Your Build(Generate Build Time Report)\
+		You can profile your build, first run your app so all downloadable dependencies are cached, second perform a clean build to avoid skipping tasks which input have not change this way we will		be able to catch/profile the whole build, run the following command \'93./gradlew - -profile - -offline - -rerun-tasks assembleFlavorDebug\'94. Breaking it down \'93profile\'94 enables profiling. \'93offline\'94 disables		gradle from fetching online dependencies, as mentioned above you should have built app at least once to have your dependencies cached already. \'93rerun tasks\'94 forces Gradle to rerun all tasks		and ignore any task optimization. You can check the report in the project-root/build/reports/profile/ directory it is an \'93html\'94 file you can open in the browser\
 \
-	Plugins\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	Plugins\
 	You have two ways of declaring a plugin, one with a version and the other is without a version. The first way is useful when your you have a multi-project build and you want to apply the plugin to some or	all subprojects in your build, but not the root project, you can do this by using \'93apply false\'94 and this will also enable us to use the second way in subprojects which is using the \'93plugins\'94 block without the 	version in subprojects build script.(info found in Gradle documentation \'93{\field{\*\fldinst{HYPERLINK "https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl"}}{\fldrslt 
 \f4\fs25\fsmilli12750 \cf6 \cb3 \expnd0\expndtw0\kerning0
 Applying external plugins with same version to subprojects}}\'94)\
@@ -639,6 +659,8 @@ Applying external plugins with same version to subprojects}}\'94)\
 			project.anroid \{ // android configurations \}\
 \
 		- {\field{\*\fldinst{HYPERLINK "https://developer.android.com/build/gradle-tips"}}{\fldrslt https://developer.android.com/build/gradle-tips}} read it for source set, gradle test options configurations and signing configs tips, add buildconfigfields to the buildconfig class and also add		resources directly from the buildscript. \
+		\
+		- You can configure gradle test options for local unit tests only, inside the \'93unitTests\'94 block inside a \'93testOptions\'94 block inside an \'93android\'94 block \
 			\
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	TestKit\
@@ -691,6 +713,11 @@ Applying external plugins with same version to subprojects}}\'94)\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 Version Catalogs\
 \
