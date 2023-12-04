@@ -712,10 +712,68 @@ Applying external plugins with same version to subprojects}}\'94)\
 \cf0 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+About App Manifests\
+This file describes essential information about your app to the Android build tools, the Android operating system and Google play. It is required to declare. For more info about manifest references, which \
+are the tags used in the manifest, see look for the \'93About app manifests/App manifest overview\'94 documentation\
 \
+-Components of the app(activities, services, broadcast receivers and content providers)\
+-The permissions that the app needs to access protected info or functionality(hardware)\
+-The hardware and software features the app requires, which determines which devices can install the app from google play.\
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\cf0 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	
+\f3\b Intent Filters(find this info in the \'93About App Manifests\'94)
+\f0\b0 \
+	App activit\'e9s, services, and broadcast receivers are activated by intents. An intent is a message defined by an \'93Intent\'94 object that describes an action to perform, including data to be acted on, the category\
+	of component(activity, service, broadcast reciever) that is expected to perform the action, and other instructions\
+\
+	When an app issues an intent to the system, the system locates an app component that can handle the intent based on intent filter declarations in each app\'92s manifest file. The system launches an instance\
+	of the matching component and passes the Intent object to it. If more than one app can handle the intent, then the user can select which app to use.\
+\
+	An app component can have any number of intent filters(defined with the <intent-filter> element). If you want to allow other apps start an activity in your application see \'93Let other apps start your activity\'94 	documentation\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Icons and Labels\
+	Any app component can define an \'93icon\'94 and \'93label\'94 attribute for displaying a small icon and text label. The values for these attributes that are set in a parent element become the default value for all child	elements. For example the values declared in <application> element are the default values for each app\'92s component, such as all activities. You can declare specific values inside an <intent-filter> element\
+	this will be used to display to users whenever that component is presented as an option to fulfill an intent.\
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Permissions\
+	An app must request permission to access sensitive user data, such as contacts and SMS, or certain system features, such as camera and internet access. They are declared inside an \'93<uses-permission>\'94\
+	element and it has to declare a \'93name\'94 property, each permission has its own name, SMS permission, for example, is \'93android.permission.SEND_SMS\'94\
+	\
+	You can protect your apps components with permissions, it can use the permissions defined by Android in android.Manifest.permission, or a permission declared in another app or your app can also define	its own permissions. A new permission is declared with <permission> element. For more info check \'93Permissions on Android\'94\
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Device Compatibility\
+	You define what types of hardware or software features your app requires so Google Play Store can determine which users can install your app. You use elements like <uses-feature> inside here you can 	define with the attirbute \'93required\'94 you can define \'93true\'94 or \'93false\'94, <uses-sdk> with attribute \'93minSdkVersion\'94 but most likely you will define this in your Gradle build script. \
+\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	Merge Multiple Manifests FIles(\'93From optimize your build\'94 documentation)\
+	In this document they explain the priority order when merging manifest files that are available in source sets\
+	\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Proguard Rules\
+Is a file that includes rules that modify R8 compiler behavior, the R8 compiler is in charge to shrink code, shrink resources, obfuscate code and optimize code. R8 compiler converts your project\'92s java bytecode\
+into the DEX format that run on the Android platform. You can generate a report of all the rules that R8 applies when building your module by including the following code in your modules \'93proguard-rules.pro\'94 file\
+\
+	// You can specify any path and filename\
+	\'93-printconfiguration ~/tmp/full-r8-config.txt\'94\
+\
+Report of removed code\
+	\'93-printusage ~/tmp/usage.txt\'94\
+\
+Report of entry points\
+	\'93-printseeds ~/tmp/seeds.txt\'94\
+\
+For apps with minSdk lower or equal to 21 you should enable multi dex, look for \'93enable multidex\'94 documentation\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \
