@@ -774,6 +774,18 @@ Report of entry points\
 For apps with minSdk lower or equal to 21 you should enable multi dex, look for \'93enable multidex\'94 documentation\
 \
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Check the commit the tag points and compare it with the \'93main\'94 branch HEAD(in attach mode it is the current checked-out branch\'92s latest commit) to get the correct tag name\
+\
+	Check tags with the commit they point to\
+	git show-ref - -tags\
+	\
+	Check main branch head latest commit it points to\
+	git checkout main\
+	git rev-parse HEAD\
+\
+With these information we can create objects, do transformations and determine what is the latest tag which we can use to set the application \'93versionName\'94 from the repository\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \
