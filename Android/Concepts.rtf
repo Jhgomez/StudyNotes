@@ -554,16 +554,14 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 		Variant API	\
 			You can use the Variant API and/or Artifact API to call some extensions that will let you change things like the \'93versionCode\'94 in each build variant by using the block			 \'93androidComponents\'94(only available to build scripts applying the application or library plugin) this block is available in Gradle Kotlin \'93.kts\'94 files but if you\'92re using Groovy			 you access it by calling \'93android.applicationVariants.all\{ \}\'94 in here you have access to the variant API\
 		\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	Optimize Your build\
 		\
 		You can optimize your build by limiting what string and screen-density resources you use in your build type/product flavor use \'93resourceConfiguration(\'93en\'94, \'93xxhdpi\'94)\'94\
 		\
 		Convert images to WebP, this can reduce your images size and therefore can speed up your builds since images don\'92t need to be compressed at build-time to reduce its size, its benefits		are more sensible if your app uses a lot of images, however there is a small increase in CPU usage while decompressing WebP images\
 	\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 		Gradle automatically disables \'93isCrunchPngs = false\'94 in debug builds this improves build times since images won\'92t be compressed, if you are building a release version of the app		you should explicitly set this to true.\
+		Gradle automatically disables \'93isCrunchPngs = false\'94 in debug builds this improves build times since images won\'92t be compressed, if you are building a release version of the app		you should explicitly set this to true.\
 \
 		Try using the JVM parallel garbage collector, by adding this to the \'93jvmargs\'94 in the properties files, remember every argument you add to this field must with \'93-\'93, just add the following to enable		this feature \'93-XX:+UseParallelGC\'94 Setting arguments to this property can lead to a \'93Daemon disappeared\'94 failure, in order to fix this you have to add \'93-XX:MaxMetaspaceSize=256m\'94 and 		\'93-XX:+HeapDumpOnOutOfMemoryError\'94\
 \
@@ -576,11 +574,9 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 	Profile Your Build(Generate Build Time Report)\
 		You can profile your build, first run your app so all downloadable dependencies are cached, second perform a clean build to avoid skipping tasks which input have not change this way we will		be able to catch/profile the whole build, run the following command \'93./gradlew - -profile - -offline - -rerun-tasks assembleFlavorDebug\'94. Breaking it down \'93profile\'94 enables profiling. \'93offline\'94 disables		gradle from fetching online dependencies, as mentioned above you should have built app at least once to have your dependencies cached already. \'93rerun tasks\'94 forces Gradle to rerun all tasks		and ignore any task optimization. You can check the report in the project-root/build/reports/profile/ directory it is an \'93html\'94 file you can open in the browser\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 	Plugins\
+	Plugins\
 	You have two ways of declaring a plugin, one with a version and the other is without a version. The first way is useful when your you have a multi-project build and you want to apply the plugin to some or	all subprojects in your build, but not the root project, you can do this by using \'93apply false\'94 and this will also enable us to use the second way in subprojects which is using the \'93plugins\'94 block without the 	version in subprojects build script.(info found in Gradle documentation \'93{\field{\*\fldinst{HYPERLINK "https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl"}}{\fldrslt 
 \f4\fs25\fsmilli12750 \cf6 \cb3 \expnd0\expndtw0\kerning0
 Applying external plugins with same version to subprojects}}\'94)\
@@ -720,11 +716,9 @@ are the tags used in the manifest, see look for the \'93About app manifests/App 
 -The permissions that the app needs to access protected info or functionality(hardware)\
 -The hardware and software features the app requires, which determines which devices can install the app from google play.\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 	
+	
 \f3\b Intent Filters(find this info in the \'93About App Manifests\'94)
 \f0\b0 \
 	App activit\'e9s, services, and broadcast receivers are activated by intents. An intent is a message defined by an \'93Intent\'94 object that describes an action to perform, including data to be acted on, the category\
@@ -735,8 +729,7 @@ are the tags used in the manifest, see look for the \'93About app manifests/App 
 \
 	An app component can have any number of intent filters(defined with the <intent-filter> element). If you want to allow other apps start an activity in your application see \'93Let other apps start your activity\'94 	documentation\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	Icons and Labels\
 	Any app component can define an \'93icon\'94 and \'93label\'94 attribute for displaying a small icon and text label. The values for these attributes that are set in a parent element become the default value for all child	elements. For example the values declared in <application> element are the default values for each app\'92s component, such as all activities. You can declare specific values inside an <intent-filter> element\
 	this will be used to display to users whenever that component is presented as an option to fulfill an intent.\
@@ -786,15 +779,86 @@ Check the commit the tag points and compare it with the \'93main\'94 branch HEAD
 With these information we can create objects, do transformations and determine what is the latest tag which we can use to set the application \'93versionName\'94 from the repository\
 \
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 \
 Version Catalogs\
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
+Kotlin Flows\
+They are located in the Kotlin Coroutine library and represent a stream of values computed asynchronously. Both types of flows, cold and hot, emits/generate the stream values \
+in the context of a coroutine, meaning they run processes to emit/generate values asynchronously.\
 \
+	Cold Flows\
+	At first only cold flows existed, meaning flows are cold by nature. Cold flows are stateless streams which are created on demand, they are created every time an observer starts 	collecting its values, Each observer gets it\'92s own sequences of values, they are not shared.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	Hot Flows\
+	They can share the same stream values to all the subscribers, meaning they are stateful streams.\
+		SharedFlow\
+		Broadcast same values to all observers. They can manage an optional replay cache and/or a buffer\
+		\
+		StateFlow\
+		Specialized and optimized subclass of SharedFlow which stores and replays last value only. You basically are enforced to catch exceptions early since any uncaught 		exception in a hot flow ends the stream with no possibility to restart it, even when using the \'93catch()\'94 operator\
+		\
+		The implementation, MutableStateFlow, needs to have an initial value. You can emulate a MutableStateFlow with now initial value with a MutableSharedFlow declared		like: \'93MutableSharedFlow(replay = 1)\'94, but this would be less efficient thatn \
 \
+		It filters out repetitions of the same value, it does it by using \'93Any.equals()\'94 to do comparisons, MutableSharedFlow does the same\
 \
+		Each time a coroutine collects a hot flow, the flow provides the latest value which means if we have code that will run whenever the lifecycle state is \'93STARTED\'94, since		we will go though that state on every configuration change, if we register an observer in this lifecycle state this observer will be provided the same last value several times		which may hit performance since it will duplicate work.\
+\
+		A flow is not lifecycle aware, because of this the responsability of syncing with the lifecycle aware component is moved up to the coroutine collecting the flow\
+\
+	Collecting a Flow inside a Component With a Lifecycle\
+	The components with a lifecycle could be a a fragment, an activity\
+		\
+		Collecting Cold Flows\
+		You can efficiently collect cold flows which are not backed by a channel nor buffer inside a component with a lifecycle with the following code\
+			\
+			viewLifecycleOwner.lifecycleScope.launchWhenStarted \{\
+				viewmodel.result.collect \{ data ->\
+					displayResutl(data)\
+				\}\
+			\}\
+\
+		This will suspend when the flow when lifecycle state is \'93STOPPED\'94 as the coroutine collecting it will suspend. \
+\
+		The problem with hot flows is that the flow will dispatch stream values to all observers, including suspended observers(observers running on suspended coroutines)\
+\
+		Channel-based or Callback-based flows only stop when the collection is cancelled(not sure what that means but sounds like is when the coroutine is cancelled)\
+\
+		Note: Flows are usually destroyed/cancelled if the job that reference to the coroutine is cancelled but you can also cancel the flow collection with operators like firts(() that under \
+		the hood are calling other functions like \'93collectWhile\'94\
+\
+		Collecting Flows Efficiently\
+		We should aim to\
+			1. Cache: Cache Data that has been loaded, and not loaded a second time if the first value is still valid, like when just rotating screen(config change)\
+			2. Avoid Background Work: When activity or fragment becomes goes to \'93STOPPED\'94 state ongoing work should be paused or cancelled in order to save resources\
+			3. No Work Interruption During Configuration Changes: This is an exception to goal #2 since during config changes an Activity/Fragment gets replaced by a new 			instance of it while preserving its state, so canceling on going work when the old instance is destroyed to immediately restart it when the new instance is created would			be counter-productive\
+\
+		So the solution with hot flows is using either or the following APIs\
+			viewLifecycleOwner.lifecycleScope.launch \{\
+				viewLifecycleOwner.repeatOnLifecycle(LifecycleState.STARTED) \{\
+					viewModel.result.collect \{ result ->\
+						displayData(result)\
+					\}\
+				\}\
+\
+				or\
+			\
+				viewModel.result.flowWithLifecycle(viewLifecycleOwner.lifecycle, LifecycleState.STARTED).collect \{ result ->\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 					displayData(result)\
+				\}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 			\}\
+		\
+		\
+\
+					\
+	\
+		\
 \
 \
 		 	\
