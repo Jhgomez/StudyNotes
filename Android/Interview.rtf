@@ -115,8 +115,7 @@ Object classes can not have a constructor\
 \
 Sealed Vs Enum\
 \
-\pard\pardeftab720\partightenfactor0
-\cf2 	Java\
+	Java\
 	The compiler is informed of possible values(Enums)\
 \
 		Sealed Class/Interface(available since JDK 17``)\
@@ -131,8 +130,7 @@ Sealed Vs Enum\
 		Enum\
 		The values are defined as constants, the constructor is the same on all however they can add properties and methods, it can contain \'93normal\'94 methods and abstract methods and both	\
 		can be overriden inside an enum possible value, the constructor, if provided, has to have package private(default) or private modifier\
-\pard\pardeftab720\partightenfactor0
-\cf2 \
+\
 \
 	Kotlin\
 	The compiler is informed of possible types(sealed class) or values(Enums)\
@@ -416,7 +414,7 @@ Benefits are, rapid feedback on failures, early failure detection, safer code re
 \
 There is scopes, depending on the size or degree of isolation:\
 - Unit Tests/Small tests only verify a very small portion of the app, such as method or class. Fragments and activities should not have business logic so unit test these classes have little value\
-- End-to-end tests/Big tests verify a larger part a larger part of the app at same time, such as whole screen or user flow\
+- End-to-end tests/Big tests verify a larger part of the app at same time, such as whole screen or user flow\
 - Medium tests, in between tests they verify integration between two or more units\
 \
 Tests can run on an Android device or on another computer\
