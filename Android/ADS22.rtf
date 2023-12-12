@@ -417,6 +417,79 @@ more reliable\'94 \
 		\}		\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
+5 Upcoming Android Studio New Features\
+\
+	1. Improvements in the network inspector - located in the \'93Resource Manager\'94 \
+	2. Download information in the \'93Build Analyzer\'94 - Is a new metric that tells you how much of your build time was spent downloading dependencies, but also	when artifacts are downloaded needlessly so you can fix your buildscript\
+	3. Android SDK version upgrade - (personally not using it much since I already know good enough about configuring Gradle)\
+	4. Physical Device Mirroring\
+	5. Emulator Bluethoot Support - you can simulate a bluetooth connection across different emulator instances\
+\
+Performance Tips for Jetpack Compose\
+\
+	1. Benchmark - Write a benchmark to know if your performance optimizations are working\
+	2. Deferred State - Read state as late as possible using lambdas\
+	3. DerivedStateOf - Used when your state or key is changing more than you need to update your UI\
+	4. Stability - Compose determines the stability of composables to determine if they can be skipped, The skipability of a function is determined by the stability	of its parameters, they can be of type \'93Immutable\'94(compiler is sure the values of the object\'92s properties will never change, usually all its parameters will be \'93val\'94s and not 	\'93var\'94s, also they should use immutable collections, also if working it contains a third party library object you can annotate the class with \'93Immutable\'94 to force/tell the compiler	to treat it as immutable even thought those properties will be annotated with \'93unstable\'94, the wrapper class will be annotated with \'93stable\'94) or \'93Stable\'94(Is mutable but the \
+	compiler will be notified when properties has changed, in practice this means those properties are wrapped inside a state functions like \'93mutableStateOf\'94, also they 	can be annotated so the compiler treats them as stable with \'93stable\'94 annotation) or \'93Unstable\'94(this classes can\'92t be skipped, these type of objects have \'93var\'94s defined	instead of \'93val\'94s) \
+	5. reportFullyDrawn() - Allows Android to optimize your apps startup\
+\
+Offline-firts Apps\
+For both, reads and writes, managing connectivity changes require implementing two main functions, \'93Queues\'94(to deferred/consume actions till the network is available) \
+and \'93Network Monitors\'94(As a signal to drain the queue as soon as the network becomes available). External layers should always read from the local data source. Apps \
+Don\'92t have to write data offline to be considered offline-first because writes requires more considerations than reads, there still can be failures/network errors and the \
+solution is just simply retry if it is needed/required/requested\
+\
+	Synchronization\
+	When getting/reading data from network data source there is two ways of reconciling data in the local data source and is this process is called synchronization\
+		\
+		Pull-bases\
+		Reads latest data on demand like when navigating to a new screen, only fetches the current screen data\
+			Pros\
+			Relatively easy to implement. Data is not needed will never be fetched\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 			Cons\
+			Prone to heavy data use. Does not scale well with relational data \
+\
+		Push-bases\
+		Local data source tries to mimic a replica set of the network data source, it usually proactively fetches a small amount of data on first startup to set a baseline		after which it relies on notifications from the server to alert when data is changed.\
+			Pros\
+			The app can remain offline indefinitely. Minimum data use(only needs data from initial synch to display info). Works well for relational data\
+			Cons\
+			Versioning data for conflict resolution is non-trivial. Concurrency concerns during synchronization. Must be supported by the network\
+\
+		If the app generates data, while being offline, that is misaligned with the network data you have to resolve conflicts before synchronization takes place\
+\
+			Conflict Resolution\
+			Last write wins, meaning if different devices writes local data offline and then get online they will sync with the network the last sync will override info from			other devices previews synchs, that means the device with outdated info will be notified about the change and have its data synch wit the network\
+\
+\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
 \
 \
 \
