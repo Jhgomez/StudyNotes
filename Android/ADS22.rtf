@@ -463,6 +463,38 @@ solution is just simply retry if it is needed/required/requested\
 			Conflict Resolution\
 			Last write wins, meaning if different devices writes local data offline and then get online they will sync with the network the last sync will override info from			other devices previews synchs, that means the device with outdated info will be notified about the change and have its data synch wit the network\
 \
+Modifiers Deep Dive\
+\
+Design\
+What constraints and design goals led to the current Modifier APIs?, Modifiers now use a Modifier.Node API to apply them throughout the whole composition process\
+\
+Performance\
+What does Modifier usage look like today? What performance issues does it present? The new way of applying the modifiers is more performant since it has fewer iterations,\
+has fewer compositions, and the generated code is fewer\
+\
+Future\
+How is the new architecture beneficial? How do these changes affect me?\
+\
+Variable Fonts\
+They are fonts that can contain many styles in a single font file, only available on Android O and above\
+\
+Annotated Strings in Compose\
+You can build an annotated string in compose with the following code\
+\
+	buildAnnotatedString \{\
+		val text = getTexParttToFormat()\
+		val spanStyle = SpanStyle(\
+			fontFamily = FontFamily.Monospace,\
+			background = codeSnippetBackground\
+		)\
+\
+		withStyle(style = spanStyle) \{\
+			append(codeText)\
+		\}\
+		append(otherText)\
+	\}\
+\
+\
 \
 	\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
