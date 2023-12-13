@@ -494,6 +494,40 @@ You can build an annotated string in compose with the following code\
 		append(otherText)\
 	\}\
 \
+Customize a TextField Composable Border\
+You can use the \'93border\'94 modifier, and you also have different composable components option \'93TextField\'94, \'93OutlinedTextField\'94, \'93BasicTextField\'94\
+\
+	TextField(\
+		value = textFieldValue,\
+		onValueChange = \{ onTextChanged(it) \},\
+		modifier = Modifier.\
+			border(\
+				border = BorderStroke(\
+					brush = Brush.linearGradient(Gradient),\
+					width = 2.dp\
+				),\
+				shape = CutCornerShape(12.dp)\
+		)\
+	)\
+\
+\
+	You also have the option to use the \'93Foundation\'94 component \'93BasicTextField\'94 instead of the \'93Material 3\'94 component, which will give access to 	to customization fields like \'93cursorBrush\'94 which you can pass a brush gradient to change color as the cursor moves or just define a solid color\
+	also \'93decorationBox\'94 which lets you add a composable like a row to which you can define a background modifier and then set an icon and then	consume the callback value, which is the text input so the text its written can have an icon and a color background added\
+\
+	If you need more info check \'93Text in Compose\'94, \'93Fixing Font Padding in Compose Text\'94, \'93Effective State Management for TextField in Compose\'94,\
+	\'93Brushing up on Compose Text Coloring\'94 and \'93Animating Brush Text Coloring in Compose\'94\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
 \
 \
 	\
