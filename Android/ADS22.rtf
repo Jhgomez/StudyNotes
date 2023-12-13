@@ -518,13 +518,45 @@ You can use the \'93border\'94 modifier, and you also have different composable 
 	\'93Brushing up on Compose Text Coloring\'94 and \'93Animating Brush Text Coloring in Compose\'94\
 \
 \
+Measure App Performance With Profileable Builds\
+Android Studio Profiler helps you find where CPU cycles and memory are spent at the end time of inspection, profiling an app requires a debug build,\
+when choosing this type of variant the \'93debuggable\'94 flag in the manifest/buildscript is set to true\
 \
+	Debug builds\
+	These builds lets you use the following features throughout the process of creating your app\
+		\
+		Build\
+		When building a debug variant of the app you can use \'93Apply Changes\'94 and \'93Live Edit\'94 features\
+		\
+		Debug\
+		When debuging these variants you can use \'93Debugger\'94, \'93Database Inspector\'94 and \'93Network Inspector\'94\
+		\
+		Profile\
+		When profiling these type of variants you can use \'93Heap Dump\'94, \'93Live Allocation Recording\'94 and \'93Energy Profiler\'94 features\
 \
+	Profitable Builds\
+	Rendering frames in Debug builds could takes a lot more than in Release builds, but this is all because of the overhead that is implicit when making	and app debuggable to have access to all functionalities/features mentioned above, we can monitor the time a frame takes to render directly in our	cellphone using the developer options in the section \'93monitoring\'94 option \'93Profile HWUI rendering\'94 with \'93On Screen as Bars\'94 this will show a bars overlay,\
+	a high bar indicates more time to render a frame, a short frame indicates the opposite and also a smother animation. This is why the \'93profitable\'94 flag was	created,  so you can actually get a more real more \'93release\'94/\'93production\'94/\'93real\'94 performance measurement, turning this flag on enables many profiling tools\
+	that measure timing info whiteout the performance overhead of a debug build, available on devices using android 10 or higher\
+	\
+	Profileable apps have access to the following tools\
+		\
+		CPU profiler\
+		You can use \'93Default View\'94, \'93Callstack Sampling\'94, \'93System Trace\'94\
 \
+		Memory Profiler\
+		You can use \'93Default View\'94 and \'93Native Memory Profiler\'94, if the app is profitable you can not use \'93Heap Dump\'94 nor		 \'93Live Allocation Tracking\'94/\'93Record Java/Kotlin Allocations\'94\
 \
+		You can not use the \'93Energy Profiler\'94 nor \'93Event Timeline\'94 the app is profitable\
 \
+	You can use profitable options in either of the two following ways:\
+		\
+		Automatically with Android Studio\
+		With the \'93Profile\'94 icon right next to the debug icon in the IDE, chose \'93Profile App with Low overhead\'94, AS will automatically build a profitable app\
+		of your current build type/variant and attach the profiler. It works with any build type but its recommended to profile a release build(because its		what your users see) \
 \
-\
+		Manually Configure the App\
+		In case you want to diagnose performance issues in production, there is 4 steps to do this\
 \
 \
 \
