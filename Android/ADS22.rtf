@@ -519,8 +519,9 @@ You can use the \'93border\'94 modifier, and you also have different composable 
 \
 \
 Measure App Performance With Profileable Builds\
-Android Studio Profiler helps you find where CPU cycles and memory are spent at the end time of inspection, profiling an app requires a debug build,\
-when choosing this type of variant the \'93debuggable\'94 flag in the manifest/buildscript is set to true\
+Android Studio Profiler helps you find where CPU cycles and memory are spent at the end time of inspection, previously profiling an app required a debug build\
+, but not anymore as this builds enables a lot of features/functionalities at the cost of performance and and that is why now instead the only thing needed to profile\
+an app(measure its performance) is a profileable app, when choosing this type of variant the \'93debuggable\'94 flag in the manifest/buildscript is set to true\
 \
 	Debug builds\
 	These builds lets you use the following features throughout the process of creating your app\
@@ -572,7 +573,7 @@ when choosing this type of variant the \'93debuggable\'94 flag in the manifest/b
 		Ideal for production\
 		\
 		Profileable release build\
-		Profiling CPU timing\
+		Ideal for Profiling CPU timing\
 	\
 		Debug Build\
 		To use the debugger, inspectors, etc. also for profiling memory, profiling energy\
