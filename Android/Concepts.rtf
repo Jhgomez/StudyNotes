@@ -837,7 +837,7 @@ in the context of a coroutine, meaning they run processes to emit/generate value
 			2. Avoid Background Work: When activity or fragment becomes goes to \'93STOPPED\'94 state ongoing work should be paused or cancelled in order to save resources\
 			3. No Work Interruption During Configuration Changes: This is an exception to goal #2 since during config changes an Activity/Fragment gets replaced by a new 			instance of it while preserving its state, so canceling on going work when the old instance is destroyed to immediately restart it when the new instance is created would			be counter-productive\
 \
-		So the solution with hot flows is using either or the following APIs\
+		So the solution with hot flows is using either or the following APIs(run either or functions inside a \'93onCreate\'94 in an activity or \'93onViewCreated\'94 in a fragment)\
 			viewLifecycleOwner.lifecycleScope.launch \{\
 				viewLifecycleOwner.repeatOnLifecycle(LifecycleState.STARTED) \{\
 					viewModel.result.collect \{ result ->\
