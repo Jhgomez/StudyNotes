@@ -434,7 +434,7 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 			By default the build tools apply an application ID to your instrumentation test APK using the app ID for the given build variant appended with \'93.test\'94. You should not need to change this but if			you require to do so you can change it using the property \'93testApplicationId\'94\
 \
 		Set the Namespace\
-			Every Android module has a \'93namespace\'94, which is used as the kotlin or Java package name for its generated \'93R\'94(resources) and \'93BuildConfig\'94 classes. This property is set to the same value as 			package name you choose when you create the project.\
+			Every Android module has a \'93namespace\'94, which is used as the kotlin or Java package name for its generated \'93R\'94(resources) and \'93BuildConfig\'94 classes. This property is set to the same value as 			package name you choose when you create the project. In newer versions of AGP this property replaces the \'93packageName\'94 property in the manifest\
 		\
 		Change the Namespace\
 			If you are in the need to change this property\'92s default value, even though not recommended to avoid dealing with complexities, it is possible, you have to make sure the appId  is explicitly 			defined, so that changing namespace likewise change the app ID. \
