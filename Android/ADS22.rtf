@@ -549,15 +549,33 @@ when choosing this type of variant the \'93debuggable\'94 flag in the manifest/b
 \
 		You can not use the \'93Energy Profiler\'94 nor \'93Event Timeline\'94 the app is profitable\
 \
-	You can use profitable options in either of the two following ways:\
+	You can use profitable options by making your app profileable in either of the two following ways:\
 		\
 		Automatically with Android Studio\
 		With the \'93Profile\'94 icon right next to the debug icon in the IDE, chose \'93Profile App with Low overhead\'94, AS will automatically build a profitable app\
 		of your current build type/variant and attach the profiler. It works with any build type but its recommended to profile a release build(because its		what your users see) \
 \
 		Manually Configure the App\
-		In case you want to diagnose performance issues in production, there is 4 steps to do this\
+		In case you want to diagnose performance issues in production, there is 4 steps to do this:\
+			1.- Add this to the manifest(This flag is safe to use in production/release builds as it is design to be usable in release builds to enable 			local profiling and no memory data is readable by the host profiling tools and the shell process as only stack tracers are readable which			typically obfuscated or lacking symbols in release builds) \
+				<application>\
+					<profileable android:shell=\'93true\'94>\
+				</application>\
+			\
+			2. Switch to release build type variant or any other non-debuggable variant\
+			3. Configure a signing key, you can configure a key just for profiling\
+			4. Attach the profiler\
 \
+	So in summary the build types are used for the following purposes\
+	\
+		Release Build\
+		Ideal for production\
+		\
+		Profileable release build\
+		Profiling CPU timing\
+	\
+		Debug Build\
+		To use the debugger, inspectors, etc. also for profiling memory, profiling energy\
 \
 \
 \
