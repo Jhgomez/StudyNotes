@@ -578,14 +578,59 @@ an app(measure its performance) is a profileable app, when choosing this type of
 		Debug Build\
 		To use the debugger, inspectors, etc. also for profiling memory, profiling energy\
 \
+App Quality Insights\
+Is a new feature/option in AS where you can see the most impactful crash reports from crashalitycs, they are sorted by the number of impacted users so\
+you know which crashes are most impactful, you can click into the stack traces that will lead directly into app codebase\
 \
-\
-\
+Animations in Compose\
 	\
+	\'93animatedVisibility()\'94 composable (crane sample app)\
+	Just wrap whatever composable you want in this composable to animate its visibility bases on a boolean state\
+\
+	\'93animateContentSize()\'94 modifier (crane sample app)\
+	Use this modifier to make any size change run smoothly, example: in a text changing the max lines based on a state, or directly the height on	any composable. You can specify an \'93animationSpec\'94 parameter in which you can use different \'93animations\'94 like spring and a few more\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
+	\'93AnimatedContent\'94 composable (crane sample app)\
+	You can use it to pass a state, like a selection or the value of a Emun, to the parameter of this composable, usually you will evaluate the 	state inside this composable using a \'93when\'94 condition to display different composables depending on the current value. You can also use other	parameters like \'93transitionSpec\'94 which is a lambda where you can define code like the following\
+	\
+		slideIntoContainer(\
+			animationSpec = tween(300, easing = EaseIn),\
+			towards = Up\
+		).with(\
+			slideOutOfContainer(\
+				animationSpec = tween(300, easing = Easeout),\
+				towards = Down\
+			)\
+		)\
 \
+	\'93animateFloatAsState\'94 (Jetsurvery sample app)\
+	This sample app has a progress bar created using \'93LinearProgressIndicator\'94 composable which takes a float value to indicate the progress, full \
+	progress is the number 1. We can wrap the progress percentage inside this constructor and pass it to the composable and it will animate\
 \
+	Animate a border of an Image\
+	You would use the following code\
+		\
+		@Composable\
+		fun ImageBorderAnimation() \{\
+			val infiniteTransition = rememberInfiniteTransition()\
+			val rotationAnimation = infiniteTransition.animateFloat(\
+				initialValue = 0f,\
+				targetValue = 360f,\
+				animationSpec = infiniteRepeatable(tween(1000, easing = LinearEasing))\
+			)\
+			Image(\
+				modifier = Modifier\
+					.drawBehind \{\
+						rotate(rotationAnimation.value) \{\
+							drawCircle(rainbowColorBrush, style = Stroke(borderWidth))\
+						\}\
+					\}\
+					.padding(borderWidth)\
+					.clip(CircleShape)\
+			)	\
+		\}\
+	\
 \
 \
 \
