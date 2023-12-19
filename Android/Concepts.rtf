@@ -1,4 +1,4 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2758
+{\rtf1\ansi\ansicpg1252\cocoartf2759
 \cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\fmodern\fcharset0 Courier;
 \f3\fswiss\fcharset0 Helvetica-Bold;\f4\fnil\fcharset0 HelveticaNeue-Medium;\f5\froman\fcharset0 Times-Roman;
 }
@@ -37,6 +37,13 @@ Gradle Enterprise = Develocity\
 \
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
+Perfetto\
+Tool used for doing System profiling, App tracing and tracing analysis for Linux and Android. These tools helps you find where CPU cycles and memory are spent at the end time of inspection\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 Resource Qualifiers\
 \
 Allows us to define different resource packages/folders that will be used to store/retrieve resources for a specific  in to display the right resource in \
@@ -783,8 +790,7 @@ With these information we can create objects, do transformations and determine w
 \
 Version Catalogs\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 Kotlin Flows\
 They are located in the Kotlin Coroutine library and represent a stream of values computed asynchronously. Both types of flows, cold and hot, emits/generate the stream values \
@@ -792,8 +798,7 @@ in the context of a coroutine, meaning they run processes to emit/generate value
 \
 	Cold Flows\
 	At first only cold flows existed, meaning flows are cold by nature. Cold flows are stateless streams which are created on demand, they are created every time an observer starts 	collecting its values, Each observer gets it\'92s own sequences of values, they are not shared.\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 	Hot Flows\
 	They can share the same stream values to all the subscribers, meaning they are stateful streams.\
 		SharedFlow\
@@ -848,16 +853,12 @@ in the context of a coroutine, meaning they run processes to emit/generate value
 				or\
 			\
 				viewModel.result.flowWithLifecycle(viewLifecycleOwner.lifecycle, LifecycleState.STARTED).collect \{ result ->\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 					displayData(result)\
+					displayData(result)\
 				\}\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 			\}\
+			\}\
 		\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
 Material 3 Components\
 Components are interactive building blocks for creating user interface. They can be organized into categories based on their purpose: Action, conatainment, communication, navigation,\
 selection and text input\
@@ -881,11 +882,30 @@ selection and text input\
 	\
 	Text Inputs\
 	Text fields\
-	\
-		 	\
-		\
-		\
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Jetpack Compose Architecture\
+\
+	Compose UI - Most low level part, compose deals with layout, drawing, input. Compose UI that defines basic blocks for UI construction\
+	Compose Foundation - Built on top of compose UI, it provides basic layouts like Column, box, lazy column etc\
+	Compose Animation - Built on top of foundation\
+	Material and Material 3 - Design systems that provides common widgets \
+\
+		Compose Compiler - It is needed since the whole concept of composable functions is actually an extension of kotlin language that needs compiler support.\
+		Compose Runtime - Manages all the system  \
+ \
+Android uses \'93Skia Graphics\'94 engine for rendering things, it\'92s written in c++\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Kotlin Multiplatform\
+Kotlin/Native compiler and runtime(Runtime has a GC ) is used for rendering compose for IOS, while Kotlin/JVM compiler and runtime is used for rendering compose for Android\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 \
 \
