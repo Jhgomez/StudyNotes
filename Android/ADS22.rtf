@@ -1,4 +1,4 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2758
+{\rtf1\ansi\ansicpg1252\cocoartf2759
 \cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;\red191\green191\blue191;\red251\green0\blue19;\red251\green0\blue7;
 \red251\green0\blue28;\red35\green255\blue10;\red103\green79\blue12;\red6\green0\blue8;\red168\green135\blue5;
@@ -335,8 +335,7 @@ more reliable\'94 \
 			val composeTestRule = createAndroidComposeRule<MyActivity>()\
 			\
 			// You also have the option to start an empty activity and set content yourself\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 			@get:Rule\
+			@get:Rule\
 			val composeTestRule = createComposeRule()\
 			\
 			//Only of the second way of starting/creating an activity in your test\
@@ -346,8 +345,7 @@ more reliable\'94 \
 					MyApp()	// This can be any composable, you can test any composable in isolation, pass its parameters, like fake objects list and dummy objects(clicks)\
 				\}\
 			\}\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 		\}\
+		\}\
 \
 	2. Automatic Synchronization\
 	How the test knows when to send the next action or perform the next assertion, you would need to use tools like espresso which has ways to figure out if the app is	busy or idle(is activity RESUMED?, is there idling resources?, is the main thread idle?, is the UI idle?) and views don\'92t have a way to tell you they\'92re busy, however 	this is exactly what compose does as it exposes a much more straightforward signal to the tests, making the more reliable and faster(using the same test class ass above)\
@@ -365,8 +363,7 @@ more reliable\'94 \
 	3. Controlling time\
 	In compose test you can pause time or advance clock as much as needed. This is great for testing state\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 		@Test\
+		@Test\
 		fun automaticSync_afterOneSecond() \{\
 			composeTestRule.mainClock.autoAdvance = false\
 \
@@ -379,13 +376,11 @@ more reliable\'94 \
 			// You can also go frame by frame\
 			composeTestRule.mainClock.advanceTimeByFrame()\
 		\}\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 	4. Waiting For Things to Happen\
 	Even with automatic synchronization as test grows it will get harder to deal with all the asynchronous operations that happens and in end-to-end test it might not even wroth	to make sure everything is synchronized, that is why we can tell the test to wait until something happens with the \'93WaitUntil\'94 API, it can pass the test until the body is true\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 		@Test\
+		@Test\
 		fun mainScreen_navigateToDetails() \{\
 \
 			composeTestRule.setContent \{\
@@ -400,13 +395,11 @@ more reliable\'94 \
 				\}\
 			\}\
 		\}\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 	5. Verify State Restoration\
 	We can emulate a configuration change very easily\
 		\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 		@Test\
+		@Test\
 		fun restoreState() \{\
 \
 			val restorationTester = StateRestorationTester(composeTestRule)\
@@ -415,8 +408,7 @@ more reliable\'94 \
 			restorationTester.emulateSavedInstanceStateRestore() // Triggers a recreation\
 			// TODO: Verify that state has been correctly restored\
 		\}		\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 5 Upcoming Android Studio New Features\
 \
 	1. Improvements in the network inspector - located in the \'93Resource Manager\'94 \
@@ -447,8 +439,7 @@ solution is just simply retry if it is needed/required/requested\
 		Reads latest data on demand like when navigating to a new screen, only fetches the current screen data\
 			Pros\
 			Relatively easy to implement. Data is not needed will never be fetched\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 			Cons\
+			Cons\
 			Prone to heavy data use. Does not scale well with relational data \
 \
 		Push-bases\
@@ -589,8 +580,7 @@ Animations in Compose\
 \
 	\'93animateContentSize()\'94 modifier (crane sample app)\
 	Use this modifier to make any size change run smoothly, example: in a text changing the max lines based on a state, or directly the height on	any composable. You can specify an \'93animationSpec\'94 parameter in which you can use different \'93animations\'94 like spring and a few more\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 	\'93AnimatedContent\'94 composable (crane sample app)\
 	You can use it to pass a state, like a selection or the value of a Emun, to the parameter of this composable, usually you will evaluate the 	state inside this composable using a \'93when\'94 condition to display different composables depending on the current value. You can also use other	parameters like \'93transitionSpec\'94 which is a lambda where you can define code like the following\
 	\
@@ -631,9 +621,28 @@ Animations in Compose\
 			)	\
 		\}\
 	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+Graphics Modifiers\
+	\
+	Drawing Modifiers\
+	All drawing commands are done with drawing modifiers.\
+	\
+		Modifier.drawWithContent - Make sure to call \'93drawContent()\'94 somewhere inside to render actual content of composable,\
+		basically you can choose drawing order with this modifier. This the drawing modifiers base modifier\
+	\
+		Modifier.drawBehind - Just draw behind a composable, just that simple. Actually this modifier is wrapped around drawWithContent\
 \
+		Modifier.drawWithCache - It will cache your draw objects. You either call \'93onDrawBehind\'94 or \'93onDrawWithConent\'94 inside of it\
+		\
 \
-\
+	Graphics Modifiers\
+		\
+		Modifier.graphicsLayer - Makes the content of a composable to draw into a draw layer. You can apply transformations\
+		to composables. Transformations in this modifier can be applied without having to re-excute the drawing lambda, all these\
+		transformations only affect the draw phase it does not affect the composition nor layout phases\
 \
 \
 \

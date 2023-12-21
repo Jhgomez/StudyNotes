@@ -42,6 +42,11 @@ Tool used for doing System profiling, App tracing and tracing analysis for Linux
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Speed Scope App\
+Is an app we can use for profiling IOS apps, it can import instruments(Xcode profiler tool) profiles and show them as a frame graph \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 Resource Qualifiers\
@@ -906,8 +911,29 @@ Kotlin Multiplatform\
 Kotlin/Native compiler and runtime(Runtime has a GC ) is used for rendering compose for IOS, while Kotlin/JVM compiler and runtime is used for rendering compose for Android\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
+Graphics Modifiers\
+	\
+	Drawing Modifiers\
+	All drawing commands are done with drawing modifiers.\
+	\
+		Modifier.drawWithContent - Make sure to call \'93drawContent()\'94 somewhere inside to render actual content of composable,\
+		basically you can choose drawing order with this modifier. This the drawing modifiers base modifier\
+	\
+		Modifier.drawBehind - Just draw behind a composable, just that simple. Actually this modifier is wrapped around drawWithContent\
 \
+		Modifier.drawWithCache - It will cache your draw objects. You either call \'93onDrawBehind\'94 or \'93onDrawWithConent\'94 inside of it\
+		\
+\
+	Graphics Modifiers\
+		\
+		Modifier.graphicsLayer - Makes the content of a composable to draw into a draw layer. You can apply transformations\
+		to composables. Transformations in this modifier can be applied without having to re-excute the drawing lambda, all these\
+		transformations only affect the draw phase it does not affect the composition nor layout phases\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 \
 \
