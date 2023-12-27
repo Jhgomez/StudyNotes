@@ -40,15 +40,13 @@ Gradle Enterprise = Develocity\
 Perfetto\
 Tool used for doing System profiling, App tracing and tracing analysis for Linux and Android. These tools helps you find where CPU cycles and memory are spent at the end time of inspection\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 Speed Scope App\
 Is an app we can use for profiling IOS apps, it can import instruments(Xcode profiler tool) profiles and show them as a frame graph \
 \
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 Resource Qualifiers\
 \
 Allows us to define different resource packages/folders that will be used to store/retrieve resources for a specific  in to display the right resource in \
@@ -888,8 +886,7 @@ selection and text input\
 	Text Inputs\
 	Text fields\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 Jetpack Compose Architecture\
 \
@@ -901,18 +898,14 @@ Jetpack Compose Architecture\
 		Compose Compiler - It is needed since the whole concept of composable functions is actually an extension of kotlin language that needs compiler support.\
 		Compose Runtime - Manages all the system  \
  \
-Android uses \'93Skia Graphics\'94 engine for rendering things, it\'92s written in c++\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 		\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Android uses \'93Skia Graphics\'94 engine for rendering things, it\'92s written in c++ call\
+		\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 Kotlin Multiplatform\
 Kotlin/Native compiler and runtime(Runtime has a GC ) is used for rendering compose for IOS, while Kotlin/JVM compiler and runtime is used for rendering compose for Android\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 Graphics Modifiers\
 	\
@@ -932,11 +925,17 @@ Graphics Modifiers\
 		Modifier.graphicsLayer - Makes the content of a composable to draw into a draw layer. You can apply transformations\
 		to composables. Transformations in this modifier can be applied without having to re-excute the drawing lambda, all these\
 		transformations only affect the draw phase it does not affect the composition nor layout phases\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
+Important and Basic Stuff\
 \
-\
-\
+	Process\
+	All applications run in it own process. Android system starts a new Linux process for the application with single thread of execution when an application component(activity, \
+	broadcast receiver, content provider, service) starts and no other components of the app are in a running state. By default, all components of the same app, run in the same	process and main thread. However is possible to start a new/different process for each app component we require, it is possible by declaring a \'93android:process\'94:processName\'94\'94\
+	property in the manifest when declaring the component you want to run in a different process. You can communicate between different process using	interprocess communication(IPC)\
 \
 \
 \
