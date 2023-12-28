@@ -935,7 +935,19 @@ Important and Basic Stuff\
 	Process\
 	All applications run in it own process. Android system starts a new Linux process for the application with single thread of execution when an application component(activity, \
 	broadcast receiver, content provider, service) starts and no other components of the app are in a running state. By default, all components of the same app, run in the same	process and main thread. However is possible to start a new/different process for each app component we require, it is possible by declaring a \'93android:process\'94:processName\'94\'94\
-	property in the manifest when declaring the component you want to run in a different process. You can communicate between different process using	interprocess communication(IPC)\
+	property in the manifest when declaring the tag of the component you want to run in a different process. You can communicate between different process using	interprocess communication(IPC)\
+\
+	Task(basically what we call backstack when talking about navigation in fragments)\
+	A task can be defined as a stack of activities. By default there will be only one task for an application unless defined the other way by different launch modes. To make an	activity launch in a different task define the \'91android:launchMode=\'93singleInstance\'94\'92 inside the activity tag in the manifest. If you create many tasks to run at the same time, some of 	them might be sent to the background and in time they might be destroyed by the system causing state to be lost.\
+\
+	ActivityTaskManager and FragmentManager(Pretty much they are equivalent, activity manager deals with activity backstack while fragment manager deals with fragment backstack)\
+	\
+		ActivityTaskManager\
+		Class that interacts with activities, their containers(tasks which is the activities stack) and can give information about them\
+\
+		FragmentManager\
+		This class handles the application fragment stack, that means we can manage the fragment stack with this class, we can add, remove and replace the fragments in/to the stack\
+		If using the Navigation Library most likely you will not need to use this class as that library works with this manager directly.	\
 \
 \
 \
