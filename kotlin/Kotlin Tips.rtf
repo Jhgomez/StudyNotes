@@ -64,6 +64,41 @@ Const vs val vs @JvmField\
 	a field doesn\'92t have generated getters or setters and it doesn\'92t have any restriction on the type of object it holds.\
 \
 \
+Jvm Annotations\
+	\
+	@JvmStatic\
+	Tells the compiler the method is a static method and can be used in java code. Most likely you will be annotating a method inside a companion object\
+\
+	@JvmOverloads\
+	You can annotate a constructor or a method and this will tell the compiler how call default parameters(if defined) when calling the method from java code.\
+\
+Serializable vs Parcelable\
+\
+	Serialization\
+	Is the process of converting an object into a stream of bytes in order to store it into memory so it can be recreated at a later time while keeping the object\'92s original state and data\
+	\
+	If we declared a variable \'93transient\'94 it won\'92t be serialized\
+\
+	Parcelable\
+	Serializable is a standard Java interface. Parcelable is an Android specific interface where you implement the serialization yourself. It was created to be far more efficient than serializable.\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
 \
 \
 \
