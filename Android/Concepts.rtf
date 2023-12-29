@@ -905,7 +905,7 @@ Android uses \'93Skia Graphics\'94 engine for rendering things, it\'92s written 
 Kotlin Multiplatform\
 Kotlin/Native compiler and runtime(Runtime has a GC ) is used for rendering compose for IOS, while Kotlin/JVM compiler and runtime is used for rendering compose for Android\
 \
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 Graphics Modifiers\
 	\
@@ -927,29 +927,47 @@ Graphics Modifiers\
 		transformations only affect the draw phase it does not affect the composition nor layout phases\
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
-Important and Basic Stuff\
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
-	Process\
+Process\
+\
 	All applications run in it own process. Android system starts a new Linux process for the application with single thread of execution when an application component(activity, \
 	broadcast receiver, content provider, service) starts and no other components of the app are in a running state. By default, all components of the same app, run in the same	process and main thread. However is possible to start a new/different process for each app component we require, it is possible by declaring a \'93android:process\'94:processName\'94\'94\
 	property in the manifest when declaring the tag of the component you want to run in a different process. You can communicate between different process using	interprocess communication(IPC)\
 \
-	Task(basically what we call backstack when talking about navigation in fragments)\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Task(basically what we call backstack when talking about navigation in fragments)\
+\
 	A task can be defined as a stack of activities. By default there will be only one task for an application unless defined the other way by different launch modes. To make an	activity launch in a different task define the \'91android:launchMode=\'93singleInstance\'94\'92 inside the activity tag in the manifest. If you create many tasks to run at the same time, some of 	them might be sent to the background and in time they might be destroyed by the system causing state to be lost.\
 \
-	ActivityTaskManager and FragmentManager(Pretty much they are equivalent, activity manager deals with activity backstack while fragment manager deals with fragment backstack)\
+	Activity launch modes\
 	\
-		ActivityTaskManager\
-		Class that interacts with activities, their containers(tasks which is the activities stack) and can give information about them\
+		1.- Standard: It creates a new instance of an activity in the task(stack) from which it was started. Multiple instances of the activity can be created and multiple instances can\
+		be added to the same or different task(s)\
+		2- SingleTop: The same as standard except if there is a previous instance of the activity that exists in the top of the stack then it will not create a new instance, but only if it is at \
+		the top of the stack/task, if it is not at the top it will then create a new instance to avoid this you can use the below mode\
+		3.- SingleTask: If no instance of activity exists it will be created but if it does exist no matter where in the stack, the same existing instance will be used and if there is\
+		other activities on top of the requested activity the ones on the top will be destroyed and the one requested will be active, this happens similar to a callback\
+		4.- SingleInstance: Same as single task but system does not launch any activities in the same task.\
 \
-		FragmentManager\
-		This class handles the application fragment stack, that means we can manage the fragment stack with this class, we can add, remove and replace the fragments in/to the stack\
-		If using the Navigation Library most likely you will not need to use this class as that library works with this manager directly.	\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+ActivityTaskManager and FragmentManager(Pretty much they are equivalent, activity manager deals with activity backstack while fragment manager deals with fragment backstack)\
+	\
+	ActivityTaskManager\
+	Class that interacts with activities, their containers(tasks which is the activities stack) and can give information about them\
+\
+	FragmentManager\
+	This class handles the application fragment stack, that means we can manage the fragment stack with this class, we can add, remove and replace the fragments in/to the stack\
+	If using the Navigation Library most likely you will not need to use this class as that library works with this manager directly.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 \
 \
