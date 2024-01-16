@@ -82,8 +82,26 @@ Serializable vs Parcelable\
 	Parcelable\
 	Serializable is a standard Java interface. Parcelable is an Android specific interface where you implement the serialization yourself. It was created to be far more efficient than serializable.\
 \
+Generics(Type Parameters)\
+Java and Kotlin can have Generics, type parameters(List<T>) are invariant meaning List<Sting> is not a subtype of List<Object>. They allow us to reuse code with different object types, however to\
+ increase this flexibility even further we can use variance. In Java, we can implement it by using Wildcard types(?, ? super E, ? extend E). In Kotlin we can define variance at the \'93declaration site\'94(this feature \
+is usually called declaration-site variance) using \'93type projections\'94, type projections make use of \'93variance annotations\'94 and there are three of the annotations, one for each variance use\
+ case. There are two types of variance essentially(variant and invariant), however there is three \'93use cases\'94 of the variance variant type  and those are the following\
+	\
+	Generics(They are invariant by nature)\
 \
+	Invariant(invariant)- Defined inside angle brackets \'93<T>\'94. This means \'93List<Number>\'94 can not contain a \'93List<Integer>\'94, however in java you can use bounded type parameters as follows\
+	\'93ClassWithGenerics<T extends Number>\'93 in kotlin you can do this with \'93ClassWithGenerics<T: Number>\'94. In java using type parameters will let the compiler infer the type so you can access methods\
+	and properties/fields of the defined type however when using wildcards inferring the type is more \'93complex\'94\
 \
+	// Wildcards(Java) or Variance Annotation/Type Projection(Kotlin)\
+\
+	Covariant(variant) - \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	Contravariant(variant) - \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 \
 \
