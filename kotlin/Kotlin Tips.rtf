@@ -99,10 +99,12 @@ is usually called declaration-site variance) using \'93type projections\'94, typ
 	Unbounded(Variant) - In Java \'93List<?>\'94, in Kotlin \'93List<*>\'94 If you read from any object that is using this wildcard you will get an \'93Object\'94 type reference and you will not be able to write to it since the compiler\
 	wouldn\'92t be able to guarantee runtime safety the behavior in Kotlin is the same with the difference that it will read it as \'93Any?\'94 type object.\
 \
-	Covariant(variant) - \
+	Covariant(variant) - In Java it is defined like the following \'94<? extends AnyClass>\'94 and is called upper bound wildcard, you can only read from it and it will read the type of object that you define. You will get a\
+	compiler error if you try to write to an object with this wildcard since compiler can not know what type of object you are actually reassigning/adding\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
-	Contravariant(variant) - \
+	Contravariant(variant) - In java it is defined as follows \'93<? Super AnyClass>\'94 and is called lower bound wildcard, you can write to it only the type of objects defined in the angle brackets  and you can also\
+	read from it but you will reading \'93Object\'94s \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \
