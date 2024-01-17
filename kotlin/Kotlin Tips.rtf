@@ -88,13 +88,16 @@ Java and Kotlin can have Generics, type parameters(List<T>) are invariant meanin
 is usually called declaration-site variance) using \'93type projections\'94, type projections make use of \'93variance annotations\'94 and there are three of the annotations, one for each variance use\
  case. There are two types of variance essentially(variant and invariant), however there is three \'93use cases\'94 of the variance variant type  and those are the following\
 	\
-	Generics(They are invariant by nature)\
+	//Generics(They are invariant by nature)\
 \
 	Invariant(invariant)- Defined inside angle brackets \'93<T>\'94. This means \'93List<Number>\'94 can not contain a \'93List<Integer>\'94, however in java you can use bounded type parameters as follows\
 	\'93ClassWithGenerics<T extends Number>\'93 in kotlin you can do this with \'93ClassWithGenerics<T: Number>\'94. In java using type parameters will let the compiler infer the type so you can access methods\
 	and properties/fields of the defined type however when using wildcards inferring the type is more \'93complex\'94\
 \
 	// Wildcards(Java) or Variance Annotation/Type Projection(Kotlin)\
+	\
+	Unbounded(Variant) - In Java \'93List<?>\'94, in Kotlin \'93List<*>\'94 If you read from any object that is using this wildcard you will get an \'93Object\'94 type reference and you will not be able to write to it since the compiler\
+	wouldn\'92t be able to guarantee runtime safety the behavior in Kotlin is the same with the difference that it will read it as \'93Any?\'94 type object.\
 \
 	Covariant(variant) - \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
