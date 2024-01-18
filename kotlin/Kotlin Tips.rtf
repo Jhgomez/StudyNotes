@@ -94,7 +94,7 @@ is usually called declaration-site variance) using \'93type projections\'94, typ
 	\'93ClassWithGenerics<T extends Number>\'93 in kotlin you can do this with \'93ClassWithGenerics<T: Number>\'94. In java using type parameters will let the compiler infer the type so you can access methods\
 	and properties/fields of the defined type however when using wildcards inferring the type is more \'93complex\'94\
 \
-	// Wildcards(Java) or Variance Annotation/Type Projection(Kotlin)\
+	// Wildcards(Java) or Variance Annotation(Kotlin)\
 	\
 	Unbounded(Variant) - In Java \'93List<?>\'94, in Kotlin \'93List<*>\'94 If you read from any object that is using this wildcard you will get an \'93Object\'94 type reference and you will not be able to write to it since the compiler\
 	wouldn\'92t be able to guarantee runtime safety the behavior in Kotlin is the same with the difference that it will read it as \'93Any?\'94 type object.\
@@ -107,11 +107,16 @@ is usually called declaration-site variance) using \'93type projections\'94, typ
 	Contravariant(variant) - In java it is defined as follows \'93<? Super AnyClass>\'94 and is called lower bound wildcard, you can write to it 
 \f3\b only
 \f0\b0  the type of objects defined in the angle brackets  and you can also\
-	read from it but you will be reading \'93Object\'94s. In Kotlin you write it with \'93<? Super AnyClass>\'94 and you can do the same as in Java but if you read from it will get an object of type \'93Any?\'94\
+	read from it but you will be reading \'93Object\'94s. In Kotlin you write it with \'93<in AnyClass>\'94 and you can do the same as in Java but if you read from it will get an object of type \'93Any?\'94\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
+	Declaration-site Variance\
+	Is a kotlin feature that lets you inform the compiler wether your type parameter is Covariant/producer or Contravariant/consumer, basically it is the equivalent to wildcards in Java as explained above\
+	with the difference that you can \'93enforce\'94 a type parameter of a class or method to only be covariant or contravariant by specifying the variance annotation in the declaration of the class or method, the only difference\
+	with this approach in contrast to Java\'92s approach is that the compiler wouldn\'92t let a class consume values of a type parameter if that type parameter is declared as producer(covariant)\
 \
 \
+Refied\
 \
 \
 \
