@@ -605,6 +605,13 @@ When your app is configured following the previous steps you can then do the fol
 \
 If an app size is greater than 150MB you can either use \'93Play Asset Delivery\'94 or \'93Play Feature Delivery\'94 to upload it to play store.\
 \
+	Google App Signing\
+	Is a Google Play Store service for developers/publishers that helps you protect your application\'92s signing key. You can have google generate you signing key or you can provide one yourself, be aware after uploading your signing key\
+	you can not retrieve a copy. After you configure App Signing you can not retrieve a copy of the app signing key. Depending on your configuration your first upload key may be different from the app signing key, you will use your upload\
+	key to sing your app and Google will use this key to verify your identity and sign your app with the App Signing Key, you can request a change/new upload key but not a signing key this is why is you would prefer using this service as if\
+	you ever lose your App Signing Key you would not be able to upload updates to your app again. \
+\
+\
 Code Shrinking\
 We use this feature to make the app as small as possible as enabling shrinking will shrink code for example by the shrinker can change a class and variables names with shorter names to reduce DEX size this is also known as obfuscation. Besides of using obfuscation to shrink the size of the app another process will also help to shrink the app even more and that is possible by running optimizations as if shrinker/R8 detects code that is never used it will remove it.\
 \
