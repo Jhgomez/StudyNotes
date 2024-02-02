@@ -976,7 +976,12 @@ They both are ways to pack an Android application for distribution. APK is the \
 smaller. Using AABs along with Google Play App Signing allows you to use \'93feature modules\'94/\'93dynamic feature modules\'94/\'93Modules on Demand\'94\
 \
 	 Dynamic Delivery and Feature Modules/Dynamic Feature Modules/Modules on Demand\
-	\
+		Dynamic delivery means if you\'92re uploading a AAB enables Play Store to build/generate/install an optimized APKs with only the code and resources that the user\'92s \
+		specific device configurations needs to run the app, meaning the APK/app size is smaller.\
+\
+		Dynamic feature modules/modules on demand are a feature that allow you to specify modules that contain features and resources your app doesn\'92t require at install\
+		time and the user can download on demand at a later time. I don\'92t know the details to implement this feature yet. Dynamic feature modules can only exist inside an AAB.\
+		If you need to know more about this feature check the \'93On Demand Modules\'94 Android codelab\
 	\
 \
 }
