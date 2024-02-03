@@ -1044,7 +1044,12 @@ Talk form embedded open source summit\
 Is similar to others(OpenEmbedded, Buildroot), it only build the AOSP OS meaning it doesn\'92t build a kernel nor a bootloader and this means is developer\'92s or original equipment \
 Manufacturer\'92s responsibility to bundle together the AOSP build system and their own build system on top of that and which is going to build the kernel and the bootloader,  if trying to\
 deliver an alternative Android version using AOSP, which is said to be result in some truly weird stuff and is not entirely ideal but is how it is done. AOSP is a huge project, it \
-contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of Rust and Kotlin		\
+contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of Rust and Kotlin\
+\
+
+\f3\b 	How to build a AOSP target product
+\f0\b0 \
+		\
 	1.- Getting AOSP\
 	AOPS is a collection of git repositories(> 1100). To run AOSP you first need to get a manifest listing the git tress to clone, optionally specifying a version tag with -b using the\
 	following command: \'93repo init -u https://android.googlesource.com/platform/manifest -b <version tag>\'94. Then clone git trees, you will get them all in one go(150GB) as \
@@ -1058,6 +1063,11 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 		  and it would contain a field with the following info: \'93COMMON_LUNCH_CHOICES := aosp_cf_x86_84_phone-userdebug\'94\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx16661\pardirnatural\partightenfactor0
 \cf0 		- Start the build with the following command: \'93m\'94 (just a letter \'93m\'94), with powerful hardware it will take about one hour, normal hardware 4-6 hours\
+\
+	3.- Outputs\
+	The android packages/modules that get build are all bound together into this \'93.mk\'94(make) file variable called \'93PRODUCT_PACKAGES\'94 which lists all modules it builds. You can get\
+	all product packages that exists in your product with the following command \'93get_build_var PRODUCT_PACKAGES\'94(not easy to read since it is basically on long line with all that info)\
+	all files are stored in the \'93out/target/product/<device name>\'94 directory and here you will find a \'93system.img\'94 system image file, you use a fastboot to flash that image into a device\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \
