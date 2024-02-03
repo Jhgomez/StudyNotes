@@ -1045,9 +1045,11 @@ Is similar to others(OpenEmbedded, Buildroot), it only build the AOSP OS meaning
 Manufacturer\'92s responsibility to bundle together the AOSP build system and their own build system on top of that and which is going to build the kernel and the bootloader,  if trying to\
 deliver an alternative Android version using AOSP, which is said to be result in some truly weird stuff and is not entirely ideal but is how it is done. AOSP is a huge project, it \
 contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of Rust and Kotlin		\
-\
-\
-\
+	Getting AOSP\
+	AOPS is a collection of git repositories(> 1100). To run AOSP you first need to get a manifest listing the git tress to clone, optionally specifying a version tag with -b using the\
+	following command: \'93repo init -u <manifest url> -b <version tag>\'94. Then clone git trees one by one or get them all in one go(150GB) as opposite of downloading on demand,\
+	as in OpenEmbedded, using the following command \'93repo sync\'94, which essentially is a \'93git clone\'94 and this means you could get stuff you don\'92t need and that is why all the \
+	project is so large(150GB,s)\
 \
 \
 \
