@@ -1045,13 +1045,21 @@ Is similar to others(OpenEmbedded, Buildroot), it only build the AOSP OS meaning
 Manufacturer\'92s responsibility to bundle together the AOSP build system and their own build system on top of that and which is going to build the kernel and the bootloader,  if trying to\
 deliver an alternative Android version using AOSP, which is said to be result in some truly weird stuff and is not entirely ideal but is how it is done. AOSP is a huge project, it \
 contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of Rust and Kotlin		\
-	Getting AOSP\
+	1.- Getting AOSP\
 	AOPS is a collection of git repositories(> 1100). To run AOSP you first need to get a manifest listing the git tress to clone, optionally specifying a version tag with -b using the\
 	following command: \'93repo init -u https://android.googlesource.com/platform/manifest -b <version tag>\'94. Then clone git trees, you will get them all in one go(150GB) as \
 	opposite of downloading on demand, as in OpenEmbedded in which you have to download one by one, using the following command \'93repo sync\'94, which essentially is a \'93git clone\'94 \
 	you will get download all the repos but this means you could get stuff you don\'92t need and that is why all the project is so large(150GB,s)\
 \
-\
+	2.- Select and build a target product\
+		- Set up the shell environment with the following command \'93source build/envsetup.sh\'94, this will include a bunch of shell functions\
+		- Select the target using lunch(a shell function defined in envsetup.sh) \'93lunch aosp_cf_x86_84_phone-userdebug\'94\
+		- Each target is defined by an AndroidProduct.mk file, example: \'93aosp_cf_x86_84_phone-userdebug\'94 which comes from location: \'93device/google/cuttlefish/AndroidProduct.mk\'94\
+		  and it would contain a field with the following info: \'93COMMON_LUNCH_CHOICES := aosp_cf_x86_84_phone-userdebug\'94\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx16661\pardirnatural\partightenfactor0
+\cf0 		- Start the build with the following command: \'93m\'94 (just a letter \'93m\'94), with powerful hardware it will take about one hour, normal hardware 4-6 hours\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 \
 \
