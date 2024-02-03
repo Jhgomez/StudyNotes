@@ -982,6 +982,36 @@ smaller. Using AABs along with Google Play App Signing allows you to use \'93fea
 		Dynamic feature modules/modules on demand are a feature that allow you to specify modules that contain features and resources your app doesn\'92t require at install\
 		time and the user can download on demand at a later time. I don\'92t know the details to implement this feature yet. Dynamic feature modules can only exist inside an AAB.\
 		If you need to know more about this feature check the \'93On Demand Modules\'94 Android codelab\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+(Related to AOSP)\
+SE LInux (Security Enhanced Linux)[https://www.youtube.com/watch?v=uI9nk1VDCpY]\
+This is Linux Kernel module that provides a mechanism for supporting access control security policies. Rules express admin policies, there is two types of policies/rules a.- Mandatory\
+Access control(MAC) b.- Discretionary Access Control(DAC), all accesses have to go through these policies/rules to get access controls. The former type of policy should be the same on\
+all Android devices and is called system policy, this policies are private and mandatory meaning they can not be modified, can not be replaced nor disabled, however there is one \
+way to ignore all those policies and thing that would \\violate those policies and that is when working on a userdebug device and running the shel in a permissive domain by using \'93adb root\'94\
+be aware when this mode is used all fails of SE Linux calls/denials are suppressed and also SE comp is disable, SE comp filters which system calls an app can make, in this cases SE comp\
+will be in charge to log all these failures/denials. The later can be provided by the vendor and are called vendor policy\
+\
+This mechanism labels all processes(domains), files, sockets, apps, properties, services, objects. These labels are automatically assigned but can be overridden. Labels have the \
+following structure: <use>]:<role>:<type>:<categories> but in Android most of the time you only use the \'93type\'94 field to write a policy.\
+\
+Everything is forbidden unless explicitly allowed. The following is how you\'92d write an allow statement in the policy: allow <source Type> <target type>: <target class> <permission>\
+This means you allow a domain of \'93X\'94 source type to access an object of \'93Y\'94 target class labeled with \'93Z\'94 target type to use the specified permission(access vector)\
+\
+Rules verbs can be \'93allow\'94, \'93dontaudit\'94(deny permission and don\'92t audit/log it) and \'93neverallow\'94. All access denials are register as an AVC denial to the Audit log an event log. You can remove\
+rate limiting with \'93auditctl -r 0\'94 so you can see all denials.\
+\
 	\
+\
+\
+\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
 \
 }
