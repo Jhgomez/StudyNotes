@@ -1004,6 +1004,16 @@ This means you allow a domain of \'93X\'94 source type to access an object of \'
 Rules verbs can be \'93allow\'94, \'93dontaudit\'94(deny permission and don\'92t audit/log it) and \'93neverallow\'94. All access denials are register as an AVC denial to the Audit log an event log. You can remove\
 rate limiting with \'93auditctl -r 0\'94 so you can see all denials.\
 \
+	Uses\
+\
+	All processes should only have the access it needs.\
+\
+	This mechanisms makes user and app Isolation possible, each different app is a different different user to the OS and a user shouldn\'92t/won\'92t have access to other user\'92s \
+	info. \
+\
+	Categories defined in the labels help accomplish this security as the User Id and the App Id is encrypted in the category of a label and the label of the source type must\
+	have all the categories of the target type in its declaration or won\'92t have access\
+\
 	\
 \
 \
