@@ -1047,9 +1047,9 @@ deliver an alternative Android version using AOSP, which is said to be result in
 contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of Rust and Kotlin		\
 	Getting AOSP\
 	AOPS is a collection of git repositories(> 1100). To run AOSP you first need to get a manifest listing the git tress to clone, optionally specifying a version tag with -b using the\
-	following command: \'93repo init -u <manifest url> -b <version tag>\'94. Then clone git trees one by one or get them all in one go(150GB) as opposite of downloading on demand,\
-	as in OpenEmbedded, using the following command \'93repo sync\'94, which essentially is a \'93git clone\'94 and this means you could get stuff you don\'92t need and that is why all the \
-	project is so large(150GB,s)\
+	following command: \'93repo init -u https://android.googlesource.com/platform/manifest -b <version tag>\'94. Then clone git trees, you will get them all in one go(150GB) as \
+	opposite of downloading on demand, as in OpenEmbedded in which you have to download one by one, using the following command \'93repo sync\'94, which essentially is a \'93git clone\'94 \
+	you will get download all the repos but this means you could get stuff you don\'92t need and that is why all the project is so large(150GB,s)\
 \
 \
 \
