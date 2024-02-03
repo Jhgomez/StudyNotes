@@ -1050,31 +1050,42 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 \f3\b 	How to build a AOSP target product
 \f0\b0 \
 		\
-	1.- Getting AOSP\
-	AOPS is a collection of git repositories(> 1100). To run AOSP you first need to get a manifest listing the git tress to clone, optionally specifying a version tag with -b using the\
-	following command: \'93repo init -u https://android.googlesource.com/platform/manifest -b <version tag>\'94. Then clone git trees, you will get them all in one go(150GB) as \
-	opposite of downloading on demand, as in OpenEmbedded in which you have to download one by one, using the following command \'93repo sync\'94, which essentially is a \'93git clone\'94 \
-	you will get download all the repos but this means you could get stuff you don\'92t need and that is why all the project is so large(150GB,s)\
+		1.- Getting AOSP\
+		AOPS is a collection of git repositories(> 1100). To run AOSP you first need to get a manifest listing the git tress to clone, optionally specifying a version tag with -b using the\
+		following command: \'93repo init -u https://android.googlesource.com/platform/manifest -b <version tag>\'94. Then clone git trees, you will get them all in one go(150GB) as \
+		opposite of downloading on demand, as in OpenEmbedded in which you have to download one by one, using the following command \'93repo sync\'94, which essentially is a \'93git clone\'94 \
+		you will get download all the repos but this means you could get stuff you don\'92t need and that is why all the project is so large(150GB,s)\
 \
-	2.- Select and build a target product\
-		- Set up the shell environment with the following command \'93source build/envsetup.sh\'94, this will include a bunch of shell functions\
-		- Select the target using lunch(a shell function defined in envsetup.sh) \'93lunch aosp_cf_x86_84_phone-userdebug\'94\
-		- Each target is defined by an AndroidProduct.mk file, example: \'93aosp_cf_x86_84_phone-userdebug\'94 which comes from location: \'93device/google/cuttlefish/AndroidProduct.mk\'94\
-		  and it would contain a field with the following info: \'93COMMON_LUNCH_CHOICES := aosp_cf_x86_84_phone-userdebug\'94\
+		2.- Select and build a target product\
+			- Set up the shell environment with the following command \'93source build/envsetup.sh\'94, this will include a bunch of shell functions\
+			- Select the target using lunch(a shell function defined in envsetup.sh) \'93lunch aosp_cf_x86_84_phone-userdebug\'94\
+			- Each target is defined by an AndroidProduct.mk file, example: \'93aosp_cf_x86_84_phone-userdebug\'94 which comes from location: \'93device/google/cuttlefish/AndroidProduct.mk\'94\
+			  and it would contain a field with the following info: \'93COMMON_LUNCH_CHOICES := aosp_cf_x86_84_phone-userdebug\'94\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx16661\pardirnatural\partightenfactor0
-\cf0 		- Start the build with the following command: \'93m\'94 (just a letter \'93m\'94), with powerful hardware it will take about one hour, normal hardware 4-6 hours\
+\cf0 			- Start the build with the following command: \'93m\'94 (just a letter \'93m\'94), with powerful hardware it will take about one hour, normal hardware 4-6 hours\
 \
-	3.- Outputs\
-	The android packages/modules that get build are all bound together into this \'93.mk\'94(make) file variable called \'93PRODUCT_PACKAGES\'94 which lists all modules it builds. You can get\
-	all product packages that exists in your product with the following command \'93get_build_var PRODUCT_PACKAGES\'94(not easy to read since it is basically on long line with all that info)\
-	all files are stored in the \'93out/target/product/<device name>\'94 directory and here you will find a \'93system.img\'94 system image file, you use a fastboot to flash that image into a device\
+		3.- Outputs\
+		The android packages/modules that get build are all bound together into this \'93.mk\'94(make) file variable called \'93PRODUCT_PACKAGES\'94 which lists all modules it builds. You can get\
+		all product packages that exists in your product with the following command \'93get_build_var PRODUCT_PACKAGES\'94(not easy to read since it is basically on long line with all that info)\
+		all files are stored in the \'93out/target/product/<device name>\'94 directory and here you will find a \'93system.img\'94 system image file, you use a fastboot to flash that image into a device\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
+
+\f3\b 	How Android modules are organized?
+\f0\b0 \
+		\
+		
+\f3\b Recipes
+\f0\b0 \
+		Android modules are defined in recipes in one of two formats\
+			a.- Android.bp\
+				Written in blueprint which is a language specific to AOSP as a way of defining a module. This is equivalent to BB files in Yocto. Yocto is a Linux Foundation collaborative\
+				open source project whose goal is to produce tools and processes that enable the creation of Linux distributions for embedded and internet of things(IoT) software that\
+				are independent of the architecture of the embedded hardware, BB is the extension of the the recipe files in Yocto project\
+			b.- Android.mk\
+				Legacy format to store recipes, this type of files are deprecated but still hanging around\
 \
-\
-\
-\
-\
+		When you do the build it will iterate over all \'93bp\'94/\'93mk\'94 files it will build whatever it is you specified in the \'93PRODUCT_PACKAGES\'94 \
 \
 \
 \
