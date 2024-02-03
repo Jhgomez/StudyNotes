@@ -987,7 +987,11 @@ smaller. Using AABs along with Google Play App Signing allows you to use \'93fea
 \cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 (Related to AOSP)\
-SE LInux (Security Enhanced Linux)[https://www.youtube.com/watch?v=uI9nk1VDCpY]\
+\
+
+\f3\b SE LInux
+\f0\b0  (Security Enhanced Linux)[https://www.youtube.com/watch?v=uI9nk1VDCpY]\
+\
 This is Linux Kernel module that provides a mechanism for supporting access control security policies. Rules express admin policies, there is two types of policies/rules a.- Mandatory\
 Access control(MAC) b.- Discretionary Access Control(DAC), all accesses have to go through these policies/rules to get access controls. The former type of policy should be the same on\
 all Android devices and is called system policy, this policies are private and mandatory meaning they can not be modified, can not be replaced nor disabled, however there is one \
@@ -1014,6 +1018,22 @@ rate limiting with \'93auditctl -r 0\'94 so you can see all denials.\
 	Categories defined in the labels help accomplish this security as the User Id and the App Id is encrypted in the category of a label and the label of the source type must\
 	have all the categories of the target type in its declaration or won\'92t have access\
 \
+	System and Vendor \
+\
+	Project Treble\
+	Aim to allow updating the system(Android framework) without have to update the vendor code. System code and vendor code must only communicate via stable APIs and for that we\
+	use HAL wich contains all the interfaces that communicate to drivers and that we can use to communicate with the hardware, the system can\'92t talk to drivers directly. SE linux enforces\
+	use of HALs interfaces, limits access to these interfaces to only the processes that need it, limit access to drivers to interfaces inside HAL, and blocks other channels between the vendor\
+	and core/drivers\
+\
+	Policies\
+	Keep in mind that updating system usually means updating system policy as well. Vendor policies is allowed to reference some rules in the system policy and system policy is \
+	split in 3 directories:\
+	\
+		Public: Everything here can be accessed but vendor policy. Hard to change\
+		Private: Nothing here can be accessed by vendor policy. Careful changes are OK.\
+		Vendor: This is only intended for use by vendor policy(purpose is not very clear but it looks like it is policies intended to be accessed by vendor only)\
+		\
 	\
 \
 \
