@@ -1110,11 +1110,12 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 			* Bazel: Is intended to solve a problem with the software architecture by adding another layer \
 \
 
-\f3\b 	Build System
+\f3\b 	Build System\
+		Soong Modules
 \f0\b0 \
-	Check the following video on the title for an example of a \'93.bp\'94 file it will explain the structure. BP files are going to be passed to the cross compiler which is going to build it, it will bring \
-	some implicit dependencies such as libraries and other explicit defined in the \'93required\'94 block inside the BP file, all dependencies will be installed into the staging area before the \
-	module is built. There is different type of modules a recipe can contain like the following list\
+		Check the following video on the title for an example of a \'93.bp\'94 file it will explain the structure. BP files are going to be passed to the cross compiler which is going to build it, it\
+		will bring some implicit dependencies such as libraries and other explicit defined in the \'93required\'94 block inside the BP file, all dependencies will be installed into the staging area \
+		before the module is built. There is different type of modules a recipe can contain like the following list\
 		\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
@@ -1197,12 +1198,18 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 \pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
 \cf0 Prebuilt installed into bin\cell \lastrow\row
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 You can compile the documentation with \'93m soong_docs\'94 it will be generated and stored in \'93out/soong/docs/soong_build.html\'94 in here you will see all info about modules and attributes,\
-Remember build logic of soong modules is written in Go. In android 13 there is 300 types of modules approx. \
+\cf0 	\
+		You can compile the documentation with \'93m soong_docs\'94 it will be generated and stored in \'93out/soong/docs/soong_build.html\'94 in here you will see all info about modules and\
+		attributes, remember build logic of soong modules is written in Go. In android 13 there is 300 types of modules approx. \
 \
-\
-\
-\
+
+\f3\b 		Soon outputs
+\f0\b0 \
+		The manifest swhich can be called build rules will be stored in \'93out/soong/build.ninja\'94 directory. If you change a single recipe/Android.bp file the build.ninja file will have to be\
+		regenerated again. Soon does not know what the target is so it parses all Android.bp files, even if your target does not depend on that module/recipe, it also writes install\
+		rules to \'93out/soong/Android-[product name].mk\'94 in Android.mk format which is processed by kati later, also writes dependencies to \'93out/soong/late-[product name].mk\'94\
+		\
+		\
 \
 \
 \
