@@ -1234,10 +1234,60 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 		by humans\
 \
 		Bazel\
-		Its intended to replace all other tools, Soong, Kati and Ninja and should start in Android 14\
+		It\'92s intended to replace all other tools, Soong, Kati and Ninja and should start in Android 14. Bazel works using the following components:\
+	\
+			*WORKSPACE: Defines the top level of a project. For AOSP we have <AOSP directory URL>/WORKSPACE -> build/bazel/bazel.WORKSPACE. Contains global configuration\
+			*BUILD: Each module is defined in a BUILD file(similar to Android.bp or Android.mk), similar to recipes\
+			*Bazel Rules(.bzl): Build logic lives here\
+			*Starlark: BUILD and .bzl files are written in a which is a Phyton-like called Starlark.(Properly known as the \'93Build Language\'94)\
+\
+		Notes: In Android 13 the official way of building the Kernel is with \'93build.sh\'94 script but you an also do that with bazel(investigate more). The \'93build.sh\'94 script will disappear in \
+		Android 14 and Bazel will be the only way of building the Kernel.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\f3\b Coroutines
+\f0\b0 \
+	\
+	
+\f3\b Coroutine Job(Mostly known as Job) and Supervisor Job
+\f0\b0 \
+\
+		
+\f3\b Job
+\f0\b0 \
+		Represents a cancellable piece of work being performed by a coroutine, every coroutine builder(Launch and Async) will return these type of object. You can use a Job to\
+		cancel a coroutine, await its completion(join) or even combine it with another Jobs.\
 \
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 	\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
 \
 }
