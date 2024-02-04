@@ -1220,8 +1220,11 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 \f0\b0 \
 		An Android.mk file cannot have a dependency on a module defined in an Android.bp, however it is possible the other way around.\
 \
-\
-\
+
+\f3\b 		Ninja Outputs
+\f0\b0 \
+		Ninja generates a ninja manifest named \'93out/build-[device name].ninja\'94 which contains the build rules to generate the Android modules listed in the \'93.mk\'94 files\
+		example: \'93out/build-aosp_cf_x86_64_phone.ninja\'94, it also generates a manifest with dependencies or packaging in \'93out/build-aosp_cf_x86_64_pohne-package.ninja\'94\
 \
 	\
 \
