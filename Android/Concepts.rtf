@@ -1097,13 +1097,19 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 		\
 		There are three main tools:\
 			\
-			* Soong: Parses Android.bp files and generates ninja manifests(and some makefile fragments and then passes it to kati), this tool was intended to replace \
+			* 
+\f3\b Soong
+\f0\b0 : Parses Android.bp files and generates ninja manifests(and some makefile fragments and then passes it to kati), this tool was intended to replace \
 			   Kati and Makefiles but it has not fully replaced them and its has progressed slowly that is why the makefiles where mentioned. The blueprint language is JSON-like, and\
 			   also similar to Basel BUILD files, it is declarative(no build logic) and that means all you get inside these files only contains a bunch of name value assignments. The build \
 			   logic is implemented in Song modules written in go. The generated code/manifests will be stored in the <AOSP directory URL in your machine>/buid/soong and the\
 			   soong documentation is stored in <AOSP directory URL in your machine>/build/soong/README.md\
-			* Kati: Parses Android.mk and all the other makefile fragments and generates more ninja manifests\
-			* Ninja: Parses the ninja manifests, generates the dependency tree for the target to built and schedules jobs\
+			* 
+\f3\b Kati
+\f0\b0 : Parses Android.mk and all the other makefile fragments and generates more ninja manifests\
+			* 
+\f3\b Ninja
+\f0\b0 : Parses the ninja manifests, generates the dependency tree for the target to built and schedules jobs\
 			\
 		New tool:\
 		\
@@ -1205,13 +1211,14 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 
 \f3\b 		Soon outputs
 \f0\b0 \
-		The manifest swhich can be called build rules will be stored in \'93out/soong/build.ninja\'94 directory. If you change a single recipe/Android.bp file the build.ninja file will have to be\
+		The manifests which can be called build rules will be stored in \'93out/soong/build.ninja\'94 directory. If you change a single recipe/Android.bp file the build.ninja file will have to be\
 		regenerated again. Soon does not know what the target is so it parses all Android.bp files, even if your target does not depend on that module/recipe, it also writes install\
 		rules to \'93out/soong/Android-[product name].mk\'94 in Android.mk format which is processed by kati later, also writes dependencies to \'93out/soong/late-[product name].mk\'94\
 		\
-		\
-\
-\
+
+\f3\b 		Kati Modules
+\f0\b0 \
+		An Android.mk file cannot have a dependency on a module defined in an Android.bp, however it is possible the other way around.\
 \
 \
 \
