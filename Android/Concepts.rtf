@@ -3,9 +3,11 @@
 \f3\fswiss\fcharset0 Helvetica-Bold;\f4\fnil\fcharset0 HelveticaNeue-Medium;\f5\froman\fcharset0 Times-Roman;
 }
 {\colortbl;\red255\green255\blue255;\red11\green12\blue12;\red255\green255\blue255;\red88\green118\blue71;
-\red32\green32\blue32;\red5\green36\blue44;\red23\green56\blue124;\red0\green0\blue0;}
+\red32\green32\blue32;\red5\green36\blue44;\red23\green56\blue124;\red0\green0\blue0;\red191\green191\blue191;
+}
 {\*\expandedcolortbl;;\cssrgb\c4706\c5098\c5490;\cssrgb\c100000\c100000\c100000;\csgenericrgb\c34510\c46275\c27843;
-\csgenericrgb\c12549\c12549\c12549;\cssrgb\c784\c18824\c22745;\cssrgb\c11373\c29412\c56078;\cssrgb\c0\c0\c0\c80000;}
+\csgenericrgb\c12549\c12549\c12549;\cssrgb\c784\c18824\c22745;\cssrgb\c11373\c29412\c56078;\cssrgb\c0\c0\c0\c80000;\csgray\c79525;
+}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid1\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
 {\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
 \margl1440\margr1440\vieww30040\viewh17760\viewkind0
@@ -1035,7 +1037,7 @@ rate limiting with \'93auditctl -r 0\'94 so you can see all denials.\
 		Vendor: This is only intended for use by vendor policy(purpose is not very clear but it looks like it is policies intended to be accessed by vendor only)\
 \
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-Talk form embedded open source summit\
+Talk form embedded open source summit [https://www.youtube.com/watch?v=hQZz2PRNdxI&t=1367s]\
 \
 
 \f3\b The AOSP Build System
@@ -1096,16 +1098,107 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 		There are three main tools:\
 			\
 			* Soong: Parses Android.bp files and generates ninja manifests(and some makefile fragments and then passes it to kati), this tool was intended to replace \
-			   Kati and Makefiles but it has not fully\
-			  replaced them and its has progressed slowly that is why the makefiles where mentioned\
+			   Kati and Makefiles but it has not fully replaced them and its has progressed slowly that is why the makefiles where mentioned. The blueprint language is JSON-like, and\
+			   also similar to Basel BUILD files, it is declarative(no build logic) and that means all you get inside these files only contains a bunch of name value assignments. The build \
+			   logic is implemented in Song modules written in go. The generated code/manifests will be stored in the <AOSP directory URL in your machine>/buid/soong and the\
+			   soong documentation is stored in <AOSP directory URL in your machine>/build/soong/README.md\
 			* Kati: Parses Android.mk and all the other makefile fragments and generates more ninja manifests\
 			* Ninja: Parses the ninja manifests, generates the dependency tree for the target to built and schedules jobs\
 			\
 		New tool:\
 		\
-			* Bazel: Is intended to solve a problem with the software architecture by adding another layer\
+			* Bazel: Is intended to solve a problem with the software architecture by adding another layer \
 \
-\
+
+\f3\b 	Build System
+\f0\b0 \
+	Check the following video on the title for an example of a \'93.bp\'94 file it will explain the structure. BP files are going to be passed to the cross compiler which is going to build it, it will bring \
+	some implicit dependencies such as libraries and other explicit defined in the \'93required\'94 block inside the BP file, all dependencies will be installed into the staging area before the \
+	module is built. There is different type of modules a recipe can contain like the following list\
+		\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clheight20 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clheight20 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 cc_binary\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Native binary\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 cc_library_shared\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Shared library\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 cc_library_static\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Static library\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 cc_binary_host\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Host binary\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 cc_library_host_shared\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Host shared library\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 cc_library_host_static\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Host static library\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 java_library(since android 10)\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Java Library\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 android_app(since 10)\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Android app\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 prebuilt_etc(since 10)\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Prebuilt installed into etc\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth2880\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth2920\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 cc_prebuilt_binary\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc\partightenfactor0
+\cf0 Prebuilt installed into bin\cell \lastrow\row
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 You can compile the documentation with \'93m soong_docs\'94 it will be generated and stored in \'93out/soong/docs/soong_build.html\'94 in here you will see all info about modules and attributes,\
+Remember build logic of soong modules is written in Go. In android 13 there is 300 types of modules approx. \
 \
 \
 \
