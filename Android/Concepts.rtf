@@ -1090,17 +1090,20 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 	So now that we now how do you pull AOSP and how you build it we can see the details of the build tools which this section is all about\
 \
 
-\f3\b 	The Build Tools
+\f3\b 	The Build Tools/Components
 \f0\b0 \
 		\
 		There are three main tools:\
 			\
-			* Soong: Parses Android.bp files and generates ninja manifests(and some makefile fragments), this tool was intended to replace Kati and Makefiles but it has not fully\
+			* Soong: Parses Android.bp files and generates ninja manifests(and some makefile fragments and then passes it to kati), this tool was intended to replace \
+			   Kati and Makefiles but it has not fully\
 			  replaced them and its has progressed slowly that is why the makefiles where mentioned\
 			* Kati: Parses Android.mk and all the other makefile fragments and generates more ninja manifests\
 			* Ninja: Parses the ninja manifests, generates the dependency tree for the target to built and schedules jobs\
 			\
-	\
+		New tool:\
+		\
+			* Bazel: Is intended to solve a problem with the software architecture by adding another layer\
 \
 \
 \
