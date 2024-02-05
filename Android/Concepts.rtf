@@ -580,7 +580,8 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 		You can change the memory limit if builds are too slow add jvmargs \'93-Xmx6g\'94 if you change the default limit you also have to add \'93-XX:MaxMetaspaceSize=1g\'94\
 \
 		You can try speeding up rebuilds by caching configuration phase results with \'93org.gradle.configuration-cache=true\'94 and in case a plugin is not capable of using this feature print warnings\
-		\'93org.gradle.configuration-cache.problems=warn\'94\
+		\'93org.gradle.configuration-cache.problems=warn\'94. Activating the configuration-cache flag will let the build retrieve cache values of files like buildscripts, gradle properties and environment\
+		variables, which will speed up the build time.\
 \
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	Profile Your Build(Generate Build Time Report)\
@@ -695,6 +696,7 @@ Applying external plugins with same version to subprojects}}\'94)\
 		1.- \'93Multiple APK support\'94/\'93How multiple APKs work\'94 \
 		2.- \'93Build multiple APKs\'94/ \'93Configure your build for multiple APKs\'94\
 \
+	\
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	Sharing Dependency versions between projects\
 	We have two options to manage this, first version catalog, second using a platform\
@@ -1247,12 +1249,24 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 
-\f3\b Coroutines
-\f0\b0 \
+\f3\b Coroutines\
+\
+	Scope\
+
+\f0\b0 	You can only create coroutines inside a scope and that is know as structured concurrency\
+\
+		
+\f3\b Context\
+		
+\f0\b0 The scope context defines \
 	\
 	
-\f3\b Coroutine Job(Mostly known as Job) and Supervisor Job
-\f0\b0 \
+\f3\b Coroutine Job(Mostly known as Job) and Supervisor Job\
+	
+\f0\b0 , coroutines can create other coroutines. A scope defines the context where the child coroutines are going \
+	to be created, however you can assign each coroutine its own context.\
+		\
+		Context\
 \
 		
 \f3\b Job
@@ -1260,8 +1274,10 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 		Represents a cancellable piece of work being performed by a coroutine, every coroutine builder(Launch and Async) will return these type of object. You can use a Job to\
 		cancel a coroutine, await its completion(join) or even combine it with another Jobs.\
 \
-\
-\
+		
+\f3\b Supervisor Job
+\f0\b0 \
+		This is a special kind of Job that is designed to supervise child coroutines \
 \
 \
 \
