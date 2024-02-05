@@ -583,6 +583,8 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 		\'93org.gradle.configuration-cache.problems=warn\'94. Activating the configuration-cache flag will let the build retrieve cache values of files like buildscripts, gradle properties and environment\
 		variables, which will speed up the build time, this type of caching will help Gradle speed up the configuration phase. There is another type of cache which can speed up the execution		phase and is done by retrieving the cache tasks outputs if the taks inputs has not changed\
 \
+		Any project using KAPT can leverage the optimization described in the following link https://kotlinlang.org/docs/kapt.html#compile-avoidance-for-kapt\
+\
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	Profile Your Build(Generate Build Time Report)\
 		You can profile your build, first run your app so all downloadable dependencies are cached, second perform a clean build to avoid skipping tasks which input have not change this way we will		be able to catch/profile the whole build, run the following command \'93./gradlew - -profile - -offline - -rerun-tasks assembleFlavorDebug\'94. Breaking it down \'93profile\'94 enables profiling. \'93offline\'94 disables		gradle from fetching online dependencies, as mentioned above you should have built app at least once to have your dependencies cached already. \'93rerun tasks\'94 forces Gradle to rerun all tasks		and ignore any task optimization. You can check the report in the project-root/build/reports/profile/ directory it is an \'93html\'94 file you can open in the browser\
