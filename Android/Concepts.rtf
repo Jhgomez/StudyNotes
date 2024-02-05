@@ -581,7 +581,7 @@ either way the idea is to use an equal or higher version of the JDK used on a gi
 \
 		You can try speeding up rebuilds by caching configuration phase results with \'93org.gradle.configuration-cache=true\'94 and in case a plugin is not capable of using this feature print warnings\
 		\'93org.gradle.configuration-cache.problems=warn\'94. Activating the configuration-cache flag will let the build retrieve cache values of files like buildscripts, gradle properties and environment\
-		variables, which will speed up the build time.\
+		variables, which will speed up the build time, this type of caching will help Gradle speed up the configuration phase. There is another type of cache which can speed up the execution		phase and is done by retrieving the cache tasks outputs if the taks inputs has not changed\
 \
 	\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 	Profile Your Build(Generate Build Time Report)\
