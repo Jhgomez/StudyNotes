@@ -718,13 +718,13 @@ In this documentation you can find the role of each package like the res/, src/,
 \fs36 D8/R8
 \fs28 \
 D8 is Dexer tool that converts java byte code to DEX code. R8 is a java program shrinking and minification tool that converts java byte code to optimized DEX code. DEX is a type of executable file used by the Dalvik virtual machine in android devices. They contain Dalvik byte code which can be executed by Android\'92s runtime environment and is optimized for mobile devices.\
+	\
+	R8 compiler consumes class files and can output either DEX for Android apps or class files for java apps(consider this feature when trying to optimize a Java/JavaFx app)\
 \
-\pard\tx5439\pardeftab720\partightenfactor0
 
-\fs36 \cf2 Desugaring
+\fs36 Desugaring
 \fs28 \
-\pard\pardeftab720\partightenfactor0
-\cf2 Android and gradle 4 or higher now supports java8 code without  requiring a minimum API level for your app. Its possible through desugaring which are transformations of byte code as part of the D8/R8 compilation of class files into DEX code, this is how the default toolchain implements new language features.
+Android and gradle 4 or higher now supports java8 code without  requiring a minimum API level for your app. Its possible through desugaring which are transformations of byte code as part of the D8/R8 compilation of class files into DEX code, this is how the default toolchain implements new language features.
 \f5 \cf5 \cb1 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf5 \
