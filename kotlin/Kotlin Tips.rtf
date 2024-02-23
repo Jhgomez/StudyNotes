@@ -102,24 +102,20 @@ is usually called declaration-site variance) using \'93type projections\'94, typ
 	Covariant(variant) - In Java it is defined like the following \'94<? extends AnyClass>\'94 and is called upper bound wildcard, you can only read from it and it will read the type of object that you define. You will get a\
 	compiler error if you try to write to an object with this wildcard since compiler can not know what type of object you are actually reassigning/adding. In Kotlin this is possible with the \'93out\'94 keyword \'93<out AnyClass>\'94\
 	and again, you can only read from it just like in java, it has the same behavior\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 	Contravariant(variant) - In java it is defined as follows \'93<? Super AnyClass>\'94 and is called lower bound wildcard, you can write to it 
 \f3\b only
 \f0\b0  the type of objects defined in the angle brackets  and you can also\
 	read from it but you will be reading \'93Object\'94s. In Kotlin you write it with \'93<in AnyClass>\'94 and you can do the same as in Java but if you read from it will get an object of type \'93Any?\'94\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 	Declaration-site Variance\
 	Is a Kotlin feature that lets you inform the compiler wether your type parameter is Covariant/producer or Contravariant/consumer, basically it is the equivalent to wildcards in Java as explained above\
 	with the difference that you can \'93enforce\'94 a type parameter of a class or method to only be covariant or contravariant by specifying the variance annotation in the declaration of the class or method, the only difference\
 	with this approach in contrast to Java\'92s approach is that the compiler wouldn\'92t let a class consume values of a type parameter if that type parameter is declared as producer(covariant)\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 	Use-site Variance\
 	Basically this is the same place and behavior as Java wildcards\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 Refied\
 This has to be used in conjunction with \'93inline\'94. Inline copies the code of the function without creating a function type object to every calling site and only inline functions can have \'93reified\'94 type parameters declared. This\
 will hold the parameter type and is most likely useful if we need to check the type of object or do some introspection of the class of the type\

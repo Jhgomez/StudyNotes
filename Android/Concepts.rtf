@@ -69,16 +69,6 @@ Is a developer tool which detects things you might be doing by accident and brin
 \
 Input method editor(IME)\
 Is a user control that lets user enter text, like the keyboard on the screen\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Phases in Compose vs Phases in View System\
-\
-	View System\
-	Measure, Layout and drawing\
-\
-	Compose\
-	Composition, it creates a tree of composables. Layout, it measures and defines where they are going to be placed(measure, placement). Drawing\
 		\
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
@@ -905,7 +895,19 @@ Jetpack Compose Architecture\
 		Compose Runtime - Manages all the system  \
  \
 Android uses \'93Skia Graphics\'94 engine for rendering things, it\'92s written in c++ call\
-		\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Phases in Compose vs Phases in View System\
+\
+	View System\
+	Measure, Layout and drawing\
+\
+	Compose\
+	Composition, it creates a tree of composables. Layout, it measures and defines where they are going to be placed(measure, placement). Drawing\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 		\
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 Kotlin Multiplatform\
@@ -989,13 +991,13 @@ smaller. Using AABs along with Google Play App Signing allows you to use \'93fea
 		time and the user can download on demand at a later time. I don\'92t know the details to implement this feature yet. Dynamic feature modules can only exist inside an AAB.\
 		If you need to know more about this feature check the \'93On Demand Modules\'94 Android codelab\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 (Related to AOSP)\
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f3\b SE LInux
+\f3\b \cf0 SE LInux
 \f0\b0  (Security Enhanced Linux)[https://www.youtube.com/watch?v=uI9nk1VDCpY]\
 \
 This is Linux Kernel module that provides a mechanism for supporting access control security policies. Rules express admin policies, there is two types of policies/rules a.- Mandatory\
@@ -1076,8 +1078,9 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 		all files are stored in the \'93out/target/product/<device name>\'94 directory and here you will find a \'93system.img\'94 system image file, you use a fastboot to flash that image into a device\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f3\b 	How Android modules are organized?
+\f3\b \cf0 	How Android modules are organized?
 \f0\b0 \
 		\
 		
@@ -1212,8 +1215,9 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 		You can compile the documentation with \'93m soong_docs\'94 it will be generated and stored in \'93out/soong/docs/soong_build.html\'94 in here you will see all info about modules and\
 		attributes, remember build logic of soong modules is written in Go. In android 13 there is 300 types of modules approx. \
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f3\b 		Soon outputs
+\f3\b \cf0 		Soon outputs
 \f0\b0 \
 		The manifests which can be called build rules will be stored in \'93out/soong/build.ninja\'94 directory. If you change a single recipe/Android.bp file the build.ninja file will have to be\
 		regenerated again. Soon does not know what the target is so it parses all Android.bp files, even if your target does not depend on that module/recipe, it also writes install\
@@ -1254,8 +1258,9 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 \f3\b Coroutines\
 \
 	Scope\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f0\b0 	You can only create coroutines inside a scope and that is know as structured concurrency\
+\f0\b0 \cf0 	You can only create coroutines inside a scope and that is know as structured concurrency\
 \
 		
 \f3\b Context\
