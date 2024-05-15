@@ -132,6 +132,9 @@ Should be used to call methods on a nullable variable but we\'92re completely su
 Elvis Operator(?:)\
 We use this operator to assign a default value, throw an exception or use the \'93return\'94 keyword when a nullable value calls a function, the purpose of doing so is to avoid null pointer exceptions crashes\
 \
+ReadWriteProperty<T, V> / Property Delegator\
+This interface lets you create a class that then can be used to delegate the \'93setter\'94 and \'93getter\'94 methods of a property to the implementation declared in this class. You have to create the class, implement this interface and override the getValue and setValue methods and then just delegate to a any property in a class which has access to the class that implements this interface using the \'93by\'94 keyword before instantiating the object\
+\
 \
 \
 \
