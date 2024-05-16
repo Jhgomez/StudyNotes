@@ -1284,19 +1284,21 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 \f0\b0 \
 		This is a special kind of Job that is designed to supervise child coroutines \
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
 \pard\pardeftab720\partightenfactor0
 \cf0 Jetpack Glance\
 \
 	Is a framework built on top of the Jetpack Compose runtime that lets you develop and design app widgets using Kotlin APIs. App widgets miniature application views the can be embedded in other applications and receive periodic updates\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Compose Good Practices\
+\
+	1. Make two versions of a composable. First version is a stateful version and second is a stateless version. First version basically is a wrapper of the second, the first wraps the second and it provides the state to it. Basically/usucally you\'92d use the stateful version in production code receiving business logic state or just hoisting state locally to render it correctly and the second version, stateless version, would be used to create a preview\
 \pard\pardeftab720\partightenfactor0
 \cf0 \
-\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \
