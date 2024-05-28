@@ -1297,12 +1297,24 @@ contains at least >50 MLOC which are C++(mostly), Java(big chunk) and a bit of R
 Compose Good Practices\
 \
 	1. Make two versions of a composable. First version is a stateful version and second is a stateless version. First version basically is a wrapper of the second, the first wraps the second and it provides the state to it. Basically/usucally you\'92d use the stateful version in production code receiving business logic state or just hoisting state locally to render it correctly and the second version, stateless version, would be used to create a preview\
-\pard\pardeftab720\partightenfactor0
-\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Graphics\
+All of the following are GPU renderers\
+\
+	Skia\
+	Graphics engine, is an open source 2D graphics library written in C++. Flutter used to use this as its GPU renderer but it moved away to use its own solution. It used to be Android\'92s only solution for rendering graphics but it is not clear to me whether it is still using it or not, it looks like they actually combining the usage of OpenGl and skia\
+	\
+	OpenGl(default)\
+\
+\
+	OpenGl(Skia)\
+\
+	Vulkan(Skia)\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
-\
-\
 \
 \
 \
