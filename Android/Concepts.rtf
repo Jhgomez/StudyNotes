@@ -1298,8 +1298,7 @@ Compose Good Practices\
 \
 	1. Make two versions of a composable. First version is a stateful version and second is a stateless version. First version basically is a wrapper of the second, the first wraps the second and it provides the state to it. Basically/usucally you\'92d use the stateful version in production code receiving business logic state or just hoisting state locally to render it correctly and the second version, stateless version, would be used to create a preview\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 Graphics\
 All of the following are GPU renderers\
@@ -1321,10 +1320,15 @@ All of the following are GPU renderers\
 Android ROM\
 \
 Stands for Read Only Memory but it refers to the system that an Android phone has installed from factory setup. This can be \'93replaced\'94 by a custom implementation of Android OS(Android is based on Linux), remember Android is open source so you can download the software and modify it as you need, it also can be created from scratch according to some information\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+AppCompatActivity vs ComponentActivity\
+\
+You can check the details later but basically ComponentActivity is all you need to extend from your MainActivity when using compose in your app and if you\'92re using fragments with views(xml) you would rather extend AppCompatActivity as it extends from FragmentActivity and ComponentActivity\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
-\
-\
 \
 \
 \
