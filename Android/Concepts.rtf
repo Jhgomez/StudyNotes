@@ -1419,7 +1419,9 @@ App Architecture\
 \
 From \'93guide to App Architecture\'94 we can find a document about \'93Architecture Recommendations\'94  in which we can find information about best practices when working with \'93Lifecycle\'94\
 \
-LifeCycle\
+	LifeCycle\
+	\
+	Do not override lifecycle methods in activities or Fragments use LifecycleObserver instead, if the app needs to perform work when the lifecycle reaches a certain a Lifecycle.State use the repeatOnLifecycle API\
 \
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
