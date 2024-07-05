@@ -1437,7 +1437,11 @@ App Architecture\
 				Network data source errors is more \'93complex\'94 and you have basically two options 1. Exponential Backoff or 2. Network Connectivity Monitoring, both uses WorkManager, the former tries to fetch data in intervals and increasing time on every attempt until it succeeds and you need to define a criteria to evaluate if the app should keep backing off like 1. The kind of error, meaning only retrying when error indicate lack of connectivity but not unauthorized HTTP calls because proper credential are not available 2. Maximum allowable retries. The later, Network Connectivity Monitoring, all request are queued until the system is sure the app can connect to the network data source and they are dequeued when the connection is established  \
 \
 			Writes\
-				\
+			The recommended way to write data in offline-first app is using asynchronous APIs such as suspend functions. This avoids block the UI thread\
+	\
+				Write Strategies\
+					Online-only writes\
+					If successful you should update local data source but if it fails we throw an exception and let caller respond appropriately\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 	-UI Layer\
