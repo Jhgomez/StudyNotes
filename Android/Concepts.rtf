@@ -1428,7 +1428,7 @@ App Architecture\
 			    repository/(you should expose the interface only, if a domain layer exists the interface should live there and the implementation lives in the data layer)\
 		\
 			Error Handling Strategies\
-			It depends on the data source. Local data source errors should be rare so you can just protect callers(those are other layers consuming the repository implementation) for example if you\'92re getting the info using a flow you can use the \'93catch\'94 function\
+			It depends on the data source. Local data source errors should be rare so you can just protect callers(those are other layers consuming the repository implementation) for example if you\'92re getting the info using a flow you can use the \'93catch\'94 function. Network data source errors is more \'93complex\'94 and you have basically two options 1. Exponential Backoff or 2. Network Connectivity Monitoring, both uses WorkManager, the former tries to fetch data in intervals and increasing time on every attempt until it succeeds and you need to define a criteria to evaluate if the app should keep backing off like 1. The kind of error, meaning only retrying when error indicate lack of connectivity but not unauthorized HTTP calls because proper credential are not available 2. Maximum allowable retries \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 	-UI Layer\
