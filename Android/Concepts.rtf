@@ -1426,6 +1426,9 @@ App Architecture\
 			        models/(DTOs)\
 			    model/(exposed to other layers, they should live in the domain layer if it exists)\
 			    repository/(you should expose the interface only, if a domain layer exists the interface should live there and the implementation lives in the data layer)\
+		\
+			Error Handling Strategies\
+			It depends on the data source. Local data source errors should be rare so you can just protect callers(those are other layers consuming the repository implementation) for example if you\'92re getting the info using a flow you can use the \'93catch\'94 function\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 	-UI Layer\
