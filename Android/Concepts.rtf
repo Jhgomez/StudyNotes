@@ -1444,9 +1444,18 @@ App Architecture\
 					If successful you should update local data source but if it fails we throw an exception and let caller respond appropriately\
 					\
 					Queued writes\
-					Insert into a queue writes requests and drain the queue with exponential backoff when app gets back online.\
+					Insert into a queue writes requests then drain the queue with exponential backoff when app gets back online this is accomplished by creating persistent work usually delegated to WorkManager\
+\
+					Lazy writes\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\cf0 					The local data store is updated first and then the write request are queued. This can create conflict between local data source and network data source\
+\
+			Synchronization and Conflict resolution\
+			When an offline-first app restores connectivity it needs to reconcile the data in its local data source with that in the network data source. This process is called synchronization. There two main ways to do this, 1. Pull-based synch and 2. Push-based synch but there is some other\
+				Pull-based Synch\
+				The app reaches out the network data source to read the latest application data on demand. It is usually navigation-based, meaning it will only fetch the data it needs right before its presented to the user when it navigates to a screen\
+	\
+	\
 	-UI Layer\
 	From this layer a very interesting note is about pagination\
 	\
