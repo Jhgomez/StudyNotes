@@ -1453,8 +1453,10 @@ App Architecture\
 			Synchronization and Conflict resolution\
 			When an offline-first app restores connectivity it needs to reconcile the data in its local data source with that in the network data source. This process is called synchronization. There two main ways to do this, 1. Pull-based synch and 2. Push-based synch but there is some other\
 				Pull-based Synch\
-				The app reaches out the network data source to read the latest application data on demand. It is usually navigation-based, meaning it will only fetch the data it needs right before its presented to the user when it navigates to a screen\
-	\
+				The app reaches out the network data source to read the latest application data on demand. It is usually navigation-based, meaning it will only fetch the data it needs right before it\'92s presented to the user when it navigates to a screen. A downside of this approach is that if prone to heavy data use, this is because repeated visits to a navigation destination triggers unnecessary refetching of unchanged info. This can be mitigated through proper caching, in the UI layer with \'93cachedIn\'94(paging library) operator on in the network layer(data layer) with an HTTP cache\
+\
+				Push-based Synch\
+				\
 	\
 	-UI Layer\
 	From this layer a very interesting note is about pagination\
