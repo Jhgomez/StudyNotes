@@ -1459,8 +1459,16 @@ App Architecture\
 				Push-based Synch\
 				The local data source tries to mimic a replica set of the network data source to the best of its ability. It proactively fetches an appropriate amount of data on first-start to set a baseline, after which it relies on notifications from the server to alert it when that data is stale(no longer fresh) and then the app reacts to the notifications by fetching the data. With this approach we can have both read and writes when offline because it is assumed that the app has the latest info from the network data source locally. Check advantages and disadvantages in the documentation.\
 \
-				\
-				\
+				Hybrid Synch\
+				Uses both\
+\
+			Conflict Resolution\
+			If an app writes data locally when offline(lazy writes) that is misaligned with the network data source, a conflict has occurred that you must resolve before synch can take place.\
+			\
+			Conflict resolution often requires versioning. The app will need to do some bookkeeping to keep track of when changes occurred. This enables it to pass the metadata to the network data source. The network data source then has the responsibility of providing the absolute source of truth. There are a wide range of strategies to consider for conflict resolution depending on the app needs. A common approach in mobile apps is \'93last write wins\'94\
+\
+				Last write wins\
+				Devices attach timestamp metadata to the data they write to the network. When the network data source receives them, It discards any data older than its current state while accepting those newer than its current state\
 	\
 	-UI Layer\
 	From this layer a very interesting note is about pagination\
