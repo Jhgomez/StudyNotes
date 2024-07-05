@@ -1470,6 +1470,16 @@ App Architecture\
 				Last write wins\
 				Devices attach timestamp metadata to the data they write to the network. When the network data source receives them, It discards any data older than its current state while accepting those newer than its current state\
 	\
+			Work Manager in offline-first apps\
+			in both read and writes strategies covered above, there were two common utilities:\
+\
+				Queues\
+					Reads: Used to defer/postpone reads until network connectivity is available\
+					Writes: Used to defer/postpone writes until network connectivity is available and to requeue writes for retries\
+				\
+				Network connectivity monitors\
+				\
+	\
 	-UI Layer\
 	From this layer a very interesting note is about pagination\
 	\
