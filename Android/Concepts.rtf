@@ -10,7 +10,7 @@
 \cssrgb\c0\c0\c0;}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid1\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
 {\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
-\margl1440\margr1440\vieww11520\viewh6480\viewkind0
+\margl1440\margr1440\vieww30040\viewh17200\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 \
@@ -1398,20 +1398,8 @@ Type \'93Android DP\'94 and find \'93support different pixel densities\'94 in th
 \
 	Pixel to DP\
 	in the same documentation you will find a method called \'93deriveDimension(int, float, android.util.DisplayMetrics)\'94 to help us with this\
-\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Paging/Pagination\
-\
-\pard\pardeftab720\partightenfactor0
-
-\f5 \cf0 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec10 https://developer.android.com/topic/architecture/ui-layer?authuser=1#paging
-\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
-Paging is consumed in the UI with type called PagingData. PagingData is a mutable object so it should not be represented/included in an immutable UI state. Instead, you should expose it from the ViewModel independently in its own stream\
 \
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
@@ -1422,20 +1410,20 @@ From \'93guide to App Architecture\'94 we can find a document about \'93Architec
 	LifeCycle\
 	
 \f5 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec10 https://developer.android.com/topic/architecture/recommendations#lifecycle
-\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 \
+https://developer.android.com/topic/architecture/recommendations#lifecycle
+\f0 \kerning1\expnd0\expndtw0 \
 	\
 	Do not override lifecycle methods in activities or Fragments use LifecycleObserver instead, if the app needs to perform work when the lifecycle reaches a certain a Lifecycle.State use the repeatOnLifecycle API\
 \
 	The reason to do this is explained in this other file https://developer.android.com/topic/libraries/architecture/lifecycle\
-\
+	\
+	In this documentation you can find also best practices and concepts about the three layers in clean architecture, data layer, domain layer(optional), UI layer\
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 HttpUrlConnection\
 \
 Is an alternative to using Retrofit or OkHttp\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 \
 \
 \
