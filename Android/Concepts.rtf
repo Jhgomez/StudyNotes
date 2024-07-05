@@ -1409,6 +1409,10 @@ App Architecture\
 	In this layer contains most of the business logic. If we wanted to create an offline-first app we would start in the data layer\
 		\
 		Offline-First App\
+		Read and Write are the two main operations we perform on app data. At minimum an online-first app should be able to perform reads without network access\
+		\
+		There should be a local data source, this one is the canonical source of truth, and a network data source, this one is the actual state of the application. \
+		\
 		\
 		\
 \
