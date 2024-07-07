@@ -1521,9 +1521,13 @@ App Architecture\
 			-Output: UI state the app can render to provide users the info they need\
 	\
 		State Production APIs\
-		Inputs dictate what kind of processing is applied to the pipeline that is why the choice of asynchronous API for input has greater influence on the nature of the state production pipeline than the choice of observable API for output.\
-			-Inputs: Use asynchronous APIs to perform work off the UI thread to keep the UI jank free. Coroutines or Flows in Kotlin and RxJava or callbacks in Java\
-			-Output: Use observable data holder APIs to invalidate and render the UI when state changes. Like StateFlow, Compose State, or LiveData\
+			Inputs dictate what kind of processing is applied to the pipeline that is why the choice of asynchronous API for input has greater influence on the nature of the state production pipeline than the choice of observable API for output.\
+				-Inputs: Use asynchronous APIs to perform work off the UI thread to keep the UI jank free however they can be synchronous as well however they both would be one shot operations or can be a Stream API. Coroutines or Flows in Kotlin and RxJava or callbacks in Java\
+				-Output: Use observable data holder APIs to invalidate and render the UI when state changes. Like StateFlow, Compose State, or LiveData\
+\
+		State Production Pipeline Assembly\
+			-Lifecycle aware: in case the UI is not visible/not in focus or  not active, the pipeline should not consume any resource unless explicitly required\
+			-Easy to consume: UI should be able to easily render the produced UI state. \
 		\
 	-Architecture Recommendations\
 	From \'93guide to App Architecture\'94 we can find a document about \'93Architecture Recommendations\'94  in which we can find information about best practices when working with \'93Lifecycle\'94\
