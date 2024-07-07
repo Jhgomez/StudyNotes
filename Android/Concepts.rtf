@@ -1519,6 +1519,11 @@ App Architecture\
 \
 			-State Holders: as defined above\
 			-Output: UI state the app can render to provide users the info they need\
+	\
+		State Production APIs\
+		Inputs dictate what kind of processing is applied to the pipeline that is why the choice of asynchronous API for input has greater influence on the nature of the state production pipeline than the choice of observable API for output.\
+			-Inputs: Use asynchronous APIs to perform work off the UI thread to keep the UI jank free. Coroutines or Flows in Kotlin and RxJava or callbacks in Java\
+			-Output: Use observable data holder APIs to invalidate and render the UI when state changes. Like StateFlow, Compose State, or LiveData\
 		\
 	-Architecture Recommendations\
 	From \'93guide to App Architecture\'94 we can find a document about \'93Architecture Recommendations\'94  in which we can find information about best practices when working with \'93Lifecycle\'94\
