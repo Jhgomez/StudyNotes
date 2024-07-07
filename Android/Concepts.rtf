@@ -1484,7 +1484,7 @@ App Architecture\
 					Reads: Used as a signal to drain the read queue when the app is connected and for synch\
 					Writes: Used as a signal to drain the write queue when the app is connected and for synch\
 \
-			Both cases are examples of the persisten work that WorkManager excels at. Basically WorkManager first queues work request and then it drains the queue with exponential backoff. Basically this is possible thanks to the \'93doWork(): Result\'94 method in CoroutineWorker which automatically retries with exponential backoff if the result of the current execution is \'93Result.retry()\'94\
+			Both cases are examples of the persisten work that WorkManager excels at. Basically WorkManager first queues work request and then it drains the queue with exponential backoff. Basically this is possible thanks to the \'93doWork(): Result\'94 method in CoroutineWorker which automatically retries with exponential backoff if the result of the current execution is \'93Result.retry()\'a0\'94\
 				\
 	\
 	-UI Layer\
@@ -1498,7 +1498,9 @@ App Architecture\
 \cf0 \
 		Paging is consumed in the UI with type called PagingData. PagingData is a mutable object so it should not be represented/included in an immutable UI state. Instead, you should expose it from the ViewModel independently in its own stream\
 \
-\
+		UI State Production Pipeline\
+			\
+		\
 	-Architecture Recommendations\
 	From \'93guide to App Architecture\'94 we can find a document about \'93Architecture Recommendations\'94  in which we can find information about best practices when working with \'93Lifecycle\'94\
 \
