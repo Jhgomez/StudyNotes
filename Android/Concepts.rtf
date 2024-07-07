@@ -1522,7 +1522,7 @@ App Architecture\
 	\
 		State Production APIs\
 			Inputs dictate what kind of processing is applied to the pipeline that is why the choice of asynchronous API for input has greater influence on the nature of the state production pipeline than the choice of observable API for output.\
-				-Inputs: Use asynchronous APIs to perform work off the UI thread to keep the UI jank free however they can be synchronous as well however they both would be one shot operations or can be a Stream API. Coroutines or Flows in Kotlin and RxJava or callbacks in Java\
+				-Inputs: Use asynchronous APIs to perform work off the UI thread to keep the UI jank free however they can be synchronous as well however they both would be one shot operations or can be a Stream API. Coroutines or Flows in Kotlin and RxJava or callbacks in Java. One-Shot APIs can be MutableStateFlow, compose \'93mutableStateOf\'94, both APIs offer methods that allow safe atomic updates to the values they host whether or not the updates are synchronous or asynchronous\
 				-Output: Use observable data holder APIs to invalidate and render the UI when state changes. Like StateFlow, Compose State, or LiveData\
 \
 		State Production Pipeline Assembly\
