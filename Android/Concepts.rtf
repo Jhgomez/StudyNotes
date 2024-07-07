@@ -1488,20 +1488,24 @@ App Architecture\
 				\
 	\
 	-UI Layer\
-	From this layer a very interesting note is about pagination\
+		From this layer a very interesting note is about pagination\
 	\
-		Paging/Pagination 
+			Paging/Pagination 
 \f5 \expnd0\expndtw0\kerning0
 (https://developer.android.com/topic/architecture/ui-layer?authuser=1#paging)
 \f0 \kerning1\expnd0\expndtw0 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
-		Paging is consumed in the UI with type called PagingData. PagingData is a mutable object so it should not be represented/included in an immutable UI state. Instead, you should expose it from the ViewModel independently in its own stream\
+			Paging is consumed in the UI with type called PagingData. PagingData is a mutable object so it should not be represented/included in an immutable UI state. Instead, you should expose it from the ViewModel independently in its own stream\
+	\
+		UI State\
+			UI State or state is basically app data or the property that describes the UI\
+\
+			There is two types of app data/state/UI state, Screen UI state and UI element state, the former is produced by the application of business logic to internal state changes events/inputs that provides access to UIlogic that derives in Screen UI state changes and/or external inputs/events such as the application itself of business logic(repositories) to UIlogic triggered by those internal inputs(sources of state change) that access UI logic that has access to business logic such as a click that refetches a screen content(inputs produce state changes and can be local(also called events, they can be user events like entering text to a filed, or clicking a checkbox, this inputs derive in UI element state changes when applying UI logic or local inputs can also be user events that provide access to UI logic that derives in Screen UI state changes, those type of UI state changes are the result of applying business logic to these type of event/inputs) or inputs can be external(external inputs are basically sources/inputs/events of state change that are processed by the domain or data layer) inputs can also be a mixture of local and external inputs/events) and the later is produced by application of UI logic to local state changes inputs\
 \
 		UI State Production Pipeline\
-			UI State or state is basically app data.\
 \
-			There is two types of app data/state/UI state, Screen UI state and UI element state, the former is produced by the application of business logic to internal state changes events/inputs that provides access to UIlogic that derives in Screen UI state changes and/or external inputs/events such as the application itself of business logic(repositories) to UIlogic triggered by internal inputs (inputs produce state changes and can be local(also called events, they can be user events like entering text to a filed, or clicking a checkbox, this inputs derive in UI element state changes when applying UI logic or local inputs can also be user events that provide access to UI logic that derives in Screen UI state changes, those type of UI state changes are the result of applying business logic to these type of event/inputs) or inputs can be external(external inputs are basically sources/inputs/events of state change that are processed by the domain or data layer) inputs can also be a mixture of local and external inputs/events) and the later is produced by application of UI logic to local state changes inputs\
+			\
 \
 			-Inputs: the sources of state change\
 		\
