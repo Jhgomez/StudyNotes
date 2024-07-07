@@ -1499,7 +1499,10 @@ App Architecture\
 		Paging is consumed in the UI with type called PagingData. PagingData is a mutable object so it should not be represented/included in an immutable UI state. Instead, you should expose it from the ViewModel independently in its own stream\
 \
 		UI State Production Pipeline\
-		State is basically app data\
+			UI State or state is basically app data.\
+\
+			There is two types of app data/state/UI state, Screen UI state and UI element state\
+\
 			-Inputs: the sources of state change\
 		\
 	-Architecture Recommendations\
