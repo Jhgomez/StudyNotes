@@ -1512,7 +1512,10 @@ App Architecture\
 \
 		UI State Production Pipeline\
 \
-			-Inputs: the sources of state change\
+			-Inputs: the sources of state change. They may be:\
+				*Local to UI layer:  These could be user events like entering a text to a field or APIs provides access to UILogic that derives in UI state changes\
+				*External to UI layer: These are sources of UI state change coming from the domain or data layer \
+				*A mixture of all the above\
 		\
 	-Architecture Recommendations\
 	From \'93guide to App Architecture\'94 we can find a document about \'93Architecture Recommendations\'94  in which we can find information about best practices when working with \'93Lifecycle\'94\
