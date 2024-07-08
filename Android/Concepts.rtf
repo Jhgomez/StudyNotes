@@ -1540,7 +1540,8 @@ App Architecture\
 				-When using MutableStateFlow use the \'93update\'94 method as usual\
 				-When using compose state use \'93Snapshot.withMutableSnapshot\'94 to guarantee atomic updates to state in concurrent context\
 \
-		\
+		Stream APIs as sources of state change\
+			For sources of state change that produce different values over time in a stream. Aggregating the outputs of all sources into a cohesive whole is a straightforward approach to state production. When using flows use the \'93combine\'94 function\
 		\
 	-Architecture Recommendations\
 	From \'93guide to App Architecture\'94 we can find a document about \'93Architecture Recommendations\'94  in which we can find information about best practices when working with \'93Lifecycle\'94\
