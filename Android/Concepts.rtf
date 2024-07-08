@@ -1534,6 +1534,12 @@ App Architecture\
 \
 		Mutating the UI state from asynchronous calls\
 			For state changes that require an asynchronous result first launch a coroutine to run a suspend function and then use the state holder to write the result of the suspend function call into to observable API used to expose UI state			\
+		Mutating the UI state from background threads\
+			It is preferable to launch coroutines from main dispatcher for production of UI state, however it is possible to update UI state from a background context using the following APIs: \
+				-When using coroutines in a viewmodel for example, you can use \'93withContext\'94\
+				-When using MutableStateFlow use the \'93update\'94 method as usual\
+				-When using compose state use \'93Snapshot.withMutableSnapshot\'94 to guarantee atomic updates to state in concurrent context\
+\
 		\
 		\
 	-Architecture Recommendations\
