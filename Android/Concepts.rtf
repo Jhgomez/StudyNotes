@@ -1526,8 +1526,15 @@ App Architecture\
 				-Output: Use observable data holder APIs to invalidate and render the UI when state changes. Like StateFlow, Compose State, or LiveData\
 \
 		State Production Pipeline Assembly\
-			-Lifecycle aware: in case the UI is not visible/not in focus or  not active, the pipeline should not consume any resource unless explicitly required\
+			-Lifecycle aware: in case the UI is not visible/not in focus or  not active, the pipeline should not consume any resource unless explicitly required, It is fine to perform any asynchronous operations in the Viewmodel with coroutines using the viewModelScope which means the task is executed even if the UI is not visible, however you should only do this for requests that less than or equal to 5 seconds but if it lasts more than that you should enqueue them as deferred or long running work with workmanager\
 			-Easy to consume: UI should be able to easily render the produced UI state. \
+\
+		One-shot APIs as sources of state change\
+			Use MutableStateFlow API as an observable, mutable container of state. In compose consider using mutableStateOf specially when working with Compose text APIs. Both APIs offer methods that allow safe atomic updates to the values they host whether or not the updates are synchronous or asynchronous. For MutableStateFlow use the update method\
+\
+		Mutating the UI state from asynchronous calls\
+			For state changes that require an asynchronous result first launch a coroutine to run a suspend function and then use the state holder to write the result of the suspend function call into to observable API used to expose UI state			\
+		\
 		\
 	-Architecture Recommendations\
 	From \'93guide to App Architecture\'94 we can find a document about \'93Architecture Recommendations\'94  in which we can find information about best practices when working with \'93Lifecycle\'94\
