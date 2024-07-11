@@ -4,13 +4,13 @@
 }
 {\colortbl;\red255\green255\blue255;\red11\green12\blue12;\red255\green255\blue255;\red88\green118\blue71;
 \red32\green32\blue32;\red5\green36\blue44;\red23\green56\blue124;\red0\green0\blue0;\red191\green191\blue191;
-\red0\green0\blue0;}
+}
 {\*\expandedcolortbl;;\cssrgb\c4706\c5098\c5490;\cssrgb\c100000\c100000\c100000;\csgenericrgb\c34510\c46275\c27843;
 \csgenericrgb\c12549\c12549\c12549;\cssrgb\c784\c18824\c22745;\cssrgb\c11373\c29412\c56078;\cssrgb\c0\c0\c0\c80000;\csgray\c79525;
-\cssrgb\c0\c0\c0;}
+}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid1\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
 {\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
-\margl1440\margr1440\vieww30040\viewh17200\viewkind0
+\margl1440\margr1440\vieww30040\viewh17760\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 \
@@ -1398,8 +1398,7 @@ Type \'93Android DP\'94 and find \'93support different pixel densities\'94 in th
 \
 	Pixel to DP\
 	in the same documentation you will find a method called \'93deriveDimension(int, float, android.util.DisplayMetrics)\'94 to help us with this\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 \
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
@@ -1418,8 +1417,7 @@ App Architecture\
 			data/\
 			    local/\
 			        entities/\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 			        dao/\
+			        dao/\
 			        AppDatabase(class)\
 			    network/\
 			        AppNetwork(class)\
@@ -1450,8 +1448,7 @@ App Architecture\
 					Insert into a queue writes requests then drain the queue with exponential backoff when app gets back online this is accomplished by creating persistent work usually delegated to WorkManager\
 \
 					Lazy writes\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 					The local data store is updated first and then the write request are queued. This can create conflict between local data source and network data source\
+					The local data store is updated first and then the write request are queued. This can create conflict between local data source and network data source\
 \
 			Synchronization and Conflict resolution\
 			When an offline-first app restores connectivity it needs to reconcile the data in its local data source with that in the network data source. This process is called synchronization. There two main ways to do this, 1. Pull-based synch and 2. Push-based synch but there is some other\
@@ -1494,8 +1491,7 @@ App Architecture\
 \f5 \expnd0\expndtw0\kerning0
 (https://developer.android.com/topic/architecture/ui-layer?authuser=1#paging)
 \f0 \kerning1\expnd0\expndtw0 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 			Paging is consumed in the UI with type called PagingData. PagingData is a mutable object so it should not be represented/included in an immutable UI state. Instead, you should expose it from the ViewModel independently in its own stream\
 \
 		Logic\
@@ -1561,16 +1557,21 @@ https://developer.android.com/topic/architecture/recommendations#lifecycle)
 	\
 		In this documentation you can find also best practices and concepts about the three layers in clean architecture, data layer, domain layer(optional), UI layer\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 	\
+	\
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
 HttpUrlConnection\
 \
 Is an alternative to using Retrofit or OkHttp\
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
+Difference between Canvas, Windows and Activity\
 \
+These three concept play a different role in creating and managing user interface.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 	\
 \
