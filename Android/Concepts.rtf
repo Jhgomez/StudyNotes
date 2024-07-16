@@ -1581,7 +1581,7 @@ These three concept play a different role in creating and managing user interfac
 	Canvas\
 	Is a low-level drawing surface that allows you to draw graphics, shapes, text, and images directly onto it. Provides a way to create custom graphics and visuals within a view or a drawable. Provides methods for drawing, paths, shapes, text, bitmaps and other graphical elements. It\'92s often used for creating custom UI components, animations and special effects.\
 \
-	Now let\'92s see these three concepts in detail and introduce other concepts. When we create an Activity the \'93attach\'94 function is called before onCreate. The \'93onAttach\'94 method has a parameter of type \'93Window\'94 among others, this method is called by the Android Framework, \
+	Now let\'92s see these three concepts in detail and introduce other concepts. When we create an Activity the \'93attach\'94 function is called before onCreate. The \'93attach\'94 method has a parameter of type \'93Window\'94 among others, this method is called by the Android Framework. The Activity class has a private property called \'93mWindow\'94 which is instantiated in the \'93attach\'94 method by creating a \'93PhoneWindow\'94 object, this means each activity created creates its own window\
 	\
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 \
