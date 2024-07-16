@@ -23,11 +23,11 @@ downsides:
 #### RISC Based Processors
 More used in portable devices
 - RISC-V
-- ARM
+- ARM(some have x64 extension)
 - Raspberry Pi
 
 #### CISC Based Processors
 More used in desktop computers, servers
-- X86, x64 and x86-64 processors from intel or AMD
-- AMD
-- Intel
+- X86, x64 and x86-64
+- AMD (supports some x86, x64 extensions)
+- Intel (supports some x86, x64 extensions)
