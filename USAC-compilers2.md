@@ -12,3 +12,8 @@ upsides:
 - RISC doesn't require external memory for calculations, on the other hand CISC does
 - RISC has multiple registers sets present, while CISC has onlly a single registe set
 - RISC processors power compsumption is lower, making them ideal for portable devices
+
+downsides:
+ 
+ - RISC requires more instructions to perform complex task than CISC
+ = RISC requires more memory(Increased memory usage) to store aditional instructions than CISC to perform complex tasks
