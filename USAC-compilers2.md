@@ -28,5 +28,6 @@ More used in portable devices
 
 #### CISC Based Processors
 More used in desktop computers, servers
-- X86, x64 and x86-64 processors from intel
+- X86, x64 and x86-64 processors from intel or AMD
 - AMD
+- Intel
