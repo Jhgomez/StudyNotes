@@ -1,6 +1,6 @@
 # Compilers 2 Concepts
 
-## RISC vs CISC
+### RISC vs CISC
 RISC stands for "Reduced Instruction Cycle", CISC is "Complex Instruction Cycle". 
 
 Comparison from RISC point of view:
@@ -17,5 +17,11 @@ upsides:
 downsides:
  
  - RISC requires more instructions to perform complex task than CISC. This is because CISC instructions are complex but can perfor 
- - RISC requires more memory(Increased memory usage) to store aditional instructions than CISC to perform complex tasks
- - 
+ - RISC requires more memory(Increased memory usage) to store aditional instructions than CISC to perform complex tasks, this is because CISC instructions are complex but can execute complex task with less instructions
+ 
+
+#### RISC Based Processors
+More used in portable devices
+- RISC-V
+- ARM
+- Raspberry Pi
