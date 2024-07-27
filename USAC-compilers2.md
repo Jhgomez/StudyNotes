@@ -44,5 +44,8 @@ used in Java
 #### Jison
 JavaScript
 
+#### Emacs
+Is a family of test editors you can use from the terminal
+
 #### VI and VIM
 Both are text editors you can use from the terminal/shell they are both available on Linux systems. VI stands for Visual Interface and VIM stands for VI IMproved. VIM is consided to be more powerful, it includes many featurs not present in VI
