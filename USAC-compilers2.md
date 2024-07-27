@@ -34,7 +34,7 @@ More used in desktop computers, servers
 
 ### Toolkits/Tools
 #### GNU Compiler Collection GCC
-This is the tool C language uses to compile source code to machine instructions
+This is the tool C language uses to compile source code to machine instructions. It has different tools for compiling to different processors/architectures
 
 #### Low Level Virtual Machine
 
