@@ -31,3 +31,15 @@ More used in desktop computers, servers
 - X86, x64 and x86-64
 - AMD (supports some x86, x64 extensions)
 - Intel (supports some x86, x64 extensions)
+
+### Toolkits/Tools
+#### GNU Compiler Collection GCC
+This is the tool C language uses to compile source code to machine instructions
+
+#### Low Level Virtual Machine
+
+#### Flex and Cup
+used in Java
+
+#### Jison
+JavaScript
