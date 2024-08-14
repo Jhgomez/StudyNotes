@@ -1,0 +1,1 @@
+* For rendering Android it uses SKIA for other targets it uses SKIKO
