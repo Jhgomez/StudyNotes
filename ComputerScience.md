@@ -1,7 +1,7 @@
 ## Statically Typed Language
 Languages like Java, C, C++, kotlin, etc. In this type of language the compiler has to know the data type of a variable is known at compile which means the data type of the variable has to be specified at the time of its declaration.
 
-## Dynamically Typed Language\
+## Dynamically Typed Language
  The data typed  of a variable is specified at runtime
 
 ## UNIX
@@ -14,7 +14,7 @@ Is the program at the core of the OS, it has total control of the hardware. It h
 Is a UNIX term for the interactive user interface with an operating system. It is the layer of programming that understands and executes the commands a user enters. In some systems the shell is called a command interpreter. So it is a software program/application used to interpret commands that are input via a command-prompt(windows) or terminal(MacOs) which are just interfaces where you can interact with these programs which will let us communicate with an operating system. In windows 10 and above the shell and the interface are basically the same and it is called the Command Prompt which is the program which provides the interface and the shell/command-interpeter. Windows now has a terminal as well, which in this case it is just a host of different shells/interpreters like Command Prompt, PowerShell and Bash. In UNIX the terminal is the interface and Bash or Zsh is the shell/interpreter.
 
 ## Oh-my-zsh vs Oh-my-posh
-* ***Oh-my-zsh*** is a framework for managing Zsh configurations, it will allow to install plugins for your Zsh configuration. It comes pre-installed with the git plugin which lets us use git aliases/commands(https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git). You can enable plugins in the $HOME directory in the file \'a8.zshrc\'a8 for more info check the oh-my-zsh repository
+* ***Oh-my-zsh*** is a framework for managing Zsh configurations, it will allow to install plugins for your Zsh configuration. It comes pre-installed with the git plugin which lets us use git aliases/commands(https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git). You can enable plugins in the $HOME directory in the file 'a8.zshrc'a8 for more info check the oh-my-zsh repository
 
 * ***Oh-my-posh*** is a shell/interpreter theming engine it can be installed in the MacOs terminal, by the way you can install other terminal emulators like Iterm in MacOs, or in the windows in a shell like "Powershell". It can be installed with a package manager or manually from their 	website
 
@@ -22,7 +22,7 @@ Is a UNIX term for the interactive user interface with an operating system. It i
 Both are package manager for windows however Chocolatey is more stablished and Winget is says it is more user friendly
 
 ## Operating Systems
-Operating systems help apps interact with the hardware, file system is an integral part of the operating system, meaning when you install an OS you\'92ll get a file system installed on it.
+Operating systems help apps interact with the hardware, file system is an integral part of the operating system, meaning when you install an OS you'92ll get a file system installed on it.
 
 ## Throughput
 Is a measure of how many units of information a system can process in a given amount of time.
@@ -33,7 +33,7 @@ Is a protocol or set of rules, for routing and addressing packets of data so tha
 ## DNS(Domain Name System)
 Turns domain name into IP addresses, which allow browsers to get to websites and other internet resources. This is some servers which are used by default that are maintained by ICANN, they coordinate the internet's core systems of unique identifiers but there exists others public DNS servers like the one offered by google which could have better performance(faster browsing). DNS servers convert URLs and domain names into IP addresses that computer can understand and use so once we get the IP address the browser can load a website. There are different type of DNS servers like local(companies DNS servers), the servers from ICANN and there is other types.
 
-## TCP(Transmission Control Protocol)\
+## TCP(Transmission Control Protocol)
 Is a communications protocol that enables applications programs(apps) and computing devices(servers/) to exchange messages over a network. It's designed to send packets across the internet and ensure the successful delivery of data and messages over networks. A new alternative which goal is to be more performant with low latency and bandwidth estimation in each direction to avoid congestion is QUIC.
 
 ## HTTP(Hypertext Transfer Protocol)
@@ -52,7 +52,7 @@ Is a framework for organizing the set of communication protocols used in the int
 * **Transport Layer**
 	It establishes host-to-host communications, in the form of end-to-end message transfer services, on either the local network or remote networks separated by routers. The implemented protocols are UDP and TCP, the former provides an unreliable connectionless datagram	service and the later provides flow-control, connection establishment, and reliable transmission of data. For the purpose of providing process-specific/app-specifici transmission channels for apps this layer establishes the concept of network port meaning each communication 	channel an app needs and has its own port number, these numbers has been standardized. RTP(real-time transport protocol) is a datagram protocol that is used over UDP and is designed for real-time data such as streaming media. Datagram oriented protocols such as UDP 	are used over a DTLS and not a TLS. Apps at any given network are distinguished by their TCP or UDP port. QUIC is emerging as an alternative to TCP. HTTP/3 works exclusively via QUIC
 
-* **Internet Layer**: Exchanges datagrams across network boundaries. It\'92s said this layer defines and establishes the internet, the primary protocol in this iayer is the IP, that means this layer defines the addressing and routing structures. This layer will transport
+* **Internet Layer**: Exchanges datagrams across network boundaries. It'92s said this layer defines and establishes the internet, the primary protocol in this iayer is the IP, that means this layer defines the addressing and routing structures. This layer will transport
 
 * **Link Layer**: The protocols in this layer operate within the scope of the local network connection to which a host is attached. This includes all the accessible hosts without traversing a router. Some authors consider this a combination of the physical(1) and data-link(2) layer of the OSI model, 	however some other authors just compare it to the layer 2 in OSI since the TCP/IP model assumes any working network infrastructure that can move packets between hosts such as VPN and networking tunnels. The protocols in this layer are used to describe the local network topology and the interfaces needed to affect transmission of internet layer datagrams to next-neighbor hosts
 
@@ -81,7 +81,7 @@ Is a server application that acts as an intermediary between a client requesting
 Is a network inside a network, they make networks more efficient. By using this practice network traffic can travel a shorter distance without passing through unnecessary routers to reach its destination.
 
 ## VPC(Virtual Private Cloud)
-A Virtual Private Cloud network is a virtual version of a physical network that is implemented inside of google\'92s production network by using Andromeda. Allows you to virtually create a private and isolated network in the cloud.
+A Virtual Private Cloud network is a virtual version of a physical network that is implemented inside of google'92s production network by using Andromeda. Allows you to virtually create a private and isolated network in the cloud.
 
 ## VPN(Virtual Private Network)
 Creates an encrypted tunnel to protect your personal data and communications, hides your IP address, and let you safely use public Wi-fi networks or connect remotely to a private network like your office.
@@ -97,7 +97,7 @@ High performance programming language it is usually used in combination with Tok
 * **Borrow Checker**: Controversial feature which do a similar role to java garbage collector in the sense it helps rust to be memory safe but it is very strict and usually you could struggle compiling your code due to this feature, since it similar to the analogy of a 	friend that would not let you climb a tree because you might fall and break a leg. So produce a safe program in Rust can be a challenge itself just because of this feature
 
 ## Erlang
-It is sure that WhatsApp servers core functionalities were initially implemented using this language however as of right now I couldn\'92t confirm if still using this or something different. It was initially used for main two reasons: it provides extremely hight scalability with a tiny footprint, it supports hot loading which is a feature that enables to run new code(updates) without having to restart the current running code that is like saying we can change a running car chasis without stoping it. Some people say it is a concurrent programming language. Is used to build massively scalable soft real-time systems with requirements on high-availability. Some of its uses are telecoms, banking, e-commerce, computer telephony and instant messaging. Threads are a native feature of Erlang, unlike Java or C++, where threads belong to the operating system. Native threads makes context switching cheaper because there is no need to save the entire CPU state. WhatsApp was built on top of jabbed which is an open-source real-time messaging server written in Erlang. WhatsApp leveraged third-party services such as Google Push to provide push notifications
+It is sure that WhatsApp servers core functionalities were initially implemented using this language however as of right now I couldn'92t confirm if still using this or something different. It was initially used for main two reasons: it provides extremely hight scalability with a tiny footprint, it supports hot loading which is a feature that enables to run new code(updates) without having to restart the current running code that is like saying we can change a running car chasis without stoping it. Some people say it is a concurrent programming language. Is used to build massively scalable soft real-time systems with requirements on high-availability. Some of its uses are telecoms, banking, e-commerce, computer telephony and instant messaging. Threads are a native feature of Erlang, unlike Java or C++, where threads belong to the operating system. Native threads makes context switching cheaper because there is no need to save the entire CPU state. WhatsApp was built on top of jabbed which is an open-source real-time messaging server written in Erlang. WhatsApp leveraged third-party services such as Google Push to provide push notifications
 
 ## gRPC(Remote Procedure Call)
 Was designed specifically to allow developers to create high-performance APIs for microservice architectures across distributed data centers. Better suited for internal systems that require real-time streaming and large data loads. It is an alternative to REST and Graphql and is used in high performance app. Most commonly used to transmit data/communicate between different services in the server or servers(different data centers)
@@ -113,455 +113,435 @@ Similar in the way there is somebody emitting/publishing values and somebody lis
 * **Observable pattern**: It's referred to as a design pattern or a behavioral design pattern in which an observable is being	observed by observers, the observable has a list of the observers and lets them know when data has	changed
 
 ## Abstraction
-Is hiding the implementation details by providing a layer over the basic functionality\
-\
-## Encapsulation\
-Is a way to restrict direct access to some components of an object.\
-\
-## OSI model (Open System Interconnection)\
-Describes seven layers that computer systems use to communicate over a network. It was the first standard model for network communications. Modern internet is not base on OSI but is still used as it helps visualize and communicate how networks operate, and helps isolate and troubleshoot networking problems. This is a more comprehensive reference framework for general networking systems as oppose to the internet protocol suite which is more specific for the internet network. The seven layer in this model are:\
+Is hiding the implementation details by providing a layer over the basic functionality
 
-7. Application layer: Provides protocols to send and receive data and present it to users like HTTP and DNS\
-6. Presentation Layer: Decides how the data will be encrypted, compressed and \
-5. Session Layer: Maintains connections and is responsible for controlling ports and sessions, they are communication channels called sessions. \
-4. Transport Layer: Breaks session layer data into segments when it the transmitting end and reassembles into segments in the receiving end. Uses protocols like TCP and UDP\
-3. Network Layer: breaks segments into network packets and reassembles packets in the receiving end but also finds the best physical path to the destination using IP\
-2. Data-link layer: Defines the format of data on the network\
-1. Physical layer: Transmits raw bit streams over the physical medium(hardware) of a network\
-	\
-## NetCat\
-Is a ethical hacking tool that could make accessing a computer shell remotely, if you access the shell you can communicate with the OS and in theory could get a lot of info but accessing some information will be hard to achieve.\
-\
-## JDK(Java development kit)\
-I the toolkit that allows to develop java aps, it includes; JRE, Compiler, JVM(included in the JRE), API\
-\
-## API(Application Programming Interface)\
-It is an abstract concept as we can not get an instance of the API, it is referred to as a bridge that connects  different pieces of software, they are also know to be a set of rules of how two apps or pieces of software can communicate, it can connect a frontend app with a backend app/web service over the internet network, or two web services for example. In Java is the bridge between bytecode and the JVM, in java we use classes and methods so that the compiler can generate bytecode.\
-\
-## JRE(Java Runtime Environment)\
-It can create an instance of the JVM and it contains the classes that your byte code needs to run in the JVM\
-\
-## JVM(Java Virtual Machine)\
-This component turns byte code into machine code.\
-\
-## ScyllaDB\
-An open-source distributed NoSQL wide-column data store. Is a very performant Database it looks like it is usually used not as an embedded DB which means it is more commonly used in the infrastructure of an application(server side/backend)\
-\
-## Scalability\
-	Horizontal\
-	Is the process of increasing the number of machines in the resource pool\
-\
-	Vertical\
-	Is the process of increasing the capacity of an existing machine, such as CPU or memory\
-	\
-	Diagonal\
-	Hybrid between horizontal and vertical.\
-\
-FreeBSD\
-Is a free and open source Unix-like operating system. It offers a nicely tuned and reliable network stack.WhatsApp servers used this OS at least when it started the current OS is unknown to me as of right now\
-\
-Signal\
-Is an encryption protocol\
-\
-Proof of Concept(POC) Vs. Minimum Viable Product(MVP)\
-You first do a POC  to make sure the idea is doable and then check if it is something people want with an MVP.  It can be said POC has a more technical approach while MVP  has a business approach, however\
-POC could not be production ready code and it can evolve after testing it internally, and MVP is always production ready\
-\
-	POC\
-	Is a simple model or draft you create to check if your main idea can work, just to see if you can build it, basically it would involve the phases of planning, analyze, design, test and implement of SDLF.\
-\
-	MVP\
-	Is like a basic but working version of the product that you let real users try out. The goal is to test a functionality or service and see if customers will use it, buy it, like it. It would involve the phases	of deployment and possibly maintenance\
-\
-Vercel\
-Is a PaaS that helps developers host,  full stack apps, it supports two main lenguages/runtimes: NodeJs and Docker, it only has two infrastructures: USA(Northern California) and Belgium, Brussels. It provides\
-all the infrastructure to build, scale and secure a faster, more personalized web.\
-\
-LangChain\
-Framework design to simplify the creation of applications using large language models. As a language model integration framework, LangChain\'92s use cases largely overlap with those of language models in\
-general, including document, analysis, and summarization, chatbots, and code analysis.\
-\
-\
-.NET vs NodeJs\
-Both are used to build frontend and backend\
-	\
-	.NET\
-	You can do .NET backends with ASP.NET and frontend with C# & VB.NET, it said this backends are more suitable for large applications \
-\
-	NodeJs\
-	NodeJs can be used for both backend and frontend however you can also use ReactJs, ExpressJs, VueJs, actually they are more commonly used for building frontend, it said that this is more suitable\
-	for medium and/or small applications\
-\
-\
-Angular\
-Frontend web development framework used to build applications more simply\
-\
-Stream Benchmark\
-\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Algorithm\
-Is a procedure used for solving a problem or performing a computation\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Scalability\
-Refers to how an algorithm performs in terms of execution time and memory usage as input size increases\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Reactive Manifesto\
-I need to elaborate this subject further but for what I\'92ve read it is some concepts used when developing an applications using the microservices architecture to make those app reactive\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Time Complexity\
-Is a measure of the time required to run an algorithm as the input size increases. \
-	\
-	Big O notation\
-	Is a notation used for representing various magnitudes of time complexity. There exists the following magnitudes, from fastest to slowest:\
-	\
-	-Constant time O(1)\
-	-Linear time is O(n)\
-	-Quadratic time O(n^2)\
-	-logarithmic time O(log n)\
-	-Quasilinear time O(n log n)\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97 Skills need a software developer needs to add \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-Database Vs Tables\
-\
-One to many and Many to many relationships\
-\
-1, cloud computing\
-\
-2. Git\
-\
-3. Basic Linux Knowledge\
-	\
-	Linux File System\
-\
-		Why files in Etsy folder or bin folder?\
-	\
-		What is the mount directory?\
-\
-		What is opt, user, tmp?\
-\
-		File permissions\
-\
-		Ownership\
-	\
-		Use C mod od CH mode to change permissions\
-\
-		SuperBlock\
-\
-	Terminal Commands\
-	\
-4. Github Actions(Pipelines)\
-Like running testing or checks before code merges in \
-\
-\
-5. Basic Docker Knowledge\
-\
-\
-6. Basic API knowledge\
-\
-	Authentications\
-	\
-	Tokens\
-\
-7. Database knwoledge(SQL)\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Gflops\
-\
-Is a measure of how many billion(Giga) float operations a component, usually a CPU but it could be a core or a thread, can do per second\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Memory Leak\
-\
-Is a unintentional/accidental form of memory consumption whereby a developer fails to free/free-up an allocated block of memory that is no longer needed\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Regression\
-\
-Is a software bug where a feature or some process that was previously working stops workin, this could happen when applying changes to a software source code like when adding new features or bug fixes. Their impact depends on the application itself. This bugs are usually avoided by doing A/B testing\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-A/B Testing\
-\
-Is a way to improve an application by testing new features on a subset group of users\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Failover\
-\
-Is the ability to switch automatically and seamlessly to a reliable back up system. When a component or primary system fails either a standby operational mode redundancy should achieve failover and lesse or eliminate negative impact on users\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-OpenGl\
-\
-Cross language, cross platform API for rendering 2D and 3D vector graphics.Usually used to  interact with a GPU to achieve hardware-accelerated rendering. IOS uses similar solution but it is called Metal and web uses WebGl\
-\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Google tools\
-\
-	Google File System/ now called Colossus(Colossus Under The Hood document)\
-\
-	Mapreduce(Used to search in intense file system)/ Not used anymore, now google uses Flume \
-\
-	Stubby is googles equivalent to GRPC\
-\
-	Borg  is google\'92s equivalent to Kubernetes. In Borg instead of Docker, LMCTFY(Let me contain that for you) is used as a container stack\
-\
-	Bigtable google solution for databases under the hood data is store in LSM(Log-structured Merged Tree). Spanner, is a cracker database that uses GPS and atomic clocks to break CAP theorem. Drenel is a data warehouse similar to bigQuery, Blaze google tool that was open 	sourced and is known as Basel which is user to automate building and testing software.\
-\
-	Goops not too much public info about this tools but cloud pub/sub is the public version of this tool\
-\
-\
-So these tools serves the following purposes\
-\
-	Storage\
-	Google file system and BigTable\
-\
-	Movement\
-	Stubby(gRPC) Goops(pub/sub)\
-\
-	Processing\
-	First they used Mapreduced but now they use Flume\
-\
-	Orchestation\
-	Org which is the equivalent to Kubernetes\
-\
-\
-BigQuery\
-Is google\'92s fully managed, serverless data warehouse that enables scalable analysis over petabytes of data. It is a PaaS that supports querying using a dialect of SQL.\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Operating systems\
-Any code execution in a operating system is done with two actions\
-	1. Manipulating with registers\
-	2. Manipulating with memory\
-\
-In order to switch between processes the systems has to switch between registers, the state of the process we are switching from has to be saved in the kernel and the \
-process we are switching back to needs its state restored which was saved in the kernel and now retrieved from it and this process is called process scheduling, this \
-switches can be triggered by hardware such as mouse, keyboard, etc and these events are called interrupts. Interrupts are sent to the cpu, the CPU communicates to the\
-kernel, the Kernel handles the interrupt and find the process/application it needs to run\
-\
-The kernel has some sort of mouse subsystem, when we move the mouse an interrupt is sent to the CPU, kernel handles the interrupt and call a method in the mouse \
-subsystem so an application(lets call it Display Manager) asks the kernel for the mouse position, however in modern OS programs don\'92t access kernel functions directly\
-Instead ,since an error on the kernel caused by a user program would make the whole computer crash, so in big operating systems the CPU has a normal and privileged\
-execution mode, all the code and memory are divided into KernelSpace and UserSpacer. In privileged mode the CPU can access kernel space and user space(applications)\
-In normal mode CPU can only access userspace. To ask the kernel for some info or to execute something we have to do it through something called CPU instruction to \
-which we pass registers with arguments and the CPU jumps into a special piece of code(like a class or program) called \'93system call\'94 and at the same time it switches to \
-privileged mode, and from where we communicate with the kernel\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Debouncer\
-\
-\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Buffering vs Cache\
-	\
-	Buffering\
-	Is the process of temporarily holding data in memory or a buffer before writing Ii to a permanent storage location\
-\
-	Caching\
-	Is the process of storing data in memory for quick access or retrieval. Cache is a stored copy of the data, cache lives in the processor and cal be also implemented	with ram and disk\
-\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-LogRocket\
-Is a JavaScript SDK, it can be used in android, it intercepts actions in your website/app, such as network request(request made by an http client), touch actions, Redux events,\
-and sending them to a remote server.\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Kubernetes vs Application Server\
-\
-\pard\pardeftab720\partightenfactor0
+## Encapsulation
+Is a way to restrict direct access to some components of an object.
 
-\fs32 \cf2 \cb3 \expnd0\expndtw0\kerning0
-Is Kubernetes the new Application Server? Yes and no. For some uses it will be. For others it won't.\
-Is there a new Application Server, at least for those dealing with Java? Not in the strict sense. The JVM container is the new "Application Server", but certainly isn't new. With the rise of executable jars (Fat JARs) and Just enough Application Servers, the JVM is seeing growth again.\
-Whether it\'92s an Application Server, a Fat JAR, a hollow JAR, layered container images, or anything else that might come along in the future for Java. The JVM is the new container of choice, with Kubernetes as the operating environment. Offering the flexibility to choose an Application Server, or utilize plain Java, for an application. With the JVM container as the common denominator across applications.\
-Maybe \'93containers\'94 do rule the world?!\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+## OSI model (Open System Interconnection)
+Describes seven layers that computer systems use to communicate over a network. It was the first standard model for network communications. Modern internet is not base on OSI but is still used as it helps visualize and communicate how networks operate, and helps isolate and troubleshoot networking problems. This is a more comprehensive reference framework for general networking systems as oppose to the internet protocol suite which is more specific for the internet network. The seven layer in this model are:
 
-\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-CAP Theorem\
-\
-	\
-Top level variables and methods(could be kotlin or a concept in any programming language)\
-\
-Higher order functions(kotlin)\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Apache POI\
-\
-Is a Java API that provides pure Java libraries for reading and writing files in Microsoft Office formats, such as Word, Powerpoint and Excel\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Log Parsing\
-\
-It translates structured and unstructured log files so that the parsing system can read, index and store their data. This allows you to filter, analyze and process key-value pairs. Common log formats are Json and \
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Separation of Concerns\
-\
-Is about grouping as much related code together as possible so that our code can be easily maintained and scale as the app grows.\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Declarative Programming vs Imperative Programming\
-\
-Compose is a declarative UI toolkit and the previous view system needs to be used in pair with imperative programming\
-\
-in an imperative language programs specifies HOW a computation is to be done\
-\
-In an declarative language programs specifies WHAT computation is to be done\
-\
-Imperative languages examples are C, C++, C# and Java\
-\
-In imperative languages there is a notion of program state and statements that change the state.\
-\
-Functional languages like ML and Haskell, and constraint logic languages such as Prolog are often considered to be declarative languages\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Von Neumann Languages\
-This term is applied to programming languages whose computational model is based on the Von Neumann computer architecture, Examples are: Fortran and C(this is another way of classifying C)\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Scripting Languages\
-They are interpreted languages with high level operators designed for \'93gluing together\'94 computations. These computations were originally called \'93scripts\'94. Awk, JavaScript, Perl, PHP, Python, Ruby and Tcl are examples of scripting languages. Programs written in scripting languages are often much shorter than equivalent programs written in languages like C\
-\
-\
-	The previous three sections were taken from \'93Compilers principles, techniques and tools. Chapter 1 page 14\'94\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Zsh\
-Is the UNIX shell that replaced Bash which was the shell MacOs previously used to interact with the command line/terminal\
-	\
-	Comands\
-		- touch :  lets us create a document type file \
-\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Jacoco\
-Java code coverage library, is often used to measure the coverage of unit and integration tests\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Javadoc\
-Is a documentation generator for the Java language for generation API documentation in HTLM format from Java source code\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Codenarc\
-Analyzes code, it is mainly used with Groovy, but it can analyze a lot more languages/tools like Gradle. It looks the code and provides with reports informing about defects, bad practices, inconsistencies, styles issues and more\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Cyclomatic Complexity \
-Is a software metrics used to indicate the complexity of a program\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-JGit\
-Is a library provided by eclipse that allows us to work with with in with Java code\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Process Builder\
-A Java class that allows us to interact with different processes. For example if we want to run som code in a shell run this code inside of a Process Builder (\'93ShellAddressInSystem\'94, \'93-c\'94, \'93Any command we want including git commands\'94)\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Set the JAVA_HOME environment variable\
-In MacOs we have to search for the .zshrc file located in the user directory and add the variable there, this will make the change permanent but if we just need a temporary change we can use\
-\
-	export JAVA_HOME=`/usr/libexec/java_home -V JAVA SE 17.0.9`\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Let it Crash\
-(I need to investigate this concept further but it is used by the telecom industry and according to what I read it is used for implementing resilience in applications that self-heal and systems that never stop)\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Actor Model\
-(I need to investigate this concept further but according to the info I read this was used to raise the abstraction level and provide a platform to build correct concurrent and scalable apps)\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-How to Create/Implement a Library That Can Render Images in a Mobile/Client Application(Just High Level Details of The Proccess)(https://www.youtube.com/watch?v=IGuVIRZzVTk&t=1519s   KMP video minute 1hour minute 11)\
-First you would have to implement an HTTP client like Ktor, Retrofit, Apollo, that can download a bite array, second use a conversion function for the UI toolkit(compose, compose mutliplatform, view system or any other UI toolkit) to\
-convert the byte array and then you would have to deal with typical use cases such as image caching, image loading, storing image on disk, downsampling image to make sure it is as performant as it can be, \
-\
-\
-	Downsampling and Upsampling Images\
-	More info can be found in the following link https://medium.com/analytics-vidhya/downsampling-and-upsampling-of-images-demystifying-the-theory-4ca7e21db24a\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-What is the difference between Process and Thread?\
-\
-First you have to understand a program is an executable file containing a set of instructions and passively stored on disk. One program can have multiple processes, for example a browser creates a process for every single tab.\
-\
-	Process\
-	A process means a program is in execution. When a program is loaded into the memory and becomes active, the program becomes one or more runing processes. The process requires some essential resources such as registers, program counter and stack. So when a process starts it is assigned memory and resourcesa\
-\
-	Thread\
-	A thread is the smallest unit of execution within a process\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Request For Changes\
-\
-Is a proposal outlining the data\'92s of a change requested by stakeholders and explaining the impact of the changes on the product and the development timeline\
-\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-Chmod\
-In unix and unix operating systems, chmod is the command and system call used to change the access permissions and the special mode flags of file system objects. Its an abbreviation of \'93change mode\'94\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
+1. **Physical layer**: Transmits raw bit streams over the physical medium(hardware) of a network
+2. **Data-link layer**: Defines the format of data on the network
+3. **Network Layer**: breaks segments into network packets and reassembles packets in the receiving end but also finds the best physical path to the destination using IP
+4. **Transport Layer**: Breaks session layer data into segments when it the transmitting end and reassembles into segments in the receiving end. Uses protocols like TCP and UDP
+5. **Session Layer**: Maintains connections and is responsible for controlling ports and sessions, they are communication channels called sessions.
+6. **Presentation Layer**: Decides how the data will be encrypted, compressed and
+7. **Application layer**: Provides protocols to send and receive data and present it to users like HTTP and DNS 
+
+## NetCat
+Is a ethical hacking tool that could make accessing a computer shell remotely, if you access the shell you can communicate with the OS and in theory could get a lot of info but accessing some information will be hard to achieve.
+
+## JDK(Java development kit)
+I the toolkit that allows to develop java aps, it includes; JRE, Compiler, JVM(included in the JRE), API
+
+## API(Application Programming Interface)
+It is an abstract concept as we can not get an instance of the API, it is referred to as a bridge that connects  different pieces of software, they are also know to be a set of rules of how two apps or pieces of software can communicate, it can connect a frontend app with a backend app/web service over the internet network, or two web services for example. In Java is the bridge between bytecode and the JVM, in java we use classes and methods so that the compiler can generate bytecode.
+
+## JRE(Java Runtime Environment)
+It can create an instance of the JVM and it contains the classes that your byte code needs to run in the JVM
+
+## JVM(Java Virtual Machine)
+This component turns byte code into machine code.
+
+## ScyllaDB
+An open-source distributed NoSQL wide-column data store. Is a very performant Database it looks like it is usually used not as an embedded DB which means it is more commonly used in the infrastructure of an application(server side/backend)
+
+## Scalability
+* **Horizontal**: Is the process of increasing the number of machines in the resource pool
+
+* **Vertical**: Is the process of increasing the capacity of an existing machine, such as CPU or memory
+	
+* **Diagonal**: Hybrid between horizontal and vertical.
+
+## FreeBSD
+Is a free and open source Unix-like operating system. It offers a nicely tuned and reliable network stack.WhatsApp servers used this OS at least when it started the current OS is unknown to me as of right now
+
+## Signal
+Is an encryption protocol
+
+## Proof of Concept(POC) Vs. Minimum Viable Product(MVP)
+You first do a POC  to make sure the idea is doable and then check if it is something people want with an MVP.  It can be said POC has a more technical approach while MVP  has a business approach, however POC could not be production ready code and it can evolve after testing it internally, and MVP is always production ready
+
+* **POC**: Is a simple model or draft you create to check if your main idea can work, just to see if you can build it, basically it would involve the phases of planning, analyze, design, test and implement of SDLF.
+
+* **MVP**: Is like a basic but working version of the product that you let real users try out. The goal is to test a functionality or service and see if customers will use it, buy it, like it. It would involve the phases of deployment and possibly maintenance
+
+## Vercel
+Is a PaaS that helps developers host,  full stack apps, it supports two main lenguages/runtimes: NodeJs and Docker, it only has two infrastructures: USA(Northern California) and Belgium, Brussels. It provides all the infrastructure to build, scale and secure a faster, more personalized web.
+
+## LangChain
+Framework design to simplify the creation of applications using large language models. As a language model integration framework, LangChain's use cases largely overlap with those of language models in general, including document, analysis, and summarization, chatbots, and code analysis.
+
+
+## .NET vs NodeJs
+Both are used to build frontend and backend
+	
+* **.NET**: You can do .NET backends with ASP.NET and frontend with C# & VB.NET, it said this backends are more suitable for large applications 
+
+* **NodeJs**: NodeJs can be used for both backend and frontend however you can also use ReactJs, ExpressJs, VueJs, actually they are more commonly used for building frontend, it said that this is more suitable for medium and/or small applications
+
+
+## Angular
+Frontend web development framework used to build applications more simply
+
+## Stream Benchmark
+
+## Algorithm
+Is a procedure used for solving a problem or performing a computation
+
+## Scalability
+Refers to how an algorithm performs in terms of execution time and memory usage as input size increases
+
+## Reactive Manifesto
+I need to elaborate this subject further but for what I'92ve read it is some concepts used when developing an applications using the microservices architecture to make those app reactive
+
+## Time Complexity
+Is a measure of the time required to run an algorithm as the input size increases. 
+	
+* **Big O notation**
+	Is a notation used for representing various magnitudes of time complexity. There exists the following magnitudes, from fastest to slowest:
+	
+	- Constant time O(1)
+	- Linear time is O(n)
+	- Quadratic time O(n^2)
+	- logarithmic time O(log n)
+	- Quasilinear time O(n log n)
+
+## Skills need a software developer needs to add
+
+1. Cloud computing
+
+2. Git
+
+3. Basic Linux Knowledge
+	
+	Linux File System
+
+		Why files in Etsy folder or bin folder?
+	
+		What is the mount directory?
+
+		What is opt, user, tmp?
+
+		File permissions
+
+		Ownership
+	
+		Use C mod od CH mode to change permissions
+
+		SuperBlock
+
+	Terminal Commands
+	
+4. Github Actions(Pipelines)
+Like running testing or checks before code merges in 
+
+
+5. Basic Docker Knowledge
+
+
+6. Basic API knowledge
+
+	Authentications
+	
+	Tokens
+
+7. Database knwoledge(SQL)
+
+## Database Vs Tables
+
+One to many and Many to many relationships
+
+
+Gflops
+
+Is a measure of how many billion(Giga) float operations a component, usually a CPU but it could be a core or a thread, can do per second
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Memory Leak
+
+Is a unintentional/accidental form of memory consumption whereby a developer fails to free/free-up an allocated block of memory that is no longer needed
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Regression
+
+Is a software bug where a feature or some process that was previously working stops workin, this could happen when applying changes to a software source code like when adding new features or bug fixes. Their impact depends on the application itself. This bugs are usually avoided by doing A/B testing
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+A/B Testing
+
+Is a way to improve an application by testing new features on a subset group of users
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Failover
+
+Is the ability to switch automatically and seamlessly to a reliable back up system. When a component or primary system fails either a standby operational mode redundancy should achieve failover and lesse or eliminate negative impact on users
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+OpenGl
+
+Cross language, cross platform API for rendering 2D and 3D vector graphics.Usually used to  interact with a GPU to achieve hardware-accelerated rendering. IOS uses similar solution but it is called Metal and web uses WebGl
+
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Google tools
+
+	Google File System/ now called Colossus(Colossus Under The Hood document)
+
+	Mapreduce(Used to search in intense file system)/ Not used anymore, now google uses Flume 
+
+	Stubby is googles equivalent to GRPC
+
+	Borg  is google'92s equivalent to Kubernetes. In Borg instead of Docker, LMCTFY(Let me contain that for you) is used as a container stack
+
+	Bigtable google solution for databases under the hood data is store in LSM(Log-structured Merged Tree). Spanner, is a cracker database that uses GPS and atomic clocks to break CAP theorem. Drenel is a data warehouse similar to bigQuery, Blaze google tool that was open 	sourced and is known as Basel which is user to automate building and testing software.
+
+	Goops not too much public info about this tools but cloud pub/sub is the public version of this tool
+
+
+So these tools serves the following purposes
+
+	Storage
+	Google file system and BigTable
+
+	Movement
+	Stubby(gRPC) Goops(pub/sub)
+
+	Processing
+	First they used Mapreduced but now they use Flume
+
+	Orchestation
+	Org which is the equivalent to Kubernetes
+
+
+BigQuery
+Is google'92s fully managed, serverless data warehouse that enables scalable analysis over petabytes of data. It is a PaaS that supports querying using a dialect of SQL.
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Operating systems
+Any code execution in a operating system is done with two actions
+	1. Manipulating with registers
+	2. Manipulating with memory
+
+In order to switch between processes the systems has to switch between registers, the state of the process we are switching from has to be saved in the kernel and the 
+process we are switching back to needs its state restored which was saved in the kernel and now retrieved from it and this process is called process scheduling, this 
+switches can be triggered by hardware such as mouse, keyboard, etc and these events are called interrupts. Interrupts are sent to the cpu, the CPU communicates to the
+kernel, the Kernel handles the interrupt and find the process/application it needs to run
+
+The kernel has some sort of mouse subsystem, when we move the mouse an interrupt is sent to the CPU, kernel handles the interrupt and call a method in the mouse 
+subsystem so an application(lets call it Display Manager) asks the kernel for the mouse position, however in modern OS programs don'92t access kernel functions directly
+Instead ,since an error on the kernel caused by a user program would make the whole computer crash, so in big operating systems the CPU has a normal and privileged
+execution mode, all the code and memory are divided into KernelSpace and UserSpacer. In privileged mode the CPU can access kernel space and user space(applications)
+In normal mode CPU can only access userspace. To ask the kernel for some info or to execute something we have to do it through something called CPU instruction to 
+which we pass registers with arguments and the CPU jumps into a special piece of code(like a class or program) called '93system call'94 and at the same time it switches to 
+privileged mode, and from where we communicate with the kernel
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Debouncer
+
+
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Buffering vs Cache
+	
+	Buffering
+	Is the process of temporarily holding data in memory or a buffer before writing Ii to a permanent storage location
+
+	Caching
+	Is the process of storing data in memory for quick access or retrieval. Cache is a stored copy of the data, cache lives in the processor and cal be also implemented	with ram and disk
+
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+LogRocket
+Is a JavaScript SDK, it can be used in android, it intercepts actions in your website/app, such as network request(request made by an http client), touch actions, Redux events,
+and sending them to a remote server.
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Kubernetes vs Application Server
+
+pardpardeftab720partightenfactor0
+
+fs32 cf2 cb3 expnd0expndtw0kerning0
+Is Kubernetes the new Application Server? Yes and no. For some uses it will be. For others it won't.
+Is there a new Application Server, at least for those dealing with Java? Not in the strict sense. The JVM container is the new "Application Server", but certainly isn't new. With the rise of executable jars (Fat JARs) and Just enough Application Servers, the JVM is seeing growth again.
+Whether it'92s an Application Server, a Fat JAR, a hollow JAR, layered container images, or anything else that might come along in the future for Java. The JVM is the new container of choice, with Kubernetes as the operating environment. Offering the flexibility to choose an Application Server, or utilize plain Java, for an application. With the JVM container as the common denominator across applications.
+Maybe '93containers'94 do rule the world?!
+pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
+
+fs24 cf0 cb1 kerning1expnd0expndtw0 
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+CAP Theorem
+
+	
+Top level variables and methods(could be kotlin or a concept in any programming language)
+
+Higher order functions(kotlin)
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Apache POI
+
+Is a Java API that provides pure Java libraries for reading and writing files in Microsoft Office formats, such as Word, Powerpoint and Excel
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Log Parsing
+
+It translates structured and unstructured log files so that the parsing system can read, index and store their data. This allows you to filter, analyze and process key-value pairs. Common log formats are Json and 
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Separation of Concerns
+
+Is about grouping as much related code together as possible so that our code can be easily maintained and scale as the app grows.
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Declarative Programming vs Imperative Programming
+
+Compose is a declarative UI toolkit and the previous view system needs to be used in pair with imperative programming
+
+in an imperative language programs specifies HOW a computation is to be done
+
+In an declarative language programs specifies WHAT computation is to be done
+
+Imperative languages examples are C, C++, C# and Java
+
+In imperative languages there is a notion of program state and statements that change the state.
+
+Functional languages like ML and Haskell, and constraint logic languages such as Prolog are often considered to be declarative languages
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Von Neumann Languages
+This term is applied to programming languages whose computational model is based on the Von Neumann computer architecture, Examples are: Fortran and C(this is another way of classifying C)
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Scripting Languages
+They are interpreted languages with high level operators designed for '93gluing together'94 computations. These computations were originally called '93scripts'94. Awk, JavaScript, Perl, PHP, Python, Ruby and Tcl are examples of scripting languages. Programs written in scripting languages are often much shorter than equivalent programs written in languages like C
+
+
+	The previous three sections were taken from '93Compilers principles, techniques and tools. Chapter 1 page 14'94
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Zsh
+Is the UNIX shell that replaced Bash which was the shell MacOs previously used to interact with the command line/terminal
+	
+	Comands
+		- touch :  lets us create a document type file 
+
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Jacoco
+Java code coverage library, is often used to measure the coverage of unit and integration tests
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Javadoc
+Is a documentation generator for the Java language for generation API documentation in HTLM format from Java source code
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Codenarc
+Analyzes code, it is mainly used with Groovy, but it can analyze a lot more languages/tools like Gradle. It looks the code and provides with reports informing about defects, bad practices, inconsistencies, styles issues and more
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Cyclomatic Complexity 
+Is a software metrics used to indicate the complexity of a program
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+JGit
+Is a library provided by eclipse that allows us to work with with in with Java code
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Process Builder
+A Java class that allows us to interact with different processes. For example if we want to run som code in a shell run this code inside of a Process Builder ('93ShellAddressInSystem'94, '93-c'94, '93Any command we want including git commands'94)
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Set the JAVA_HOME environment variable
+In MacOs we have to search for the .zshrc file located in the user directory and add the variable there, this will make the change permanent but if we just need a temporary change we can use
+
+	export JAVA_HOME=`/usr/libexec/java_home -V JAVA SE 17.0.9`
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Let it Crash
+(I need to investigate this concept further but it is used by the telecom industry and according to what I read it is used for implementing resilience in applications that self-heal and systems that never stop)
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Actor Model
+(I need to investigate this concept further but according to the info I read this was used to raise the abstraction level and provide a platform to build correct concurrent and scalable apps)
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+How to Create/Implement a Library That Can Render Images in a Mobile/Client Application(Just High Level Details of The Proccess)(https://www.youtube.com/watch?v=IGuVIRZzVTk&t=1519s   KMP video minute 1hour minute 11)
+First you would have to implement an HTTP client like Ktor, Retrofit, Apollo, that can download a bite array, second use a conversion function for the UI toolkit(compose, compose mutliplatform, view system or any other UI toolkit) to
+convert the byte array and then you would have to deal with typical use cases such as image caching, image loading, storing image on disk, downsampling image to make sure it is as performant as it can be, 
+
+
+	Downsampling and Upsampling Images
+	More info can be found in the following link https://medium.com/analytics-vidhya/downsampling-and-upsampling-of-images-demystifying-the-theory-4ca7e21db24a
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+What is the difference between Process and Thread?
+
+First you have to understand a program is an executable file containing a set of instructions and passively stored on disk. One program can have multiple processes, for example a browser creates a process for every single tab.
+
+	Process
+	A process means a program is in execution. When a program is loaded into the memory and becomes active, the program becomes one or more runing processes. The process requires some essential resources such as registers, program counter and stack. So when a process starts it is assigned memory and resourcesa
+
+	Thread
+	A thread is the smallest unit of execution within a process
+
+'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Request For Changes
+
+Is a proposal outlining the data'92s of a change requested by stakeholders and explaining the impact of the changes on the product and the development timeline
+
+pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
+cf0 '97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+
+Chmod
+In unix and unix operating systems, chmod is the command and system call used to change the access permissions and the special mode flags of file system objects. Its an abbreviation of '93change mode'94
+pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
+cf0 
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
