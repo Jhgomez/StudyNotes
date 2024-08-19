@@ -21,78 +21,74 @@ Is a UNIX term for the interactive user interface with an operating system. It i
 ## Chocolatey Vs. Winget
 Both are package manager for windows however Chocolatey is more stablished and Winget is says it is more user friendly
 
-Operating Systems\
-Operating systems help apps interact with the hardware, file system is an integral part of the operating system, meaning when you install an OS you\'92ll get a file system installed on it.\
-\
-Throughput\
-Is a measure of how many units of information a system can process in a given amount of time.\
-\
-IP(Internet Protocol)\
-Is a protocol or set of rules, for routing and addressing packets of data so that they can travel across networks and arrive at the correct destination.\
-\
-DNS(Domain Name System)\
-Turns domain name into IP addresses, which allow browsers to get to websites and other internet resources. This is some servers which are used by default that are maintained by ICANN, they coordinate the internet\'92s core systems of unique identifiers but there exists others public DNS servers like the one offered by google which could have better performance(faster browsing). DNS servers convert URLs and domain names into IP addresses that computer can understand and use so once we get the IP address the browser can load a website. There are different type of DNS servers like local(companies DNS servers), the servers from ICANN and there is other types.\
-\
-TCP(Transmission Control Protocol)\
-Is a communications protocol that enables applications programs(apps) and computing devices(servers/) to exchange messages over a network. It\'92s designed to send packets across the internet and ensure the successful delivery of data and messages over networks. A new alternative which goal is to be more performant with low latency and bandwidth estimation in each direction to avoid congestion is QUIC.\
-\
-HTTP(Hypertext Transfer Protocol)\
-Is an application layer protocol in the Internet Protocol Suite model for distributed, collaborative, hypermedia information system. It functions as a request-response protocol in the client-server model. HTTP resources are identified and located on the network by URL that DNS servers translate into IP addresses. There is http request actions GET, HEAD, POST, PUT, DELTE, OPTIONS, TRACE, PATCH. Web servers still support this protocol however only over a TLS use an ALPN(App-layer Protocol Negotiation). HTTP/3 works exclusively via QUIC. A website is going to be returned in the GET request by specifying the URL also other resources will be retrieved using this action \
-\
-HPack and QPack\
-Header compression used over HTTP\
-\
-Internet Protocol Suite(also known as TCP/IP)\
-Is a framework for organizing the set of communication protocols used in the internet and similar computer networks according to functional criteria. Foundational protocols are TCP, UDP(User Datagram Protocol), and IP. Provides end-to-end communications specifying how data should be packetized, addressed, transmitted, routed and received. This functionality is organized into four abstraction layers. The layers are the link layer, internet layer, transport layer, application layer.\
-\
-	Application Layer\
-	Includes protocols used by most applications for providing user services or exchanging application data over the network connections established by the lower-level protocols, they include HTTP, FTP(File Transfer Protocol), SMTP (Simple mail transfer protocol), DHCP. Often 	compared to a combination of the 5th, 6th and 7th layers of the OSI model\
-\
-	TLS or SSL\
-	this protocol lives in the middle of application and transport layer.\
-\
-	Transport Layer\
-	It establishes host-to-host communications, in the form of end-to-end message transfer services, on either the local network or remote networks separated by routers. The implemented protocols are UDP and TCP, the former provides an unreliable connectionless datagram	service and the later provides flow-control, connection establishment, and reliable transmission of data. For the purpose of providing process-specific/app-specifici transmission channels for apps this layer establishes the concept of network port meaning each communication 	channel an app needs and has its own port number, these numbers has been standardized. RTP(real-time transport protocol) is a datagram protocol that is used over UDP and is designed for real-time data such as streaming media. Datagram oriented protocols such as UDP 	are used over a DTLS and not a TLS. Apps at any given network are distinguished by their TCP or UDP port. QUIC is emerging as an alternative to TCP. HTTP/3 works exclusively via QUIC\
-\
-	Internet Layer\
-	Exchanges datagrams across network boundaries. It\'92s said this layer defines and establishes the internet, the primary protocol in this iayer is the IP, that means this layer defines the addressing and routing structures. This layer will transport \
-\
-	Link Layer\
-	The protocols in this layer operate within the scope of the local network connection to which a host is attached. This includes all the accessible hosts without traversing a router. Some authors consider this a combination of the physical(1) and data-link(2) layer of the OSI model, 	however some other authors just compare it to the layer 2 in OSI since the TCP/IP model assumes any working network infrastructure that can move packets between hosts such as VPN and networking tunnels. The protocols in this layer are used to describe the local network 	topology and the interfaces needed to affect transmission of internet layer datagrams to next-neighbor hosts\
-\
-Router\
-Is a computer that forwards network packets back and froth over a network.\
-\
-User Agent\
-On the web, a user agent is a software agent capable and responsible for retrieving and facilitating end user interaction with web content. They include web browsers like google chrome, firefox, safari, some email clients, standalone download managers like YouTube-dl, other command line utilities like cURL. They play the role of a client in a client-server model.\
-\
-SSL/TLS vs HTTPS\
-SSL(Security Socket Layer) and TLS(Transport Layer Security) are security protocols/cryptographic protocols and TLS is built on deprecated SSL specifications. TLS is used for providing communications security over a computer network, it consists in two layers: the TLS record and TLS handshake protocols. HTTPS(Hypertext Transfer Protocol Secure) is a more modern version HTTP(protocol used for exchanging files over the World Wide Web), it uses encryption for secure communication over a computer network. TLS and HTTPS is not the same since TLS is a part of the HTTPS protocol that performs encryption of the data. Apps can communicate without SSL/TLS so the CLIENT is the one that has to request the server sets up a TLS connection. Datagram oriented protocol such as UDP are used over DTLS(Datagram Transport Layer Security). On the TLS protocol a handshake occurs where the client  and server agree on a key and the server provides the certificate.\
-\
-Server Name Indicator(SNI)\
-They are extensions that add information on the TLS handshake more specifically in the hello stage to tell the server what certificate it needs and this is useful when a server hosts smore than one website other wise the server would know what certificate it needs to return. However having more than one host(application/website) in a server is error pone since it could be reach via an IP address without specifying the host a user is trying to reach and that would make the HTTP GET action fail.\
-\
-SSH(Secure Shell or Secure Socket Shell)\
-Is a network protocol that gives users, particularly system administrators, a secure way to access a computer over an unsecured network. It helps operate network services securely over an unsecured network. SSH applications are based on a client-server architecture, connecting an ssh client instance with an SSH server\
-\
-Server\
-Is a computer that provides functionality to other programs/devices called clients.\
-\
-Proxy Server\
-Is a server application that acts as an intermediary between a client requesting a resource and the server providing the resource. It improves privacy, security and performance in the process.\
-\
-Subnet\
-Is a network inside a network, they make networks more efficient. By using this practice network traffic can travel a shorter distance without passing through unnecessary routers to reach its destination.\
-\
-VPC(Virtual Private Cloud)\
-A Virtual Private Cloud network is a virtual version of a physical network that is implemented inside of google\'92s production network by using Andromeda. Allows you to virtually create a private and isolated network in the cloud.\
-\
-VPN(Virtual Private Network)\
-Creates an encrypted tunnel to protect your personal data and communications, hides your IP address, and let you safely use public Wi-fi networks or connect remotely to a private network like your office.\
-\
-VPC vs VPN\
-Jus as a VPN provides secure data transfer over the public the internet, VPC provides secure data transfer between a private enterprise network and a public cloud provider. VPN can be used to securely and remotely access to the cloud private network resources.\
- \
+## Operating Systems
+Operating systems help apps interact with the hardware, file system is an integral part of the operating system, meaning when you install an OS you\'92ll get a file system installed on it.
+
+## Throughput
+Is a measure of how many units of information a system can process in a given amount of time.
+
+## IP(Internet Protocol)
+Is a protocol or set of rules, for routing and addressing packets of data so that they can travel across networks and arrive at the correct destination.
+
+## DNS(Domain Name System)
+Turns domain name into IP addresses, which allow browsers to get to websites and other internet resources. This is some servers which are used by default that are maintained by ICANN, they coordinate the internet's core systems of unique identifiers but there exists others public DNS servers like the one offered by google which could have better performance(faster browsing). DNS servers convert URLs and domain names into IP addresses that computer can understand and use so once we get the IP address the browser can load a website. There are different type of DNS servers like local(companies DNS servers), the servers from ICANN and there is other types.
+
+## TCP(Transmission Control Protocol)\
+Is a communications protocol that enables applications programs(apps) and computing devices(servers/) to exchange messages over a network. It's designed to send packets across the internet and ensure the successful delivery of data and messages over networks. A new alternative which goal is to be more performant with low latency and bandwidth estimation in each direction to avoid congestion is QUIC.
+
+## HTTP(Hypertext Transfer Protocol)
+Is an application layer protocol in the Internet Protocol Suite model for distributed, collaborative, hypermedia information system. It functions as a request-response protocol in the client-server model. HTTP resources are identified and located on the network by URL that DNS servers translate into IP addresses. There is http request actions GET, HEAD, POST, PUT, DELTE, OPTIONS, TRACE, PATCH. Web servers still support this protocol however only over a TLS use an ALPN(App-layer Protocol Negotiation). HTTP/3 works exclusively via QUIC. A website is going to be returned in the GET request by specifying the URL also other resources will be retrieved using this action
+
+## HPack and QPack
+Header compression used over HTTP
+
+## Internet Protocol Suite(also known as TCP/IP)
+Is a framework for organizing the set of communication protocols used in the internet and similar computer networks according to functional criteria. Foundational protocols are TCP, UDP(User Datagram Protocol), and IP. Provides end-to-end communications specifying how data should be packetized, addressed, transmitted, routed and received. This functionality is organized into four abstraction layers. The layers are the link layer, internet layer, transport layer, application layer.
+
+* **Application Layer**: Includes protocols used by most applications for providing user services or exchanging application data over the network connections established by the lower-level protocols, they include HTTP, FTP(File Transfer Protocol), SMTP (Simple mail transfer protocol), DHCP. Often compared to a combination of the 5th, 6th and 7th layers of the OSI model
+
+* **TLS or SSL**: this protocol lives in the middle of application and transport layer.
+
+* **Transport Layer**
+	It establishes host-to-host communications, in the form of end-to-end message transfer services, on either the local network or remote networks separated by routers. The implemented protocols are UDP and TCP, the former provides an unreliable connectionless datagram	service and the later provides flow-control, connection establishment, and reliable transmission of data. For the purpose of providing process-specific/app-specifici transmission channels for apps this layer establishes the concept of network port meaning each communication 	channel an app needs and has its own port number, these numbers has been standardized. RTP(real-time transport protocol) is a datagram protocol that is used over UDP and is designed for real-time data such as streaming media. Datagram oriented protocols such as UDP 	are used over a DTLS and not a TLS. Apps at any given network are distinguished by their TCP or UDP port. QUIC is emerging as an alternative to TCP. HTTP/3 works exclusively via QUIC
+
+* **Internet Layer**: Exchanges datagrams across network boundaries. It\'92s said this layer defines and establishes the internet, the primary protocol in this iayer is the IP, that means this layer defines the addressing and routing structures. This layer will transport
+
+* **Link Layer**: The protocols in this layer operate within the scope of the local network connection to which a host is attached. This includes all the accessible hosts without traversing a router. Some authors consider this a combination of the physical(1) and data-link(2) layer of the OSI model, 	however some other authors just compare it to the layer 2 in OSI since the TCP/IP model assumes any working network infrastructure that can move packets between hosts such as VPN and networking tunnels. The protocols in this layer are used to describe the local network topology and the interfaces needed to affect transmission of internet layer datagrams to next-neighbor hosts
+
+## Router
+Is a computer that forwards network packets back and froth over a network.
+
+## User Agent
+On the web, a user agent is a software agent capable and responsible for retrieving and facilitating end user interaction with web content. They include web browsers like google chrome, firefox, safari, some email clients, standalone download managers like YouTube-dl, other command line utilities like cURL. They play the role of a client in a client-server model.
+
+## SSL/TLS vs HTTPS
+SSL(Security Socket Layer) and TLS(Transport Layer Security) are security protocols/cryptographic protocols and TLS is built on deprecated SSL specifications. TLS is used for providing communications security over a computer network, it consists in two layers: the TLS record and TLS handshake protocols. HTTPS(Hypertext Transfer Protocol Secure) is a more modern version HTTP(protocol used for exchanging files over the World Wide Web), it uses encryption for secure communication over a computer network. TLS and HTTPS is not the same since TLS is a part of the HTTPS protocol that performs encryption of the data. Apps can communicate without SSL/TLS so the CLIENT is the one that has to request the server sets up a TLS connection. Datagram oriented protocol such as UDP are used over DTLS(Datagram Transport Layer Security). On the TLS protocol a handshake occurs where the client  and server agree on a key and the server provides the certificate.
+
+## Server Name Indicator(SNI)
+They are extensions that add information on the TLS handshake more specifically in the hello stage to tell the server what certificate it needs and this is useful when a server hosts smore than one website other wise the server would know what certificate it needs to return. However having more than one host(application/website) in a server is error pone since it could be reach via an IP address without specifying the host a user is trying to reach and that would make the HTTP GET action fail.
+
+## SSH(Secure Shell or Secure Socket Shell)
+Is a network protocol that gives users, particularly system administrators, a secure way to access a computer over an unsecured network. It helps operate network services securely over an unsecured network. SSH applications are based on a client-server architecture, connecting an ssh client instance with an SSH server
+
+## Server
+Is a computer that provides functionality to other programs/devices called clients.
+
+## Proxy Server
+Is a server application that acts as an intermediary between a client requesting a resource and the server providing the resource. It improves privacy, security and performance in the process.
+
+√Subnet
+Is a network inside a network, they make networks more efficient. By using this practice network traffic can travel a shorter distance without passing through unnecessary routers to reach its destination.
+
+## VPC(Virtual Private Cloud)
+A Virtual Private Cloud network is a virtual version of a physical network that is implemented inside of google\'92s production network by using Andromeda. Allows you to virtually create a private and isolated network in the cloud.
+
+## VPN(Virtual Private Network)
+Creates an encrypted tunnel to protect your personal data and communications, hides your IP address, and let you safely use public Wi-fi networks or connect remotely to a private network like your office.
+
+## VPC vs VPN
+Jus as a VPN provides secure data transfer over the public the internet, VPC provides secure data transfer between a private enterprise network and a public cloud provider. VPN can be used to securely and remotely access to the cloud private network resources.
+ 
 MongoDB/Cassandra/ScyllaDb\
 \
 Rust\
