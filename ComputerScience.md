@@ -215,37 +215,33 @@ Is a measure of the time required to run an algorithm as the input size increase
 2. Git
 
 3. Basic Linux Knowledge
-	
-	Linux File System
 
-		Why files in Etsy folder or bin folder?
-	
-		What is the mount directory?
+	- Linux File System
 
-		What is opt, user, tmp?
+			Why files in Etsy folder or bin folder?
 
-		File permissions
+			What is the mount directory?
 
-		Ownership
-	
-		Use C mod od CH mode to change permissions
+			What is opt, user, tmp?
 
-		SuperBlock
+			File permissions
 
-	Terminal Commands
+			Ownership
+		
+			Use C mod od CH mode to change permissions
+
+	- SuperBlock
+	- Terminal Commands
 	
 4. Github Actions(Pipelines)
-Like running testing or checks before code merges in 
-
+	- Like running testing or checks before code merges in 
 
 5. Basic Docker Knowledge
 
-
 6. Basic API knowledge
 
-	Authentications
-	
-	Tokens
+	- Authentications
+	- Tokens
 
 7. Database knwoledge(SQL)
 
@@ -253,86 +249,57 @@ Like running testing or checks before code merges in
 
 One to many and Many to many relationships
 
-
-Gflops
+## Gflops
 
 Is a measure of how many billion(Giga) float operations a component, usually a CPU but it could be a core or a thread, can do per second
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Memory Leak
+## Memory Leak
 
 Is a unintentional/accidental form of memory consumption whereby a developer fails to free/free-up an allocated block of memory that is no longer needed
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Regression
+## Regression
 
 Is a software bug where a feature or some process that was previously working stops workin, this could happen when applying changes to a software source code like when adding new features or bug fixes. Their impact depends on the application itself. This bugs are usually avoided by doing A/B testing
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-A/B Testing
-
+## A/B Testing
 Is a way to improve an application by testing new features on a subset group of users
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Failover
-
+## Failover
 Is the ability to switch automatically and seamlessly to a reliable back up system. When a component or primary system fails either a standby operational mode redundancy should achieve failover and lesse or eliminate negative impact on users
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-OpenGl
-
+## OpenGl
 Cross language, cross platform API for rendering 2D and 3D vector graphics.Usually used to  interact with a GPU to achieve hardware-accelerated rendering. IOS uses similar solution but it is called Metal and web uses WebGl
 
+## Google tools
+* Google File System/ now called Colossus(Colossus Under The Hood document)
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+* Mapreduce(Used to search in intense file system)/ Not used anymore, now google uses Flume 
 
-Google tools
+* Stubby is googles equivalent to GRPC
 
-	Google File System/ now called Colossus(Colossus Under The Hood document)
+* Borg  is google'92s equivalent to Kubernetes. In Borg instead of Docker, LMCTFY(Let me contain that for you) is used as a container stack
 
-	Mapreduce(Used to search in intense file system)/ Not used anymore, now google uses Flume 
+* Bigtable google solution for databases under the hood data is store in LSM(Log-structured Merged Tree). Spanner, is a cracker database that uses GPS and atomic clocks to break CAP theorem. Drenel is a data warehouse similar to bigQuery, Blaze google tool that was open 	sourced and is known as Basel which is user to automate building and testing software.
 
-	Stubby is googles equivalent to GRPC
-
-	Borg  is google'92s equivalent to Kubernetes. In Borg instead of Docker, LMCTFY(Let me contain that for you) is used as a container stack
-
-	Bigtable google solution for databases under the hood data is store in LSM(Log-structured Merged Tree). Spanner, is a cracker database that uses GPS and atomic clocks to break CAP theorem. Drenel is a data warehouse similar to bigQuery, Blaze google tool that was open 	sourced and is known as Basel which is user to automate building and testing software.
-
-	Goops not too much public info about this tools but cloud pub/sub is the public version of this tool
-
+* Goops not too much public info about this tools but cloud pub/sub is the public version of this tool
 
 So these tools serves the following purposes
 
-	Storage
-	Google file system and BigTable
+* **Storage**: Google file system and BigTable
 
-	Movement
-	Stubby(gRPC) Goops(pub/sub)
+* **Movement**: Stubby(gRPC) Goops(pub/sub)
 
-	Processing
-	First they used Mapreduced but now they use Flume
+* **Processing**: First they used Mapreduced but now they use Flume
 
-	Orchestation
-	Org which is the equivalent to Kubernetes
+* **Orchestation**: Org which is the equivalent to Kubernetes
 
 
-BigQuery
-Is google'92s fully managed, serverless data warehouse that enables scalable analysis over petabytes of data. It is a PaaS that supports querying using a dialect of SQL.
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+* **BigQuery**: Is google's fully managed, serverless data warehouse that enables scalable analysis over petabytes of data. It is a PaaS that supports querying using a dialect of SQL.
 
-
-
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Operating systems
+## Operating systems
 Any code execution in a operating system is done with two actions
-	1. Manipulating with registers
-	2. Manipulating with memory
+1. Manipulating with registers
+2. Manipulating with memory
 
 In order to switch between processes the systems has to switch between registers, the state of the process we are switching from has to be saved in the kernel and the 
 process we are switching back to needs its state restored which was saved in the kernel and now retrieved from it and this process is called process scheduling, this 
@@ -347,75 +314,43 @@ In normal mode CPU can only access userspace. To ask the kernel for some info or
 which we pass registers with arguments and the CPU jumps into a special piece of code(like a class or program) called '93system call'94 and at the same time it switches to 
 privileged mode, and from where we communicate with the kernel
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+## Debouncer
 
-Debouncer
+## Buffering vs Cache
+* **Buffering**: Is the process of temporarily holding data in memory or a buffer before writing Ii to a permanent storage location
 
+* **Caching**: Is the process of storing data in memory for quick access or retrieval. Cache is a stored copy of the data, cache lives in the processor and cal be also implemented	with ram and disk
 
-
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Buffering vs Cache
-	
-	Buffering
-	Is the process of temporarily holding data in memory or a buffer before writing Ii to a permanent storage location
-
-	Caching
-	Is the process of storing data in memory for quick access or retrieval. Cache is a stored copy of the data, cache lives in the processor and cal be also implemented	with ram and disk
-
-
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-LogRocket
+## LogRocket
 Is a JavaScript SDK, it can be used in android, it intercepts actions in your website/app, such as network request(request made by an http client), touch actions, Redux events,
 and sending them to a remote server.
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+## Kubernetes vs Application Server
 
-Kubernetes vs Application Server
-
-pardpardeftab720partightenfactor0
-
-fs32 cf2 cb3 expnd0expndtw0kerning0
 Is Kubernetes the new Application Server? Yes and no. For some uses it will be. For others it won't.
+
 Is there a new Application Server, at least for those dealing with Java? Not in the strict sense. The JVM container is the new "Application Server", but certainly isn't new. With the rise of executable jars (Fat JARs) and Just enough Application Servers, the JVM is seeing growth again.
-Whether it'92s an Application Server, a Fat JAR, a hollow JAR, layered container images, or anything else that might come along in the future for Java. The JVM is the new container of choice, with Kubernetes as the operating environment. Offering the flexibility to choose an Application Server, or utilize plain Java, for an application. With the JVM container as the common denominator across applications.
-Maybe '93containers'94 do rule the world?!
-pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
+Whether it's an Application Server, a Fat JAR, a hollow JAR, layered container images, or anything else that might come along in the future for Java. The JVM is the new container of choice, with Kubernetes as the operating environment. Offering the flexibility to choose an Application Server, or utilize plain Java, for an application. With the JVM container as the common denominator across applications.
+Maybe "containers" do rule the world?!
 
-fs24 cf0 cb1 kerning1expnd0expndtw0 
+## CAP Theorem
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-CAP Theorem
-
-	
+## Top Level Variables
 Top level variables and methods(could be kotlin or a concept in any programming language)
 
-Higher order functions(kotlin)
+## Higher order functions(kotlin)
+Functions that take other functions
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Apache POI
-
+## Apache POI
 Is a Java API that provides pure Java libraries for reading and writing files in Microsoft Office formats, such as Word, Powerpoint and Excel
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Log Parsing
-
+## Log Parsing
 It translates structured and unstructured log files so that the parsing system can read, index and store their data. This allows you to filter, analyze and process key-value pairs. Common log formats are Json and 
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Separation of Concerns
-
+## Separation of Concerns
 Is about grouping as much related code together as possible so that our code can be easily maintained and scale as the app grows.
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Declarative Programming vs Imperative Programming
-
+## Declarative Programming vs Imperative Programming
 Compose is a declarative UI toolkit and the previous view system needs to be used in pair with imperative programming
 
 in an imperative language programs specifies HOW a computation is to be done
@@ -428,56 +363,38 @@ In imperative languages there is a notion of program state and statements that c
 
 Functional languages like ML and Haskell, and constraint logic languages such as Prolog are often considered to be declarative languages
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Von Neumann Languages
+## Von Neumann Languages
 This term is applied to programming languages whose computational model is based on the Von Neumann computer architecture, Examples are: Fortran and C(this is another way of classifying C)
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Scripting Languages
-They are interpreted languages with high level operators designed for '93gluing together'94 computations. These computations were originally called '93scripts'94. Awk, JavaScript, Perl, PHP, Python, Ruby and Tcl are examples of scripting languages. Programs written in scripting languages are often much shorter than equivalent programs written in languages like C
+## Scripting Languages
+They are interpreted languages with high level operators designed for "gluing together" computations. These computations were originally called '93scripts'94. Awk, JavaScript, Perl, PHP, Python, Ruby and Tcl are examples of scripting languages. Programs written in scripting languages are often much shorter than equivalent programs written in languages like C
 
 
 	The previous three sections were taken from '93Compilers principles, techniques and tools. Chapter 1 page 14'94
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
 
-Zsh
+## Zsh
 Is the UNIX shell that replaced Bash which was the shell MacOs previously used to interact with the command line/terminal
 	
 	Comands
 		- touch :  lets us create a document type file 
 
-
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Jacoco
+## Jacoco
 Java code coverage library, is often used to measure the coverage of unit and integration tests
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Javadoc
+## Javadoc
 Is a documentation generator for the Java language for generation API documentation in HTLM format from Java source code
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Codenarc
+## Codenarc
 Analyzes code, it is mainly used with Groovy, but it can analyze a lot more languages/tools like Gradle. It looks the code and provides with reports informing about defects, bad practices, inconsistencies, styles issues and more
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Cyclomatic Complexity 
+## Cyclomatic Complexity 
 Is a software metrics used to indicate the complexity of a program
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-JGit
+## JGit
 Is a library provided by eclipse that allows us to work with with in with Java code
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Process Builder
-A Java class that allows us to interact with different processes. For example if we want to run som code in a shell run this code inside of a Process Builder ('93ShellAddressInSystem'94, '93-c'94, '93Any command we want including git commands'94)
+## Process Builder
+A Java class that allows us to interact with different processes. For example if we want to run som code in a shell run this code inside of a Process Builder ("ShellAddressInSystem", "-c", "Any command we want including git commands")
 
 '97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
 
