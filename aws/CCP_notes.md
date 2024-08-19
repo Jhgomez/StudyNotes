@@ -527,23 +527,21 @@ Before ALB and NLB all there was is classic load balancer and then it was rename
 
 ### SNS Vs. SES
 
-	Simple Notification Service - Is a more practical and internal option. Sends notifications to subscribers of topic via multiple protocol. Eg, HTTP, Email, SQS, 
-	SMS and lambdas. Generally used for sending plain text emails which is triggered via other AWS services. A good example is billing alarms. A lot of services
-	can trigger SNS so it is a very common exam question. You need to know what are Topics and Subscriptions regarding SNS
+- **Simple Notification Service** - Is a more practical and internal option. Sends notifications to subscribers of topic via multiple protocol. Eg, HTTP, Email, SQS, 
+SMS and lambdas. Generally used for sending plain text emails which is triggered via other AWS services. A good example is billing alarms. A lot of services
+can trigger SNS so it is a very common exam question. You need to know what are Topics and Subscriptions regarding SNS
 
-	Simple Email Service - Is a more professional option and is more suitable for marketing. Cloud base email service. Eg. SendGrid(not amazon service). SES 
-	sends html email while SNS cannot do that. This service can receive inbound emails, create email templates. It features custom domain name email. Allows 
-	you to monitor your email reputation.
+- **Simple Email Service** - Is a more professional option and is more suitable for marketing. Cloud base email service. Eg. SendGrid(not amazon service). SES 
+sends html email while SNS cannot do that. This service can receive inbound emails, create email templates. It features custom domain name email. Allows 
+you to monitor your email reputation.
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Artifact vs Inspector
+### Artifact vs Inspector
 They both compile up PDF reports
 
-	AWS Artifact - The report is focused on explaining why an enterprise should trust AWS. Generates a security report that is based on global compliance frameworks
-	such as: Service Organization Control(SOC), Payment Card Industry (PCI)
+- **AWS Artifact** - The report is focused on explaining why an enterprise should trust AWS. Generates a security report that is based on global compliance frameworks
+such as: Service Organization Control(SOC), Payment Card Industry (PCI)
 
-	AWS Inspector - The report evaluates if an EC2 instance is secure and to proves how is or not secure. Runs a script that analyzes a EC2 instance, then 	generates a PDF report telling you which security checks passed. Audit tool for security of EC2 instances
+- **AWS Inspector** - The report evaluates if an EC2 instance is secure and to proves how is or not secure. Runs a script that analyzes a EC2 instance, then 	generates a PDF report telling you which security checks passed. Audit tool for security of EC2 instances
 
 
 
