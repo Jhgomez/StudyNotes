@@ -50,30 +50,29 @@ Service located under "Management & Governance", it advises you on security, sav
 ## AWS Cost Explorer
 Is a service located under "AWS Cost Management" section that lets you visualize, understand, and manage your AWS costs and usage over time. If there is multiple accounts in an AWS organization, costs will be consolidated in the master account.
 
-AWS Resource Groups and Tagging
+## AWS Resource Groups and Tagging
 Resource Groups is service available in "Management & Governance" Tags are words or phrases that act as metadata for organizing your AWS resources and Resource Groups are a collection of resources that share one or more tags. It helps you organize and consolidate information based on your project and the resources that you use. Resource groups can display details about a group of resources Resource Groups can display details about a group of resource based on: Metrics, Alarms, configuration.
 
-AWS Cost and Usage Report
+## AWS Cost and Usage Report
 This is not a service, this is a feature. Generate a detailed spreadsheet, enabling you to better analyze and understand your AWS costs.
 
-Web ACL(Access control list)
+## Web ACL(Access control list)
 This is not a service from amazon, this is actually software developed to run in AWS cloud which gives you fined-grained control over all of the HTTP(S) web requests that your protected resource responds to. You can protect CloudFront, Amazon API Gateway, Application Load Balancer, AWS AppSync, Amazon Cognito, AWS App Runner and AWS Verified Access resources
 
-WAF Rules(Web Application Firewall Rules)
+## WAF Rules(Web Application Firewall Rules)
 Defines how to inspect HTTP(S) web requests and the action to take on a request when it matches the inspector criteria. You define rules only in the context of a rule group or web ACL. Rules don't exist in AWS WAF on their own.
 
-RDS(Relational Database Service)
+## RDS(Relational Database Service)
 
-Lambda
+## Lambda
 Service located in the "Compute" section. This service lets us run code without thinking about the server
 
-Route53
+## Route53
 
-Amazon API gateway
+## Amazon API gateway
 
 
-'97'97
-Projects
+# Projects
 https://www.youtube.com/watch?v=5RVT3BN9Iws 3 projects in AWS to include in Resume
 
 Deploy a Wordpress Website on AWS
