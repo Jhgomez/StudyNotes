@@ -66,30 +66,28 @@ is usually called declaration-site variance) using '93type projections'94, type 
 4. **Contravariant(variant)**: In java it is defined as follows `<? Super AnyClass>` and is called lower bound wildcard, you can write to it **only** the type of objects defined in the angle brackets and you can also read from it but you will be reading `Object`s. In Kotlin you write it with `<in AnyClass>` and you can do the same as in Java but if you read from it will get an object of type `Any?`
 
 5. **Declaration-site Variance**: Is a Kotlin feature that lets you inform the compiler wether your type parameter is Covariant/producer or Contravariant/consumer, basically it is the equivalent to wildcards in Java as explained above
-with the difference that you can '93enforce'94 a type parameter of a class or method to only be covariant or contravariant by specifying the variance annotation in the declaration of the class or method, the only difference
-with this approach in contrast to Java'92s approach is that the compiler wouldn'92t let a class consume values of a type parameter if that type parameter is declared as producer(covariant)
+with the difference that you can "enforce" a type parameter of a class or method to only be covariant or contravariant by specifying the variance annotation in the declaration of the class or method, the only difference with this approach in contrast to Java's approach is that the compiler wouldn't let a class consume values of a type parameter if that type parameter is declared as producer(covariant)
 
-	Use-site Variance
-	Basically this is the same place and behavior as Java wildcards
+6. **Use-site Variance**: Basically this is the same place and behavior as Java wildcards
 
-Refied
-This has to be used in conjunction with '93inline'94. Inline copies the code of the function without creating a function type object to every calling site and only inline functions can have '93reified'94 type parameters declared. This
+## Refied
+This has to be used in conjunction with "inline". Inline copies the code of the function without creating a function type object to every calling site and only inline functions can have '93reified'94 type parameters declared. This
 will hold the parameter type and is most likely useful if we need to check the type of object or do some introspection of the class of the type
 
-Statements vs Expressions
+## Statements vs Expressions
 Statements are used to execute code as we do in Java for example however they can also be used as expressions which means they can assign values to a variable, expressions are used to improve code readibility
 
-Safe Call Operator (?.)
-It is used to safely call methods on a variable that is nullable, any attempt of calling a method on a nullable variable with '93null'94 value will return null, this will avoid the program to crash
+## Safe Call Operator (?.)
+It is used to safely call methods on a variable that is nullable, any attempt of calling a method on a nullable variable with "null" value will return null, this will avoid the program to crash
 
-Not Null Assertion (!!.)
-Should be used to call methods on a nullable variable but we'92re completely sure the value is not null since a '93NullPointerException'94 will be thrown if it is null causing the program to crash
+## Not Null Assertion (!!.)
+Should be used to call methods on a nullable variable but we're completely sure the value is not null since a `NullPointerException` will be thrown if it is null causing the program to crash
 
-Elvis Operator(?:)
-We use this operator to assign a default value, throw an exception or use the '93return'94 keyword when a nullable value calls a function, the purpose of doing so is to avoid null pointer exceptions crashes
+## Elvis Operator(?:)
+We use this operator to assign a default value, throw an exception or use the `return` keyword when a nullable value calls a function, the purpose of doing so is to avoid null pointer exceptions crashes
 
-ReadWriteProperty<T, V> / Property Delegator
-This interface lets you create a class that then can be used to delegate the '93setter'94 and '93getter'94 methods of a property to the implementation declared in this class. You have to create the class, implement this interface and override the getValue and setValue methods and then just delegate to a any property in a class which has access to the class that implements this interface using the '93by'94 keyword before instantiating the object
+## ReadWriteProperty<T, V> / Property Delegator
+This interface lets you create a class that then can be used to delegate the `setter` and `getter` methods of a property to the implementation declared in this class. You have to create the class, implement this interface and override the getValue and setValue methods and then just delegate to a any property in a class which has access to the class that implements this interface using the `by` keyword before instantiating the object
 
 
 
