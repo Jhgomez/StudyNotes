@@ -1,14 +1,5 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2709
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red65\green74\blue99;\red255\green255\blue255;\red65\green74\blue99;
-\red38\green38\blue38;}
-{\*\expandedcolortbl;;\cssrgb\c32157\c36471\c46275;\cssrgb\c100000\c100000\c100000;\cssrgb\c32157\c36471\c46275;
-\cssrgb\c20000\c20000\c20000;}
-\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f0\fs24 \cf0 \
-Backend Developer\
+## Backend Developer\
 \
 1. -Desarrollador Backend Java\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
