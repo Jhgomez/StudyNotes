@@ -89,67 +89,65 @@ Creates an encrypted tunnel to protect your personal data and communications, hi
 ## VPC vs VPN
 Jus as a VPN provides secure data transfer over the public the internet, VPC provides secure data transfer between a private enterprise network and a public cloud provider. VPN can be used to securely and remotely access to the cloud private network resources.
  
-MongoDB/Cassandra/ScyllaDb\
-\
-Rust\
-High performance programming language it is usually used in combination with Tokio which is a runtime for writing asynchronous applications with Rust. Discord backend is now built with this language\
-	\
-	Borrow Checker\
-	Controversial feature which do a similar role to java garbage collector in the sense it helps rust to be memory safe but it is very strict and usually you could struggle compiling your code due to this feature, since it similar to the analogy of a 	friend that would not let you climb a tree because you might fall and break a leg. So produce a safe program in Rust can be a challenge itself just because of this feature\
-\
-Erlang\
-It is sure that WhatsApp servers core functionalities were initially implemented using this language however as of right now I couldn\'92t confirm if still using this or something different. It was initially used for main two reasons: it provides extremely hight scalability with a tiny footprint, it supports hot loading which is a feature that enables to run new code(updates) without having to restart the current running code that is like saying we can change a running car chasis without stoping it. Some people say it is a concurrent programming language. Is used to build massively scalable soft real-time systems with requirements on high-availability. Some of its uses are telecoms, banking, e-commerce, computer telephony and instant messaging. Threads are a native feature of Erlang, unlike Java or C++, where threads belong to the operating system. Native threads makes context switching cheaper because there is no need to save the entire CPU state. WhatsApp was built on top of jabbed which is an open-source real-time messaging server written in Erlang. WhatsApp leveraged third-party services such as Google Push to provide push notifications\
-\
-gRPC(Remote Procedure Call)\
-Was designed specifically to allow developers to create high-performance APIs for microservice architectures across distributed data centers. Better suited for internal systems that require real-time streaming and large data loads. It is an alternative to REST and Graphql and is used in high performance app. Most commonly used to transmit data/communicate between different services in the server or servers(different data centers)\
- \
-Bastion Host\
-Is a server used to manage access to internal or private network from an external network. Sometimes called a jump box or jump server. Because bastion hosts often sit on the internet, they typically run a minimum amount of service in order to reduce their attack surface.\
-\
-Publish-Subscriber Vs. Observer pattern\
-Similar in the way there is somebody emitting/publishing values and somebody listening/processing the emitted/published data. Difference is in PubSub the publisher is not aware of subscriber and viceversa, so the publisher is aware of intermediate and the subscribers are ware of the intermediate while in Observer patterns publisher and subscriber is aware of each other. So the PubSub pattern is a more decouple approach to state changes.\
-\
-	PubSub pattern\
-	Some call it an architectural design pattern while others call it a messaging design pattern. Here the	publisher/producer sends messages/data to an intermediary stage such as messaging bus and	subscribers/consumers are individuals/entities that subscribe to the intermediary and process data\
-\
-	Observable pattern\
-	It\'92s referred to as a design pattern or a behavioral design pattern in which an observable is being	observed by observers, the observable has a list of the observers and lets them know when data has	changed\
-\
-Abstraction\
+## MongoDB/Cassandra/ScyllaDb
+
+## Rust
+High performance programming language it is usually used in combination with Tokio which is a runtime for writing asynchronous applications with Rust. Discord backend is now built with this language
+
+* **Borrow Checker**: Controversial feature which do a similar role to java garbage collector in the sense it helps rust to be memory safe but it is very strict and usually you could struggle compiling your code due to this feature, since it similar to the analogy of a 	friend that would not let you climb a tree because you might fall and break a leg. So produce a safe program in Rust can be a challenge itself just because of this feature
+
+## Erlang
+It is sure that WhatsApp servers core functionalities were initially implemented using this language however as of right now I couldn\'92t confirm if still using this or something different. It was initially used for main two reasons: it provides extremely hight scalability with a tiny footprint, it supports hot loading which is a feature that enables to run new code(updates) without having to restart the current running code that is like saying we can change a running car chasis without stoping it. Some people say it is a concurrent programming language. Is used to build massively scalable soft real-time systems with requirements on high-availability. Some of its uses are telecoms, banking, e-commerce, computer telephony and instant messaging. Threads are a native feature of Erlang, unlike Java or C++, where threads belong to the operating system. Native threads makes context switching cheaper because there is no need to save the entire CPU state. WhatsApp was built on top of jabbed which is an open-source real-time messaging server written in Erlang. WhatsApp leveraged third-party services such as Google Push to provide push notifications
+
+## gRPC(Remote Procedure Call)
+Was designed specifically to allow developers to create high-performance APIs for microservice architectures across distributed data centers. Better suited for internal systems that require real-time streaming and large data loads. It is an alternative to REST and Graphql and is used in high performance app. Most commonly used to transmit data/communicate between different services in the server or servers(different data centers)
+
+## Bastion Host
+Is a server used to manage access to internal or private network from an external network. Sometimes called a jump box or jump server. Because bastion hosts often sit on the internet, they typically run a minimum amount of service in order to reduce their attack surface.
+
+## Publish-Subscriber Vs. Observer pattern
+Similar in the way there is somebody emitting/publishing values and somebody listening/processing the emitted/published data. Difference is in PubSub the publisher is not aware of subscriber and viceversa, so the publisher is aware of intermediate and the subscribers are ware of the intermediate while in Observer patterns publisher and subscriber is aware of each other. So the PubSub pattern is a more decouple approach to state changes.
+
+* **PubSub pattern**: Some call it an architectural design pattern while others call it a messaging design pattern. Here the	publisher/producer sends messages/data to an intermediary stage such as messaging bus and	subscribers/consumers are individuals/entities that subscribe to the intermediary and process data
+
+* **Observable pattern**: It's referred to as a design pattern or a behavioral design pattern in which an observable is being	observed by observers, the observable has a list of the observers and lets them know when data has	changed
+
+## Abstraction
 Is hiding the implementation details by providing a layer over the basic functionality\
 \
-Encapsulation\
+## Encapsulation\
 Is a way to restrict direct access to some components of an object.\
 \
-OSI model (Open System Interconnection)\
+## OSI model (Open System Interconnection)\
 Describes seven layers that computer systems use to communicate over a network. It was the first standard model for network communications. Modern internet is not base on OSI but is still used as it helps visualize and communicate how networks operate, and helps isolate and troubleshoot networking problems. This is a more comprehensive reference framework for general networking systems as oppose to the internet protocol suite which is more specific for the internet network. The seven layer in this model are:\
-	7. Application layer: Provides protocols to send and receive data and present it to users like HTTP and DNS\
-	6. Presentation Layer: Decides how the data will be encrypted, compressed and \
-	5. Session Layer: Maintains connections and is responsible for controlling ports and sessions, they are communication channels called sessions. \
-	4. Transport Layer: Breaks session layer data into segments when it the transmitting end and reassembles into segments in the receiving end. Uses protocols like TCP and UDP\
-	3. Network Layer: breaks segments into network packets and reassembles packets in the receiving end but also finds the best physical path to the destination using IP\
-	2. Data-link layer: Defines the format of data on the network\
-	1. Physical layer: Transmits raw bit streams over the physical medium(hardware) of a network\
+
+7. Application layer: Provides protocols to send and receive data and present it to users like HTTP and DNS\
+6. Presentation Layer: Decides how the data will be encrypted, compressed and \
+5. Session Layer: Maintains connections and is responsible for controlling ports and sessions, they are communication channels called sessions. \
+4. Transport Layer: Breaks session layer data into segments when it the transmitting end and reassembles into segments in the receiving end. Uses protocols like TCP and UDP\
+3. Network Layer: breaks segments into network packets and reassembles packets in the receiving end but also finds the best physical path to the destination using IP\
+2. Data-link layer: Defines the format of data on the network\
+1. Physical layer: Transmits raw bit streams over the physical medium(hardware) of a network\
 	\
-NetCat\
+## NetCat\
 Is a ethical hacking tool that could make accessing a computer shell remotely, if you access the shell you can communicate with the OS and in theory could get a lot of info but accessing some information will be hard to achieve.\
 \
-JDK(Java development kit)\
+## JDK(Java development kit)\
 I the toolkit that allows to develop java aps, it includes; JRE, Compiler, JVM(included in the JRE), API\
 \
-API(Application Programming Interface)\
+## API(Application Programming Interface)\
 It is an abstract concept as we can not get an instance of the API, it is referred to as a bridge that connects  different pieces of software, they are also know to be a set of rules of how two apps or pieces of software can communicate, it can connect a frontend app with a backend app/web service over the internet network, or two web services for example. In Java is the bridge between bytecode and the JVM, in java we use classes and methods so that the compiler can generate bytecode.\
 \
-JRE(Java Runtime Environment)\
+## JRE(Java Runtime Environment)\
 It can create an instance of the JVM and it contains the classes that your byte code needs to run in the JVM\
 \
-JVM(Java Virtual Machine)\
+## JVM(Java Virtual Machine)\
 This component turns byte code into machine code.\
 \
-ScyllaDB\
+## ScyllaDB\
 An open-source distributed NoSQL wide-column data store. Is a very performant Database it looks like it is usually used not as an embedded DB which means it is more commonly used in the infrastructure of an application(server side/backend)\
 \
-Scalability\
+## Scalability\
 	Horizontal\
 	Is the process of increasing the number of machines in the resource pool\
 \
