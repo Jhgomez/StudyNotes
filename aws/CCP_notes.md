@@ -126,134 +126,118 @@ only be operated by US citizens and US soil, only accessible to US entities.
 - AWS Cost Explorer
 
 Free but Can Provision other AWS services which are not free
-	- Auto Scaling (probably will be on the exam so make sure to explain it could use some services which cost money)
-	- CloudFormation (probably will be on the exam so make sure to explain it could use some services which cost money)
-	- Elastic Beanstalk (probably will be on the exam so make sure to explain it could use some services which cost money)
-	- Opsworks
-	- Amplify
-	- AppSync
- 	- CodeStar
 
+- **Auto Scaling** (probably will be on the exam so make sure to explain it could use some services which cost money)
+- **CloudFormation** (probably will be on the exam so make sure to explain it could use some services which cost money)
+- **Elastic Beanstalk** (probably will be on the exam so make sure to explain it could use some services which cost money)
+- **Opsworks**
+- **Amplify**
+- **AppSync**
+- **CodeStar**
 
-
-
-AWS support plans
+#### AWS support plans
 
 AWS has 4 different support plans, the basic support plan is the default. The basic support plan gives support via email for billing & account and technical info however this feature is available in all plans
 
 ~ means the hours within the email will be responded 
 
-	-Basic: Free, only benefit is email support for billing & account and technical , 7 trusted Advisor checks
+- **Basic**: Free, only benefit is email support for billing & account and technical , 7 trusted Advisor checks
 
-	-Developer(20USD/month):Tech support via email 24~, no third party support,  general guidance support 24~,  system impaired support ~12, 7 trusted
-	 Advisor checks
+- **Developer(20USD/month)**:Tech support via email 24~, no third party support,  general guidance support 24~,  system impaired support ~12, 7 trusted
+	Advisor checks
 
-	-Business(100USD/month): third party support, Tech support via email 24~, Tech support via chat/phone anytime 24/7,  general guidance support 24~, system
-	 impaired support 12~, Production System Impaired 4hrs, Production system down 1hr, all trusted advisor checks
-	
-	-Enterprise(15,000): third party support, Tech support via email ~24, Tech support via chat/phone anytime 24/7,  general guidance support 24~, system impaired
-	 support 12~, production System Impaired ~4, Production system down ~1, all trusted advisor checks, business-critical System Down ~15min, Personal
-	 concierge, TAM
+- **Business(100USD/month)**: third party support, Tech support via email 24~, Tech support via chat/phone anytime 24/7,  general guidance support 24~, system
+	impaired support 12~, Production System Impaired 4hrs, Production system down 1hr, all trusted advisor checks
 
+- **Enterprise(15,000)**: third party support, Tech support via email ~24, Tech support via chat/phone anytime 24/7,  general guidance support 24~, system impaired
+	support 12~, production System Impaired ~4, Production system down ~1, all trusted advisor checks, business-critical System Down ~15min, Personal
+	concierge, TAM
 
-
-AWS Marketplace
+### AWS Marketplace
 Digital catalogue with thousands of software listings from independent software vendors. Easily find, buy, test and deploy software that already runs on AWS. Products can be offered as: Amazon Machine Images(AMIS), AWS Cloudformation templates, Software as a service(SaaS) offerings, Web ACL, AWS WAF rules
 
 
-AWS Trusted Advisor
+### AWS Trusted Advisor
 Tool that advises you on security, saving money, performance, service limits and fault tolerance. You can think of it like an automated checklist of best practices on AWS.
 
-	Cost Optimizations: The most common topics in this section it will advise you on are:
-		Idle Load Balancers
-		Unassociated Elastic IP Addresses
+- **Cost Optimizations**: The most common topics in this section it will advise you on are:
+	- Idle Load Balancers
+	- Unassociated Elastic IP Addresses
 
-	Security: A common topic it can advise you on is:
-		MFA on Root Account
-		IAM Access Key Rotation
+- **Security**: A common topic it can advise you on is:
+	- MFA on Root Account
+	- IAM Access Key Rotation
 
-	Performance: A common topic it can advise you on is:
+- **Performance**: A common topic it can advise you on is:
 		High utilization Amazon EC2 instances
 	
-	Fault Tolerance: A common topic it can advise you on is:
+- **Fault Tolerance**: A common topic it can advise you on is:
 		Amazon RDS Backpus
 
-	Service Limits: Some topics it can advise you on are:
+- **Service Limits**: Some topics it can advise you on are:
 		VPC
 		
-
-
-
-Consolidating Billing(Not service but a feature instead under the billing dashboard)
+### Consolidating Billing(Not service but a feature instead under the billing dashboard)
 This feature is turned on by default whenever you're using service organizations and you have multiple accounts. It generates one bill for all your accounts, it treats all accounts in an organization as if they were one account. A master account can be designated to pay the charges of all other member accounts. This feature is offered at no cost usually. You can use cost explorer to visualize usage for consolidating billing per account.
 
-	Volume Discounts
-	There is discounts for many services, it means that the more you use as service the more you save. Consolidated billing lets you take advantage of Volume 	Discounts
+* **Volume Discounts**:
+There is discounts for many services, it means that the more you use as service the more you save. Consolidated billing lets you take advantage of Volume Discounts
 
-
-
-Cost Explorer
+### Cost Explorer
 Lets you visualize, understand, and manage your AWS costs and usage over time. If there is multiple accounts in your AWS organizations the costs will be consolidated in the master accounts. Default reports help you gain insight into your cost drivers and usage trends, but you can make your custom reports
 
-Budgets
+### Budgets
 Is a service that gives you the ability to plan your service usage, service costs and instance reservations. Gives you the ability to set up alerts if you exceed or are approaching your defined budget. You can create cost, usage or reservation budgets. Can be tracked monthly quarterly or yearly level, with customizable start and end dates. They support EC2, RDS, Redshift, and ElasticCache reservations.
 
-TCO calculator
+### TCO calculator
 Total Cost of Ownership, allows to calculate savings when moving to AWS from on-premise. Provides detail set of reports that can be used in executive presentations. 
 
-AWS Landing Zone
-Helps '93Enterprises'94 quickly set-up a secure, AWS multi-account. This is not a service itself. Provides you with a baseline environment to get started with a multi-account architecture. So its basically a tool that will help you set up the architecture you need in your organization but the cost is a little high. This is all done via:
+### AWS Landing Zone
+Helps "Enterprises" quickly set-up a secure, AWS multi-account. This is not a service itself. Provides you with a baseline environment to get started with a multi-account architecture. So its basically a tool that will help you set up the architecture you need in your organization but the cost is a little high. This is all done via:
 
-	AWS Account Vending Machine
-		Automatically provisions and configure new accounts via Service Catalog Template, uses single sign-on(SSO) for managing and accessing accounts.
+#### AWS Account Vending Machine
+Automatically provisions and configure new accounts via Service Catalog Template, uses single sign-on(SSO) for managing and accessing accounts.
 
 
-AWS Resource Groups and Tagging
-Resource Groups is service available in '93Management & Governance'93 Tags are words or phrases that act as metadata for organizing your AWS resources and Resource Groups are a collection of resources that share one or more tags. It helps you organize and consolidate information based on your project and the resources that you use. Resource groups can display details about a group of resources Resource Groups can display details about a group of resource based on: Metrics, Alarms, configuration.
+### AWS Resource Groups and Tagging
+Resource Groups is service available in "Management & Governance" Tags are words or phrases that act as metadata for organizing your AWS resources and Resource Groups are a collection of resources that share one or more tags. It helps you organize and consolidate information based on your project and the resources that you use. Resource groups can display details about a group of resources Resource Groups can display details about a group of resource based on: Metrics, Alarms, configuration.
 
-AWS Quickstarts
+### AWS Quickstarts
 It's not a device but h move down 300 lineselps deploy popular stacks on AWS. Reduce hundred of manual procedures into just a few steps.
 
-AWS Cost and Usage Report
+### AWS Cost and Usage Report
 This is not a service and can be found under the billing console. Generates a detailed spreadsheet, enabling you to better analyze and understand your AWS costs. Places the report into S3, Athena can be use to our the report into a queryable database, or use Quicksight to visualize your billing data as graphs
 
-
-Organizations and Accounts
-	Organizations: Allow you to centrally manage billing, control access, compliance, security, and share resources across your AWS accounts
+### Organizations and Accounts
+- **Organizations**: Allow you to centrally manage billing, control access, compliance, security, and share resources across your AWS accounts
 	
-	Root Account User: Is a single sign-in identity that has complete access to all AWS services and resources in an account, each account has a root account user.
+- **Root Account User**: Is a single sign-in identity that has complete access to all AWS services and resources in an account, each account has a root account user.
 
-	Organizations Units: are a group of AWS accounts within an organization which can also contain other organizational units - creating hierarchy
+- **Organizations Units**: are a group of AWS accounts within an organization which can also contain other organizational units - creating hierarchy
 
-	Service Control Policies: Give Central control over the allowed permissions for all accounts in your organization, helping to ensure your accounts stay within
+- **Service Control Policies**: Give Central control over the allowed permissions for all accounts in your organization, helping to ensure your accounts stay within
 	your organization's guideline
 
-'97'97'97'97'97
-
-AWS Networking
+### AWS Networking
 AWS Account contains Region which contains VPC which contains Availability Zones which contains a public subnet(it could contain a EC2 instance) and a private subnet(It could contain RDS DB service). The subnets receive information from a Internet gateway(enables access to the internet), the traffic from the subnets mentioned before get to a Route Tables which determined where the network traffic from the subnets are directed, it also exists NACLs which act as a firewall at the  server level(subnet) and they control access in and out to the subnets
 
-'97'97'97'97'97'97
+### DataBase Services
 
-DataBase Services
+- **DynamoDB** - NoSQL key/value database
 
-	DynamoDB - NoSQL key/value database
-	
-	DocumentDB - NoSQL Document database that is MongoDB compatible
+- **DocumentDB** - NoSQL Document database that is MongoDB compatible
 
-	RDS - Relational Database service that supports multiple engines like MySQL, Postgres, MariaDb, Oracle, micorosot SQL server, Aurora
-	
-		Aurora - MySQL(5x fasterr)  and PSQL(3x faster) database fully managed
+- **RDS** - Relational Database service that supports multiple engines like MySQL, Postgres, MariaDb, Oracle, micorosot SQL server, Aurora
 
-		Aurora Serverless - Only runs when you need it, like AWS Lambda
+	- **Aurora** - MySQL(5x fasterr)  and PSQL(3x faster) database fully managed
 
-	Neptune - Managed Graph Database
+	- **Aurora Serverless** - Only runs when you need it, like AWS Lambda
 
-	Redshift - Columnar database, petabyte warehouse
+- **Neptune** - Managed Graph Database
 
-	ElastiCache - Redis or, Memcached database
+- **Redshift** - Columnar database, petabyte warehouse
 
-'97'97'97'97
+- **ElastiCache** - Redis or, Memcached database
  
 Provisioning Services
 Is the allocation or creation of resources and services to a customer
