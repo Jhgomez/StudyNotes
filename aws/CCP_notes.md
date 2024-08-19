@@ -395,30 +395,25 @@ workloads and AWS resources to use managed Active Directory in the AWS Cloud.
 
 Deals with security "of" and "in" the cloud
 
-	In - Happens in data and configuration. Means you're responsible to secure the data that you upload to the cloud you should/can turn on monitoring services	which you would be responsible to configure also. You would be responsible to secure/configure the following: Customer data, platforms, applications, IAM,	operating systems, Network and firewall, client-side encryption, and data integrity authentication, server-side encryption(File system and/or), networking traffic 	protection(encryption, integrity, identity)
+- **In** - Happens in data and configuration. Means you're responsible to secure the data that you upload to the cloud you should/can turn on monitoring services	which you would be responsible to configure also. You would be responsible to secure/configure the following: Customer data, platforms, applications, IAM,	operating systems, Network and firewall, client-side encryption, and data integrity authentication, server-side encryption(File system and/or), networking traffic 	protection(encryption, integrity, identity)
 
-	Of - happens in hardware, operation of managed services and global infrastructure AWS is responsible for security of the cloud, so AWS is responsible to 	secure/configure: Software, compute, storage, database, networking, Hardware/AWS global infrastructure, region, AZ's, edge locations
+- **Of** - happens in hardware, operation of managed services and global infrastructure AWS is responsible for security of the cloud, so AWS is responsible to 	secure/configure: Software, compute, storage, database, networking, Hardware/AWS global infrastructure, region, AZ's, edge locations
 
-'97'97'97'97'97'97
-
-AWS compliance programs
+### AWS compliance programs
 
 They are a set of internal policies and procedures of a company to comply with laws, rules, and regulations or to uphold business regulation.
 	
-	Health Insurance Portability and Accountability Act(HIPAA) - is a USA legislation that provides data privacy and security provisions for safeguarding medical info
+- Health Insurance Portability and Accountability Act(HIPAA) - is a USA legislation that provides data privacy and security provisions for safeguarding medical info
 
-	Payment Card Industry Data Security Standard (PCI DSS) - when you want to sell things online and you need to handle credit card info
+- Payment Card Industry Data Security Standard (PCI DSS) - when you want to sell things online and you need to handle credit card info
 
-'97'97'97'97'97'97'97'97'97
-
-(Security) AWS Artifact
+### (Security) AWS Artifact
 
 How do we prove AWS meets a compliance? 
 
 We use this service to generate reports that proves and explain how/what AWS is doing to comply with a program/certificate.
 
-'97'97'97'97'97'97'97'97'97'97
-(Security) Amazon Inspector` (Security)
+### (Security) Amazon Inspector` (Security)
 
 *********Hardening is the act of eliminating as many security risks as possible***********
 
