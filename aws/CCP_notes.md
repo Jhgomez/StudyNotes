@@ -239,171 +239,161 @@ AWS Account contains Region which contains VPC which contains Availability Zones
 
 - **ElastiCache** - Redis or, Memcached database
  
-Provisioning Services
+### Provisioning Services
 Is the allocation or creation of resources and services to a customer
 
-	Elastic Beanstalk - Service for deploying and scaling web applications and services developed with Java, .NET, PHP, Node.js, Python, Ruby, Go and Docker
+- **Elastic Beanstalk** - Service for deploying and scaling web applications and services developed with Java, .NET, PHP, Node.js, Python, Ruby, Go and Docker
+
+- **OpsWorks** - Configuration management service that provides managed instances of Chef and Puppet
+
+- **CloudFormation** - Infrastructure as code, JSON or YAML
+
+- **AWS QuickStart** - Pre-made packages that can launch and configure your AWS compute, network, storage and other services required to deploy a workload on
+AWS
+
+- **AWS MarketPlace** - A digital catalogue of thousands of software listings from independent software vendors you can used to find, buy, test, and deploy software
+
+### Computing Services
 	
-	OpsWorks - Configuration management service that provides managed instances of Chef and Puppet
+- **EC2** - Every service is using EC2 under the hood, Highly configurable server. For example CPU, Memory, OS
 
-	CloudFormation - Infrastructure as code, JSON or YAML
+- **ECS** -Elastic Container Service, Docker as a service highly scalable, high performance container orchestration service that supports Docker containers, pay for
+EC2 instances
 
-	AWS QuickStart - Pre-made packages that can launch and configure your AWS compute, network, storage and other services required to deploy a workload on
-	AWS
+- **Fargate** - Microservices where you don't think about the infrastructure. Play per task
 
-	AWS MarketPlace - A digital catalogue of thousands of software listings from independent software vendors you can used to find, buy, test, and deploy software
+- **EKS** - Kubernetes as a Service easy to deploy, manage and scale. Containerized apps using Kubernetes
 
-'97'97'97'97'97'97
-Computing Services
+- **Lambada** - Serverless functions run code without provisioning or managing servers. You pay only for the compute time you consume
+
+- **Elastic Beanstalk** - Orchestrates various AWS services, like, EC2, S3. SNS, CloudWatch, Autoscalling And Elastic Load Balancers. Helps to develop, deliver full	stack web app
+
+- **AWS Batch** - Plans, schedules your batch computing workloads across the full range of AWS compute services and features, such as Amazon EC2 and Spot
+Instances
+
+### Storage Services
+- **S3(Simple Storage Service)** - Object storage, you can think of as an hard drive in the cloud, like a virtual hard drive with '93unlimited'94 capacity/space
+
+- **S3 Glacier** - similar to S3 but Low cost storage for archiving and long-term backup, is not expensive but tradeoff is it takes a lot of time sometimes to access the
+files and there is a retrieval cost.
+
+- **Storage Gateway** - Hybrid cloud storage with local caching. Think of it as an extension of your on-premise storage into the cloud. Can be used as a backup
+solution for your local storage. 
+
+- **EBS(Elastic Block Storage)** - Hard drive in the cloud you attach to EC2 instances. You can choose what hard drive you want it to be, so ti can be a SSD(solid
+state drive), HHD etc
+
+- **EFS(Elastic File Storage)** - File storage mountable to multiple EC2 instances at the same time, like a file system which you can mount to multiple EC2 instances
+at same time
+
+- **Snowball** - Physically migrate lots of data via a computer suitcase 50-80 TB. Is allows you to move lots of data around very quickly from on-premise network into
+AWS or viceversa. When you order/allocate/reserve a snowball what you will get is something similar to a computer in the form of a suitcase with a lot of hard
+drives in it which will you will upload your data quickly to that snowball and it will be delivered to S3. There is two types of snowballs
+
+	- **Snowball Edge** - A better version of snowball, like snowball but with more features and space - 100TB, it can process data as its being inserted into
+	snowball
 	
-	EC2 - Every service is using EC2 under the hood, Highly configurable server. For example CPU, Memory, OS
+	- **Snowmobile** - Shipping container, pulled by a semi-trailer truck, so it is just a giant snowball, or like a datacenter on wheels, metaphorically an AWS trailer
+`	that is driven to your on-premise which you hook up to and then is driven back to AWS - 100 PB
 
-	ECS -Elastic Container Service, Docker as a service highly scalable, high performance container orchestration service that supports Docker containers, pay for
-	EC2 instances
+### Business Centric Services
 
-	Fargate - Microservices where you don't think about the infrastructure. Play per task
+- **Amazon Connect** - Call center - Cloud-base call center service you can set up in just a few clicks - base on the same proven system used by Amazon customer
+service teams. You can accept inbound calls, dial outbound calls and record calls and store them in S3, You can create workflows to route calls based on a set
+of rules
 
-	EKS - Kubernetes as a Service easy to deploy, manage and scale. Containerized apps using Kubernetes
+- **Work Spaces** - Virtual Remote Desktop - Secure managed service for provisioning either Windows or linux desktops in just a few minutes which quickly scales
+up to thousands of desktops. 
 
-	Lambada - Serverless functions run code without provisioning or managing servers. You pay only for the compute time you consume
+- **WorkDocs** - A content creation and collaboration service - easily easily create, edit, and share content saved centrally in AWS (the AWS version of sharepoint)
 
-	Elastic Beanstalk - Orchestrates various AWS services, like, EC2, S3. SNS, CloudWatch, Autoscalling And Elastic Load Balancers. Helps to develop, deliver full	stack web app
+- **Chime** - AWS platform for online meetings, video conferencing, and business calling wich elastically scales to meet your capacity needs.
 
-	AWS Batch - Plans, schedules your batch computing workloads across the full range of AWS compute services and features, such as Amazon EC2 and Spot
-	Instances
+- **WorkMail** - Managed business email - contacts, and calendar service with support for existing desktop and mobile email email client applications.
 
-'97'97'97'97'97'97'97'97'97
-Storage Services
-	
-	S3(Simple Storage Service) - Object storage, you can think of as an hard drive in the cloud, like a virtual hard drive with '93unlimited'94 capacity/space
+- **Pinpoint** - Maketing campaign management system you can use for sending targeted email, SMS, push notifications, and voice messages
 
-	S3 Glacier - similar to S3 but Low cost storage for archiving and long-term backup, is not expensive but tradeoff is it takes a lot of time sometimes to access the
-	files and there is a retrieval cost.
+- **SES** - Simple Email Service - A cloud-based email sending service designed for marketers and application developers to send marketing, notification, and
+emails. It is different for pinpoint in the sense that it could be used in smilier scenarios to sending an email notification/confirmation when someone registers in
+the app and supports HTLM emails
 
-	Storage Gateway - Hybrid cloud storage with local caching. Think of it as an extension of your on-premise storage into the cloud. Can be used as a backup
-	solution for your local storage. 
+- **QuickSight** - A business Intelligence (BI) service. Connect multiple datasource and quickly visualize data in the form of graphs with little to no programming
+knowledge
 
-	EBS(Elastic Block Storage) - Hard drive in the cloud you attach to EC2 instances. You can choose what hard drive you want it to be, so ti can be a SSD(solid
-	state drive), HHD etc
-
-	EFS(Elastic File Storage) - File storage mountable to multiple EC2 instances at the same time, like a file system which you can mount to multiple EC2 instances
-	at same time
-
-	Snowball - Physically migrate lots of data via a computer suitcase 50-80 TB. Is allows you to move lots of data around very quickly from on-premise network into
-	AWS or viceversa. When you order/allocate/reserve a snowball what you will get is something similar to a computer in the form of a suitcase with a lot of hard
-	drives in it which will you will upload your data quickly to that snowball and it will be delivered to S3. There is two types of snowballs
-
-		Snowball Edge - A better version of snowball, like snowball but with more features and space - 100TB, it can process data as its being inserted into
-		snowball
-		
-		Snowmobile - Shipping container, pulled by a semi-trailer truck, so it is just a giant snowball, or like a datacenter on wheels, metaphorically an AWS trailer
-	`	that is driven to your on-premise which you hook up to and then is driven back to AWS - 100 PB
-
-'97'97'97'97'97'97'97'97'97'97'97
-
-Business Centric Services
-
-	Amazon Connect - Call center - Cloud-base call center service you can set up in just a few clicks - base on the same proven system used by Amazon customer
-	service teams. You can accept inbound calls, dial outbound calls and record calls and store them in S3, You can create workflows to route calls based on a set
-	of rules
-
-	Work Spaces - Virtual Remote Desktop - Secure managed service for provisioning either Windows or linux desktops in just a few minutes which quickly scales
-	up to thousands of desktops. 
-
-	WorkDocs - A content creation and collaboration service - easily easily create, edit, and share content saved centrally in AWS (the AWS version of sharepoint)
-
-	Chime - AWS platform for online meetings, video conferencing, and business calling wich elastically scales to meet your capacity needs.
-
-	WorkMail - Managed business email - contacts, and calendar service with support for existing desktop and mobile email email client applications.
-
-	Pinpoint - Maketing campaign management system you can use for sending targeted email, SMS, push notifications, and voice messages
-
-	SES - Simple Email Service - A cloud-based email sending service designed for marketers and application developers to send marketing, notification, and
-	emails. It is different for pinpoint in the sense that it could be used in smilier scenarios to sending an email notification/confirmation when someone registers in
-	the app and supports HTLM emails
-
-	QuickSight - A business Intelligence (BI) service. Connect multiple datasource and quickly visualize data in the form of graphs with little to no programming
-	knowledge
-
-'97'97'97'97'97'97'97'97'97'97'97'97
-Enterprise Integration Services
+### Enterprise Integration Services
 Is about going hybrid, meaning bringing your on-prem and your AWS network together.
 	
-	Direct Connect - Dedicated Gigabit network connection from your premises to AWS. Imagine having a direct fibre optic cable running straight to AWS
+- **Direct Connect** - Dedicated Gigabit network connection from your premises to AWS. Imagine having a direct fibre optic cable running straight to AWS
 
-	VPN - Establish a secure connection to your AWS network
-		Site-to-site VPN - Connecting your on-premise to your AWS network 
-		Client VPN - Connecting a Client(laptop/desktop) to your AWS network
+- **VPN** - Establish a secure connection to your AWS network
+	- **Site-to-site VPN** - Connecting your on-premise to your AWS network 
+	- **Client VPN** - Connecting a Client(laptop/desktop) to your AWS network
 
-	Storage Gateway - A hybrid storage service that enables your on-premises applications to use AWS cloud storage. You can use this for backup and archiving,
-	disaster recovery, cloud data processing, storage tiering, and migration.
+- **Storage Gateway** - A hybrid storage service that enables your on-premises applications to use AWS cloud storage. You can use this for backup and archiving,
+disaster recovery, cloud data processing, storage tiering, and migration.
 
-	Active Directory - The AWS Directory Service for Microsoft Active Directory also known as AWS Managed Microsoft AD - Enables your directory-aware
-	workloads and AWS resources to use managed Active Directory in the AWS Cloud.
+- **Active Directory** - The AWS Directory Service for Microsoft Active Directory also known as AWS Managed Microsoft AD - Enables your directory-aware
+workloads and AWS resources to use managed Active Directory in the AWS Cloud.
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-Logging Services
+### Logging Services
 
-	CloudTrail - Logs all API calls(SDK, CLI) between AWS services, helps us know who we should blame, you can get the following info from this service:
-		Who created this bucket?
-		Who spun up that expensive EC2 instance?
-		Who launched this SageMaker Notebook?
-		Detect developer misconfiguration
-		Detect malicious actors
-		Automate responses
+- **CloudTrail** - Logs all API calls(SDK, CLI) between AWS services, helps us know who we should blame, you can get the following info from this service:
 
-	CloudWatch - Is a collection of multiple Services. It stores logs
+	- Who created this bucket?
+	- Who spun up that expensive EC2 instance?
+	- Who launched this SageMaker Notebook?
+	- Detect developer misconfiguration
+	- Detect malicious actors
+	- Automate responses
+
+- **CloudWatch** - Is a collection of multiple Services. It stores logs
+
+	- **Cloudwatch Logs** - Performance data about AWS Services eg. CPU utilization, memory, network, application Logs eg. Rails, Nginx. Lambda Logs
+
+	- **CloudWatch Metrics** - Represents a time-ordered set of data points. A variable to monitor
 	
-		Cloudwatch Logs - Performance data about AWS Services eg. CPU utilization, memory, network, application Logs eg. Rails, Nginx. Lambda Logs
+	- **CloudWatch Events** - Trigger an event based on a condition eg. Every hour take snapshot of server
 
-		CloudWatch Metrics - Represents a time-ordered set of data points. A variable to monitor
-		
-		CloudWatch Events - Trigger an event based on a condition eg. Every hour take snapshot of server
+	- **CloudWatch Alarms** - Triggers notifications based on metrics
 
-		CloudWatch Alarms - Triggers notifications based on metrics
+	- **CloudWatch Dashboard** - Create visualizations based on metrics
 	
-		CloudWatch Dashboard - Create visualizations based on metrics
-	
+### Initialisms
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97
-Initialisms
+- IAM - identity and access management
+- S3 - Simple storage service
+- SWF - Simple workflow service
+- SNS - simple notification service
+- SQS - simple queue service
+- SES - simple email service
+- SSM - simple systems manager
+- RDS - relational database service
+- VPC - virtual private cloud
+- VPN - virtual private network
+- CFN - CloudFormation
+- WAF - Web Application firewall
+- MQ - Amazon ActiveMQ
+- ASG - Auto scaling groups
+- TAM - Technical account manager
+- ELB - Elastic load balancer
+- ALB - Application load balancer
+- NLB - network load balancer
+- EC2 - elastic cloud compute
+- ECS - elastic container service
+- ECR - elastic container repository
+- EBS - elastic block storage
+- EFS - elastic file storage
+- EMR - elastic MapReduce
+- EB - elastic Beanstalk
+- ES - elastic search
+- EKS - elastic kubernetes service
+- MKS - managed Kafka service
+- IoT - internet of things
+- RI - reserved instances
 
-	IAM - identity and access management
-	S3 - Simple storage service
-	SWF - Simple workflow service
-	SNS - simple notification service
-	SQS - simple queue service
-	SES - simple email service
-	SSM - simple systems manager
-	RDS - relational database service
-	VPC - virtual private cloud
-	VPN - virtual private network
-	CFN - CloudFormation
-	WAF - Web Application firewall
-	MQ - Amazon ActiveMQ
-	ASG - Auto scaling groups
-	TAM - Technical account manager
-	ELB - Elastic load balancer
-	ALB - Application load balancer
-	NLB - network load balancer
-	EC2 - elastic cloud compute
-	ECS - elastic container service
-	ECR - elastic container repository
-	EBS - elastic block storage
-	EFS - elastic file storage
-	EMR - elastic MapReduce
-	EB - elastic Beanstalk
-	ES - elastic search
-	EKS - elastic kubernetes service
-	MKS - managed Kafka service
-	IoT - internet of things
-	RI - reserved instances
+### Shared responsibility model
 
-'97'97'97'97'97
-
-Shared responsibility model
-
-Deals with security '93of'94 and '93in'94 the cloud
+Deals with security "of" and "in" the cloud
 
 	In - Happens in data and configuration. Means you're responsible to secure the data that you upload to the cloud you should/can turn on monitoring services	which you would be responsible to configure also. You would be responsible to secure/configure the following: Customer data, platforms, applications, IAM,	operating systems, Network and firewall, client-side encryption, and data integrity authentication, server-side encryption(File system and/or), networking traffic 	protection(encryption, integrity, identity)
 
