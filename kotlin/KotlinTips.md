@@ -10,9 +10,11 @@ They are first class citizens, meaning they can be anywhere, they can be assigne
 As kotlin is a statically typed language(see computer science) and functions are first class citizens, functions can be assigned anywhere as variables, parameters, function return values. Its all possible thanks to the existence of a family of function types to represent functions
 
 ## Functions Types
-They are used by kotlin to represent functions as a data type/object. Example: val funOne: (Int) -> String = { "" } They can have annotations like @composable before the function parameter and also a receiver type so this is equivalent: SomeScope.() -> Unit equivalent to (SomeScope) -> Unit the previous declaration is similar to an extension function. They can have the suspend before the type. You can give function types a name using type type alias, for example:     typealias custom = (Int, Button) -> Unit The following declaration are equivalent 
-- fun example(m: String): String { return m }
-- val example: (a: String)  -> a
+They are used by kotlin to represent functions as a data type/object. Example: `val funOne: (Int) -> String = { "" }` They can have annotations like @composable before the function parameter and also a receiver type so this is equivalent: `SomeScope.() -> Unit` equivalent to `(SomeScope) -> Unit` the previous declaration is similar to an extension function. They can have the suspend before the type. You can give function types a name using type type alias, for example:     `typealias custom = (Int, Button) -> Unit`. The following declaration are equivalent 
+
+`fun example(m: String): String { return m }`
+
+`val example: (a: String)  -> a`
 
 ## Higher order functions
 Functions that take functions as parameters or returns a function. 
@@ -44,35 +46,28 @@ If we declared a variable '93transient'94 it won'92t be serialized
 * **Parcelable**: Serializable is a standard Java interface. Parcelable is an Android specific interface where you implement the serialization yourself. It was created to be far more efficient than serializable.
 
 ## Generics(Type Parameters)
-Java and Kotlin can have Generics, type parameters(List<T>) are invariant meaning List<Sting> is not a subtype of List<Object>. They allow us to reuse code with different object types, however to
- increase this flexibility even further we can use variance. In Java, we can implement it by using Wildcard types(?, ? super E, ? extend E). In Kotlin we can define variance at the '93declaration site'94(this feature 
+Java and Kotlin can have Generics, type parameters(`List\<T>`) are invariant meaning `List\<Sting>` is not a subtype of `List\<Object>`. They allow us to reuse code with different object types, however to
+ increase this flexibility even further we can use variance. In Java, we can implement it by using Wildcard types(`?, ? super E, ? extend E`). In Kotlin we can define variance at the 'declaration site'(this feature 
 is usually called declaration-site variance) using '93type projections'94, type projections make use of '93variance annotations'94 and there are three of the annotations, one for each variance use
- case. There are two types of variance essentially(variant and invariant), however there is three '93use cases'94 of the variance variant type  and those are the following
+ case. There are two types of variance essentially(variant and invariant), however there is three 'use cases' of the variance variant type  and those are the following
 	
-	//Generics(They are invariant by nature)
+// Generics(They are invariant by nature) 
 
-	Invariant(invariant)- Defined inside angle brackets '93<T>'94. This means '93List<Number>'94 can not contain a '93List<Integer>'94, however in java you can use bounded type parameters as follows
-	'93ClassWithGenerics<T extends Number>'93 in kotlin you can do this with '93ClassWithGenerics<T: Number>'94. In java using type parameters will let the compiler infer the type so you can access methods
-	and properties/fields of the defined type however when using wildcards inferring the type is more '93complex'94
+1. **Invariant(invariant)**: Defined inside angle brackets `<T>`. This means `List<Number>` can not contain a `List<Integer>`, however in java you can use bounded type parameters as follows `ClassWithGenerics<T extends Number>` in kotlin you can do this with `ClassWithGenerics<T: Number>`. In java using type parameters will let the compiler infer the type so you can access methods
+	and properties/fields of the defined type however when using wildcards inferring the type is more 'complex'
 
-	// Wildcards(Java) or Variance Annotation(Kotlin)
+// Wildcards(Java) or Variance Annotation(Kotlin)
 	
-	Unbounded(Variant) - In Java '93List<?>'94, in Kotlin '93List<*>'94 If you read from any object that is using this wildcard you will get an '93Object'94 type reference and you will not be able to write to it since the compiler
-	wouldn'92t be able to guarantee runtime safety the behavior in Kotlin is the same with the difference that it will read it as '93Any?'94 type object.
+2. **Unbounded(Variant)**: In Java `List<?>`, in Kotlin `List<*>` If you read from any object that is using this wildcard you will get an `Object` type reference and you will not be able to write to it since the compiler
+	wouldn'92t be able to guarantee runtime safety the behavior in Kotlin is the same with the difference that it will read it as `Any?` type object.
 
-	Covariant(variant) - In Java it is defined like the following '94<? extends AnyClass>'94 and is called upper bound wildcard, you can only read from it and it will read the type of object that you define. You will get a
-	compiler error if you try to write to an object with this wildcard since compiler can not know what type of object you are actually reassigning/adding. In Kotlin this is possible with the '93out'94 keyword '93<out AnyClass>'94
-	and again, you can only read from it just like in java, it has the same behavior
+3. **Covariant(variant)**: In Java it is defined like the following `<? extends AnyClass>` and is called upper bound wildcard, you can only read from it and it will read the type of object that you define. You will get a compiler error if you try to write to an object with this wildcard since compiler can not know what type of object you are actually reassigning/adding. In Kotlin this is possible with the `out` keyword `<out AnyClass>` and again, you can only read from it just like in java, it has the same behavior
 
-	Contravariant(variant) - In java it is defined as follows '93<? Super AnyClass>'94 and is called lower bound wildcard, you can write to it 
-f3b only
-f0b0  the type of objects defined in the angle brackets  and you can also
-	read from it but you will be reading '93Object'94s. In Kotlin you write it with '93<in AnyClass>'94 and you can do the same as in Java but if you read from it will get an object of type '93Any?'94
+4. **Contravariant(variant)**: In java it is defined as follows `<? Super AnyClass>` and is called lower bound wildcard, you can write to it **only** the type of objects defined in the angle brackets and you can also read from it but you will be reading `Object`s. In Kotlin you write it with `<in AnyClass>` and you can do the same as in Java but if you read from it will get an object of type `Any?`
 
-	Declaration-site Variance
-	Is a Kotlin feature that lets you inform the compiler wether your type parameter is Covariant/producer or Contravariant/consumer, basically it is the equivalent to wildcards in Java as explained above
-	with the difference that you can '93enforce'94 a type parameter of a class or method to only be covariant or contravariant by specifying the variance annotation in the declaration of the class or method, the only difference
-	with this approach in contrast to Java'92s approach is that the compiler wouldn'92t let a class consume values of a type parameter if that type parameter is declared as producer(covariant)
+5. **Declaration-site Variance**: Is a Kotlin feature that lets you inform the compiler wether your type parameter is Covariant/producer or Contravariant/consumer, basically it is the equivalent to wildcards in Java as explained above
+with the difference that you can '93enforce'94 a type parameter of a class or method to only be covariant or contravariant by specifying the variance annotation in the declaration of the class or method, the only difference
+with this approach in contrast to Java'92s approach is that the compiler wouldn'92t let a class consume values of a type parameter if that type parameter is declared as producer(covariant)
 
 	Use-site Variance
 	Basically this is the same place and behavior as Java wildcards
