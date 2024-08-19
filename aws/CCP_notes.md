@@ -79,7 +79,7 @@ service we can build our own PaaS on top of this service/tools, also we can buil
 	offerings where they don't need to deal with regulatory bodies or just the nature of the app is not too complicated. 
 
 * **On-Premise**:
-	Deploying resources on-premises, using virtualization and resource management tools, is sometimes called '93private cloud'94. They use data centers, used in
+	Deploying resources on-premises, using virtualization and resource management tools, is sometimes called "private cloud". They use data centers, used in
 	government, hospitals and large enterprises with heavy regulations like insurance companies.
 
 * **Hybrid**:
@@ -272,7 +272,7 @@ EC2 instances
 Instances
 
 ### Storage Services
-- **S3(Simple Storage Service)** - Object storage, you can think of as an hard drive in the cloud, like a virtual hard drive with '93unlimited'94 capacity/space
+- **S3(Simple Storage Service)** - Object storage, you can think of as an hard drive in the cloud, like a virtual hard drive with "unlimited" capacity/space
 
 - **S3 Glacier** - similar to S3 but Low cost storage for archiving and long-term backup, is not expensive but tradeoff is it takes a lot of time sometimes to access the
 files and there is a retrieval cost.
@@ -450,105 +450,82 @@ When you route your traffic through Route53 or CloudFront you are using AWS Shie
 
 You can get the Shield Standard(free) version or a Shield Advance(3000USD/year)
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Penetration Testing
+### Penetration Testing
 We can perform pentesting on AWS in some service and others are not permitted.
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-AWS Guard Duty (Security)
+### AWS Guard Duty (Security)
 Intrusion detection system and intrusion protection system. A device or software application that monitors a network or systems for malicious activity or policy violations. It is an IDS(Interaction detection system) and a IPS(Intrusion protection system)
 
 Guard duty is a threat detection service that continuously monitors for malicious, suspicious activity and unauthorized behavior. It uses machine learning to analyze the following AWS logs: 
-	- CloudTrail Logs
-	- VPC Flow Logs
-	- DNS logs
+- CloudTrail Logs
+- VPC Flow Logs
+- DNS logs
 
 It will alert you on findings which you can automate a incident response via cloudwatch events or with 3rd Party Services
 
-'97'97'97'97'97'97'97'97'97'97'97
-
-Key Management Service(KMS). (Security)
+### Key Management Service(KMS). (Security)
 Managed service that makes it easy for you to create and control the encryption keys used to encrypt your data.
 
-	- KMS is a multi-tenant HSM(Hardware security module)
-	- Many AWS services are integrated to use KMS to encrypt your data wit a simple checkbox
-	- KMS uses Envelope Encryption
+- KMS is a multi-tenant HSM(Hardware security module)
+- Many AWS services are integrated to use KMS to encrypt your data wit a simple checkbox
+- KMS uses Envelope Encryption
 
-Envelope Encryption
+#### Envelope Encryption
 When you encrypt your data, your data is protected, but you have to protect your encryption key. When you encrypt your data key with a master key as an additional layer of security.
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Amazon Macie
-
+### Amazon Macie
 Is a Fully managed service that continuously  monitors S3 data access activity for anomalies, and generates detailed alerts when it detects risk of unauthorized access or inadvertent data leaks. Uses Machine Learning to analyze your cloud trail logs. It will identify your most at-risk users which could lead to a compromise.
 
 Has a variety of alerts like: Anonymized Access, Config Compliance, Credential Loss, Location Anomaly, Open Permissions, Ransomware etc
 
-'97'97'97'97'97'97'97'97'97'97
-
-Security Groups vs NACLs
+### Security Groups vs NACLs
 	
-	Security Groups - Acts as a firewall at the instance level, implicitly denies all traffic. You create Allow rules. Eg. Allow an EC2 instance access on port 22 for SSH
+- **Security Groups** - Acts as a firewall at the instance level, implicitly denies all traffic. You create Allow rules. Eg. Allow an EC2 instance access on port 22 for SSH
 
-	NACLs(Network Access Control List) - Acts as a firewall at the subnet level. You create allow and deny rules. Eg Blocks specific IP address known for abuse.
+- **NACLs(Network Access Control List)** - Acts as a firewall at the subnet level. You create allow and deny rules. Eg Blocks specific IP address known for abuse.
 
 This means an instance will be protected with a security group, and a subnet which lives inside the instance will be protected with a NACL
 
-'97'97'97'97'97'97'97'97'97'97'97'97
-
-AWS VPN
+### AWS VPN
 Lets you establish a secure and private tunnel from your network or device to your AWS global network.
 
-	-AWS Site-to-Site VPN - Securely connects on-premises network or branch 
-	-AWS Client VPN - Securely connect users to AWS or on premises networks 
+- **AWS Site-to-Site VPN** - Securely connects on-premises network or branch 
+- **AWS Client VPN** - Securely connect users to AWS or on premises networks 
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+### Cloud Services
 
-Cloud * Services
+- **Direct Connect** - Dedicated Fiber Options connections from Data center to AWS. A large enterprise has their own datacenter and they need an insanely fast	connection directly to AWS. If you need security apply a VPN connect on-top of Direct Connect
 
-	Direct Connect - Dedicated Fiber Options connections from Data center to AWS. A large enterprise has their own datacenter and they need an insanely fast	connection directly to AWS. If you need security apply a VPN connect on-top of Direct Connect
+- **Amazon Connect** - Call center service. Get a toll free number, accept inbound and outbound calls, setup automated phone systems.
 
-	Amazon Connect - Call center service. Get a toll free number, accept inbound and outbound calls, setup automated phone systems.
-	
-	Media Connect - New version of Elastic Transcoder, Coverts videos to different video types. You have 1000 of videos and you either need to format them in a 	different format, maybe you need to apply watermarks or insert introductions video in front of every video.
+- **Media Connect** - New version of Elastic Transcoder, Coverts videos to different video types. You have 1000 of videos and you either need to format them in a 	different format, maybe you need to apply watermarks or insert introductions video in front of every video.
 
-Elastic Transcoder Vs Media Convert
+#### Elastic Transcoder Vs Media Convert
 Both do same thing, they transcode videos, but media convert is the new version and with new features
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+### SNS vs SQS (Comparison)
 
-SNS vs SQS (Comparison)
+- **SNS Simple Notifications Service** - Located under "application integration" Sends notifications to subscribers of topics via multiple protocol eg. HTTP, Email,	SQS, SMS. Is generally used for sending plain text emails which is triggered via other AWS services like billing alarms. Can retry sending in case of failure for	http(s). Good for web hooks, simple internal emails, triggering lambda functions.
 
-	SNS Simple Notifications Service - Located under '93application integration'94 Sends notifications to subscribers of topics via multiple protocol eg. HTTP, Email,	SQS, SMS. Is generally used for sending plain text emails which is triggered via other AWS services like billing alarms. Can retry sending in case of failure for	http(s). Good for web hooks, simple internal emails, triggering lambda functions.
+- **SQS Simple Queue Service** - Places messages into a queue. Applications pull queue using AWS SDK. Can retain a message for up to 14 days, send them in 	sequential order or in parallel, ensure only message is sent, ensure messages are delivered at least once. It's good for delayed tasks, queueing up emails.
 
-	SQS Simple Queue Service - Places messages into a queue. Applications pull queue using AWS SDK. Can retain a message for up to 14 days, send them in 	sequential order or in parallel, ensure only message is sent, ensure messages are delivered at least once. It's good for delayed tasks, queueing up emails.
-
-'97'97'97'97'97'97'97'97'97'97'97'97
-
-Amazon Inspector vs AWS Trusted Advisor
+### Amazon Inspector vs AWS Trusted Advisor
 Both services have a security component involved in them.
 
-	Amazon Inspector - Audits a single EC2 instance that you've selected. Generates a report from a long list of security checks i.e. 699checks
+- **Amazon Inspector** - Audits a single EC2 instance that you've selected. Generates a report from a long list of security checks i.e. 699checks
 
-	Trusted Advisor - Doesn't generate out a PDF report. Gives you a holistic view of recommendations across multiple services and best practices.
+- **Trusted Advisor** - Doesn't generate out a PDF report. Gives you a holistic view of recommendations across multiple services and best practices.
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97	
-
-ALB vs NLB vs CLB
+### ALB vs NLB vs CLB
 Before ALB and NLB all there was is classic load balancer and then it was renamed to elastic load balancer. You can attach the amazon certification manager to the load balancers so you can apply SSL/TLS and get HTTPS traffic
 
-	Application Load Balancer - Layer 7 requests, HTTP(S) traffic. Routing rules, more usability from one load balancer. Can attach WAF
+- **Application Load Balancer** - Layer 7 requests, HTTP(S) traffic. Routing rules, more usability from one load balancer. Can attach WAF
 
-	Network Load Balancer - Layer 4 IP protocol data. TCP and TLS where extreme performance is required. Capable of handling millions of requests per second 	while maintaining ultra-low latencies. Optimized for sudden volatile traffic patterns while using a single static IP address per Availability Zone
+- **Network Load Balancer** - Layer 4 IP protocol data. TCP and TLS where extreme performance is required. Capable of handling millions of requests per second 	while maintaining ultra-low latencies. Optimized for sudden volatile traffic patterns while using a single static IP address per Availability Zone
 
-	Classic Load Balancer(Old) - Layer 4 and 7. Intended for applications that were built within the EC2-Classic network, doesn't use target groups
+- **Classic Load Balancer(Old)** - Layer 4 and 7. Intended for applications that were built within the EC2-Classic network, doesn't use target groups
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-SNS Vs. SES
+### SNS Vs. SES
 
 	Simple Notification Service - Is a more practical and internal option. Sends notifications to subscribers of topic via multiple protocol. Eg, HTTP, Email, SQS, 
 	SMS and lambdas. Generally used for sending plain text emails which is triggered via other AWS services. A good example is billing alarms. A lot of services
