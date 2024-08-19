@@ -396,26 +396,20 @@ Is a library provided by eclipse that allows us to work with with in with Java c
 ## Process Builder
 A Java class that allows us to interact with different processes. For example if we want to run som code in a shell run this code inside of a Process Builder ("ShellAddressInSystem", "-c", "Any command we want including git commands")
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Set the JAVA_HOME environment variable
+## Set the JAVA_HOME environment variable
 In MacOs we have to search for the .zshrc file located in the user directory and add the variable there, this will make the change permanent but if we just need a temporary change we can use
 
 	export JAVA_HOME=`/usr/libexec/java_home -V JAVA SE 17.0.9`
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Let it Crash
+## Let it Crash
 (I need to investigate this concept further but it is used by the telecom industry and according to what I read it is used for implementing resilience in applications that self-heal and systems that never stop)
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Actor Model
+## Actor Model
 (I need to investigate this concept further but according to the info I read this was used to raise the abstraction level and provide a platform to build correct concurrent and scalable apps)
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+## How to Create/Implement a Library That Can Render Images in a Mobile/Client Application
+(Just High Level Details of The Proccess) ([KMP video minute 1hour minute 11](https://www.youtube.com/watch?v=IGuVIRZzVTk&t=1519s))
 
-How to Create/Implement a Library That Can Render Images in a Mobile/Client Application(Just High Level Details of The Proccess)(https://www.youtube.com/watch?v=IGuVIRZzVTk&t=1519s   KMP video minute 1hour minute 11)
 First you would have to implement an HTTP client like Ktor, Retrofit, Apollo, that can download a bite array, second use a conversion function for the UI toolkit(compose, compose mutliplatform, view system or any other UI toolkit) to
 convert the byte array and then you would have to deal with typical use cases such as image caching, image loading, storing image on disk, downsampling image to make sure it is as performant as it can be, 
 
@@ -423,31 +417,19 @@ convert the byte array and then you would have to deal with typical use cases su
 	Downsampling and Upsampling Images
 	More info can be found in the following link https://medium.com/analytics-vidhya/downsampling-and-upsampling-of-images-demystifying-the-theory-4ca7e21db24a
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-What is the difference between Process and Thread?
+## What is the difference between Process and Thread?
 
 First you have to understand a program is an executable file containing a set of instructions and passively stored on disk. One program can have multiple processes, for example a browser creates a process for every single tab.
 
-	Process
-	A process means a program is in execution. When a program is loaded into the memory and becomes active, the program becomes one or more runing processes. The process requires some essential resources such as registers, program counter and stack. So when a process starts it is assigned memory and resourcesa
+* **Process**: A process means a program is in execution. When a program is loaded into the memory and becomes active, the program becomes one or more runing processes. The process requires some essential resources such as registers, program counter and stack. So when a process starts it is assigned memory and resourcesa
 
-	Thread
-	A thread is the smallest unit of execution within a process
+* **Thread**: A thread is the smallest unit of execution within a process
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Request For Changes
-
+## Request For Changes
 Is a proposal outlining the data'92s of a change requested by stakeholders and explaining the impact of the changes on the product and the development timeline
 
-pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
-cf0 '97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-Chmod
-In unix and unix operating systems, chmod is the command and system call used to change the access permissions and the special mode flags of file system objects. Its an abbreviation of '93change mode'94
-pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
-cf0 
+## Chmod
+In unix and unix operating systems, chmod is the command and system call used to change the access permissions and the special mode flags of file system objects. Its an abbreviation of "change mode"
 
 
 
