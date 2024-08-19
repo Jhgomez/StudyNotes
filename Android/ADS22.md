@@ -55,7 +55,7 @@ Baseline Profiles are a way for the app to provide the app with what is importan
 itself, they work for apps as well as libraries(libraries creators can benefit from baseline profiles by providing them to all consumers)
 
 They can be ported back to android 7, but before android 9, so between 7-9 in order for the package installer to install the baseline profile rules you need
-to add a dependency on Android X Profile Installer to your app, this dependency is also useful/needed if your app is going to be available through other services	other than Google Play Store. So you actually should always add this dependency if you'92re adding a baseline profile.
+to add a dependency on Android X Profile Installer to your app, this dependency is also useful/needed if your app is going to be available through other services	other than Google Play Store. So you actually should always add this dependency if you're adding a baseline profile.
 
 #### Generate Baseline Profiles
 You can use Jetpack Macro Benchmark library. 
@@ -106,64 +106,58 @@ different tools. The following Is the tools we have available in each phase:
 	animated visibility, and more will come
 
 2. **Develop**: These tools helps us accelerate building and testing running applications
-	- Live Edit: You can change some parameters Iike clicks callbacks and they will update live on device/emulator. You have the option to make allow		this update to happen automatically or make it manually. You have to enable it from settings/editor
-	- Editor Features: they'92re divided into three categories, Intention, Code completion, Live templates
-		*- Intention: Helps Creating the composable function(just define signature and right click) and also surround composables with box/row/column
-		*- Code completion: Adds placeholder in lambda functions, suggest Modifier extension functions without typing "Modifier." first
-		*- Live Templates: tipe "comp" or "prev" to create a new composable or preview respectively. 
+	- **Live Edit**: You can change some parameters Iike clicks callbacks and they will update live on device/emulator. You have the option to make allow		this update to happen automatically or make it manually. You have to enable it from settings/editor
 
-3. Debug: How to analyze layout and recompositions to improve UI performance
-	-  Layout Inspector: Lets you monitor how many times a composable is recomposed or spiked recomposition(good performance if its state 
+	- **Editor Features**: They're divided into three categories, Intention, Code completion, Live templates
+		- **Intention**: Helps Creating the composable function(just define signature and right click) and also surround composables with box/row/column
+
+		- **Code completion**: Adds placeholder in lambda functions, suggest Modifier extension functions without typing "Modifier." first
+
+		- **Live Templates**: Type "comp" or "prev" to create a new composable or preview respectively. 
+
+3. **Debug**: How to analyze layout and recompositions to improve UI performance
+	-  **Layout Inspector**: Lets you monitor how many times a composable is recomposed or spiked recomposition(good performance if its state 
 	has not changed)
-	- Profiler: Lets us record computations happening in our application and now also we can get more info from compose composition tracing, it will 
+
+	- **Profiler**: Lets us record computations happening in our application and now also we can get more info from compose composition tracing, it will 
 	tell us what composable caused recomposition or suspicious functions
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
+## State Hoisting(Compose)
+Is the practice of making composables stateless by moving state to a composable's caller.
 
-State Hoisting(Compose)
-
-Is the practice of making composables stateless by moving state to a composable'92s caller.
-
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
-cf0 ul ulc0 State Holders and State Production in the UI Layer
-pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
-cf0 ulnone 
+## State Holders and State Production in the UI Layer 
 We have to understand app architecture first, so we have the following components:
 	
-	ul Data layerulnone : Is going to expose application state the rest of the hierarchy/components or layers. It contains the vast majority of business logic
+- **Data layer**: Is going to expose application state the rest of the hierarchy/components or layers. It contains the vast majority of business logic
 
-	ul Domain Layerulnone : Main mission is to simplify the potential business logic that UI layer could need
+- **Domain Layer**: Main mission is to simplify the potential business logic that UI layer could need
 
-	ul UI layerulnone : Display the data provided by the previous layers and in this case we can separate it two entities
+- **UI layer**: Display the data provided by the previous layers and in this case we can separate it two entities
 
-		State Holders: They hold and expose state to the UI elements. They hoist logic either business logic or UI logic	
-		UI elements: Render the info on the screen, but when talking in compose these components depend on the other entity, "State Holders"
+	* **State Holders**: They hold and expose state to the UI elements. They hoist logic either business logic or UI logic	
+
+	* **UI elements**: Render the info on the screen, but when talking in compose these components depend on the other entity, "State Holders"
 
 There is different types of state holders, UI state, Types of Logic
 
-pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
-cf0 ul Types of UI State
+### Types of UI State
 
-pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
-cf0 ulnone 	Screen UI State: Info the app presents to the user, like the Home Screen feed
+* **Screen UI State**: Info the app presents to the user, like the Home Screen feed
 
-	UI Elements State: Internal state of a reusable UI element, it can be the scroll position in a list or a selected tab or a selected radio box
+* **UI Elements State**: Internal state of a reusable UI element, it can be the scroll position in a list or a selected tab or a selected radio box
 
-pardtx720tx1440tx2160tx2880tx3600tx4320tx5040tx5760tx6480tx7200tx7920tx8640pardirnaturalpartightenfactor0
-cf0 ul Types of Logiculnone 
+### Types of Logic
 We differentiate them by what the logic does
 
-	Business Logic: Implementation of product requirements for application data. Most of it is present in the data layer most of it in the repository implementation
+- **Business Logic**: Implementation of product requirements for application data. Most of it is present in the data layer most of it in the repository implementation
 
-	UI Logic: How to display state changes on the screen, it depends on screen configuration such as screen size, language or orientation, depending on 	configuration the UI logic might be different as in a cellphone a click could trigger navigation while on a tablet it could just display more info on the screen
+- **UI Logic**: How to display state changes on the screen, it depends on screen configuration such as screen size, language or orientation, depending on 	configuration the UI logic might be different as in a cellphone a click could trigger navigation while on a tablet it could just display more info on the screen
 
 So this would be the order of the previous components:
 
         
-	       Data and domain layer				UI layer
-	|'97'97'97'97'97'97'97'97'97'97'97'97'97|'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97|
+Data and domain layer				UI layer
+	
 		   	
 fs20 business logic
 fs24 				    
@@ -172,7 +166,7 @@ fs24
 	App State '97'97'97'97'97'97'97'97> Screen UI State '97'97'97'97'97'97> UI + UI elements state
 
 
-ul Types of State Holders By Logiculnone 
+Types of State Holders By Logiculnone 
 They both can be implemented in a class however there is some different implementations recommended for different state holders
 
 	Business Logic:  Business logic/model state/application state would be hoisted in a screen UI State holder
@@ -185,7 +179,7 @@ Stated Holders Recommended Implementation
 	the fragment is not in the back stack meaning there is no state cached leading to weird states for the user this is all possible thanks to the jetpack navigation 	library to which fragments integrate to and that handles the backstack, also because View Models integrate with other libraries like hilt, so we can I	nject elements/classes from data/domain layer  and those components can be passed to the state holder
 
 	UI Element State(Hoist a UI element state): It could just live inside a composable(a boolean for expand composable, selected state of a check box) if the state 
-	isn'92t too complex but if it is, you should hoist the state to a separated class like in compose LazyListState is complex as it has different properties and 
+	isn't too complex but if it is, you should hoist the state to a separated class like in compose LazyListState is complex as it has different properties and 
 	functions and like so if the composable state is too complicated a new state holder class should be created, these state holder classes are compoundable 
 	meaning they can contain other state holder/depend on other state holders
 
@@ -225,17 +219,17 @@ more reliable"
 		}
 
 	2. Automatic Synchronization
-	How the test knows when to send the next action or perform the next assertion, you would need to use tools like espresso which has ways to figure out if the app is	busy or idle(is activity RESUMED?, is there idling resources?, is the main thread idle?, is the UI idle?) and views don'92t have a way to tell you they'92re busy, however 	this is exactly what compose does as it exposes a much more straightforward signal to the tests, making the more reliable and faster(using the same test class ass above)
+	How the test knows when to send the next action or perform the next assertion, you would need to use tools like espresso which has ways to figure out if the app is	busy or idle(is activity RESUMED?, is there idling resources?, is the main thread idle?, is the UI idle?) and views don't have a way to tell you they're busy, however 	this is exactly what compose does as it exposes a much more straightforward signal to the tests, making the more reliable and faster(using the same test class ass above)
 	
-		// This wouldn'92t be the right way to synchronize interactions
+		// This wouldn't be the right way to synchronize interactions
 		@Test
 		fun mySlowTest() {
 			composeTestRule.onNodeWithText("Continue").performClick()
-			Thread.sleep(2000) // Don'92t do this!
+			Thread.sleep(2000) // Don't do this!
 			composeTestRule.onNodeWithText("Welcome").assertIsDisplayed()
 		}
 
-	Compose works with automatic synchronization, usually you don'92t have to think too much about it, but you still in some cases need to synchronize asynchronous operations	happening across all the layers of the app.
+	Compose works with automatic synchronization, usually you don't have to think too much about it, but you still in some cases need to synchronize asynchronous operations	happening across all the layers of the app.
 
 	3. Controlling time
 	In compose test you can pause time or advance clock as much as needed. This is great for testing state
@@ -299,14 +293,14 @@ Performance Tips for Jetpack Compose
 	1. Benchmark - Write a benchmark to know if your performance optimizations are working
 	2. Deferred State - Read state as late as possible using lambdas
 	3. DerivedStateOf - Used when your state or key is changing more than you need to update your UI
-	4. Stability - Compose determines the stability of composables to determine if they can be skipped, The skipability of a function is determined by the stability	of its parameters, they can be of type "Immutable"(compiler is sure the values of the object'92s properties will never change, usually all its parameters will be "val"s and not 	"var"s, also they should use immutable collections, also if working it contains a third party library object you can annotate the class with "Immutable" to force/tell the compiler	to treat it as immutable even thought those properties will be annotated with "unstable", the wrapper class will be annotated with "stable") or "Stable"(Is mutable but the 
-	compiler will be notified when properties has changed, in practice this means those properties are wrapped inside a state functions like "mutableStateOf", also they 	can be annotated so the compiler treats them as stable with "stable" annotation) or "Unstable"(this classes can'92t be skipped, these type of objects have "var"s defined	instead of "val"s) 
+	4. Stability - Compose determines the stability of composables to determine if they can be skipped, The skipability of a function is determined by the stability	of its parameters, they can be of type "Immutable"(compiler is sure the values of the object's properties will never change, usually all its parameters will be "val"s and not 	"var"s, also they should use immutable collections, also if working it contains a third party library object you can annotate the class with "Immutable" to force/tell the compiler	to treat it as immutable even thought those properties will be annotated with "unstable", the wrapper class will be annotated with "stable") or "Stable"(Is mutable but the 
+	compiler will be notified when properties has changed, in practice this means those properties are wrapped inside a state functions like "mutableStateOf", also they 	can be annotated so the compiler treats them as stable with "stable" annotation) or "Unstable"(this classes can't be skipped, these type of objects have "var"s defined	instead of "val"s) 
 	5. reportFullyDrawn() - Allows Android to optimize your apps startup
 
 Offline-firts Apps
 For both, reads and writes, managing connectivity changes require implementing two main functions, "Queues"(to deferred/consume actions till the network is available) 
 and "Network Monitors"(As a signal to drain the queue as soon as the network becomes available). External layers should always read from the local data source. Apps 
-Don'92t have to write data offline to be considered offline-first because writes requires more considerations than reads, there still can be failures/network errors and the 
+Don't have to write data offline to be considered offline-first because writes requires more considerations than reads, there still can be failures/network errors and the 
 solution is just simply retry if it is needed/required/requested
 
 	Synchronization
@@ -447,7 +441,7 @@ an app(measure its performance) is a profileable app, when choosing this type of
 		To use the debugger, inspectors, etc. also for profiling memory, profiling energy
 
 App Quality Insights
-Is a new feature/option in AS where you can see the most impactful crash reports from crashalitycs, they are sorted by the number of impacted users so
+Is a new feature/option in AS where you can see the most impactfcrash reports from crashalitycs, they are sorted by the number of impacted users so
 you know which crashes are most impactful, you can click into the stack traces that will lead directly into app codebase
 
 Animations in Compose
