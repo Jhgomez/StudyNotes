@@ -413,40 +413,36 @@ How do we prove AWS meets a compliance?
 
 We use this service to generate reports that proves and explain how/what AWS is doing to comply with a program/certificate.
 
-### (Security) Amazon Inspector` (Security)
+### (Security) Amazon Inspector (Security)
 
-*********Hardening is the act of eliminating as many security risks as possible***********
+`Hardening is the act of eliminating as many security risks as possible`
 
-How do we prove an EC2 instance is harden?
+#### How do we prove an EC2 instance is harden?
 
 Inspector runs a security benchmark against specific EC2 instances. You can run a variety of security benchmarks.
 
 Can perform both network and host assessments
-	1. Install AWS agent on your EC2 instances.
-	2. Run an assessment for your assessment target.
-	3. Review your findings and remediate security issues.
+1. Install AWS agent on your EC2 instances.
+2. Run an assessment for your assessment target.
+3. Review your findings and remediate security issues.
 
 A very popular benchmark you can run is by CIS which has 699 checks.
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-AWS Web Application Firewall(WAF) (Security)
+### AWS Web Application Firewall(WAF) (Security)
 
 AWS WAF protect your web applications, it allows you to write your own rules to allow or deny traffic based on the contents of an HTTP request. Use ruleset from a trusted AWS Security Partner in the AWS WAF rules marketplace. WAF can be attached to either CloudFront or an Application Load Balancer. Protect web applications from attacks covered in the OWASP Top 10 most dangerous attacks:
-	1. Injection
-	2. Broken Authentication
-	3. Sensitive data exposure
-	4. XML External Entities (XXE)
-	5. Broken Access control
-	6. Security misconfigurations
-	7. Cross Site Scripting (XSS)
-	8. Insecure Deserialization
-	9. Using Components with known vulnerabilities
-	10. Insufficient logging and monitoring
+1. Injection
+2. Broken Authentication
+3. Sensitive data exposure
+4. XML External Entities (XXE)
+5. Broken Access control
+6. Security misconfigurations
+7. Cross Site Scripting (XSS)
+8. Insecure Deserialization
+9. Using Components with known vulnerabilities
+10. Insufficient logging and monitoring
 
-'97'97'97'97'97'97'97'97'97'97'97'97'97
-
-AWS Shield (Security)
+### AWS Shield (Security)
 
 Is a managed DDoS (Distributed Denial of Service) protections service that safeguards applications running on AWS. DDoS attacks are a malicious attempt to disrupt normal traffic by flooding a website with a large amount of fake traffic. Service is offered at no cost and automatically used by all services.
 
