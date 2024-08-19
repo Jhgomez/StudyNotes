@@ -1,134 +1,129 @@
-Cloud Practitioner(CCP)
+# Cloud Practitioner(CCP)
 
 Basic certification, light weight version of the certified architect solution, most people taking it are in sales and management due to the certification focus on billing and business-centric concepts which will allow to understand the reasons why you should use AWS
 
 Content:
 
-	Cloud Concepts
+* **Cloud Concepts**:
 	Define AWS cloud and its value propositions, identify aspect of AWS cloud economics, list cloud architecture design principles
 
-	Security
+* **Security**:
 	AWS security service, shared responsibility model
 
-	Technology
+* **Technology**:
 	Core AWS services and other services, global infrastructure(regions, azs, edge locations)
 
-	Billing and pricing
-	Compare and contrast different pricing models, recognize account structures in relating to EVA'92s billing and pricing, identify resource for billing support
+* **Billing and pricing**:
+	Compare and contrast different pricing models, recognize account structures in relating to EVA's billing and pricing, identify resource for billing support
 
 We can use the following resources(Search in google): 
 
--Overview of AWs
--Architecting for the Cloud: AWS Best Practices 
--How AWS pricing works
--Cost management in the AWS Cloud
--Just go to the web page and compare/read about the support plans
+- Overview of AWs
+- Architecting for the Cloud: AWS Best Practices 
+- How AWS pricing works
+- Cost management in the AWS Cloud
+- Just go to the web page and compare/read about the support plans
 
-'97'97'97'97'97'97'97'97'97'97
 
-Cloud Concepts
+# Cloud Concepts
 
--What is cloud computing?
+### What is cloud computing?
+
 Is the practice of using network of remote servers hosted on the internet to store, manage, and process data, rather than a local server or personal computer.
 
 GCP and Azure are similar solutions to AWS, they all are cloud providers, which are solutions to run workloads. Previous to cloud providers this was done purely On-premise, but now we have three options, on-premise, hybrid(using both cloud and premise) and cloud. On-premise means 
-	-you own your own server(software and hardware)
-	-you need IT staff/personnel to configure the servers and applications
-	-you pay or rent the real-estate to house these fiscal servers
-	-you take all the risk
+
+- you own your own server(software and hardware)
+- you need IT staff/personnel to configure the servers and applications
+- you pay or rent the real-estate to house these fiscal servers
+- you take all the risk
 
 But now companies are using more cloud providers than on-premise solutions, Using cloud providers means:
-	-Someone else owns the servers
-	-Someone else hire the IT personnel
-	-Someone else pays/rents the real-estate
-	-You'92re responsible for configuring your cloud services and code that you deploy on to those services, and cloud providers takes care of the rest
 
-6 Benefits of Cloud Computing/Cloud Providers over On-Premise
+- Someone else owns the servers
+- Someone else hire the IT personnel
+- Someone else pays/rents the real-estate
+- You're responsible for configuring your cloud services and code that you deploy on to those services, and cloud providers takes care of the rest
 
-	1.- Trade capital expense for variable expense: No upfront-cost, instead of paying for data centers and servers instead, pay-on demand, meaning, pay only when	     you consume computing resources
+### 6 Benefits of Cloud Computing/Cloud Providers over On-Premise
 
-	2.- Benefits for massive economies of scale: You'92re sharing the cost with thousands of customers to get unbeatable savings
-	
-	3.- Stop guessing capacity: You don'92t need to guess what the infrastructure capacity needs to be, instead of paying for underutilized servers, you can scale up
-	     or down to meet the current need.
+1. Trade capital expense for variable expense: No upfront-cost, instead of paying for data centers and servers instead, pay-on demand, meaning, pay only when you consume computing resources
 
-	4.- Increase speed and agility: Launch resources within a few clicks in minutes, instead of waiting for the IT staff to implement to solution/configuration of the
-	     server
+2. Benefits for massive economies of scale: You're sharing the cost with thousands of customers to get unbeatable savings
 
-	5.- Stop spending on running and maintaining data centers: Focus on customers rather than the heavy lifting of racking, stacking and powering servers.
+3. Stop guessing capacity: You don't need to guess what the infrastructure capacity needs to be, instead of paying for underutilized servers, you can scale up or down to meet the current need.
 
-	6.- Go global in minutes: Deploy your app in different regions around the world with a few clicks.
+4. Increase speed and agility: Launch resources within a few clicks in minutes, instead of waiting for the IT staff to implement to solution/configuration of the server
 
-Types of cloud computing
+5. Stop spending on running and maintaining data centers: Focus on customers rather than the heavy lifting of racking, stacking and powering servers.
+
+6. Go global in minutes: Deploy your app in different regions around the world with a few clicks.
+
+### Types of cloud computing
  
-	-SssS(for customers): Software as a service, a complete product that is run and managed by the service provider. Don'92t worry about how the service is
-	 maintained, it just works and remains available. Examples: Salesforce, Gmail, Microsoft365,
+- SssS(for customers): Software as a service, a complete product that is run and managed by the service provider. Don't worry about how the service is
+	maintained, it just works and remains available. Examples: Salesforce, Gmail, Microsoft365,
 
-	-PaaS(for developers): Platform as service, removes the need for your organization to manage the underlying infrastructure, don'92t worry about provisioning,
-	configuring or understanding the hardware or OS. You can focus on the deployment and management of your app. Examples: Elastic Beanstalk(AWS), Heroku,
-	Engines(google)
+- PaaS(for developers): Platform as service, removes the need for your organization to manage the underlying infrastructure, don't worry about provisioning,
+configuring or understanding the hardware or OS. You can focus on the deployment and management of your app. Examples: Elastic Beanstalk(AWS), Heroku,
+Engines(google)
 
-	-IaaS(for Administrators): infrastructure as a service. The building block for cloud IT. Provides access to networking features, computers and data storage space.
-	Don'92t worry about IT staff, data centers or hardware. Examples: AWS, google cloud platform, Microsoft Azure. With all the resources we can access in this
-	service we can build our own PaaS on top of this service/tools, also we can build our own SaaS on top of the PaaS or IaaS.
+- IaaS(for Administrators): infrastructure as a service. The building block for cloud IT. Provides access to networking features, computers and data storage space.
+Don't worry about IT staff, data centers or hardware. Examples: AWS, google cloud platform, Microsoft Azure. With all the resources we can access in this
+service we can build our own PaaS on top of this service/tools, also we can build our own SaaS on top of the PaaS or IaaS.
 
-  Cloud Computing Deployment Models
+### Cloud Computing Deployment Models
 	
-	Cloud
-	Fully utilizing cloud computing. Examples: Squarespace, dropbox, basecamp. It is very well suited for start-up because it'92s extremely low-cost. Great for SaaS
-	offerings where they don'92t need to deal with regulatory bodies or just the nature of the app is not too complicated. 
+* **Cloud**:
+	Fully utilizing cloud computing. Examples: Squarespace, dropbox, basecamp. It is very well suited for start-up because it's extremely low-cost. Great for SaaS
+	offerings where they don't need to deal with regulatory bodies or just the nature of the app is not too complicated. 
 
-	On-Premise
+* **On-Premise**:
 	Deploying resources on-premises, using virtualization and resource management tools, is sometimes called '93private cloud'94. They use data centers, used in
 	government, hospitals and large enterprises with heavy regulations like insurance companies.
 
-	Hybrid
+* **Hybrid**:
 	Uses both cloud and on-premise resources. It is used by banks, fintech, etc. Usually legacy code lives on-premise
 
-Global Infrastructure
+### Global Infrastructure
 
 3 years back there was 69 availabllity zones within 22 geographic regions around the world. There is regions which is a physical location in the world with multiple availability zones, also Availability zones are one or more discrete data centers and edge location which is a data center owned by trusted partner of was.
 
-	 -Regions: Geographically distinct location with multiple data centers(AZs). They are physically isolated from and independent from other regions in terms of
-	location and power supply, each one has at least two AZs, largest region is US-east and service almost always become available in this regions. Not all services	are available in all regions. US-east-1 is the region where you see all your billing info.
+- **Regions**: Geographically distinct location with multiple data centers(AZs). They are physically isolated from and independent from other regions in terms of location and power supply, each one has at least two AZs, largest region is US-east and service almost always become available in this regions. Not all services	are available in all regions. US-east-1 is the region where you see all your billing info.
 
-	-Availability Zones/AZs (Data Centers): Data center in which AWS services run. Identified by a region code followed by letter identifier. Multi-AZ is when you'92re
-	distributing your instances across multiple AZs which allows failover configurations for handling requests when one goes down. There is a set latency between
-	AZs of <10ms.
+- **Availability** Zones/AZs (Data Centers): Data center in which AWS services run. Identified by a region code followed by letter identifier. Multi-AZ is when you're
+distributing your instances across multiple AZs which allows failover configurations for handling requests when one goes down. There is a set latency between
+AZs of <10ms.
 
-	-Edge Locations: Data centers own by a partner of AWS which has a connection to AWS network. This locations serve requests for CloudFront and Route53.
-	Request going to either of these services will be routed to the nearest edge location automatically. S3TransferAcceleration traffic and APIGateway endpoint
-	traffic also use the the AWS edge network. This allows for low latency no matter where the user is located.
+- **Edge Locations**: Data centers own by a partner of AWS which has a connection to AWS network. This locations serve requests for CloudFront and Route53.
+Request going to either of these services will be routed to the nearest edge location automatically. S3TransferAcceleration traffic and APIGateway endpoint
+traffic also use the the AWS edge network. This allows for low latency no matter where the user is located.
 
-	-GovCloud Regions(US): Special type of region which allow customers to host sensitive controlled unclessified info and other type of regulated workloads. Can
-	only be operated by US citizens and US soil, only accessible to US entities. 
+- **GovCloud Regions(US)**: Special type of region which allow customers to host sensitive controlled unclessified info and other type of regulated workloads. Can
+only be operated by US citizens and US soil, only accessible to US entities. 
 
+### EC2 pricing model
 
-'97'97'97'97
+- **On-Demand (Least commitment/cheapest)**: Low cost and flexible, for first time apps or experiment, short-term, spiky unpredictable workloads or run an
+	experiment. Charged by the hour or by minute of use(Varies based on EC2 instances types). No upfront payment and no long term commitment
 
-EC2 pricing model
+- **Reserved Instances (Best Long-term)**: Steady state or predictable usage, commit to EC2 over a 1 or 3 year term, allows reselling unused reserved instances.
 
-	-On-Demand (Least commitment/cheapest): Low cost and flexible, for first time apps or experiment, short-term, spiky unpredictable workloads or run an
-	 experiment. Charged by the hour or by minute of use(Varies based on EC2 instances types). No upfront payment and no long term commitment
+- **Spot(Biggest Savings up to 90%)**: request extra/spare computing capacity, flexible commitment(start and end time), can handle interruptions, for non-critical
+	background jobs. Similar to discounts when an airline makes discounts to fill vacant seats in a flight, AWS will offer discounts to maximize utility of their idle
+	servers(unused resoures). The instance can be terminated by AWS at anytime if a customer paying a higher price needs it.
 
-	-Reserved Instances (Best Long-term): Steady state or predictable usage, commit to EC2 over a 1 or 3 year term, allows reselling unused reserved instances.
+- **Dedicated(most expensive)**: Dedicated servers, can be on-demand or reserved(up to 70% off), when you need a gxuarantee of isolate hardware(enterprise
+	requirement). Multi-tenat when multiple customers run their workload in the same server and Virtual Isolation is what separates the customers. Single tenant is
+	when each customer runs their workload in a separate server/hardware
 
-	-Spot(Biggest Savings upto 90%): request extra/spare computing capacity, flexible commitment(start and end time), can handle interruptions, for non-critical
-	 background jobs. Similar to discounts when an airline makes discounts to fill vacant seats in a flight, AWS will offer discounts to maximize utility of their idle
-	 servers(unused resoures). The instance can be terminated by AWS at anytime if a customer paying a higher price needs it.
+### Billing And Pricing
 
-	-Dedicated(most expensive): Dedicated servers, can be on-demand or reserved(up to 70% off), when you need a gxuarantee of isolate hardware(enterprise
-	 requirement). Multi-tenat when multiple customers run their workload in the same server and Virtual Isolation is what separates the customers. Single tenant is
-	 when each customer runs their workload in a separate server/hardware
-
-'97'97'97'97
-Billing And Pricing
-
-Free Services
-	-IAM
-	-VPC
-	- Organizations & Consolidation Billing
-	- AWS Cost Explorer
+#### Free Services: 
+- IAM
+- VPC
+- Organizations & Consolidation Billing
+- AWS Cost Explorer
 
 Free but Can Provision other AWS services which are not free
 	- Auto Scaling (probably will be on the exam so make sure to explain it could use some services which cost money)
@@ -190,7 +185,7 @@ Tool that advises you on security, saving money, performance, service limits and
 
 
 Consolidating Billing(Not service but a feature instead under the billing dashboard)
-This feature is turned on by default whenever you'92re using service organizations and you have multiple accounts. It generates one bill for all your accounts, it treats all accounts in an organization as if they were one account. A master account can be designated to pay the charges of all other member accounts. This feature is offered at no cost usually. You can use cost explorer to visualize usage for consolidating billing per account.
+This feature is turned on by default whenever you're using service organizations and you have multiple accounts. It generates one bill for all your accounts, it treats all accounts in an organization as if they were one account. A master account can be designated to pay the charges of all other member accounts. This feature is offered at no cost usually. You can use cost explorer to visualize usage for consolidating billing per account.
 
 	Volume Discounts
 	There is discounts for many services, it means that the more you use as service the more you save. Consolidated billing lets you take advantage of Volume 	Discounts
@@ -217,7 +212,7 @@ AWS Resource Groups and Tagging
 Resource Groups is service available in '93Management & Governance'93 Tags are words or phrases that act as metadata for organizing your AWS resources and Resource Groups are a collection of resources that share one or more tags. It helps you organize and consolidate information based on your project and the resources that you use. Resource groups can display details about a group of resources Resource Groups can display details about a group of resource based on: Metrics, Alarms, configuration.
 
 AWS Quickstarts
-It'92s not a device but h move down 300 lineselps deploy popular stacks on AWS. Reduce hundred of manual procedures into just a few steps.
+It's not a device but h move down 300 lineselps deploy popular stacks on AWS. Reduce hundred of manual procedures into just a few steps.
 
 AWS Cost and Usage Report
 This is not a service and can be found under the billing console. Generates a detailed spreadsheet, enabling you to better analyze and understand your AWS costs. Places the report into S3, Athena can be use to our the report into a queryable database, or use Quicksight to visualize your billing data as graphs
@@ -231,7 +226,7 @@ Organizations and Accounts
 	Organizations Units: are a group of AWS accounts within an organization which can also contain other organizational units - creating hierarchy
 
 	Service Control Policies: Give Central control over the allowed permissions for all accounts in your organization, helping to ensure your accounts stay within
-	your organization'92s guideline
+	your organization's guideline
 
 '97'97'97'97'97
 
@@ -282,7 +277,7 @@ Computing Services
 	ECS -Elastic Container Service, Docker as a service highly scalable, high performance container orchestration service that supports Docker containers, pay for
 	EC2 instances
 
-	Fargate - Microservices where you don'92t think about the infrastructure. Play per task
+	Fargate - Microservices where you don't think about the infrastructure. Play per task
 
 	EKS - Kubernetes as a Service easy to deploy, manage and scale. Containerized apps using Kubernetes
 
@@ -426,9 +421,9 @@ Shared responsibility model
 
 Deals with security '93of'94 and '93in'94 the cloud
 
-	In - Happens in data and configuration. Means you'92re responsible to secure the data that you upload to the cloud you should/can turn on monitoring services	which you would be responsible to configure also. You would be responsible to secure/configure the following: Customer data, platforms, applications, IAM,	operating systems, Network and firewall, client-side encryption, and data integrity authentication, server-side encryption(File system and/or), networking traffic 	protection(encryption, integrity, identity)
+	In - Happens in data and configuration. Means you're responsible to secure the data that you upload to the cloud you should/can turn on monitoring services	which you would be responsible to configure also. You would be responsible to secure/configure the following: Customer data, platforms, applications, IAM,	operating systems, Network and firewall, client-side encryption, and data integrity authentication, server-side encryption(File system and/or), networking traffic 	protection(encryption, integrity, identity)
 
-	Of - happens in hardware, operation of managed services and global infrastructure AWS is responsible for security of the cloud, so AWS is responsible to 	secure/configure: Software, compute, storage, database, networking, Hardware/AWS global infrastructure, region, AZ'92s, edge locations
+	Of - happens in hardware, operation of managed services and global infrastructure AWS is responsible for security of the cloud, so AWS is responsible to 	secure/configure: Software, compute, storage, database, networking, Hardware/AWS global infrastructure, region, AZ's, edge locations
 
 '97'97'97'97'97'97
 
@@ -564,16 +559,16 @@ SNS vs SQS (Comparison)
 
 	SNS Simple Notifications Service - Located under '93application integration'94 Sends notifications to subscribers of topics via multiple protocol eg. HTTP, Email,	SQS, SMS. Is generally used for sending plain text emails which is triggered via other AWS services like billing alarms. Can retry sending in case of failure for	http(s). Good for web hooks, simple internal emails, triggering lambda functions.
 
-	SQS Simple Queue Service - Places messages into a queue. Applications pull queue using AWS SDK. Can retain a message for up to 14 days, send them in 	sequential order or in parallel, ensure only message is sent, ensure messages are delivered at least once. It'92s good for delayed tasks, queueing up emails.
+	SQS Simple Queue Service - Places messages into a queue. Applications pull queue using AWS SDK. Can retain a message for up to 14 days, send them in 	sequential order or in parallel, ensure only message is sent, ensure messages are delivered at least once. It's good for delayed tasks, queueing up emails.
 
 '97'97'97'97'97'97'97'97'97'97'97'97
 
 Amazon Inspector vs AWS Trusted Advisor
 Both services have a security component involved in them.
 
-	Amazon Inspector - Audits a single EC2 instance that you'92ve selected. Generates a report from a long list of security checks i.e. 699checks
+	Amazon Inspector - Audits a single EC2 instance that you've selected. Generates a report from a long list of security checks i.e. 699checks
 
-	Trusted Advisor - Doesn'92t generate out a PDF report. Gives you a holistic view of recommendations across multiple services and best practices.
+	Trusted Advisor - Doesn't generate out a PDF report. Gives you a holistic view of recommendations across multiple services and best practices.
 
 '97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97	
 
@@ -584,7 +579,7 @@ Before ALB and NLB all there was is classic load balancer and then it was rename
 
 	Network Load Balancer - Layer 4 IP protocol data. TCP and TLS where extreme performance is required. Capable of handling millions of requests per second 	while maintaining ultra-low latencies. Optimized for sudden volatile traffic patterns while using a single static IP address per Availability Zone
 
-	Classic Load Balancer(Old) - Layer 4 and 7. Intended for applications that were built within the EC2-Classic network, doesn'92t use target groups
+	Classic Load Balancer(Old) - Layer 4 and 7. Intended for applications that were built within the EC2-Classic network, doesn't use target groups
 
 '97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97'97
 
