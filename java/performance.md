@@ -13,7 +13,7 @@ JFR collects information about the events in a Java Virtual Machine (JVM) during
 
 In order to use JFR, we should activate it. We may achieve this in two ways:
 
-1. when starting a Java application, 
+1. when starting a Java application, from the command line. 
 2. passing diagnostic commands of the jcmd tool when a Java application is already running
 
 JFR doesn’t have a standalone tool. We use Java Mission Control (JMC), which contains a plugin that allows us to visualize the data collected by JFR. These tools working together form a suite for collecting low-level runtime information of a running Java program
