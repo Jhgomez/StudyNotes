@@ -45,6 +45,43 @@ In some rare cases, JFR might fail to flush the data (for example, when there ar
 ### How To Use It
 in earlier JDK distributions, we have to activate commercial features in order to use it in production. However, starting from JDK 11, we may use it without activating anything. For JDK 8, to be able to activate JFR, we should start the JVM with the options +UnlockCommercialFeatures and +FlightRecorder. 
 
+In our case I will show how to set up flight recordings inside a JavaFx Desktop app for Windows using Gradle Kotlin, remember you have two options, start JFR when an application starts or whenan application is already running.
+
+#### Create a JFR Recording
+I'm using a modular/multi module JavavaFx Windows Desktop application with several gradle modules and as mentioned in prev notes there is three ways to start a trace/recording, on application start and on demand(while application is running any moment). The data that records capture are events, they can be of different four types:
+
+* **Duration Events**: they have duration, a start and stop time
+* **Instant Events**: WHen it ocurrs it gets instantly logged, for example, when a thread gets blocked
+* **Sample Events**: THeir purpose is to check the health of the system, they are logged on time intervals previously specified, for example, printing heap diagnostics every minute
+* **Custom Events**: These events are created by the user using JMC or other APIs, for example starting a trace on starting a certain function call and stoping the trace on function complete
+
+In addition, there are predefined events that are enabled in a recording template. Some templates only save very basic events and have virtually no impact on performance. Other templates may come with slight performance overhead and may also trigger garbage collections to gather additional data. The following templates are provided with Flight Recorder in the <JDK_ROOT>/lib/jfr directory:
+
+* **default.jfc: Collects a predefined set of data with low overhead.
+* **profile.jfc: Provides more data than the default.jfc template, but with overhead and impact on performance.
+
+Flight Recorder produces following types of recordings:
+
+* **Time fixed recordings(the one I needed in my case because of what the use cases for it can be as described below)**: A time fixed recording is also known as a profiling recording that runs for a set amount of time, and then stops. Usually, a time fixed recording has more events enabled and may have a slightly bigger performance effect. Events that are turned on can be modified according to your requirements. Time fixed recordings will be automatically dumped and opened.
+
+  Typical use cases for a time fixed recording are as follows:
+
+    * Profile which methods are run the most and where most objects are created.
+
+    * Look for classes that use more and more heap, which indicates a memory leak.
+
+    * Look for bottlenecks due to synchronization and many more such use cases.
+
+* **Continuous recordings**: A continuous recording is a recording that is always on and saves, for example, the last six hours of data. During this recording, JFR collects events and writes data to the global buffer. When the global buffer fills up, the oldest data is discarded. The data currently in the buffer is written to the specified file whenever you request a dump, or if the dump is triggered by a rule.
+
+  A continuous recording with the default template has low overhead and gathers a lot of useful data. However, this template doesn't gather heap statistics or allocation profiling.
+
+##### Start a JFR recording on Application Start
+
+1. [Download Java Mission Control 9](https://www.oracle.com/java/technologies/javase/products-jmc9-downloads.html)
+2. Decompress the file and find the application called `jmc.exe`
+3. 
+
 # Other Performance Tools
 * JProfiler
 * Glowroot
