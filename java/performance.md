@@ -11,10 +11,11 @@ This is just another monitoring program but I will focus on it because I want to
 
 JFR collects information about the events in a Java Virtual Machine (JVM) during the execution of a Java application. JFR is part of the JDK distribution, and it’s integrated into the JVM. JFR is designed to affect the performance of a running application as little as possible.
 
-In order to use JFR, we should activate it. We may achieve this in two ways:
+We can start/create a JFR recording :
 
-1. when starting a Java application, from the command line. 
+1. when starting a Java application, from the command line. In my case I will use Gradle to pass this arguments to the JVM/JDK
 2. passing diagnostic commands of the jcmd tool when a Java application is already running
+3. Using the JMC interface(you have to download JMC first)
 
 JFR doesn’t have a standalone tool. We use Java Mission Control (JMC), which contains a plugin that allows us to visualize the data collected by JFR. These tools working together form a suite for collecting low-level runtime information of a running Java program
 
@@ -48,7 +49,7 @@ in earlier JDK distributions, we have to activate commercial features in order t
 In our case I will show how to set up flight recordings inside a JavaFx Desktop app for Windows using Gradle Kotlin, remember you have two options, start JFR when an application starts or whenan application is already running.
 
 #### Create a JFR Recording
-I'm using a modular/multi module JavavaFx Windows Desktop application with several gradle modules and as mentioned in prev notes there is three ways to start a trace/recording, on application start and on demand(while application is running any moment). The data that records capture are events, they can be of different four types:
+I'm using a modular/multi module JavaFx Windows Desktop application with several gradle modules and as mentioned in prev notes there is at least three ways to start a trace/recording, on application start and on demand(while application is running any moment) these two options can be executed in the command line if you're "building" your app on your own but since I'm using Gradle the arguments passed to the JVM to start a recording are configured in a Gradle buildscript, and the third option I know of is using JMC interface. The data that records capture are events, they can be of different four types:
 
 * **Duration Events**: they have duration, a start and stop time
 * **Instant Events**: WHen it ocurrs it gets instantly logged, for example, when a thread gets blocked
@@ -77,10 +78,7 @@ Flight Recorder produces following types of recordings:
   A continuous recording with the default template has low overhead and gathers a lot of useful data. However, this template doesn't gather heap statistics or allocation profiling.
 
 ##### Start a JFR recording on Application Start
-
-1. [Download Java Mission Control 9](https://www.oracle.com/java/technologies/javase/products-jmc9-downloads.html)
-2. Decompress the file and find the application called `jmc.exe`
-3. 
+As mentioned before since I'm building/running the app using Gradle I just add the following configuration to the project's build script 
 
 # Other Performance Tools
 * JProfiler
@@ -97,3 +95,30 @@ hence an expensive procedure. In most cases, you should choose an iterative solu
 Java offers a bewildering array of options for combining shorter strings into longer ones, but most of these options follow a two-sequence approach to buffering a string into a long thread, adding significantly to the Java heap.  Because of this, memory duplication is required when an operator is initialized. Java has Stringbuilders that employ a one-sequence approach. 
 
 The StringBuilder is a mutable asynchronous function that provides a string-like class that allows you to initialize an operator in a single sequence. StringBuilder doesn’t have any overhead from thread synchronization and is, therefore, the fastest way to build large strings from smaller pieces.
+
+
+
+
+
+Avoid Creating New Stages Frequently
+Unless you really need multiple OS-level windows, avoid using new Stage. They create new rendering pipelines and memory contexts. Creating new Stage and Scene objects every time you switch screens prevents JavaFX from reusing internal rendering buffers, leading to repeated allocation
+
+Stick to swapping views or changing root nodes.
+
+
+
+https://docs.oracle.com/javacomponents/jmc-5-4/jfr-runtime-guide/comline.htm#JFRUH188
+https://docs.oracle.com/en/java/java-components/jdk-mission-control/9/user-guide/using-jdk-flight-recorder.html#GUID-D38849B6-61C7-4ED6-A395-EA4BC32A9FD6
+
+
+https://www.reddit.com/r/JavaFX/comments/uxg99y/javafx_and_switching_scenes/?rdt=50676
+
+
+https://forums.oracle.com/ords/apexds/post/how-to-free-the-memory-after-closing-javafx-stage-8830
+https://moldstud.com/articles/p-10-bizarre-bugs-encountered-by-javafx-developers-and-how-to-fix-them
+https://codingtechroom.com/question/javafx-resource-cleanup
+
+
+
+https://javanexus.com/blog/mastering-dependency-injection-javafx-dagger
+https://www.pragmaticcoding.ca/javafx/swap-scenes
