@@ -94,17 +94,18 @@ application {
         "-XX:FlightRecorderOptions=stackdepth=512",
         "-XX:+UnlockDiagnosticVMOptions",
         "-XX:+DebugNonSafepoints",
-//        "-XX:StartFlightRecording=duration=6s,filename=myrecording.jfr",
+        "-XX:StartFlightRecording=duration=6s,filename=myrecording.jfr",
 //        "-XX:+UseParallelGC",
         "-XX:+HeapDumpOnOutOfMemoryError",
     )
 }
 ```
 
-You can specify more options with the parameters defined [here](https://docs.oracle.com/javacomponents/jmc-5-4/jfr-runtime-guide/comline.htm#BABGCBBA), for example, remember you can define a template used to defined what events or information you want to record and there is already two predeifined templates(default and profile, being profile a more detailed record), you can create your own but it might be easier to do it using JMC as it is more graphic, I would like to make sure a `profile` recoding is being made, so I define the following argument
+You can specify more options to the "start command"/"start argument" with the parameters defined [here](https://docs.oracle.com/javacomponents/jmc-5-4/jfr-runtime-guide/comline.htm#BABGCBBA) or following the instructions [here](https://docs.oracle.com/javacomponents/jmc-5-5/jfr-runtime-guide/run.htm#JFRRT172) you can define other arguments to configure your recording(`-XX:FlightRecorderOptions`). For example, remember you can define a template used to defined what events or information you want to record and there is already two predeifined templates(default and profile, being profile a more detailed record), you can create your own but it might be easier to do it using JMC as it is more graphic, I would like to make sure a `profile` recoding is being made, so I define the following argument
 ```
-"-XX:StartFlightRecording=duration=6s,filename=myrecording.jfr,name=profile"
+"-XX:FlightRecorderOptions=defaultrecording=false,dumponexit=true,dumponexitpath=path"
 ```
+If you were running it without Gradle this commands would have to be passed when you run the application using `java` for example `java -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:StartFlightRecording=duration=60s,filename=myrecording.jfr MyApp`
 
 Now just open JMC and open the recording file from it
 
@@ -115,6 +116,8 @@ We will use the java utility called `jcmd`, you might want to add it to your OS 
 2. Get the process id by running from the command line the command `jcmd`, this will print all running java processes, identify yours(it should be easy) and copy the ID
 3. `jcmd 10828 JFR.start duration=3s filename=flight2.jfr name=profile`
 4. You can add more configurations to the start command as mentioned in a link in the prev section
+
+`defaultrecording=false` should be the default value so there should not be any need to specify this but if you still want to do it you will have to combine `jvmargs` and `jcmd` commands, so you have to specify this as in the previous section with the `-XX:FlightRecorderOptions` argument and then just start a recording with any of the configurations indicated in the same [link](https://docs.oracle.com/javacomponents/jmc-5-5/jfr-runtime-guide/comline.htm#BABHIICD) indicated in the prev section
 
 # Other Performance Tools
 * JProfiler
