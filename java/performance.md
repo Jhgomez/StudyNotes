@@ -119,6 +119,24 @@ We will use the java utility called `jcmd`, you might want to add it to your OS 
 
 `defaultrecording=false` should be the default value so there should not be any need to specify this but if you still want to do it you will have to combine `jvmargs` and `jcmd` commands, so you have to specify this as in the previous section with the `-XX:FlightRecorderOptions` argument and then just start a recording with any of the configurations indicated in the same [link](https://docs.oracle.com/javacomponents/jmc-5-5/jfr-runtime-guide/comline.htm#BABHIICD) indicated in the prev section
 
+##### Start a JFR recoding using JMC
+The steps are defined [here](https://docs.oracle.com/en/java/java-components/jdk-mission-control/9/user-guide/using-jdk-flight-recorder.html#GUID-88CC453C-0CED-45D6-9E93-28A03F3752F2) but in my own words follow steps below:
+
+1. open JMC
+2. Run your app
+3. You will see on the left a section called `JVM Browser`
+4. Identify your app(should be easy to so)
+5. Right click the app in the list and click on `Flight Recorder`, optionally you can expand the app with the arrow on the left and double click `Flight Recorder`
+6. Choose the templace you want to use or you can modify an existing template which will generate a new one with all your changes
+
+###### Check out MBean Server
+This is not a recoring but it is a functionallity in JMC that lets you see more info 
+
+1. Expand the app you want in the section `JVM Browser`
+2. Double click `MBean Server`
+3. On the "Dasboard" section you will see a green plus sign that lets you add other vizualization, I would go the "Memory" section and then `FreeHeapMemory`
+4. At the bottom you will have tabs you can check out, again I would be interested maybe mainly in the "Memory" tab
+
 # Other Performance Tools
 * JProfiler
 * Glowroot
