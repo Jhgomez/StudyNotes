@@ -1,3 +1,11 @@
+# Context
+In my computer "JAVA_HOME` is set to "openjdk-21.0.2" and `java -version` prints bellow message
+```
+openjdk version "21.0.2" 2024-01-16
+OpenJDK Runtime Environment (build 21.0.2+13-58)
+OpenJDK 64-Bit Server VM (build 21.0.2+13-58, mixed mode, sharing)
+```
+
 # JDK Performance Monitoring Utilities
 The bin folder contains the following programs that can be used for profiling and monitoring:
 
