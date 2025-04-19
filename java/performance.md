@@ -58,8 +58,8 @@ I'm using a modular/multi module JavaFx Windows Desktop application with several
 
 In addition, there are predefined events that are enabled in a recording template. Some templates only save very basic events and have virtually no impact on performance. Other templates may come with slight performance overhead and may also trigger garbage collections to gather additional data. The following templates are provided with Flight Recorder in the <JDK_ROOT>/lib/jfr directory:
 
-* **default.jfc: Collects a predefined set of data with low overhead.
-* **profile.jfc: Provides more data than the default.jfc template, but with overhead and impact on performance.
+* **default.jfc**: Collects a predefined set of data with low overhead.
+* **profile.jfc**: Provides more data than the default.jfc template, but with overhead and impact on performance.
 
 Flight Recorder produces following types of recordings:
 
@@ -77,8 +77,44 @@ Flight Recorder produces following types of recordings:
 
   A continuous recording with the default template has low overhead and gathers a lot of useful data. However, this template doesn't gather heap statistics or allocation profiling.
 
+##### Donwload JMC
+This tool will let us monitor all processes runing on JVM or a JVM(deployed java produced .exe  files), it will also let us read JFR recordings and start one as well.
+
+1. [Download Java Mission Control 9](https://www.oracle.com/java/technologies/javase/products-jmc9-downloads.html)
+2. Decompress the file and find the application called `jmc.exe`
+
 ##### Start a JFR recording on Application Start
-As mentioned before since I'm building/running the app using Gradle I just add the following configuration to the project's build script 
+As mentioned before since I'm building/running the app using Gradle I just add the following configuration to the project's build script and then when I run the app(`./gradlew run`) or deploy it as a desktop app(`./gradlew jpackage`) and then run, it will automatically start a recording with the specifications I configured. Note that I'm using Gradle Kotlin
+```build.gradle.kts
+application {
+    mainModule.set("COLINS.app.main")
+    mainClass.set("com.colins.Colins")
+    applicationDefaultJvmArgs = listOf(
+//        "-XX:+FlightRecorder", seems this is deprecated, it is not required to turn this feature on
+        "-XX:FlightRecorderOptions=stackdepth=512",
+        "-XX:+UnlockDiagnosticVMOptions",
+        "-XX:+DebugNonSafepoints",
+//        "-XX:StartFlightRecording=duration=6s,filename=myrecording.jfr",
+//        "-XX:+UseParallelGC",
+        "-XX:+HeapDumpOnOutOfMemoryError",
+    )
+}
+```
+
+You can specify more options with the parameters defined [here](https://docs.oracle.com/javacomponents/jmc-5-4/jfr-runtime-guide/comline.htm#BABGCBBA), for example, remember you can define a template used to defined what events or information you want to record and there is already two predeifined templates(default and profile, being profile a more detailed record), you can create your own but it might be easier to do it using JMC as it is more graphic, I would like to make sure a `profile` recoding is being made, so I define the following argument
+```
+"-XX:StartFlightRecording=duration=6s,filename=myrecording.jfr,name=profile"
+```
+
+Now just open JMC and open the recording file from it
+
+##### Start a JFR recording When App is running
+We will use the java utility called `jcmd`, you might want to add it to your OS path this way you don't have to navigate to the JDK's `bin` directory to be able to run this app.
+
+1. Run your app any how you want
+2. Get the process id by running from the command line the command `jcmd`, this will print all running java processes, identify yours(it should be easy) and copy the ID
+3. `jcmd 10828 JFR.start duration=3s filename=flight2.jfr name=profile`
+4. You can add more configurations to the start command as mentioned in a link in the prev section
 
 # Other Performance Tools
 * JProfiler
