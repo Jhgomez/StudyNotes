@@ -189,7 +189,7 @@ Articles about responsive layouts are [this](https://www.demo2s.com/g/java/how-t
 * https://moldstud.com/articles/p-10-bizarre-bugs-encountered-by-javafx-developers-and-how-to-fix-them
 * https://codingtechroom.com/question/javafx-resource-cleanup
 
-# TODO(pendiente)
+# TODO
 ## Try Using a DI framework
 * https://javanexus.com/blog/mastering-dependency-injection-javafx-dagger
 * https://www.pragmaticcoding.ca/javafx/swap-scenes
