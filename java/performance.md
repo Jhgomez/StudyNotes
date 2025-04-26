@@ -203,7 +203,6 @@ The best performance(multimodule app with javafx3) could free up from around 400
 
 I added a function to resize the stage to the size of the scene, the scene size depend on its root size, so I'm not sure how this will affect the memory usage but setting the size from start should reduce the user need to reize the screen which at the same time should reduce the memory usage(this is a probability and an hipotesis only).
 
-
 # Commands used
 * `./gradlew jpackage`(will create executable in the build folder inside jpackage directory)
 * `./gradlew run`
