@@ -164,6 +164,15 @@ The StringBuilder is a mutable asynchronous function that provides a string-like
 ## Static Final
 Avoid them as according to some comments [here](https://stackoverflow.com/questions/6470651/how-can-i-create-a-memory-leak-in-java) this could cause a memory leak
 
+## Valhalla Project
+It aims to adapt Java Language and rumtime to modern hardware. The enhancements are described in their respective "Java Enhancement Proposal"(JEP)
+
+* JEP 401: Value Objects
+* JEP 401: Primitive Classes
+* JEP 402: Classes for the Basic Primitive
+* JEP draft: Universal Generics
+* JEP 218: Generics over Primitive Types
+
 ## JavaFX Specific
 ### Navigation/Displaying Different Screens
 #### Avoid Creating New Stages Frequently
