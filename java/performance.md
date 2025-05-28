@@ -173,6 +173,9 @@ It aims to adapt Java Language and rumtime to modern hardware. The enhancements 
 * JEP draft: Universal Generics
 * JEP 218: Generics over Primitive Types
 
+## Vector API
+Basically it flattens objects into other objects in a similar manner as in project Valhalla according to [this](https://www.youtube.com/watch?v=SPc9YpLsYo8) video on minute 11:00, basically you can do things like adding two int arrays with their respective index in the two arrays and will be added using "JEP401"
+
 ## JavaFX Specific
 ### Navigation/Displaying Different Screens
 #### Avoid Creating New Stages Frequently
