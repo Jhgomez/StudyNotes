@@ -21,3 +21,12 @@ new features in chrome to build better UI debug a your websites more easily with
 * EsLint - warns anything that doesn't match the targeted baseline version for HTML and CSS files, integration available in VS code and JetBrains webstorm
 * You can use "ask AI" in the devtools, make sure to enable "AI assistance" in the settings first
 * New APIs: Prompt API for Chrome Extensions, Summarizer API, Translator API, Language Detector API, Writer API, Rewriter API, Proofreader, other soon will support these APIs, built-in APIs that enables you to run AI locally, meaning data never leaves device you can get AI models using firebase also(in typescript)
+
+## IA
+* Gemma3n was released - Open source AI model, it only needs 2GB of RAM, available in hughing face, Ollama, Unsloth
+* Medgemma - model that can be used in Health apps
+* AI-first collab - agentic-first experience that transforms coding into a dynamic conversation that helps navigate complex tasks
+* Gemmaverse: you can find fine-tuned gemmini LLM models here
+* SignGemma: sign language translator AI model
+
+These models can be implemented in a tool like google collab inside a Jupiter notebook file and using unsloth(a library for fine-tunning LLMs and is very fast and use less memory runs very well in google collab), they can be deployed using "cloud run" with "vertex AI" or "Google AI edge" for local deployments
