@@ -11,3 +11,13 @@
 * Newest Jetpack Compose release includes features like: autofill, text autosize, visibility tracking, Accessibility checks, animate Bounds, contentReceiver, Ellipsis, HTML formatting, State-based TextField, Camera X, media 3, navigation(built from ground up again)
 * Journeys: Natural language tool to write end-to-end test(autometed test) available in android studio, they are commonly implemented using espresso, but now you can create "xml" files inside your test source set
 * Update Depencendies: Gemini in Android Studio can help you update them now however you may need build catalogs, option available under "Refactor>Update Dependencies", this is powered by gemini
+
+## Web Apps
+new features in chrome to build better UI debug a your websites more easily with devtools and AI features more quickly with Gemini Nano in Chrome
+
+* Carrousels in pure HTML and CSS: Stylable Fragmentation, Scroll maker elements, Scroll Buttons
+* Rich Tootips, Preview Cards/Hover cards and hint UI could be replaced with experimental APIs called "interest Invoker", "Anchor Positioning" and "Popover" which use pure HTML and CSS
+* Baseline - tool to check compatibility
+* EsLint - warns anything that doesn't match the targeted baseline version for HTML and CSS files, integration available in VS code and JetBrains webstorm
+* You can use "ask AI" in the devtools, make sure to enable "AI assistance" in the settings first
+* New APIs: Prompt API for Chrome Extensions, Summarizer API, Translator API, Language Detector API, Writer API, Rewriter API, Proofreader, other soon will support these APIs, built-in APIs that enables you to run AI locally, meaning data never leaves device you can get AI models using firebase also(in typescript)
