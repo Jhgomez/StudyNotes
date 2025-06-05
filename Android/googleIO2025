@@ -1,0 +1,13 @@
+# Google I/O '25 Developer Keynote - Audio Described
+
+* labs.google/stich - tool to generate app designs that can be exported to figma files
+* Google AI studio - tool for building apps with AI
+* Google GenAI SDK now supports MCP
+* Androidify - app build with AI model available with the Firebase SDK
+* On-device AI - lets you process prompts locally, without sending data to a server, powered by GenAI API called Gemini Nanom 
+* Live updates - new in Android 16, lets you show time-sensitive updates for things like navigation, deliveries, ride shares. It uses a new progress style template
+* Changes in android 16 - Changes in the android API will apps to no longer react to orientation, resizability and aspect ratio restrictions, basically this change will be made to force apps to be adaptive saying goodbye to "mobile-only" apps this will force apps to be responsive by default, for this you can leverage the "compose adaptive layouts" library you can us things like "pane expansion" and all apps will be automatically available for android tablets, foldables, cars(you'd have to opt-in into distribution via Play Console and making minor optimization) and XR
+* Android XR SDK - SDK for building for Android XR
+* Newest Jetpack Compose release includes features like: autofill, text autosize, visibility tracking, Accessibility checks, animate Bounds, contentReceiver, Ellipsis, HTML formatting, State-based TextField, Camera X, media 3, navigation(built from ground up again)
+* Journeys: Natural language tool to write end-to-end test(autometed test) available in android studio, they are commonly implemented using espresso, but now you can create "xml" files inside your test source set
+* Update Depencendies: Gemini in Android Studio can help you update them now however you may need build catalogs, option available under "Refactor>Update Dependencies", this is powered by gemini
