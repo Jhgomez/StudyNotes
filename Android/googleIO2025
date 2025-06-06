@@ -30,3 +30,99 @@ new features in chrome to build better UI debug a your websites more easily with
 * SignGemma: sign language translator AI model
 
 These models can be implemented in a tool like google collab inside a Jupiter notebook file and using unsloth(a library for fine-tunning LLMs and is very fast and use less memory runs very well in google collab), they can be deployed using "cloud run" with "vertex AI" or "Google AI edge" for local deployments
+
+# Adaptive Android development makes your app shine across devices
+
+## Why?
+There is a huge variety of devices like, Android for cars, connected devices(phones, foldables or tablets, chromebooks connected to a screen/monitor), Android XR(Headsets, glasses), 
+
+## What?
+Adaptive is strategy for app development that takes into account the whole Android ecosystem and aims to make apps capable of running across the whole ecosystem regardless of the input size and/or screen size
+
+## How?
+check [this project example](http://github.com/android/socialite) this single codebase runs across multiple form factors, it uses the "compose adaptive library". The example app runs in XR in the Homespace/Home mode
+
+In the example app you can see how "Canonical Layouts" are used, if you have an existing app you can drop in your existing composables into this layouts and the resizing and even navigation will be handled automatically, some of these layouts are "listDetailPaneScaffold" again navigation can be handled automatically or you can implement it yourself
+
+### Navigation 3
+This is integrated in canonical layouts but you can manually modify the navigation setup to be able to render multiple destinations at once in a single screen only if it is enough space, of course. This library allows to define, using metadata, how a pane should be treated, it can be either a "list", "detail pane" it would look something like the following
+```
+is Pane.Chatslist -> NavEntry(
+	key = backStackKey,
+	metadata = ListDetailSceneStrategy.listPane()
+) { ChatList(/* ... */) }
+is Pane.ChatThread -> NavEntry(
+	key = backStackKey,
+	metadata = ListDetailSceneStrategy.detailPane()
+) { ChatScreen(/* ... */) }
+```
+
+However this APIs might change in the future.
+
+There is two new pane adaptation strategies in "Compose Adaptive Library"
+
+* Levitate: a small view in small devices and on a larger device it will be displayed on the side making it noticeable
+* Reflow: On narrower screens we can specifiy where to place it
+
+### Compose in XR
+You can easily implement your existing navigation rail, which would be displayed in wider screens, around the component `EnableXrComponentOverrides`
+
+### How compose helps build adaptive apps
+* Compose is built in layers, this means that the runtime and foundational libraries are shared are shared across android services
+* it has strong input support out of the box. In compose 1.9 you will have "right-click context menus" in addition to enhanced functionality for trackpad and mouse, this means you will have things like support for triple-tapping to select a paragraph 
+* You have "WindowsSizeClass" which will tell you the size of the screen the is one for width and one for height and they are separated by small, medium and large, usually the width class will be more deterministic in your layouts but now in Androidx Window 1.5 you will have new subdivision to help adapt layouts to window sizes common on large tables and desktop displays, compact, medium, expanded, large and extra-large. For example navigation rails can turn into navigation drawers in a large size and at an extra-large window size width class you have enough space to have three panes side by side
+* You can set several previews in a single composable and define the `device` parameter to see different screen sizes
+* For automated testing, screenshot tests allow to verify visual across different window sizes as you can define the `preview` composable arguments `widthDp` and `heightDp` to set the size of the screen
+* In instrumented tests you can use `DeviceConfigurationOverride` to locally override many configuration values to simulate different window sizes, font, scales, layout directions, windows insets, without having to adjust device settings from the test
+
+## Availability
+An app would not be available to user if something like the following happens:
+
+* When you declare in the apps manifest a feature, like "gps", "camera", as required but the apps doesn't actually strictly needs this will cause the app to not be shown on the app store on certain devices, if you put "camera" but the app doesn't strictly need it only devices with a rear-facing camera will be able to find your app and if you put "gps" but don't strictly need it only devices with internal GPS chips will find your app, you can fix all this by adding the flag `android:required="false"` to the `uses-feature` declaration in the manifest check [here](goo.gle/manifest-compatibility) for more details
+
+## Input
+
+* You may like to handle mouse and touchpad events will get your app available to devices like tablets carried in a protective case with a built-in keyboard and touchpad or chromebooks or detachables and stylus input is also common on these devices. For stylus input you can use the "Ink API" to make the stylus interaction more rich
+
+## Resizability
+* in Anroid 16 and targeting SDK 36, Android is going to ignore all orientation, aspect ratio and resizability restrictions when app is running on a display that is at least **sw600dp**(600dp in both dimenssions) like a foldable and bigger devices.
+
+    Usages of `android:screenOrientation` and `Activity.setRequestedOrientation` will be **ignored** for the following values that exclude orientations
+
+| portrait | reversePortrait | sensorPortrait | userPortrait |
+| landscape | reverseLandscape | sensorLandscape | userLandscape |
+
+   This means devices with more than 600dp x 600dp will ignore any portrait or landscape orientation values above and the activity will be given the user's preferred orientation 
+
+* `android:resizbleActivity="false"` and `android:minAspectRatio` and `android:maxAspectRatio` will be ignored
+
+This means your app needs to have layouts that work for portrait and landscape windows and anything in between and support those size changes at runtime
+
+* Behavior remains unchanged in devices that are not larger than 600dp x 600dp like regular cellphones
+
+* You will have a temporary "opt-out" manifest flag at both the application level and the activity level that delays these changes taking effect untilt target sdk 37
+
+```
+<application ...>
+	<!--- application wide opt-out --->
+	<property
+		android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
+		android:value="true"/>
+
+	<activity ...>
+		<!--- activity specific opt-out --->
+			android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
+			android:value="true"/>
+	</activity>
+</application>
+```
+
+* User will still have the ability to app behavior
+
+* games will not suffer from these changes, games are declared in manifest
+
+Find a Unity Sample Android App [here](goo.gle/unity_is_sample_dac), it features
+* Jetpack WindowManager
+* Dynamic UI
+* Display cutout handling
+* Foldable feature state and hinge angle support
