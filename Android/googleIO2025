@@ -267,3 +267,65 @@ It helps you run Benchmark tests for your UI, you can automate and manipulation 
 * Multiple back up payment methods
 
 
+# What's new in android development tools
+* Firebase Studio is Android studio in the cloud
+* Tor is an AI agent inside Android Studio, you can ask things like make a unit test for a class and it will find out where to put the test, you can ask it to check if the unit test passed, and a lot more things, you can ask it to fix warnings in a file, 
+* Inside "App Quality Insights" you can find an integration with "Firebase Crashalytics", it will be able to actually look at the code and in some cases even suggest a fix
+* Firebase Device Streaming: Lets you connect to a remote device in GOogle's Device Labs, find it under Device Manager>+(plus symbol and select "select remote devices") but now you can choose devices from other repositories other than Google's
+* You can connect via Wifi from an android device to android studio just turn on "Wi-fi Wireless Debuggin" on the phone and it should show in the device manager
+* In compose previews you can select between "grid" or "focus", focus is the new option you can select just to view one composable preview at a time and this view can be resized, then you can save the size or reset it
+* **Backup and Restore**: When a user gets a new phone the user can transfer their settings to the new phone but this sometimes doesn't work quite right , and now implementing the backup correctly is easier. On an emulator running you should severak options on the top you should see several options, there you should have two bottons, once is "Backup App Data", this one creates a backup and the other button is "retrieve backup data" this makes it easier to clone settings across all your AVDs or testing devices the back up data will be saved in a file in our proyect we can right click and do different things like restoring backup directly from this right click context menu or you can use "@RestoreTest("Backup-file.backup")` annotation in a unit test to restore state in a test, there is also another annotation `@BackupAndRestoreTest` wich lest you use the `@BeforeBackup` inside the test
+* You can fix some of code warning with the option "code > inspect for play policy insights"
+* There is a lot of kotlin extensions from KTX, also Canvas extension method `withTranslation`
+
+# What's new in the Gemmaverse
+
+## What's gemma?
+Is google's family of open models,
+
+### Variants
+* PaliGemma
+* CodeGemma
+* ShieldGemma
+* RecurrentGemma
+* SignGemma
+* MedGemma
+
+### Core Models
+* Gemma
+* Gemma2
+* Gemma3: Is multimodal meaning it can take text and image and/or video q as input it also supports new languages now, previously it was English only. Larger context window, meaning that it support larger prompts, up to 128k token count and conversations will keep this info and can be longer q
+* Gemma3n: Only needs 2GB of RAM
+
+### Tools
+* Gemma Scope: tool to see inside of all layers of the models
+* Gemma.cpp: Implementation of Gemma models completely on C++, this enables to run these modules on CPU only and is super fast
+
+## How to build with Gemma?
+* Use Google AI Studio to try out models and find the right one for you
+* From Google AI Studio you have a button that gives you code either in Python, JS, etc that you can use to create your app
+* There is a button that lets you create an endpoint on Google Cloud Run which can scale up to 100GPUs or scale down to 0 depending on usage
+* It is supported on different tools like Keras, vLLM, JAX, Ollama, Hugging Face transformers, PyTorch, MediaPipe, Unsloth, etc
+* Gemma models card can be found in Kaggle
+* Ollama is tool designed to run gemma models very easily and locally in your computer in can be used in combination with langchain which is a tool to create applications using LLMs. Ollama is also integrated with cloud run
+* Keras is similar to Ollama, prompts in Keras can indicate a tag `<start_of_run>` and `<end_of_run>` they represent the structure that was used to train the model you're using, it is best to use the same structure in your prompts, in Keras you have more fine grain control over this, while tools like Ollama does this automatically for you
+
+Approximately you need 2GB for every single billion of parameters these means a 27 billion parameters model needs VRAM(in bfloat16) of 54GB however with techniques like "quantization" you can reduce the precision of the parameters so you would need VRAM(in int4) of just 0.5GB of RAM for each billion of parameters aprox, to avoid degradation in quality you can use QAT(Quantization Aware Training) which is an additional small training stage, degradation is less when using QAT
+
+## Libraries
+### Context
+#### Training Phases
+* Pre-training: Train a model from scratch, needs a lots of data and lots of compute, outcome is a model that will predict the next token
+
+* Post-training: Uses things like RLHF, QLoRA, PEFT for finetuning. Idea is to make model better for conversations
+
+Gemma has both the pre-training and post-training checkpoints, pre-trained checkpoint works as a foundation for the community to build their own models with their favorite finetuning tools and the post-train checkpoint is a generalist conversational model
+
+You'd want to finetune a model to add new capabilities, make a model better for a language like Spanish, make it great for your domain like company data
+
+#### Fine Tuning Tools
+* JAx
+* Unsloth: For finetuning a model when you have limited compute for example in a free Google Colab or in a Kaggle instance
+* Axolotl
+* Hugging faces
+* Keras
