@@ -329,3 +329,29 @@ You'd want to finetune a model to add new capabilities, make a model better for 
 * Axolotl
 * Hugging faces
 * Keras
+
+# Accelerate your development with the Gemini API
+It exist a chat API and a Live API
+
+* Text-to-Speech with Gemini modles: supported by GeminiPro and GeminiFlash, available via the chat API
+
+* Gemini native audio models: Dialog and thinking dialog models, available on the Live API
+
+## Gemini API for Developers
+SDK available for multiple languages
+
+## Live API
+Is google's real time, low latency API for use cases that require more of these interactive real time kind of experiences, it has two architectures, cascaded and audio-to-audio. Cascaded has native audio input but the output is done using text-to-speech, it uses the same models used by NotebookLM, most people prefer this architecture. The audio-to-audio architecture you have native audio input as well and native audio output which means more natural sounding voices and you don't need to specify a language explicitly. 
+
+## AI agents: The new software paradigm
+* Autonomous integration and action
+* Reasoning and planning
+* Continous Learning
+* Multi-agent Collaboration
+
+You can also use Gemini models "URL context" to natively extract and process content from user-provided web page URLs
+
+## Links
+* goo.gle/ais
+* goo.gle/gemini-docs
+* goo.gle/gemini-cookbook
