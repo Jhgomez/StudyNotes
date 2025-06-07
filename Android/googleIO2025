@@ -241,3 +241,18 @@ It helps you run Benchmark tests for your UI, you can automate and manipulation 
 * APIs that allow you to access bigger google AI models on the cloud
 * GenAI API: Uses Gemini Nano under the hood
 * Gemini LIve APIs: Use Firebase AI logic to use it from your app directly. Supports both text and audio as input and output. Try it [here](goo.gle/android-ai-catalog) and [here](d.android.com/ai)
+
+# What's New in Google Play
+* Halt fully live releases: stops distributing a version of your app
+* Review quality issues
+* New Android Vital metric, monitors low memory kills data to minimize crashes, helps you track down when your app is closed by the system due to low memory
+* Assrt Library, manage visual assets more easily to keep your listings fresh. You will be able to load file directly from Google Drive, organize and search for assets using tags, and even crop assets
+* Google Play commerce
+* Hero content carousel
+* Youtube playlist carousel
+* Audio Samples
+* Engage SDK
+* Single checkout for multiple subscriptions
+* Multiple back up payment methods
+
+
