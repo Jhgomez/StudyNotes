@@ -126,3 +126,118 @@ Find a Unity Sample Android App [here](goo.gle/unity_is_sample_dac), it features
 * Dynamic UI
 * Display cutout handling
 * Foldable feature state and hinge angle support
+
+# What's new in Android
+
+## Jetpack Compose
+* Autofill: Allows users to automatically fill out form fields with personal information that they have fill out sometime before
+
+
+* Autosize text: adapts the text to the size of its container, is a parameter in a text composable
+
+
+* Animate Bounds: Is a modifier that lets you animate the position and the size of a composable in its container and is similar to `animatedContentSize`, but this one animates both size and position at same time
+
+
+* Visibility tracking: the new modifier called `onLayoutRectChanged` allows you to track a composable's position within either its root, the window, or the screen, is a low level API, useful in use cases related to visibility tracking and position tracking, it is similar to `onGloballyPositioned` but this is more performant out of the box and lets you add throttle or bebouncing which makes it useful for use cases like tracking the location of an item while you're scrolling a lazy list and in the alpha versions of compose some high-level APIs have been added on top of this low level API that are very specific for some use cases. they are the following three items
+	* onVisibilityChanged: Is a modifier, gives a callback any time the visibility of a composable changes, useful for stopping or playing a video when it comes into view
+	* onFirstVisible: is a modifier, is great for use cases like impression tracking, it gives a callback anytime a composable has been in view for a certain amount of time
+
+
+* Performance: Latest version of compose hardly has Janks, is a lot more performant and it offers the possibility to make the following optimizations as well:
+
+	* Pausable Composition: Allows to split the composition over several frames
+	* Background text Measurement: offloads some of the hard work from the main thread
+	* Prefetch customization: Lets you control the prefetching strategy for items in a lazy list
+
+
+	Because all of these you should know it is important to upgrade to latest version of compose, Google apps like maps are using compose and any changes in compose even for alpha, beta, release candidates are applied to these Google apps within a few days, they are using feature flags to test the changes this means you could also be using features in alpha, beta, etc
+
+* Experimental APIs were removed and/or stabilize
+
+## Android Jetpack
+
+### Navigation3
+Still in alpha
+
+* Offers advanced transitions through animatios, predictive back, and shared element transitions
+
+* Adaptive out of the box with optional Material defaults
+
+* Fully customizable, you can control the full backstack
+
+### Media3: Used to play videos
+
+### CameraX
+
+## Kotlin Multiplatform
+
+* The following APIs are now stable: Room, DataStore, Collections, Saved State, View Model, Lifecycle, Paging
+
+
+### Safe
+#### Authentication
+##### Credential Manager
+* Unified authentication API
+* Simple & Secure
+* Interoperable across Android-verse
+
+###### Digital Credentials Verification
+Verify digitl IDs for:
+* Age content checks
+* Academic Degrees, etc
+
+###### Restore Credentials API
+Handle re-authentication of users on new devices
+
+#### Privacy Sandbox
+Allows you isolate 3P code, any code, this allows to isolate code with sensitive logic, gaming, etc, in a dedicated SDK runtime process
+
+#### Privacy and Security
+##### Android Advanced Protection Mode
+For tailored user security features, Integrate UX with AAPM features, available in android 16, sdk 36. This is a suite of security features that users can toggle on in their devices
+
+##### Theft Protection with Identity Check
+Extra biometric for sensitive actions. Activate in untrusted locations. For apps that have sensitive user actions, like checking a banking account 
+
+If you're in an untrusted location, identity check is going to enforce an extra layer of biometrics security, it has something called "Advanced Protection Mode"
+
+##### Health Connect
+Allows you to share users health data between apps
+
+### Performant
+#### Runtime Performance
+##### UiAutomator API
+It helps you run Benchmark tests for your UI, you can automate and manipulation UI
+
+#### Battery
+* New core Android Vitals Metric: This is excessive wake locks, this is a battery drain proxy metric. Wake locks are heavily impacted by Job Execution Duration. This applies to jobs in the active standby bucket also jobs running concurrently with a foreground service also jobs started from the app visible state
+
+* Expedited Work: use `setExpedited` to prioritize workers 
+
+### Across devices/Adaptive
+
+### Delightful
+* Material3 expressive, is an expansion pack
+
+* Hub mode: already available in tablets and soon will be available in phones
+
+* Widget quality/Widget discroverability on Google Play: recommend the highest quality widgets and new filter for easy search
+
+* Jetpack Glance: lets you create widgets, App widgets are miniature application views that can be embedded in other applications and receive periodic updates.
+
+* Widgets Metrics API: lets you measure the impact of your widgets to understand your users. Helps you get insights of your widgets impressions and interactions
+
+* Edge to edge: Starting Android 16 there is no longer an opt-out option, make sure your app content is not obscured by the system bars, check out [this](goo.gle/e2e-design) documentation to help handle edge to edge
+
+* Predictive back: This is being integrated into compose adaptive and navigation 3 and is enabled by default for back to home, cross-apps, and cross-activity
+
+* Preload Manager API in Jetpack Media3: Allows you to preload multiple media sources and is designed to optimized short-form video playback with exoplayer, better perfoance when implemented with scrolling list of videos
+
+* Native PCM Audio Offload: Delegate audio processing to dedicated hardware, improving performance and reducing battery usage
+
+### Intelligent
+* On-device Gemini Nano
+* APIs that allow you to access bigger google AI models on the cloud
+* GenAI API: Uses Gemini Nano under the hood
+* Gemini LIve APIs: Use Firebase AI logic to use it from your app directly. Supports both text and audio as input and output. Try it [here](goo.gle/android-ai-catalog) and [here](d.android.com/ai)
