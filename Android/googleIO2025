@@ -9,7 +9,7 @@
 * Changes in android 16 - Changes in the android API will apps to no longer react to orientation, resizability and aspect ratio restrictions, basically this change will be made to force apps to be adaptive saying goodbye to "mobile-only" apps this will force apps to be responsive by default, for this you can leverage the "compose adaptive layouts" library you can us things like "pane expansion" and all apps will be automatically available for android tablets, foldables, cars(you'd have to opt-in into distribution via Play Console and making minor optimization) and XR
 * Android XR SDK - SDK for building for Android XR
 * Newest Jetpack Compose release includes features like: autofill, text autosize, visibility tracking, Accessibility checks, animate Bounds, contentReceiver, Ellipsis, HTML formatting, State-based TextField, Camera X, media 3, navigation(built from ground up again)
-* Journeys: Natural language tool to write end-to-end test(autometed test) available in android studio, they are commonly implemented using espresso, but now you can create "xml" files inside your test source set
+* Journeys: Natural language tool to write end-to-end test(autometed test/integration test) available in android studio, they are commonly implemented using espresso, but now you can create "xml" files inside your test source set
 * Update Depencendies: Gemini in Android Studio can help you update them now however you may need build catalogs, option available under "Refactor>Update Dependencies", this is powered by gemini
 
 ## Web Apps
@@ -253,6 +253,17 @@ It helps you run Benchmark tests for your UI, you can automate and manipulation 
 * Audio Samples
 * Engage SDK
 * Single checkout for multiple subscriptions
+
+# What's new in android development tools
+* Firebase Studio is Android studio in the cloud
+* Tor is an AI agent inside Android Studio, you can ask things like make a unit test for a class and it will find out where to put the test, you can ask it to check if the unit test passed, and a lot more things, you can ask it to fix warnings in a file, 
+* Inside "App Quality Insights" you can find an integration with "Firebase Crashalytics", it will be able to actually look at the code and in some cases even suggest a fix
+* Firebase Device Streaming: Lets you connect to a remote device in GOogle's Device Labs, find it under Device Manager>+(plus symbol and select "select remote devices") but now you can choose devices from other repositories other than Google's
+* You can connect via Wifi from an android device to android studio just turn on "Wi-fi Wireless Debuggin" on the phone and it should show in the device manager
+* In compose previews you can select between "grid" or "focus", focus is the new option you can select just to view one composable preview at a time and this view can be resized, then you can save the size or reset it
+* **Backup and Restore**: When a user gets a new phone the user can transfer their settings to the new phone but this sometimes doesn't work quite right , and now implementing the backup correctly is easier. On an emulator running you should severak options on the top you should see several options, there you should have two bottons, once is "Backup App Data", this one creates a backup and the other button is "retrieve backup data" this makes it easier to clone settings across all your AVDs or testing devices the back up data will be saved in a file in our proyect we can right click and do different things like restoring backup directly from this right click context menu or you can use "@RestoreTest("Backup-file.backup")` annotation in a unit test to restore state in a test, there is also another annotation `@BackupAndRestoreTest` wich lest you use the `@BeforeBackup` inside the test
+* You can fix some of code warning with the option "code > inspect for play policy insights"
+* There is a lot of kotlin extensions from KTX, also Canvas extension method `withTranslation`
 * Multiple back up payment methods
 
 
