@@ -355,3 +355,7 @@ You can also use Gemini models "URL context" to natively extract and process con
 * goo.gle/ais
 * goo.gle/gemini-docs
 * goo.gle/gemini-cookbook
+
+# Google's AI stack for developers
+
+You can use PyTorch, JXA TensorFlow alog with OpenXLA tools like StableHLO, XLA(is  runtime used in infrastructure) and PJRT
