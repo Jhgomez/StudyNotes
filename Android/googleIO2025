@@ -359,3 +359,44 @@ You can also use Gemini models "URL context" to natively extract and process con
 # Google's AI stack for developers
 
 You can use PyTorch, JXA TensorFlow alog with OpenXLA tools like StableHLO, XLA(is  runtime used in infrastructure) and PJRT
+
+# Seamless video capture, editing and playback with CameraX and Media3
+
+## Capture videos and photos with Jetpack CameraX
+You can check the [Socialite](gitHub.com/android/socialite) sample app which showcase camera and media best practices
+
+You need to set up your video recording, first select your use cases. The CameraX's structure is the following
+
+* Preview
+* ImageCapture
+* VideoCapture
+* ImageAnalysis
+
+You can use CameraX's concurrent camera feature to get two camera streams simultaneously this way you could use one stream to record, one would be the ImageAnalysis, the other one will be a regular ImageCapture they will be combined later. YOu can use "ML Kit Selfie Segmentation" this helps you to separate the background from users within a scene and focus on what matters
+
+You can add a green screen effect and then combine both cameras
+
+## Edit Media(photos and videos) with Media3 Transformer/Media3 Editing
+You can apply effects to your videos, you can use the Built-in effects or apply custom effects
+
+When using custom effects you will interact with GlEffect and GlShaderProgram, you can basically encapsulate a custom OpenGL shader program
+
+You can use Media3 & LiteRT to create a style transfer effect, LiteRT is Google's runtime library for running machine-learning models on device, you would use `ByteBufferGlEffect` and LiteRT Style Transfer model
+
+Your edited media can be displayed to user using Preview with `CompositionPlayer`, CompositionPlayer is designed to streamline the implementation of previewing mediai edits, it allows your app to play a composition of media assets, effectively rendering all applied audio and video effects
+
+## Playback Videos with Jetpack Media3 Exoplayer
+You can now apply effects directly on exoplayer
+
+Basically there is two players now, you have Exoplayer and CompositionPlayer, here is a comparison of these two
+
+|   | CompositionPlayer | ExoPlayer |
+| - | ----------------- | --------- |
+| Preview  | One entire Composition | Single MediaItem or playlist of many |
+| Effects | Can set different Effect list on each EditedMediaItem or Composition | One Effect list applied to each MediaItem in the list |
+| Timeline | Duration matches length of entire Composition | Duration matches & updates for each MediaItem |
+
+## Links
+
+* Check the Andoroidx media Github repo(media3) [here](goo.gle/media3-demos) and [here](gitHub.com/androidx/media/tree/release/demos)
+* Tips for media [here](developer.android.com/media)
