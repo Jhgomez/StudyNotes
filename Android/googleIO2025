@@ -400,3 +400,9 @@ Basically there is two players now, you have Exoplayer and CompositionPlayer, he
 
 * Check the Andoroidx media Github repo(media3) [here](goo.gle/media3-demos) and [here](gitHub.com/androidx/media/tree/release/demos)
 * Tips for media [here](developer.android.com/media)
+
+# Finding the perfect Gemini fit on Android
+
+You can fine tune local Gemini LLMs using MediaPipe LLM inference API
+
+Google Play for On-device AI helps custom models download, maintain up to date and understand impact on user experience of AI, it helps deliver the right model to each Android device exactly when users need it 
