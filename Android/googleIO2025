@@ -485,3 +485,38 @@ APIs used for managing subscription and making charges to users. You can learn m
 
 ## Orders API
 Lets you access purchase order detail programmatically and view it in real time
+
+# Building differentiated apps for Android XR with 3D content
+
+## Android XR
+you can have headsets or glasses, they have two modes
+
+* Home Space: You have several apps oppened
+
+
+* Full Space: You can only have one app open and it will provide a "bubble" view. Here you use the "SceneCore API" in the Jetpack XR SDK to take advantage of the spatial capabilities of Android XR. Here we have `SkyBox` and `Geometry`, you can think of Skybox as a distant image like a photosphere that surrounds you, it creates the illusion of a distant background. `Geometry` on the other hand, adds shape and depth, this creates a parallax effect, usually used to show the ground and objects near the user
+
+    In full space you have the option to display videos in 180 or 360 degrees 
+
+[This](goo.gle/xr-home-to-full) a guide on transitioning form Home space to Full space and [this](goo.gle/haxr) is a Hello Android XR sample
+
+## Jetpack SceneCore Library
+Provides the APIs that lets you create objects in 3D space. Elementes created in this context are called "Entity", The entity for showing immersive videos is called `SurfaceEntity`
+
+## Pose
+A pose represents the position/translation and orientation/rotation of an entity in 3D space
+
+## 3D Models
+Android XR uses glTF to display complex 3D objects
+
+### Blender
+Tool to create and animate glTF files
+
+## ARCore mobile devices
+Helps your app understand the real world around the user, make use of perception capabilities, you have features like "persisten anchors" which lets you anchor an object in a place in the full space
+
+Has APIs to let the user interact with the app using their hands
+
+# Links
+* [XR Codelabs](goo.gle/xr-codelabs)
+* [Adaptive Jetstream Sample app](goo.gle/adaptive-jetstream)	
