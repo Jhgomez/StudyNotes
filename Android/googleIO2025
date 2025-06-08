@@ -520,3 +520,34 @@ Has APIs to let the user interact with the app using their hands
 # Links
 * [XR Codelabs](goo.gle/xr-codelabs)
 * [Adaptive Jetstream Sample app](goo.gle/adaptive-jetstream)	
+
+# Best practices for using web in your Android apps
+
+## WebView
+Embedding web content into your app as primary or supporting content. Web pages are displayed within an activity. Is built on the open source Chromium Engine
+
+Some common ways in which you can customize it are
+* Being able to resize the web element based on your use case and need
+* Handle events which impact content rendering such as form submissions, or using JavaScript to interacdt with and respond to the rest of your app code
+
+## Custom Tabs
+In-app browsing experience. Is a feature of Android browsers that allows a customized browser experience within an app and it's powered by user's preferred browser but also allows some developer customization
+
+Used when you're looking for a more full and traditional browsing experience but still want it done within the context of your app
+
+### Custom Partial Tabs
+
+## Trusted Web activity
+Fullscreen web, should only be used if the mobile app and the web creators/owners are the same
+
+## Use cases
+
+* Looking to add web content to your main app experience, where you own or control the content: Is recommended to use WebView
+
+## Use WebView 1st party content
+Basically you could recreate your webiste's content natively in your android app however it woul be best to consider using a webview when you have to match the experiences and you are subject to a high frequency of iteration
+
+* HTML Text editing, when you already have a website that takes input, if you use this you can leverage having just one code base
+
+
+* HTML pages such as listings, inventory, app disclosures, terms, etc..
