@@ -406,3 +406,82 @@ Basically there is two players now, you have Exoplayer and CompositionPlayer, he
 You can fine tune local Gemini LLMs using MediaPipe LLM inference API
 
 Google Play for On-device AI helps custom models download, maintain up to date and understand impact on user experience of AI, it helps deliver the right model to each Android device exactly when users need it 
+
+# Unlock user productivity with desktop windowing and stylus support
+## Deskot Windowing
+This enable on compatible devices when connected to an external display, when a phone is connected to an external display the phone state remains the same and a new desktop session starts on the external display. The phone and the external display operate independently and apps are specific to the display on which they are running, Desktop windowing-enabled devices like tablets will share the same desktop session on both devices, the tablet and the external display, this means you can drag apps from one screen to the other
+
+## Multiple Instances
+In Android desktop you can enable multiple instances of your app, you would have to declare it in the manifest like
+
+```
+<activity
+    android:name=".MainActivity"
+    android:exported="true"
+    android:label="@string/app_name"
+    android:launchMode="singleInstancePerTask"
+    android:resizeableActivity="true">
+
+    <!--- This will show a systemUI option to launch a new window --->
+    <property
+        android:name="android.window.PROERTY_SUPPORTS_MULTI_INSTANCE_SYSTEM_UI"
+    android:value="true"/>
+</activity>
+```
+
+This intent will launch a new instance instead of looking for an existing instance of the app
+```
+fun startActivityInNewInstance(activity: Activity) {
+    val intent = Intent.makeMainActivity(activity.componentName)
+    intent.addFlags(Intent.FLAG_ACIVITY_NEW_TASK)
+    intent.addFlags(Intent.FLAG_ACIVITY_MULTIPLE_TASK)
+    activity.startActivity(intent)
+}
+```
+
+You can also use drag and drop API form the Compose Foundation library, like when you drag a tab outside from chrome, this creates a new Window
+
+```
+modifier = Modifier
+    .dragAndDropSource { _ ->
+        DragAndDropTransferData(
+            clipData = multiInstanceClipData(activity),
+            flags = View.DRAG_FLAG_GLOBAL_SAME_APPLICATION or
+                    View.DRAG_FLAG_START_INTENT_SENDER_ON_UNHANDLE_DRAG
+        )
+    }
+```
+
+The clipdata is created with the following function
+
+```
+fun multiInstanceClipData(activity: Activity): ClipData {
+    val intent = Intent.makeMainActivity(activity.componentName)
+    val pendingIntent = PendingIntent.getActivity(
+            activity, 0, intent, PendingIntent.FLAG_IMMUTABLE
+        )
+    return ClipData(
+        "NewInstance",
+        arrayOf(ClipDescription.MIMETYPE_TEX_INTENT),
+        ClipData.Item.Builder().setIntentSender(pendingIntent.intentSender).build()
+    )
+}
+```
+
+## Custom headers
+Apps in desktop windowing have this header
+
+## Best Practices
+* Use windows size classes
+* Account for density configuration changes, the density pixels can be different in a tablet and in the external display, so to be able to maintain a good look in your app you need to use density indepented pixels in the composables and density-specific resources in images
+* Be aware that when users connect to an external monitor they often create a more desktop-like environment this involves they could use external keyboards, mouse, trackpad, webacasms, microphones, speakers, etc, to make sure your app works with these peripherals make sure to handle keyboard shortcuts, mouse pointer interactions, correctly support external cameras and/or microphones and respect audio output routing
+
+## Noteroll
+Is a system level default app roll that make it easy for users to access their preferred note taking app, this make your app open in a floating window or from the lock screen fro quick access and easy multitasking
+
+# Maximizing ROI on Google Play
+## Google Play Billing
+APIs used for managing subscription and making charges to users. You can learn more [here](g.co/play/billing)
+
+## Orders API
+Lets you access purchase order detail programmatically and view it in real time
