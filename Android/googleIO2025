@@ -597,3 +597,46 @@ InputTransformation.maxLength(10).then {
 With this we have only 10 digits, but now we need to format the text and we can do this in the `outputTransformation` step, we will use `TextFieldBuffer`, is a buffer that can be edited and provides methods for changing text(similar to StringBuilder)
 
 However you could use Regex to do all of this formatting
+
+# Gemini Nano on Android: Building with on-device gen AI
+
+## On-device GenAI use cases
+### Content Consumption
+* Giving users summary of missed notification
+* Summarizing long email thread
+* Highlighting main points in a document
+* Extracting information from image input
+
+### Content Creation
+* Help users brainstorm ideas or generate prompts
+* Writing assistance to improve content quality
+* Suggest captions or hashtags
+
+### Content Classification
+* Analyzing user-generated content
+* Categorizing content by topics or themes
+
+## Gemini Nano with privacy and safety
+### AICore System Service
+AICore is a System level module, you can use it to access Gemini Nano. Gemini Nano in AICore isolates each inference request and does not store input or output data on device
+
+## GenAI APIs powered by Gemini Nano
+There is a new set of generative AI APIs as part of the ML kit
+
+As mentioned before, in the use cases, you can instantiate Gemini Nano in an Android app for
+
+* Summarization with `SummarizerOptions` "builder" method and `Summarization` "getClient" static method and `SynnaruzatuibRequest` "builder" and "build" methods
+
+### GenAI APIs Implementation
+
+1. Define task(summarization, proofreading, rewrite, image description)
+
+2. Check wheter feature is available
+
+3. Create Inference request
+
+4. Run inference
+
+## Links
+
+* goo.gle/mlkit-genai
