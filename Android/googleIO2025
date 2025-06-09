@@ -551,3 +551,49 @@ Basically you could recreate your webiste's content natively in your android app
 
 
 * HTML pages such as listings, inventory, app disclosures, terms, etc..
+
+# Mastering text input in Compose
+
+## State-bases Textfields
+Is a new best practice for TextField usage in compose. With this google has switched to a new state hoisting paradigm, by replacing value and callback hoisting the TextField state provides a more complete and reliable approach to managing the state of a Textfield, the `onValueChange" call back has been replaced with the new `InputTransformation` mechanism for handling input modifications. `VisualTransformation` has been updated to `OutputTransformation` for managing how text is presented. Single and multi line configurations are tidied up
+
+Now you can enable Autofill in your textfields you just need to add a modifier called `semantics` and then specify it's `contentType`
+
+## New `SecureTextField` and `OutlinedSecureTextField`
+* Hides password by default
+* Disable cut and copy actions
+
+## textObfuscationMode
+Allows you to define the visibility of the text in a `SecureTextField`. You have three options
+
+* Visible: Shows anything you type
+* Hidden: hides all character input
+* RevealLastTyped: shows the last character typed for a set ammount of time
+
+## Customize a TextField(`BasicTextField`)
+`BasicTextField` is the base of all TextFields, You can create an OTP view to enter an OTP password by customizing the `decorator` parameter you can watch this video to get the code snippets
+
+## `contentReceiver` Modifier
+Experimental Foundation(added in version 1.7.0) API, it works with the new TextFields. Adding this modifier to a TextField is enough to let the keyboard know this TextField now supports GIFs, stickers and any other rich content, but this modifier takes a lambda that receives a `transferableContent` object, this object is basically a wrapper around clip data and clip description APIs, you can learn more about how to handle this type of data [here](goo.gle/rich-content). You can apply this modifier to any composable
+
+## `autoSize` Parameter
+New textFields and BasicText have a new parameter called `autoSize`, this can help the text you enter to occupy as much space as possible
+
+## Autoformatting
+Bellow is the flow of how inpuit and output transformations happen
+
+Software keyboard/Hardware Keyboard/Clipboard Paste/Selection > InputTransformation > TextFiedlState > OutputTransformation > TextField
+
+You can think of `InputTransformation` as a filter function, and using it we can limit the length, for example when entering a USA phone number which is 10 digits you can limit the input length and also only allow numbers/digits to be passed in, you can customize the `inputTransformation` parameter with a code like the following
+
+```
+InputTransformation.maxLength(10).then {
+    if(!TextUtilx.isDigitsOnly(asCharSequence())) {
+        revertAllChanges()
+    }
+}
+```
+
+With this we have only 10 digits, but now we need to format the text and we can do this in the `outputTransformation` step, we will use `TextFieldBuffer`, is a buffer that can be edited and provides methods for changing text(similar to StringBuilder)
+
+However you could use Regex to do all of this formatting
