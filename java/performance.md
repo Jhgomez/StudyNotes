@@ -215,6 +215,26 @@ The best performance(multimodule app with javafx3) could free up from around 400
 
 I added a function to resize the stage to the size of the scene, the scene size depend on its root size, so I'm not sure how this will affect the memory usage but setting the size from start should reduce the user need to reize the screen which at the same time should reduce the memory usage(this is a probability and an hipotesis only).
 
+## Solution
+I was actually not cappable to identify anything in the JFR recordings but is mostlikely because I still need to learn how to read the information in the recordings. I have pending to do more investigation to learn how to read the info better, also try to do a "heap dump". But since JFR was not being helpful I tried something new and got into fine tunning JVM by deffining the heap initial and max size, GC max pause time, thread max size, also choosing the right garbage collector, these settings where choosed after doing experimentation in two different computers as there is no deffined settings for a Java app and is actually suggested for you to experiment and find the best settings for your app
+
+Initially only heap initial and max size and the garbage collector was deffined, the first initial and max size value was 200MB and the G1GC garbage collector, with these settings the app was working good and it reduced it size and it reached a max RAM usage of between 390MB and 460MB, however after investigating I found a newer GC called ZGC which reduced the app max RAM usage to valued between 310MB and 400MB, so this was working good but this was the behavior observed through the windows task manager and not JFR, that is why this I will consider doing some monitoring of the app with JFR as pending or TODO, and this behavior was observed in a Windows 11 Samsung computer with 16GB of RAM, and an intel i7 CPU, and the app worked great, of course I initially tried lower heap MAX sizes but the app either crashed at some point or was not able to complete task because the RAM was not suffucient, after this I got a new Dell computer with Windows 11 with 32GB of RAM and an "Intel(R) Core(TM) Ultra 9 185H   2.50 GHz" cpu, and here I started seing something weird, the app started with around 70MB to 80MB more than in the other computer, the reason why this happens is still not clear right now, and it stopped working at some point so I had to modify the heap values, I found out that 400MB as initial and max size was good enough and again the ZGC compiler was the best it reached a max of between 410MB and 500MB and in the previous computer all was working the same or similar way, the RAM usage was still similar as with the previous settings, I was worried my app was doing something wrong with the app so I created a very basic JavaFX app with the same Gradle configurations and observed the same behavior, the app's RAM usage in my previous computer was lower by, between, 60MB to 70MB in the Samsung computer, so here I confirmed it was not the application it is something that is related between Java itself and the hardware a JVM runs over. Following is a comparison, be aware that gradle configurations was the same in the project's gradle file
+
+| -  - |- Samsung(i7, 16GB RAM)-|- Dell(Ultra 9, 32GB RAM) -|
+|------|----|----|
+|- Very simple JavaFX app(single module project) app start-|- between 80MB - 90MB -|- Between 174MB - 178MB -|
+|- HYU app start -|- between 120MB - 130MB -|- between 207MB - 220MB -|
+|- HYU app max RAM usage reached -|- between 280MB - 310MB -|- between 410MB - 450MB -|
+
+They both still represent a drastic drop in RAM usage as originally it was using up to 1.5GB.
+
+This is effect of the configurations on the JVM
+
+* Initial and max heap size: I used the same values, this will avoid the overhead of changing the heap size on demand, and setting it to a proper value will make garbage collect more predictable as it should trigger garbage collections more often
+* Thread max size: Not clear yet but as long as I define a max thread size that is enough for the app start, the max RAM usage will drop
+* Garbage collector: The ZGC may come at the cost of some little more RAM than G1GC but it keeps max RAM usage lower than all other garbage collectors
+* GC max pause time: I kept the default value of 200 milli seconds, this is the time the JVM has to pause all threads in the JVM to perform a full garbage collection if this time is too large the app will stop for too long if the garbage is too much, but this should not be a problem in our app, if it is too low it is unclear what consequences this implies to the performance at least to me as of right now, I would have to investigate more about the effects of this setting at large scale apps
+
 # Commands used
 * `./gradlew jpackage`(will create executable in the build folder inside jpackage directory)
 * `./gradlew run`
