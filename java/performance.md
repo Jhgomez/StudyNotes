@@ -220,11 +220,11 @@ I was actually not cappable to identify anything in the JFR recordings but is mo
 
 Initially only heap initial and max size and the garbage collector was deffined, the first initial and max size value was 200MB and the G1GC garbage collector, with these settings the app was working good and it reduced it size and it reached a max RAM usage of between 390MB and 460MB, however after investigating I found a newer GC called ZGC which reduced the app max RAM usage to valued between 310MB and 400MB, so this was working good but this was the behavior observed through the windows task manager and not JFR, that is why this I will consider doing some monitoring of the app with JFR as pending or TODO, and this behavior was observed in a Windows 11 Samsung computer with 16GB of RAM, and an intel i7 CPU, and the app worked great, of course I initially tried lower heap MAX sizes but the app either crashed at some point or was not able to complete task because the RAM was not suffucient, after this I got a new Dell computer with Windows 11 with 32GB of RAM and an "Intel(R) Core(TM) Ultra 9 185H   2.50 GHz" cpu, and here I started seing something weird, the app started with around 70MB to 80MB more than in the other computer, the reason why this happens is still not clear right now, and it stopped working at some point so I had to modify the heap values, I found out that 400MB as initial and max size was good enough and again the ZGC compiler was the best it reached a max of between 410MB and 500MB and in the previous computer all was working the same or similar way, the RAM usage was still similar as with the previous settings, I was worried my app was doing something wrong with the app so I created a very basic JavaFX app with the same Gradle configurations and observed the same behavior, the app's RAM usage in my previous computer was lower by, between, 60MB to 70MB in the Samsung computer, so here I confirmed it was not the application it is something that is related between Java itself and the hardware a JVM runs over. Following is a comparison, be aware that gradle configurations was the same in the project's gradle file
 
-| -  - |- Samsung(i7, 16GB RAM)-|- Dell(Ultra 9, 32GB RAM) -|
+|  | Samsung(i7, 16GB RAM)| Dell(Ultra 9, 32GB RAM) |
 |------|----|----|
-|- Very simple JavaFX app(single module project) app start-|- between 80MB - 90MB -|- Between 174MB - 178MB -|
-|- HYU app start -|- between 120MB - 130MB -|- between 207MB - 220MB -|
-|- HYU app max RAM usage reached -|- between 280MB - 310MB -|- between 410MB - 450MB -|
+| Very simple JavaFX app(single module project) app start | between 80MB - 90MB | Between 174MB - 178MB |
+| HYU app start -|- between 120MB - 130MB | between 207MB - 220MB |
+| HYU app max RAM usage reached | between 280MB - 310MB | between 410MB - 450MB |
 
 They both still represent a drastic drop in RAM usage as originally it was using up to 1.5GB.
 
