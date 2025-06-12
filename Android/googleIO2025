@@ -640,3 +640,88 @@ As mentioned before, in the use cases, you can instantiate Gemini Nano in an And
 ## Links
 
 * goo.gle/mlkit-genai
+
+# Build next-level UX with Material 3 Expressive
+
+## Components
+
+### App bar and Toolbar
+"App bar" was previously known as "top app bar". "Toolbar" was previously known as "bottom app bar", "App Bar" supports navigation, "Toolbar" provides critical actions for current page, Toolbar can be in Docked or Floating mode. Floating mode can be paired with FAB(floating action buttons), it also offers a vertical orientation floating Toolbar to adapt to large windows, you could have a navigation rail on the left and a vertical floating toolbar on the right
+
+### Buttons
+You have 5 different buttons sizes to express emphasis, and state with these sizes and shapes, also button widths to create visual interest and hierarchy
+
+They offer animated clicks with the value `IconButtonDefaults.shapes` in the `shapes` parameter
+
+#### Split button
+
+#### Button Groups
+They provide an overflow option if options are more that what it can fit in its size
+
+#### FAB and Extended FAB
+FAB now comes with sizes, medium sizes are perfect for windows like foldables
+
+"FAB menu" was previously known in materia2 as "Speed Dial" 
+
+### Carousel
+
+### Loading Indicator
+Use it with pull refresh
+
+### Progress Indicator
+`CircularWavyProgressIndicator`
+
+### Navigation bar and Rail
+Navigation rail now features expanded and collapsed states this means that now a navigation rail can work as a navigation drawer which was previously a separated component but now is these two create one seamless, flexible component
+
+For adaptive implementation of these you would use `NavigationSuiteScaffold`
+
+## Styles
+
+### Shape
+I has evolved into a comprehensive library including 35 new iconic shapes, it is accessed via the Material Shapes API, basic shapes now has 10 different radius values and also a new shape morph ability in components like buttons to give the shapes expressive motion
+
+### Motion Physics
+Is a new system in material, you can pick from pre-made motion spring token, animations used to require complex easing and duration specs but now with physics-based springs produce fluid and natural motion with simple and time-saving tokens for both spatial transitions and visual effects. You can easily change their speed with faster or slower spring and adjust their feeling. Use springs and motion schemes across your UI to make interactions come alive. 
+
+#### Motion Schemes
+A motion scheme contains two overall specification for motion, which are: Spatial and effect
+
+* With spatial adjustments you can animate movement such as position and rotation
+* with effects adjustments you can animate properties such as color and opacity
+
+You can configure the motion scheme for all components in the Material Theme by overriding default values in your app's theme. As you can see below there are two predefined motion schemes
+
+```
+MaterialTheme(
+    // colorScheme,
+    motionScheme = MotionScheme.standard(),
+    // shapes,
+    // typography
+) { ... }
+
+// or
+
+MaterialExpressiveTheme(
+    // colorScheme,
+    motionScheme = MotionScheme.expressive(
+    // shapes,
+    // typography
+) { ... }
+
+```
+
+### Colors
+Text and icons are brighter in dynamic colors(dynamic themes). Also apply nuanced surfaces, using tonal surface colors withing thoughtfully grouped and contained content to create nuanced hierarchy that guides users through the screen. Function `lightExpressiveColorScheme` has the updated on-container colors which affect content colors such as text and icon, the newly added "surface container color roles" can also be accessed via teh Color Scheme API but you have to make your theme a `MateriaExpressiveTheme` to use all these new features
+
+### Typography
+
+#### New Emphasized Styles
+Offer a stronger weight, use them to finesse hierarchy, give extra impact to a headline or subtly strengthen text of the same size. You can also customize your fonts, you could use Google Fonts library
+
+## Links
+
+* [Guidelines](goo.gle/M3X)
+* [Figma Design Kit](goo.gle/M3X-kit)
+* [Compose Apis](goo.gle/M3X-code)
+
