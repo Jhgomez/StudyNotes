@@ -734,3 +734,277 @@ learn how to implement an application that communicates with audio to Gemini in 
 ## Links
 
 Check [this repo](github.com/android/ai-samples) for apps implementing the AI-powered features examples
+
+# [Demystify KMP builds and structure](https://www.youtube.com/watch?v=gP5Y-ct6QXI&list=PLOU2XLYxmsIL4mCDJICu2vLPNw-zdcGAt&index=51)
+
+## KMP
+Brings native performance, there is no virtual machine layer between the code and the native platforms, it compiles down to native code
+
+It is recommended to share business logic like domain-layer code, data models, network layers, etc, across various platforms
+
+## What to do with KMP?
+
+### Android Jetpack
+Jetpack has more than 800 modules and not every library makes sense for KMP, so there is a need to classify them and for that first we define the levels of support for each platform that KMP supports
+
+* Tier 1: Android, JVM and iOS. This is the highest level of support, you can share code that uses Jetpack libraries across your mobile apps and Kotlin backend. Is fully tested in continuous integration, it offers tests, both, on host-side and on-device. It offers strict binary and compatibility guarantees
+* Tier 2: macOS, Linux. Partially tested on CI and limited host-side tests. No binary compatibility guarantees
+* Tier 3: watchOS, tvOS, Windows, WASM. No support provided even though they were develop without using any APIs that would block their usage
+
+Next, there is a classification of the libraries in the following categories:
+
+* Stable: Binary compatibility guarantees and easy integration with with tier 1 platforms. Here you have libraries like Room, DataStore, Collections
+
+
+* Commonized: Binary compatibility guarantees and manual integration, meaning no platform-specific hooks exists. Here we have libraries like Paging
+
+
+* Alpha: Still under development. APIs and features subject to change. Here we have libraries like "Saved State" and "View Model"
+
+
+## Toolchain Contributions
+
+Developing KMP has also made changes to the Toolchain and these changes has been made:
+
+* Kotlin upgraded its native compiler to LLVM 16
+
+* Kotlin improved garbage collection
+
+* New String representation in Kotlin Native that brings both improvements to runtime performance and memory footprint
+
+* Android has added support for Android Lint to Kotlin targets, this will allow for static analysis of KMP code
+
+* Binary compatibility tracking
+
+* AGP and KGP APIs are now unified, this results in a better experience developing KMP with Gradle
+
+## KMP Builds
+In gradle a project can contain multiple subprojects called modules, this helps you organize your build but also enables you for better build speed, however this benefit should be more visible in big projects. In native Android you could find two types of modules, app module(just one) and android library modules(as many as needed), they are essentially the same, all these modules are usually contained inside a directory that has one gradle script and is also referred to as "project build script" this build script can contain the plugins, dependencies and configurations that are applied to all "child" modules however doing this may not be a best practice. What the app and library modules have in common is that they all have to configure the android extension and they all should match the same configurations like the targetSdk and more configuration inside the `android` extension block. They type of module they are is basically defined by the plugins you apply to the buildscript of the module, for example these are the plugins the modules would apply
+
+```
+app = com.android.application + kotlin-android
+android library for data and domain layers = com.android.library + kotlin-android
+android library for feature(presentation) layer = com.android.library + kotlin-android + more like kotlin-ksp or kotlin-kapt + kotlin-parcelize
+```
+
+As you can see these set up only builds for one target, Android, and that is why you can directly configure how it builds on Android that means you can declare things like dependencies very easily.
+
+In KMP this works very similarly but with a few differences, first the plugins it uses, and now you have to define what targets you want a KMP library module to compile to and how you want to organize your sourcesets to share code between these targets
+
+
+```
+// Android library configurations in a regular Android app
+plugins {
+    id("org.jetbrains.kotlin")
+    id("com.android.library")
+}
+
+android { ... }
+
+kotlin { ... }
+
+// converting this configurations to a KMP library is done as the following
+plugins {
+    id("org.jetbrains.kotlin.multiplatform")
+    id("com.android.kotlin.multiplatform.library")
+}
+
+kotlin { ... }
+```
+
+### Targets
+The point of using kMP is to compile your project to multiple platforms to do that we declare targets, each target defines:
+
+* an artifact you want to build and what platform it is compiled for
+* you can define as many or as little targets as you want. You can even define multiple targets for the same platform by giving them custom names(although this is not the recommended approach)
+
+### Platform
+According to [this documentation](https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-discover-project.html#targets), targets can also be referred to as platforms
+* Thet are defined by the toolchain
+* They represent a very specific place where your code actually runs and directly maps to what kind of binary the Kotlin compiler should spit out
+* Example: iosSimulatorArm64
+
+Lets continue with the `build.gradle` example shown previously
+
+```
+// Android library configurations in a regular Android app
+plugins {
+    id("org.jetbrains.kotlin")
+    id("com.android.library")
+}
+
+android {
+    namespace = "com.example.shared"
+    compileSdk = 35
+    defaultConfig {
+        mindSdk = 24
+        ...
+    }
+}
+
+kotlin { ... }
+
+// converting this configurations to a KMP library is done as the following
+plugins {
+    id("org.jetbrains.kotlin.multiplatform")
+    id("com.android.kotlin.multiplatform.library")
+}
+
+// Android configuration is now encapsulated under Android library target
+// in the kotlin dsl extension block
+// You can also see a declaration for a 64-bit IOS target
+kotlin {
+    androidLibrary {
+        namespace = "com.example.shared"
+        compileSdk = 35
+        minSdk = 24
+
+        withHostTestBuilder { }
+        withDeviceTestBuilder { }
+    }
+
+    iosX64 { ... }
+    
+    // you can declare multiple targets for same platform, by giving them a custom name
+    // this is just to illustrate the difference between a target and a platform
+    jvm("java8") { }
+    jvm("gwt") { }
+}
+```
+
+### Source Set
+They define how sources are shared between targets. Each target creates by default:
+
+* <target>Main, it only compiles to the target
+* <target>Test, it only compiles to the target
+
+Each source set can declare dependencies, including on other source sets
+
+User-defined, you may create multiple custom source sets
+
+```
+plugins {
+    id("org.jetbrains.kotlin.multiplatform")
+    id("com.android.kotlin.multiplatform.library")
+}
+
+kotlin {
+    androidLibrary {
+        namespace = "com.example.shared"
+        compileSdk = 35
+        minSdk = 24
+
+        withHostTestBuilder { }
+        withDeviceTestBuilder { }
+    }
+
+    iosX64 { ... }
+    
+    // you can declare multiple targets for same platform, by giving them a custom name
+    // this is just to illustrate the difference between a target and a platform
+    jvm("java8") { }
+    jvm("gwt") { }
+
+    sourceSets {
+        // this can enables us to share sources between targets
+        androidAndIosMain {
+            dependencies { ... }
+        }
+
+        androidMain {
+            dependencies {
+                // consumes a given sourset
+                dependsOn(androidAndIosMain)
+            }
+        }
+
+        iosX64Main {
+            dependencies { 
+                // consumes a given sourset
+                dependsOn(androidAndIosMain)
+            }
+        }
+    }
+}
+```
+
+Sharing sources this way is actually a common pattern, the Kotlin Gradle plugin creates shared source sets
+for you by default and that is why the above configurations can be rewritten as follows
+
+```
+plugins { ... }
+
+kotlin {
+    androidLibrary { ... }
+
+    iosX64 { ... }
+    
+    jvm("java8") { }
+    jvm("gwt") { }
+
+    sourceSets {
+        // this can enables us to share sources between targets
+        commonMain {
+            dependencies { ... }
+        }
+
+        androidMain { ... }
+	// unique to the Android target, there are two test source sets
+	// this one for host-side test that run directly on your computer in the JVM
+	androidHostTest { ... }
+	// this one for instrumented device tests that run on a physical device or Android device emulator
+	androidDeviceTest { ... }
+
+        iosX64Main { ... }
+    }
+}
+```
+
+Learn more about KMP project structure [here](https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-discover-project.html) and also about the hierarchy of source sets that, knowing about the hierarchy of source sets can help you shared dependencies and shared code efficiently. Basically any time you define a target, a set of source sets is already created by default and can be used to share code and dependencies across different targets, a great example is shown [here](https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-discover-project.html#intermediate-source-sets), basically these shared/common source sets can be referred to as intermediate source sets, the case is that we can target for example ios 64-bit phones with target `iosArm64`, `macosArm64`(Modern Apple Silicon-based Macs), `watchosX64` (Modern 64-bit Apple Watch devices), `tvosArm64`(Modern Apple TV devices), these are all Apple devices, and as stated, they have common/intermediate source sets created by default, so you can define a function to generate a `UUID` for all Apple devices, but this is platform specific and can not be declared in the `common` source set as it doesn't compile for Android and other platforms, so you so that is why you can declare this function inside the `appleMain` source set, this will centralize this code instead of copying in each target source set, you can learn more about the hierarchical project structure [here](https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-hierarchy.html#default-hierarchy-template), you can learn more about how the source sets created by default are organized, also here you can see how this hierarchy/intermediate source sets works for source sets used for creating tests [here](https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-discover-project.html#integration-with-tests)
+
+## Publishing KMP Libraries
+To share business logic across all targets we need to look into how publishing and exporting works because the whole point of multiplatform is to be able to publish to different platforms from a singe code base
+
+KMP supports publishing libraries in several different binary formats. For Android and iOS, we care about the following three binary formats
+
+* JAR/ AAR(java archives and android archives): JVM and Android targets. Is the same as without KMP. These are consumed through Gradle
+
+* Klib: New archive format introduced by Kotlin for non-Android and non-JVM tagets such as Kotlin Native target for iOS, they're consumed through Gradle for other Kotlin projects
+
+* XCFramework: Apple's official binary format for libraries on Apple platforms .Binary package for consumption in XCode for Apple platforms, they're consumed directly through package managers like Cocoapods or SPM
+
+### Swift Package Manager
+Is Apple's officially supported method of distributing binary packages, such as XCFrameworks for Xcode projects, best choice for allining with modern best practices. A swift package/KMP library can be built directly with official tooling. To publish a KMP library as a Swift package you'll need to:
+
+1. assemble the XCFramework through Gradle `./gradlew <project>assembleXCFramework`, then
+
+2.  Compress the XCFramework into a .zip archive
+
+3. Upload archive to an accessible remote, such as GitHub releases
+
+4. Create a Package.swift manifest
+
+5. Push the Package.swift manifest to a remote repository
+
+For an example of a Package.swift check minute 14:21 of the video
+
+### CocoaPods
+Is a popular third-party dependency manager, is a good choice if your team is already using it. Gradle provide a plugin that provides a Gradle DSL to configure exporting for cocoadpods
+
+1. Install CocoaPods
+```
+rvm install ruby x.y.z
+sudo gem install -n /usr/local/bin cocoapods
+```
+
+2. Configure Gradle with the CocoaPods DSL
+
+3. `./gradlew :project:podPublishXCFramework`
+
+4. Updload XCFramework and podspec to a remote repo to make it available to iOS clients
+
+## Resources
+You can check two codelabs
+
+* Getting Started with Kotlin Multiplatform
+* Migrate Room Database to KMP
