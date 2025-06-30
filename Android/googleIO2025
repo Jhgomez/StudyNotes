@@ -1028,3 +1028,33 @@ Since this is a new SDK, in order to use it you need to get a new API key with t
  The main component of this new API is the 3D view, it serves as the primary Android view that will host and render the 3D map within your applications layout.
 
 This would be interest to implement
+
+# [Android notifications and Live Updates](https://www.youtube.com/watch?v=ihR8hL_Hmec&list=PLOU2XLYxmsIL4mCDJICu2vLPNw-zdcGAt&index=40)
+Current notification styles you're probably familiar with are:
+
+* **CallSytyle** for ongoing phone calls
+* **BigText** for lengthy messages
+* **Custom** call style
+
+In Android 16 there is a new notification style, **PrgressStyle** notification template, this is meant to enable a better tracking of time-sensitive, user-initiated, ongoing activities. This feature allows you to implement rich user experiences for progress-centric activities, for example, displaying ridesharing updates or tracking a food delivery. This template is highly customizable notification style, you can customize the progress bar with custom steps, segments, tracker icons and more, allowing you to brand and connect with users along their journey.
+
+Android 16 also introduces a new type of experience to notifications called "Live Updates", these are supported across devices including mobile, large screens like a tablet, or foldable. 
+
+"Live updates" are a specific notification style that get heightened visibility by appearing on
+
+* "always on display"
+
+* Top ranking in the notification shade and lockscreen
+
+* Status chip in the status bar
+
+This means live updates will always be at the top of the notification stack, ranking only below heads-up notifications or notifications that are reserved for the most important and urgent alerts
+
+This set the ground for standardizing notifications styles instead of using custom notifications all the time, this helps developing apps faster since custom notifications requires testing across different device orientations, resolutions and versions to ensure design consistency, also height availability varies across Androis OS versions making it difficult to produce a good custom notification, also the experience is not consistent to the user
+
+They work across handsets and foldables in 2025 and support for wearables is coming later in 2026 
+
+## Resources
+
+* goo.gle/live-updates
+* goo.gle/live-updates-sample
