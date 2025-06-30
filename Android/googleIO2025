@@ -1019,3 +1019,12 @@ The "Automation" API gives developers access to Google's intelligent automation 
 Last year Google started integrating Gemini with Google Home. New Google Home app features such as enabling users to search their video history and see event descriptions, also the "help me create" feature, this last one lets you make intelligent automations using natural language, also, users are now enable to control their smart home devices using natural language directly in the Gemini app, "Home" API will soon have the same features
 
 Using these APIs you can control temperature and lighting, you can control vacumm cleaners
+
+# [Next-gen Android experiences with photorealistic 3D maps](https://www.youtube.com/watch?v=Wl7QvP2eDbA&list=PLOU2XLYxmsIL4mCDJICu2vLPNw-zdcGAt&index=39)
+Last year 3D maps where launched with Javscript API but now it is Android's turn. 3D maps are now available to Android developers with Google Maps platform
+
+Since this is a new SDK, in order to use it you need to get a new API key with the map 3D SDK for Android API
+
+ The main component of this new API is the 3D view, it serves as the primary Android view that will host and render the 3D map within your applications layout.
+
+This would be interest to implement
