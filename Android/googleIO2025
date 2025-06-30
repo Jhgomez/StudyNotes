@@ -1008,3 +1008,14 @@ You can check two codelabs
 
 * Getting Started with Kotlin Multiplatform
 * Migrate Room Database to KMP
+
+# Google Home APIs, tools, and Gemini capabilities for your apps
+Home APIs enables developers to build apps and experiences for the home, the `Device` and `Structure` APIs enable developers to control and manage devices connected to Google Home
+
+The "Commissioning" API makes it easier for users to set up and share devices with other apps using Google's "Matter" infrastructure. 
+
+The "Automation" API gives developers access to Google's intelligent automation engine and the "Home" APIs were designed from the ground up to be cross-platform supporting both Android and iOS
+
+Last year Google started integrating Gemini with Google Home. New Google Home app features such as enabling users to search their video history and see event descriptions, also the "help me create" feature, this last one lets you make intelligent automations using natural language, also, users are now enable to control their smart home devices using natural language directly in the Gemini app, "Home" API will soon have the same features
+
+Using these APIs you can control temperature and lighting, you can control vacumm cleaners
