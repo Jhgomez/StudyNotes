@@ -150,6 +150,16 @@ This is not a recoring but it is a functionallity in JMC that lets you see more 
 * Glowroot
 * Sematext
 * Dynatrace
+* JCMD
+
+## JCMD
+This is a very important alternative as it allows to track native memory, you can check more about native memory tracking [here](https://www.baeldung.com/native-memory-tracking-in-jvm)
+
+Before using this great way to get information about the JVM you have to enable it with the following flag
+
+* `-XX:NativeMemoryTracking=off|sumary|detail`, I used the option `summary`
+
+The following information will help us understand the solution to our previous high memory comsumption and also some behaviour I observed in different computers with different characteristics(CPU and RAM)
 
 # Performance Tips
 ## Avoid recursion
