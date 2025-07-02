@@ -159,6 +159,13 @@ Before start using this tool you need to enable it with the JVM flag
 
 * `-XX:NativeMemoryTracking=off|sumary|detail`, I used teh `sumary` option
 
+After finding the configurations that helped me reduce the memory usage which in short I just had to select `ZGC` garbage collector and restrict the inital and max heap size to 400 both, I saw a big decrease in RAM usage, however after trying the application in another computer I found that the RAM being used was higher so I went on to investigate and found that the `JCMD` tool lets us trac the native memory usage, and as you can see in the article I reference before an application could be consuming more RAM than the value we assigned as a max heap size, and that depends on the JVM ergonimics, first we have to understand that the JVM needs to allocate memory for other components of the JVM such as the following
+
+* **Metaspace**: Previous Java 8 this was called PermGen or Permanent Generation, This contains metadata about the loaded classes
+* **Threads**: One of the most memory-consuming data areas in the JVM is the stack, created at the same time as each thread. The stack stores local variables and partial results, playing an important role in method invocations. The default thread stack size is platform-dependent, but in most modern 64-bit operating systems, it’s around 1 MB. This size is configurable via the -Xss tuning flag. In contrast with other data areas, the total memory allocated to stacks is practically unbounded when there is no limitation on the number of threads. It’s also worth mentioning that the JVM itself needs a few threads to perform its internal operations like GC or just-in-time compilations.
+* **Code Cache**: When the JVM compiles bytecode to assembly instructions, it stores those instructions in a special non-heap data area called Code Cache. The code cache can be managed just like other data areas in the JVM
+* 
+
 # Performance Tips
 ## Avoid recursion
 Recursion is a technique that can be quick and effective in languages that provide tail call optimization. Java, however, is not one of these languages. Recursion is 
