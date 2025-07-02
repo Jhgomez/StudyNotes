@@ -150,6 +150,14 @@ This is not a recoring but it is a functionallity in JMC that lets you see more 
 * Glowroot
 * Sematext
 * Dynatrace
+* JCMD
+
+## JCMD
+This is a very important tool, at least for me because it helped me understand the solution described in the section below and also it helped me understand a JVM behaviour I was not expecting and was not aware of it. This toola enables us to do "native memory tracking", you can get more details [here](https://www.baeldung.com/native-memory-tracking-in-jvm)
+
+Before start using this tool you need to enable it with the JVM flag
+
+* `-XX:NativeMemoryTracking=off|sumary|detail`, I used teh `sumary` option
 
 # Performance Tips
 ## Avoid recursion
