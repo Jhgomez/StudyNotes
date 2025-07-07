@@ -166,6 +166,15 @@ After finding the configurations that helped me reduce the memory usage which in
 * **Code Cache**: When the JVM compiles bytecode to assembly instructions, it stores those instructions in a special non-heap data area called Code Cache. The code cache can be managed just like other data areas in the JVM, however if we reduce this area our application will have to constantly interpret and then compile assembly code, the JIT compiler is in charge of this functionality, if we make it too small we could gain less RAM usage in exchange of a less performant app since parts of our app that are frequently used may have to be constantly compiled over and over again
 * **Garbage Collection**: There are various garbage collectors, all of them share one common trait: they need some off-heap space to store data structures they use to perform their tasks, in my case since I choosed ZGC because after testing other GCs, this was the one that was helping me reduce RAM usage this may be because this GC strategy to unload classes in Metaspace is agressive, also this garbage collector creates threads depending on the host capability and these two characteristics can be specifically defined with their corresponding flags, for more agressive class unloading `-XX:+ClassUnloadingWithConcurrentMark` and `-XX:+ClassUnloading`, for limitting GC threads `"-XX:ConcGCThreads=2"`, other characteristics we can set are `-XX:ZUncommitDelay=1` for uncommit(returning) unused pages after 1s back to OS, however this last flag and the threds limit flag was not making my app reduce its RAM usage, instead the ram usage was lower without setting this flags, and I choosed not to unload metadata(loaded classes) too agressively since this could actually make my app consume more CPU as it is without it
 
+There are other reasons why the JVM might be using more RAM than what I defined in the heap like Symbols(strings) and string pool, native byte buffers and they are mentioned in the docuoment previously shared but they are not a problem in our app since for most strings I use an `strings.properties` file which is a recommneded approach in Java.
+
+If you want to know/find almost all tunning flags related a concept mentioned here you can use the following command
+```
+java -XX:+PrintFlagsFinal -version | grep <concept>
+```
+
+use it like this: `java -XX:+PrintFlagsFinal -version | grep Metaspace`
+
 # Performance Tips
 ## Avoid recursion
 Recursion is a technique that can be quick and effective in languages that provide tail call optimization. Java, however, is not one of these languages. Recursion is 
