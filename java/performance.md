@@ -175,6 +175,21 @@ java -XX:+PrintFlagsFinal -version | grep <concept>
 
 use it like this: `java -XX:+PrintFlagsFinal -version | grep Metaspace`
 
+### Native Memory Tracking
+In order to better understand the information this functionality can provide us we needed to know more about the previous concepts of the JVM ergonomics because the information it is going to share is basically indicating us how much RAM each concept is using
+
+1. Launch your app(you can do this anyhow), in our example we will launch it from the command line `java -XX:NativeMemoryTracking=summary -Xms300m -Xmx300m -XX:+UseG1GC -jar app.jar`
+
+2. Find the java process id, you can either do that with the command `jps -l` or `jcmd`(alone, no flags or any parameters)
+
+3. Take a snapshot `jcmd <pid> VM.native_memory` or `jcmd <pid> VM.native_memory summary`
+
+4. You can track it over time by defining a baseline to compare against later, set a baseline first `jcmd <pid> VM.native_memory baseline`
+
+5. compare with another snapshot with `jcmd <pid> VM.native_memory summary.diff`
+
+You could even get more detail information with the flag `-XX:NativeMemoryTracking=detail `
+
 # Performance Tips
 ## Avoid recursion
 Recursion is a technique that can be quick and effective in languages that provide tail call optimization. Java, however, is not one of these languages. Recursion is 
