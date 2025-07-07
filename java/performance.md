@@ -188,7 +188,10 @@ In order to better understand the information this functionality can provide us 
 
 5. compare with another snapshot with `jcmd <pid> VM.native_memory summary.diff`
 
-You could even get more detail information with the flag `-XX:NativeMemoryTracking=detail `
+You could even get more detail information with the flag `-XX:NativeMemoryTracking=detail`
+
+### Conclusions obtained using this tool
+My first issue was that my app was using too much RAM, this was solved with the confugartions indicated in this section previously but alos as indicated in the "Solution" section below. After that I found another "issue", or that is what I thought it was at the beginning, I had a computer with 16GB ram and another with 32GB ram, the total native memory being used was higher on the 32GB ram computer on app start it was using around between 80MB and 90MB more than in the other computer and at some point, after some usage, it reached arount 80MB to 120MB more that on the 16GB ram computer, after investigating with this tool I found that it was basically the JVM behavior expected for a computer with more core(threads), the 16GB computer cpu had fewer cores/threads than the other computer, so depending on the cmputer(host) running the JVM it will allow the off-heap conpcepts/stuctures to grow larger than in other computers, meaning in my 32GB computer the metaspace was allowed to load more classes, the code cached handled by the JIT compiler was allowed to store more compiled code, the GC was loding more metadata(“GC” category), ZGC maintains internal tables and marking data proportional to the heap and thread count. Thread stacks, ZGC on the larger-core machine spun up more collector helper threads even though the ammount of RAM used by this thread stack was fairly small, it is still worth to mention it. In conclusion there was nothing else for me to change, meaning there was no need for me to change, add or remove any JVM argument since my app was working as expected in both computers 
 
 # Performance Tips
 ## Avoid recursion
