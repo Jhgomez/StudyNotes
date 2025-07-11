@@ -1,3 +1,6 @@
+# Java APIs Found in [FXLauncher](https://github.com/edvin/fxlauncher/tree/8d8aa93f1bd1f676f9d72773b30e495e93a346ff)
+FxLauncher is a library for JavaFx that lets you upload files to a server using some of the bellow Java APIs and also, it uses the Linux command/utility called secure copy `scp` to copy files to a remote server usings SSH.
+
 ## JNDI Java Naming and Diretory Interface
 
 ### When is it used?
