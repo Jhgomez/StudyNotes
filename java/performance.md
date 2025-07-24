@@ -280,3 +280,52 @@ This is effect of the configurations on the JVM
 # Commands used
 * `./gradlew jpackage`(will create executable in the build folder inside jpackage directory)
 * `./gradlew run`
+
+
+# [Analysing a HEap Memory Leak](https://www.youtube.com/watch?v=JoQN4xoXY5Y)
+Another interesting talk [here](https://www.youtube.com/watch?v=NI16bqeGv7U&t=550s) also.
+
+First you need to understand how JVM manages memory, [this video](https://www.youtube.com/watch?v=vz6vSZRuS2M&t=2916s) explains it greatly
+
+This example only analyses the heap usage and not other memory sections, this means we can not identify native memory exhaustion leaks using these methods, but at least analyzing the heap is great
+
+## Java GC Visualizers/Analyzers
+There are many like: GCPlot, IBM GCMV, GCeasy, GCViewer, SolarWinds Loggly, Sematext Logs. To use them you have to turn GC login on
+
+Just be aware that jvisualvm is an all-purpose GUI-based monitoring tool. It doesn’t specifically monitor garbage collection, but shows memory usage over time graphically, which gives a good idea of whether the GC is working efficiently.
+
+In this case we will use GCViewer, any GC log that your JVM produces you can load it into this tool, also load them live as they are generated using the UI you will have these options. Basically you can see the memory available in the heap and also the actual heap memory being used, also GC collections and how long they lasted, if you see the actual heap being used going up and down it most likely is because of the JVM using GC to collect young generation, when young generation is full a GC is triggered and it collects/deletes objects that nobody/nothing is referencing
+
+Using a GC Analyzer will let answer the **"Do I have a leak?"** question which is important and can be a starting point
+
+## JPS and JMAP Java Utilities
+This tools will let us answer the **"What is leaking(which classes)?"** question
+
+1. Run the `jps` command from your terminal, if you have the JAVA_HOME or the Java's bin directory on your PATH environment variable you can just execute it without the full address to the bin directory, this will give you the java processes list along with their ID number that are running in your computer
+
+2. Run the `jmap -histo:live <java_process_id> > file1.txt` command in your terminal, again this tool is in the JDK's bin directory. This command will monitor the process so wait for a moment and interact with your if you need to make it do some processing that you can capture to analyze in a histogram, basically we are getting a histogram which is written in the `file.txt` file. You can open this file and see there the class names, the number of instances of each class and also the bytes all those instances sum up `[C` stands for char `[B` for byte and `[I` for integer primitives
+
+3. You can take a second histogram and store in another file like Run the `jmap -histo:live <java_process_id> > file2.txt` and then use the bash utility called `perl` with the following command `perl file.pl file1.txt file2.txt > file.csv`, this will merge the files and make it easy for you to read. Remember if running on windows to use this utility you have to install "git bash"(git for windows). You should end up with a CSV that has five columns, first the class name as a key, second you have a pair of pairs, each pair is a combination of "number of instances" and "bytes used by instances" for the first take and then the second take pair. You should work with this CSV file and add two columns, one to find the difference of the number of instances of that object between the two takes and then the same but for number of bytes so you have the delta between the two takes and then you can create a pivot table from all this data and sort it by the "total number of instances" of each class, now it is a little hard to identify the leak but if the impact of a leak is very high it should be fair easy to identify it, this means if there is a memory leak causing a very bad impact you will se a lot of instances or bytes being created, if not an easy leak to identify or if everything is working good the difference between takes should be roughly the same or zero
+
+## Heap Dump
+Heap dump is basically a description of the heap at a certain moment in time and this will helps us answer **What is keeping objects alive(an instance in the app)?**
+
+1. Enable heap dumps when out of memory errors occur using this argument `-XX:+HeapDumpOnOutOfMemoryError`
+
+2. Use jmap `-dump:live,file=<file-path> <pid>`, you can remove the `:live` in the command which will let you see the dead objects in the histogram(not yet been garbage collected), if you use the `:live` part a garbage collection will be forced before the dump
+
+3. Other way to do a heap dump JMX:com.sun.management.HotSpotDiagnostic.dumpHeap(), you can also do it from jconsole, visualvm, and even programmatically
+
+4. Other way to do it is with the java utility `jcmd`, use command `jcmd <pid> GC.heap_dump <file_path>`
+
+### Heap Dump Viewers
+You need a profiler and some utilities for this. you can try "Ecplipse MAT". You can just load a heap dump using its UI. Just open it and it can analyze it and identify possible suspects. Eclipse MAT is a great tool that you can use to start drilling down to identify the instance in the app that is causing this problem
+
+## Profiling
+Any profiler that shows you the generations in the heap, should help you answer the question **Where is it leaking from(code where the objects are created and/or assigned)?**. In this case you can use "jvisualvm"
+
+1. First identify the JVM process, click it
+
+2. You should see some different tabs, "Overview", "monitor", "Threads", "Sampler", "Profiler", go to "Profiler", you will see more sections on your screen, to the right below the section with the those tabs you will another section with tabs, "CPU Settings" and "Memory settings", make sure "Profile object allocations and GC" and "Record Allocation Stack Traces" are checked and then click the button that says "Memory", which should be between "CPU" and "Stop" buttons, it will give pretty much similar numbers to the histogram but with an additional column called "Generations" this tells you how many age objects there are and not the age of the objects. It shows you dead objects but have not been garbage collected yet, for that go to the "Monitor" tab and click on "PerformGC" so dead objects are gone this will let you alone only with objects that are still alive, go back to "profiler", there might be a difference between the histogram you got from JMAP previously and the data, this depends on your configurations for example if you're tracking every 10 allocations and not every allocation and also this is a free tool so it is not perfect but it should do the job good enough.
+
+3. Now you can right click any occurrence you see on your screen and, maybe any object with high live objects/live bytes and choose "Take a Snapshot and Show Allocation Stack Traces", for example you can check a "String" object details, there you will see the parts in the app that are contributing to the number of instances/bytes of the class you're analyzing, in this case String. Basically you can track the stack to see where in the code there is your bytes mostly being created
