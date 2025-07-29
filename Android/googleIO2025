@@ -1086,3 +1086,28 @@ Use Layout inspector to debug semantics of each composable. `TalkBack`s TreeDebu
 
 ## How to detect Common accessibility issues and automate some aspects of testing with compose accessibility checks
 You can do it manually but alos using automated test, also the Accessibility test framework which is the same framework underlying accessibility scanner and accessibility checks in espresso. to perform some checks automatically. 
+
+# [Android accessibility updates](https://www.youtube.com/watch?v=fKY6qYxytLI&list=PLOU2XLYxmsIL4mCDJICu2vLPNw-zdcGAt&index=44)
+
+## Vision
+* Talkback: Is Android's built-in screen reader. Now image descriptions are powered by gemini while previously images were often not very accessible, this is all possible thanks to the technology behind it which is a fast and powerful server-side Gemini model. On Pixel 9 Pro series devices, talkback can also use the on-device Gemini Nano model to get this functionality even when offline. Users can also ask Gemini for details about the whole screen. Users now can use a feature called "Screen search" when using talk back, helps user's find screen content using talkback reading controls, it can search/find across multiple pages of an app
+
+* Outline Text: Designed for people with low vision, it increases the contrast of the text, text is added a transparent highlight for contrast and it might change the text color however links color and colored text is not changed
+
+* two features exclusive to Pixel: Pixel magnifier, it can also search text within an image. Another feature is guided frame, helps user capture photos by giving spoken feedback on what's on the viewfinder, is enabled automatically when using talkback but now it can be enabled directly in Pixel camera settings
+
+## Hearing
+* Expressive Captions: Live captions already exists and captions any video you watch on Android and Expressive caption is a new feature in Live captions to enable it to convey emphasis, tone and sounds, in Expressive captions V2, coming in Android 16 you will have word durations.
+
+* Live transcribe: This feature captions real-world, face-to-face conversations in more than 80 languages, this can be used offline, also it will be possible to pinch to zoom
+
+* Hearing Aid: Hands-free calling, it is easy now to transfer a call to a hearing aid equipment to make a hands free call, this feature is available on all devices that are LE audio supported. Android 16 will allow users to manage hearing aid settings directly from the screen with a shortcut menu
+
+## Dexterity
+
+* Physical Keyboard Accessibility: New features for devices with connected physical keyboards. Mouse keys allows users to control the on-screen mouse pointer using the keypad buttons instead of a mouse or trackpad, usefu for users with limited hand or arm movement with problems to find a mouse that works for them
+
+## Developer & API Updates
+* Suplemental Descriptions: Provides additional accessibility label for conveying a View's purpose when existing text and descriptions need more context. Unlike `contentDescription`, supplemental descriptions do not override labeling information about a ViewGroup's subtree/descendants
+
+* Expanded & Collapsed State: Expandable UI elements can now convey their expanded state and use built-in events to notify accessibility services when expanding an collapsing. Previously this was done through the free-form state description property, but now you should use a new API called `AccessiblityNodeInfo` new `expandedState` property
