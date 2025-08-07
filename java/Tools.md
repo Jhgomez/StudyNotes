@@ -10,3 +10,5 @@
 * [Remote-Control-Desktop-Java](https://github.com/xdsswar/Remote-Control-Desktop-Java)
 * [jxmapviewer2](https://github.com/msteiger/jxmapviewer2) - java maps
 * [frostwire](https://github.com/frostwire/frostwire) - An easy to use Cloud Downloader, BitTorrent Client and Media Player. Search, Download, Play, Share. Android and Desktop app with swing
+* [vget](https://github.com/Litarvan/vget) - YouTube/Vimeo Video Download Java Library
+* [real-time-progress-bar](https://github.com/EvgenLozov/real-time-progress-bar) - Real-Time Progress Bar Example (Spring MVC, Server-sent events (SSE) )
