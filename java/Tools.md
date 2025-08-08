@@ -12,3 +12,4 @@
 * [frostwire](https://github.com/frostwire/frostwire) - An easy to use Cloud Downloader, BitTorrent Client and Media Player. Search, Download, Play, Share. Android and Desktop app with swing
 * [vget](https://github.com/Litarvan/vget) - YouTube/Vimeo Video Download Java Library
 * [real-time-progress-bar](https://github.com/EvgenLozov/real-time-progress-bar) - Real-Time Progress Bar Example (Spring MVC, Server-sent events (SSE) )
+* [MIO](https://github.com/husker-dev/MIO) - Library for convenient and informative use of I/O
