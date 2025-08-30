@@ -1,0 +1,2 @@
+* Omniverse: Is an Nvidia platform built on Open-USD(Universal Scene Description) for real time graphics collaboration and simulations. It serves as a hub to connect different software and teams, enabling them to build and deploy 3D applications, create physically accurate digital twins, and streamline complex 3D workflows for industrial, engineering, and design purposes. It supports different 3D modeling file formats like OBJ, GLTF, GLB, etc
+* Alternatives to omniverse: blender, maya, modo
