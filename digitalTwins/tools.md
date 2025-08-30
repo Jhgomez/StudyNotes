@@ -3,10 +3,10 @@
 
 # Concepts
 ## CNC (Computer Numerical Control) 
-Are machines that focus on precision machining
+Are machines that focus on precision machining. Basically these are basically the real world model we would create a digital twin but a digital twin can create a copy of anything, this is basically a practicall example
 
 ## PLC (Programmable Logic Controller)
-Are machines that manage industrial processes and automation.
+Are machines that manage industrial processes and automation. It looks like these are basically sensors that we would caputre data from to develop a digital twin
 
 ## CNC vs PLC
 * **Purpose**: CNC machines are specialized for precision machining tasks, while PLCs are designed for broader industrial automation and control of processes.
