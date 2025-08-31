@@ -20,3 +20,8 @@ Are machines that manage industrial processes and automation. It looks like thes
 
 
 In summary, while both CNC and PLC machines play crucial roles in industrial automation, they serve distinct functions and are tailored for different applications. Understanding these differences can help in selecting the right system for specific manufacturing needs.
+
+# Expressions/Terms, Extras and Pendings
+* three dimensional digital twins
+* [How To Build Digital Twins In Omniverse Tutorial](https://www.youtube.com/watch?v=-Va2sXIHtaQ)
+* [Large-Scale 3D Digital Twins with AI and Unreal Engine | Unreal Fest 2023](https://www.youtube.com/watch?v=Hrv-T-sWL7w)
