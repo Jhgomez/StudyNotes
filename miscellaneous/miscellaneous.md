@@ -94,3 +94,90 @@ These are concepts found in the video link inserted in the title
 * TOP, HTOP, FREE are tools with the same purpos, help the user to monitor performance or resources and processes
 
 * There is a problem when running a docker container 'from scratch', limit the memory that it can use and try to see the memory available inside it using FREE. Like in the section above even though the memory was limited, when monitoring the system it will read the whole memory available in the computer that this image is running on, this is because "cgroups" is not compatible by default in our images. This suppose another issue, when installing for example a java application, like our backend applications, when installed in the container the apps will set the default and max memory size based on the memory available in the computer running the whole procces instead of the container whihc is bad because the memory limit could have been set to a much lower value than what is available on the system which will cause and error if the Java app is started in the container. Generate the apps file, lets use the default project generated with the [Kukulkan archetype](https://github.com/tuxtor/kukulkan-ee?tab=readme-ov-file) which is a microprofile microservices framework, if we run `mvn clean package` will get a war, which is the file we used to use to run applications in an applications server like jboss, payara, weblogic, this practice has changed with Uber/fat jars which contains all dependencies the app needs to run which is basically what microservices is, each microservices has a server, data base, may load balancers, and communicate using a service mesh, in order to generate a uber jar from this project use `payara-micro` profile with this command `mvn clean package -Ppayara-micro`. To fix this, first we need to pack the jar file inside a container using a dockerfile, which is basically a sort of script, After Java 8.191 the JVM is able to recognize the "cgroups" memory to define the default memory and max memory at start, so we need to choose a Docker image with a proper Java version like a OpenJdk image and copy our jar file `COPY <jar file actual path> <path to copy file in image>`, invoke our application with `CMD ["java", "-jar", "./pathToJar.jar"]`, expose port `EXPOSE 8080`, build docker container image from cli `docker build . -f <dockerFileName> -t <aTagName>`, run it `docker run -p 8081:8080 -rm <tag>` port 8081 of localhost is mapped to 8080 of the image and using its tag name removes container when it is stopped. Run `docker ps` to see the running containers and a description, copy the alias of the container and enter the container with `docker exec -it <alias> /bin/sh` this will run the shell and now type unix/cli commands, `free -m` to see memory, you can exit cli with `exit` command and control+c to stop container. Run it again and limit memory `docker run -m=64mb -p 8081:8080 --rm <tag>`. `dmesg` is program in linux that helps us check things like errors, so you could see if the log if a container failed to run. We could limit java program initial and max memory by adding arguments `CMD ["java", "-Xms64m", "-Xmx128m", "-jar" , "./pathToJar.jar"]`, everytime you edit docker file remember to re build image, if this doesn't work try to find a command from your machine that will run, try it removing arguments or reordering them, when using old java versions we need to tune this parameters using manual methods meaning manual tests, we need to tune the default the max and/or default memory java argument with the limit stablished for the container with manual methods but this process is automated in newer versions
+
+* Java versions after 8.191 handles a concept called [ergonomics](https://docs.oracle.com/en/java/javase/23/gctuning/ergonomics.html) which is very helpful when runnig/deploying java applictions in containers, we can print the default configurations by printing flags with command `java -XX:+PrintFlagsFinal -version | grep ergonomic` here we are using command line utility called "grep" to find text, this means the 
+
+* Even though we can use ergonomics there might be cases when we want to tune the memory size values like when using Kafka, camel and spark you may tune it to use around 5 to 10 gigabytes.
+
+* Cgroups + ergonomics is safe, it will use cgroups info to determine the limit. Be aware that if for some reason we create/modify something like a JVM plugin to try to access memory outside what is managed by cgroups but this will generate an exception in the kernel and cgroups will kill the process, ergonomics will also safely use CPU resources by creating a Thread Pool with the correct size and/or limits.
+
+* If we need to determine/tune memory sizes limits manually we can combine tools like "JMeter" to simulate workloads, java profiler like "YourKit", in combination or alternativaly with "JVisualVm", and finallly analize JVM telematry data.
+
+* Tunning memory sizes manually is also required in old Nodejs versions, check "Node.js in Kubernetes World", it is an IBM article. NodeJs is similar to Java's in the sense how it calculates the memory size. This, again, happens because a heap is created with memory that is beyond what "cgroup" allows
+
+* Oracle JVM after version 8.202 when used in production environment has to be used with a paid license. In AWS and Azure you can use their JVM implementation and avoid beingh charged by not using Oracle's JVM. Android Studio and Intellij has their own JVM which is compiled by Belsoft
+
+* To avoid wasting memory in context like server applications Java is now modular, that is why javafx, awt, swing is not part of the JDK. GraalVM is not part of the JDK either, the native applications it can produce are important because in some cases it is more important how fast the app can start but not the peak performance, so we are gaining with AOT compilation but loosing benefits of peak performance of JIT compilation
+
+* Helidon, Quarkus, Micronaut and Spring Native are Java frameworks that aims to create web applications that has a quick start and use less memory. These frameworks starts the apps fast and were created with the Docker and Kubernetes era
+
+* In linux any OpenJdk version works good, so you can use the one that is installed by default. In Windows, AdoptOpenJdk is a great option because it runned by IBM, in mac this openJdk implementation is available in homebrew
+
+* Native apps compiled and packed with GraalVm are packed with Sulong, which is a mini virtual machine which is the VM that the app is executed on top on
+
+
+## [DevSecOps: Kubernetes + OPA](https://www.youtube.com/watch?v=FRHkATZUf_k)
+It demoes how to use OPA as admission controller to Kubernetes, OPA is Open Policy Agent
+
+
+# More
+
+* CISA - cybersecurity and infrastructure security agency, they have a catalog which is important in cybersecurity as it describes systems vulnerabilities and is called "Kown Exploited Vulnerabilities Catalog"
+
+* Aaron Swartz: Self-taught programmer, founder of reddis and helped to develop RSS protocol, RSS protocol is not used a lot these days  but it lets you "subscribe" to websites and get new content from them, it looks like it might still live inside some of googles products like YT. He commited suicide. [ https://archive.org/details/firmwarelibrary]
+
+* llya Sutskever, cofounder of OpenAI
+
+* https://archive.org/details/firmwarelibrary
+
+* Gimp is image editor it can be comparable to Photoshop but it is open source and free
+
+* lftp is a GNU program/command in Linux that lets you mirror a folder in a remote computer
+
+* JSTOR - Journal storage, it is a scientific journal
+
+* PERL: high level programming language
+
+* Directory Listing: Web server function that displays contents of a directory that has no index file. It considered a security vulnerability if not configured correctly, wordpress websites has this issue
+
+* Wordpress activates an API by default, you should turn it off
+
+* You can see a website source code by putting `view-source:`
+
+* Cloudflare can help you implement a rate limit
+
+* [C++ is a blast, games approach](https://learncodethehardway.com/blog/31-c-plus-plus-is-an-absolute-blast/)
+
+* FedCM(Federated Credential Management)
+
+* String Interpolation
+
+* Kotlin coding conventions tells about backing properties
+
+* Watson Studio - IBM tool for building AI LLM models
+
+* Gradio is the fastest way to demo your machine learning model with a friendly web interface so that anyone can use it, anywhere!
+
+# TODO
+
+* Caching mechanisms for web servers
+* Database query optimizations
+* Resource pooling
+* Response compression
+* Http caching headers
+
+## Monitoring
+
+* Opentelemetry used to make software observable, telemetry are the measurements and data at remote points and their automatic transmission to receiving equipment for monitoring. Telemetry data can include traces(path from point A to point B. trazados se refiere al camino que se recorre desde un punto A a un punto B. lifecycle of requests to a system), logs(detailed debugging info emitted by processes) and metrics(summary statistics)
+* Instrumentation code is "how" we get telemetry
+* Distributed tracing tools: OpenCensus, Open Tracing
+* instrumentation refers to the measure of a product's performance, to diagnose errors, and to write trace information.
+* OpenCensus + OpenTracing = OpenTelemetry. Opencensus Provides APIs and instrumentation that allow you to collect application metrics and distributed tracing. OpenTracing Provides APIs and instrumentation for distributed tracing. OpenTelemetry is An effort to combine distributed tracing(lifecycle of requests to a system), metrics(summary statistics) and logging(detailed debugging info emitted by processes) into a single set of system components and language-specific libraries.
+* Jaeger(golang) performance insights, known for providing distributed tracing, it can be added to LinkerD
+* Prometheus time-series db for monitoring metrics,  enabling system monitoring and alerting
+* LinkerD + Flagger(kustomize) to do canary deployments. LinkerD is a service mesh, it doesn't provide and ingress so you have to get one like Nginx. [More on LinkerD](https://cloudnativenow.com/topics/cloudnativedevelopment/what-is-service-mesh-and-why-do-we-need-it/)
+* A network sniffer, also known as a packet analyzer, is either software or hardware that can intercept data packets as they travel across a network. Admins use network sniffers to monitor network traffic at the packet level, helping ensure network health and security.
+* Istio is another service mesh, it already provides and ingress called emboy
+* Golden Metrics are 1) Latency: time it takes to service a request, 2) Traffic: how much demand is being placed on a service 3) Error: rate of requests that fail 4) Saturation: How full is the service, measures system utilization, emphasizing the resources that are most constrained. These are the metrics we should aim to get with Telemetry and observability so we can monitor and analyze them
+* Another popular alternative to make your system observable is ELK
+
