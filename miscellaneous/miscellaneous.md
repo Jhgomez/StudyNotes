@@ -30,3 +30,45 @@ Si necesito una arquitectura de microservicios, probablemente usaré Quarkus o H
 Si necesito una función lambda, Quarkus seguramente.
 
 ## Backend Technologies
+
+* OpenTelematry
+* Htop, is not only for backend but helps monitoring for unix like systems, mostly for Linus
+it would be the equivalent to Windows "Task Manager" but this is more powerful
+* Java's Project Loom, aka virtual threads
+* Java's Project Panama, native code execution, I think is better known as FFM(foreign function management) or FFI(foreign function interface), which should be similar to JNI(Java Native Interface) but I have to see what are the differences
+* Java's Project Valhalla, Aims to reduce and simplify memory use
+- Jbos and Glassfish is JAVA EE server
+
+
+## Backend Standards
+
+* Jakarta EE(AKA J2EE)
+
+## Random Techonologies
+
+* jni(from graalpy vid)
+* truffle(from graalpy vid)
+* SNI(server name indicator)
+* JMX(Java monitoring extensions from springboot documentation)
+* Servlet, this is a term. Is basically what 
+* Picocli librearia for creating java or kotlin CLI applications, this could be used in backend
+* Java performance with: Java Mission Control, Flight Recorder those are the main two, at least for me, but there is more like
+Java VisualVM, Oracle Java Mission Control, JProfiler and JvisualVm. **JvisualVm** is a performance monitoring tool because it helps us visualize resources comnsumed by a java app, this was part of the GraalVm SDK APIs but it looks like it is not included anymore.
+* Java RMI(Remote Method Invocation), here we see the term stub which is a class that a client uses
+to communicate with a backed(Skeleton)
+* JSP (Java Server Pages), Java inside html
+* Linkerd is a service mesh
+* Chaos Mesh tool to test a service mesh to the limit
+
+## Linux/Unix Tools
+
+* Monitoring: TOP, HTOP, FREE
+* grep, searches text
+
+## Random Notes
+
+* `source ~/.bash.rc` would reload profile in unix like OSs/shells
+
+* A Java EE stack would include Enterprise Java Beans, CDI, JPA, Ajax-RS
+
+* Analysis of different frameworks to create java microservices. Spring by itself is an ecosystem because extensions for things like Kafka, Camel, Spark and whole lot more, practically anything, already exists, and spring has its own programming model. Microprofile on the other hand is a specification, is a standard, if you understand learn to use Microprofile you can program in frameworks like Redhat, Quarkus, Helidon, Apache Tommy, etc.
