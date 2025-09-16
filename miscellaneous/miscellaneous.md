@@ -237,3 +237,25 @@ It demoes how to use OPA as admission controller to Kubernetes, OPA is Open Poli
 * noise maps in java(Minecraft)
 * FFmpeg: open-source software to record, convert and stream audio and video.
 
+# Databases
+
+* Conceptual layer requires an entity-relation model
+* Logical layer requires a relational scheme
+* Physical Layer requieres a 
+
+
+# Markdown cheats
+```
+<a href="#download">![Download APK](https://img.shields.io/github/downloads/SkyTubeTeam/SkyTube/total.svg?label=SkyTube+Extra+Downloads)</a>
+<a href="https://hosted.weblate.org/engage/skytube/?utm_source=widget"> <img src="https://hosted.weblate.org/widgets/skytube/-/svg-badge.svg" alt="Translate"/> </a>
+
+<p align="center">
+  <a href="#features">Features</a> | 
+  <a href="#download"><img src="https://i.imgur.com/BYKw7FK.png" />Download</a> | 
+  <a href="#why-skytube">Why SkyTube?</a> | 
+  <a href="#screenshots">Screenshots</a> | 
+  <a href="#contribute">Contribute</a> | 
+  <a href="#translate">Translate</a> | 
+  <a href="#license">License</a>
+</p>
+```
