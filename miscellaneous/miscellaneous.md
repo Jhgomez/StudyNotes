@@ -64,6 +64,7 @@ to communicate with a backed(Skeleton)
 
 * Monitoring: TOP, HTOP, FREE
 * grep, searches text
+* `objdump`: is a powerful utility in Linux that allows you to display information about object files. It is commonly used for debugging, reverse engineering, and system analysis. This command provides insights into the structure and content of compiled files, making it an invaluable tool for developers, security analysts, and system administrators. Try `objdump -x`
 
 ## Random Notes
 
@@ -230,7 +231,9 @@ It demoes how to use OPA as admission controller to Kubernetes, OPA is Open Poli
 * BlobTree vs CSG, could not find a versus but we already know a little about CSG, so we just need to understand BlobTree better, for that you can check [Extending the CSG Tree. Warping, Blending and Boolean Operations in an Implicit. Surface Modeling System](https://perso.liris.cnrs.fr/eric.galin/Articles/1999-blobtree-model.pdf) and [Efficient Data-Parallel Tree-Traversal for BlobTrees (revised)](https://webhome.cs.uvic.ca/~blob/publications/gdspm.pdf)
 * BlobTree vs CSG vs B-rep in CAD applications, all these options lets you do Solid Modeling, however it seems like BlobTrees is not the best option in the context of CAD because even though they make very easy to create precise curves/blends/fillets and procedural shapes, look [here](https://webhome.cs.uvic.ca/~blob/publications/filletSMI10.pdf), modeling kernels have been using B-rep with NURBS too long now so moving to this approach can be considered and area of experimentation, CSG is a good concept but remember it has its limitations in representing things like fillets and chamfers, so CAD actually uses Modeling Kernel/Geometric Kernel/Geometric Modeling Kernel and these tools/libraries uses B-rep with NURBS as shown [here](https://old.opencascade.com/doc/occt-7.4.0/overview/html/technical_overview.html), at least OpenCascade and Parasolid works this way, I'd have to investigate C3D and ACIS kernels to confirm
 * Plasticity vs Blender, plasticity uses Parasolid modeling kernel as shown [here(What is a Geometry Kernel? C3D vs ACIS vs Parasolid)](https://www.youtube.com/watch?v=WvwiH1DOK1M), this allows it to use mathematics to do very complex solid modeling, makes it very powerful and dynamic, this kernel mostlikely uses b-rep and NURBS(used to draw exact/precise curves and surfaces). Blender uses polygonal meshes. You can check a review [here, Why I don't use Plasticity](https://www.youtube.com/watch?v=Lgc8EadiHNI)
-* BVH (Biovision Hierarchy) files are a widely used format for storing motion capture data, essential in animation, game development, and virtual reality.
+* BVH (Biovision Hierarchy) files are a widely used format for storing motion capture data, essential in animation, game development, and virtual reality. [Info](https://research.cs.wisc.edu/graphics/Courses/cs-838-1999/Jeff/BVH.html) and [info](https://www.programmersought.com/article/17535525434/)
+* [Creating a Doom-style 3D engine in C](https://www.youtube.com/watch?v=HQYsFshbkYw)
+* Algorithm to find where an item insersects with a player field of vision in a 3D engine is called "vector cross product"
 * Sistema Lorenz, es un sistema de caos, su grafica tiene forma de mariposa(atractor de Lorenz)
 * visibility in computer graphics
 * sigmoidal curve, Bezier curve
