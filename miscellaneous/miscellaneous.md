@@ -64,7 +64,7 @@ to communicate with a backed(Skeleton)
 
 * Monitoring: TOP, HTOP, FREE
 * grep, searches text
-* `objdump`: is a powerful utility in Linux that allows you to display information about object files. It is commonly used for debugging, reverse engineering, and system analysis. This command provides insights into the structure and content of compiled files, making it an invaluable tool for developers, security analysts, and system administrators. Try `objdump -x`
+* `objdump`: is a powerful utility in Linux that allows you to display information about object files. It is commonly used for debugging, reverse engineering, and system analysis. This command provides insights into the structure and content of compiled files, making it an invaluable tool for developers, security analysts, and system administrators. Try `objdump -x`. Example usage [here](https://www.youtube.com/watch?v=hhgxsrAFyz8)
 
 ## Random Notes
 
