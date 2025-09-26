@@ -62,7 +62,17 @@ Before talking about APIs to create http client and http servers, we need to kno
 It is said that URI describes where a location, URL also describes a location but also how to access it(by specifing the protocol like ftp, http, https, gopher, mailto, news, nntp, telnet, wais, file, or prospero), also a URL works over the network, it retrieves resources or services over the network
 
 # ServerSocket, Socket, URL, URLConnection, HttpURLConnection, DatagramSocket, HttpClient, HttpServer
+You can find information [in tutorials point](https://www.tutorialspoint.com/java/java_networking.htm) and in [Which Java HTTP client should I use in 2024?](https://www.wiremock.io/post/java-http-client-comparison). HTTP has become the dominant protocol for integration of networked programs. We’re only going to discuss clients that actually implement the HTTP protocol, so libraries such as Spring’s `RestTemplate`(now replaced by `WebClient`), `Retrofit`, or `Feign` that act as higher-level wrappers will not be discussed in this section.
 
-All these APIs are part of OpenJDK and Java SE(Standard Edition) and all of them can be used to create simple either client or servers, note that more robust servers can be built using the options noted above(Java EE/Jakarta EE, Spring Framework, Spring boot)
+All these APIs are part of OpenJDK and Java SE(Standard Edition) and all of them can be used to create simple either client or servers, note that more robust servers can be built using the options noted above(Java EE/Jakarta EE, Spring Framework, Spring boot), also more customizable http clients can be created with other alternatives I will mention later.
 
 All of these APIs are still supoorted in Java, however it could be said that making connections using `URL`, `URLConnection`, is a legacy way to do it and since Java 11 `HttpClient` is a modern way to do the same.
+
+## Socket and ServerSocket
+`Socket` is the client and `ServerSocket` is the server, both could be considered legacy APIs, both uses TCP to stablish a connection between these two, it is a socket, that means you can send bytes from and to each other at the same time, you will be reading and writing bytes using an `OutputStream` and `InputStream`.
+
+## URL, URLConnection, HttpURLConnection, HttpsURLConnection
+`URL` can be considered legacy, it can still be used to create http clients, first you have to create the `URL` object, call the `openConnection` method to get an instance of `HttpURLConnection`, actually depending on the scheme(protocol) you're using in the URL string you could be returned an `HttpsURLConnection` object or even other types, you can execute REST methods, GET, POST, PUT, DELETE by specifying the `setRequestMethodd`. You could use Virtual Threads to do async calls but out of the box it only supports synchronous operations. Doesn't supoort HTTP/2, doesn't have cookies, authentication, compression, caching and websockets support. **Spring’s RestTemplate** will use Http(s)URLConnection as their default underlying HTTP implementation **under the hood**, so be carefull and always check the underlying implementation of your HttpClient implementation. Supports the basic set of configuration options you’d expect, but not much more. The connection pool limit and keep-alive idle timeout are only available as system properties. Some developers thinkg the defaul behaviour/settings are kind of awful, and customization is not a characteristic of this APIs. If you want to do quick test this API may be good but avoid using it in production.
+
+
+
