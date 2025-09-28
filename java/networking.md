@@ -79,6 +79,15 @@ Before talking about APIs to create http client and http servers, we need to kno
 
 It is said that URI describes where a location, URL also describes a location but also how to access it(by specifing the protocol like ftp, http, https, gopher, mailto, news, nntp, telnet, wais, file, or prospero), also a URL works over the network, it retrieves resources or services over the network
 
+# Important Concepts
+## HTTP Multipart File Upload
+HTTP multipart request is a type of HTTP request that allows clients to send multiple parts of data to a server in a single request. This is particularly useful when uploading files or sending large amounts of binary data. The multipart request is commonly used by browsers and HTTP clients to upload files to the server.
+
+## Transparent content compression/decompression
+It refers to whether the client can perform compression and decompression of content via (most commonly) Deflate, GZip or Brotli without requiring the caller to explicitly perform the encode and decode steps.
+
+At present GZip is by far the most common algorithm.
+
 # ServerSocket, Socket, URL, URLConnection, HttpURLConnection, DatagramSocket, HttpClient, HttpServer
 You can find information [in tutorials point](https://www.tutorialspoint.com/java/java_networking.htm) and in [Which Java HTTP client should I use in 2024?](https://www.wiremock.io/post/java-http-client-comparison). HTTP has become the dominant protocol for integration of networked programs. We’re only going to discuss clients that actually implement the HTTP protocol, so libraries such as Spring’s `RestTemplate`(now replaced by `WebClient`), `Retrofit`, or `Feign` that act as higher-level wrappers will not be discussed in this section.
 
@@ -95,3 +104,7 @@ Both introduced in Android 11, `HttpClient` replaced `HttpURLConnection` and `Ht
 
 ## Third Party Http Client Alternative APIs
 ### Okhttp
+It has a number of fault tolerance features such as the ability to fail over between multiple IP addresses and recover from failed connection attempts. It also implements transparent content compression via Deflate, GZip and Brotli. Its defaults configurations are thoughtfully chosen. Provided you keep to the latest version, you’ll get a fast, secure and reliable setup without needing to do much of your own, however it provides plenty of configuration options and extension points. Everything is configurable at the client instance level, so multiple clients can exist with different settings and it’s straightforward to integrate with your configuration system. A unique feature that may be hard to find in other alternatives is it support separate read and write timeouts. It supports synchronous and asynchronous calls and both uses callback, it supports multiplepart file upload. For large files, consider using streaming to avoid memory issues. It supports cookies, pluggable autenthication, caching and websockets
+
+### Jettyy
+supports HTTP/2 and is very configurable, it also offers access to lower-level tuning parameters such as the executor implementation, scheduler and byte buffer pools, hich makes it a good alternative to the OkHttp client. It uses entirely non-blocking code under the hood and presents both synchronous and asynchronous APIs using callbacks. It supports multipart file upload, it supports cookies. It offers authentication using Basic, Digest, SPNEGO, or using a Pluggable solution. It support transparent content compression using GZIP, it doesn't supports caching, and it supports websockets.
