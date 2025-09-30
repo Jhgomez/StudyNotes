@@ -114,29 +114,110 @@ supports HTTP/2 and is very configurable, it also offers access to lower-level t
 # Using `ServerSocket`(Server) with `Socket`(Client)
 This example uses the only way to create a Server that supports sockets using only standard libraries, off course there should be 3rd party options, however with this setup we don't need to add any dependency, this was used in a simple JavaFx game which can create several windows of the same app and specify one window as a server and other windows as clients, the server will be in charge of synchronizing all other clients. Clients sockets are created using the legacy option `Socket` instead of creatting the sockets through `HttpCleitn`. In a real world scenario we should be using WebRTC(Web real-time communication) protocol and I will experiment with that later. 
 
-With this setup we will be working with the I/O clases `InputStream`(to read info), `OutpuStream`(to write info), `Readed` and `Writter`, remember all of them are streams even reader and writter too, the difference between the streams and writter/readers is that the first works with any binary values(bytes) while the later pair, depending the implementation you are using, works with characters or strings of characters. When working with these objects through a socket you have to be careful with `outputStream`s and `Writer`s as they have to be flushed, as the OS doesn't guarantee that the data being written will be written instantaneously, this is because writting to a file(this is how the streams are used most commonly) is an expensive operation since it means writting to disk, this implies a round trip from JVM to disk, this could delay the application, if fact if some outputStream or Writters are not flushed, the data will be cachesd in memory only and after some time it will be flushed or even only after the stream is closed, that is why when working with them in sockets you have to check if there is any need to flush the stream manually, this would be necesarry for a stream like below
+With this setup we will be working with the I/O clases `InputStream`(to read info), `OutpuStream`(to write info), `Readed` and `Writter`, remember all of them are streams even reader and writter too, the difference between the streams and writter/readers is that the first works with any binary values(bytes) while the later pair, depending the implementation you are using, works with characters or strings of characters. When working with these objects through a socket you have to be careful with `outputStream`s and `Writer`s as they have to be flushed, as the OS doesn't guarantee that the data being written will be written instantaneously, this is because writting to a file(this is how the streams are used most commonly) is an expensive operation since it means writting to disk, this implies a round trip from JVM to disk, this could delay the application, if fact if some outputStream or Writters are not flushed, the data will be cachesd in memory only and after some time it will be flushed or even only after the stream is closed, that is why when working with them in sockets you have to check if there is any need to flush the stream manually, this would be necesarry for a stream like below(this would work the same way in both sockets streams, the client as in the server)
 
 ```
 try (ServerSocket serverSocket = new ServerSocket(PORT)) {
 
-Socket clientSocket = serverSocket.accept();
+  Socket clientSocket = serverSocket.accept();
 
-// Accept incoming connections
-while (true) {
-    // with below stream, you have to flush, we use the BufferedOutputStream
-    // since it is said it provides an performance improvement(at least when
-    // working with files but we are wokring with sockets here so maybe it doesn't make any difference)
-    // autoflush is the second parameter in printwriter
-    PrintWriter out = new PrintWriter(new BufferedOutputStream(clientSocket.getOutputStream()), true);
+  // Accept incoming connections
+  while (true) {
+      // with below stream, you have to flush, we use the BufferedOutputStream
+      // since it is said it provides an performance improvement(at least when
+      // working with files but we are wokring with sockets here so maybe it doesn't make any difference)
+      // autoflush is the second parameter in printwriter
+      PrintWriter out = new PrintWriter(new BufferedOutputStream(clientSocket.getOutputStream()), true);
+  
+      // with the below stream we don't need to flush explicitly
+      PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+  
+      out.println("Repetitive message");
+  
+      // with the below stream we don't need to flush explicitly
+      var out = new DataOutputStream(socket.getOutputStream());
+  
+      out.writeUTF("Another repetitive message");    
+  }
+}
+```
 
-    // with the below stream we don't need to flush explicitly
-    PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+Reading doesn't have this issue
+```
+try (Socket socket = new Socket("localhost", 12346)) {
 
-    out.println("Repetitive message");
+  // Accept incoming connections
+  while (true) {
+      // BufferedReaderputStream, again, is said to be more efficient when reading lines
+      // it makes it easier and also, again, is said to be more performant
+      var in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+  
+      in.println("A message: " + in.readline());
+  
+      // with the below stream we don't need to flush explicitly
+      var in = new DataInputStream(socket.getInputStream());-
+  
+      in.writeUTF("Another message received: " + in.readUTF());    
+  }
+}
+```
 
-    // with the below stream we don't need to flush explicitly
-    var out = new DataOutputStream(socket.getOutputStream());
+Another thing to note here that is not mentioned in the documention I have accessed to is that any read call to the Sockets `InputStream` blocks the thread which is something that doesn't happen when working with files as for example when using a BufferedReader's `readLine()` method with the OS fyle system files it doesn't block and if it reaches the end of file it throws an EOF exception, in sockets this exception is thrown when the other end socket otuputstream disconnects.
 
-    out.writeUTF("Another repetitive message");    
+
+server
+
+```
+
+```
+
+clients
+```
+import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class client {
+    static OutputStream os;
+
+    static void main(String[] args) throws IOException {
+
+        try (Socket socket = new Socket("localhost", 12346)) {
+
+            // Setting up input and output streams
+            var out = new PrintWriter(new BufferedOutputStream(socket.getOutputStream()), true);
+            var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            // Start a thread to handle incoming messages
+            Thread.startVirtualThread(() -> {
+                try {
+                    var message = "";
+                    while ((message = in.readLine()) != null) {
+                        System.out.println("\n- " + message);
+                        System.out.print("> ");
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            // Read messages from the console and send to the server
+            Scanner scanner = new Scanner(System.in);
+            String userInput = "";
+            while (true) {
+//                System.out.print("Waiting for client input: ");
+                System.out.print("> ");
+
+                userInput = scanner.nextLine();
+
+                out.println(userInput);
+
+//                System.out.println("Input sent to server: " + userInput);
+            }
+        }
+    }
 }
 ```
