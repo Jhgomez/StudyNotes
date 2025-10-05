@@ -104,6 +104,54 @@ In order to be able to create a secure connection with the SSL version of the so
 ## URL, URLConnection, HttpURLConnection, HttpsURLConnection (All considered legacy)
 Part of OpenJDK and Java SE(Standard Edition). `URL` can still be used to create http clients, first you have to create the `URL` object, call the `openConnection` method to get an instance of `HttpURLConnection`, actually depending on the scheme(protocol) you're using in the URL string you could be returned an `HttpsURLConnection` object or even other types, you can execute REST methods, GET, POST, PUT, DELETE by specifying the `setRequestMethodd`. You could use Virtual Threads to do async calls but out of the box it only supports synchronous operations. Doesn't supoort HTTP/2, doesn't have cookies, authentication, compression, caching and websockets support. **Spring’s RestTemplate** will use Http(s)URLConnection as their default underlying HTTP implementation **under the hood**, so be carefull and always check the underlying implementation of your HttpClient implementation. Supports the basic set of configuration options you’d expect, but not much more. The connection pool limit and keep-alive idle timeout are only available as system properties. Some developers thinkg the default behaviour/settings are kind of awful and/or buggy, customization is not a characteristic of these APIs. If you want to do quick test this API may be good but avoid using it in production.
 
+## Java 17 "Security Developer's Guide"(Found in Java's 17 documentation)
+Part of the mentioned guide is the [Java Secure Socket Extension (JSSE) Reference Guide](https://docs.oracle.com/en/java/javase/17/security/java-secure-socket-extension-jsse-reference-guide.html#GUID-93DEEE16-0B70-40E5-BBE7-55C3FD432345)
+
+### **Java Secure Socket Extension (JSSE)**
+enables secure Internet communications. It provides a framework and an implementation for a Java version of the TLS protocol and includes functionality for data encryption, server authentication, message integrity, and optional client authentication. Using JSSE, developers can provide for the secure passage of data between a client and a server running any application protocol (such as HTTP, Telnet, or FTP) over TCP/IP.
+
+By abstracting the complex underlying security algorithms and handshaking mechanisms, JSSE minimizes the risk of creating subtle but dangerous security vulnerabilities. Furthermore, it simplifies application development by serving as a building block that developers can integrate directly into their applications.
+
+JSSE provides both an application programming interface (API) framework and an implementation of that API. The JSSE API supplements the core network and cryptographic services defined by the java.security and java.net packages by providing extended networking socket classes, trust managers, key managers, SSL contexts, and a socket factory framework for encapsulating socket creation behavior. Because the SSLSocket class is based on a blocking I/O model, the Java Development Kit (JDK) includes a nonblocking SSLEngine class to enable implementations to choose their own I/O methods.
+
+The JSSE API supports the following security protocols:
+
+* DTLS: versions 1.0 and 1.2
+* TLS: version 1.0, 1.1, 1.2, and 1.3
+* SSL (Secure Socket Layer): version 3.0
+
+These security protocols encapsulate a normal bidirectional stream socket, and the JSSE API adds transparent support for authentication, encryption, and integrity protection.
+
+JSSE is a security component of the Java SE platform, and is based on the same design principles found elsewhere in the Java Cryptography Architecture (JCA) Reference Guide framework. This framework for cryptography-related security components allows them to have implementation independence and, whenever possible, algorithm independence. JSSE uses the Cryptographic Service Providers defined by the JCA framework.
+
+#### JSSE Features and Benefits
+JSSE includes the following important benefits and features:
+
+* Included as a standard component of the JDK
+* Extensible, provider-based architecture
+* Implemented in 100% pure Java
+* Provides API support for TLS/DTLS
+* Provides implementations of SSL 3.0, TLS (versions 1.0, 1.1, 1.2, and 1.3), and DTLS (versions 1.0 and 1.2)
+* Includes classes that can be instantiated to create secure channels (SSLSocket, SSLServerSocket, and SSLEngine)
+* Provides support for cipher suite negotiation, which is part of the TLS/DTLS handshaking used to initiate or verify secure communications
+* Provides support for client and server authentication, which is part of the normal TLS/DTLS handshaking
+* Provides support for HTTP encapsulated in the TLS protocol, which allows access to data such as web pages using HTTPS
+* Provides server session management APIs to manage memory-resident SSL sessions
+* Provides support for the certificate status request extension (OCSP stapling), which saves client certificate validation round-trips and resources
+* Provides support for the Server Name Indication (SNI) rxtension, which extends the TLS/DTLS protocols to indicate what server name the client is attempting to connect to during handshaking
+* Provides support for endpoint identification during handshaking, which prevents man-in-the-middle attacks
+* Provides support for cryptographic algorithm constraints, which provides fine-grained control over algorithms negotiated by JSSE
+
+#### JSSE Standard API
+The JSSE standard API, available in the **`javax.net`** and **`javax.net.ssl`** packages, provides:
+
+* Secure sockets tailored to client and server-side applications.
+* A non-blocking engine for producing and consuming streams of TLS/DTLS data (SSLEngine).
+* Factories for creating sockets, server sockets, SSL sockets, and SSL server sockets. By using socket factories, you can encapsulate socket creation and configuration behavior.
+* A class representing a secure socket context that acts as a factory for secure socket factories and engines.
+* Key and trust manager interfaces (including X.509-specific key and trust managers), and factories that can be used for creating them.
+* A class for secure HTTP URL connections (HTTPS).
+
 ## HttpClient, HttpServer
 Both introduced in Android 11, `HttpClient` replaced `HttpURLConnection` and `HttpsURLConnection`. `HttpServer` was introduced as a solution to easily create a REST API. `HttpClient` supports both synchronous and asynchronous modes of operation, with the latter making use of Futures, it supports HTTP/2, it offers a pluggable authentication mechanism, only provides an implementation of non-preemptive HTTP Basic so if you need anything else you’ll need to implement it yourself, it supports cookies, it doesn't support caching, and it does support websockets(you basically create a `WebSocket` object with `newWebSocketBuilder`)
 
