@@ -96,6 +96,42 @@ Part of OpenJDK and Java SE(Standard Edition). `Socket` is the client and `Serve
 
 `DatagramSocket` uses UDP protocol, UDP doesn't guarantee packages to be delivered while TCP does. Header size of TCP is 20 bytes while Header size of UDP is 8 bytes. TCP introduces overhead due to its acknowledgment and retransmission mechanisms, which can slow down data transfer. `DatagramSocket` is used for network communication via the UDP, is suitable for applications where speed is more critical than reliability, and can be used to both send and receive data. Both, sender and reciever, uses `DatagramSocket` with `DatagramPacket` in both actions, sending and receiving.
 
+### Important about `DatagramSocket`
+Since UPD is conectionless, If the client is behind a router, NAT (Network Address Translation) or a firewall could be blocking incoming UDP packets, preventing the server from directly sending datagrams to the client. But we can solve this issue with a few alternatives
+
+**1. Client Needs to Send at Least One Packet to the Server**
+In a typical NAT or firewall scenario, the client's private IP (inside a local network) is not directly reachable from the server on the public internet. This is because NAT modifies the source address and port of packets coming from the local network and maps them to a public IP address.
+
+However, a simple trick is to have the client send an initial packet to the server. This creates a binding in the router's NAT table, allowing the server to send packets back to the client's public IP and port.
+
+How it works:
+* Client sends a request: The client sends a datagram (UDP packet) to the server. This action opens a hole in the NAT firewall, which allows incoming packets from the server to reach the client.
+* Server sends a response: Once the client has sent a packet, the server can send a response back to the client’s public IP and port (from the initial packet).
+
+This is essentially a one-way handshake: The client opens the NAT for incoming packets by sending the first message. After that, the server can reply to the client without knowing the exact internal IP or port.
+
+**2. Using a STUN Server (Session Traversal Utilities for NAT)**
+In more complex scenarios, such as when the client is behind a strict firewall or when there's symmetric NAT (which is more challenging to handle), you can use a STUN server.
+
+A STUN (Session Traversal Utilities for NAT) server helps the client determine its public-facing IP address and port. This way, the client can report this to the server, which can then use that information to send a message back to the client.
+
+Steps:
+* The client sends a request to a public STUN server on the internet (often using UDP).
+* The STUN server replies with the client's public IP and port (the IP and port that the NAT router uses for forwarding).
+* The client then sends this information to the server (either directly or in subsequent messages).
+* The server can then send data directly to the client's public IP and port.
+
+While STUN is typically used for UDP-based communication (like VoIP or real-time communications), it’s more robust in handling cases where there’s complex NAT behavior or multiple layers of firewalls.
+
+**3. Using a Relay Server (TURN)**
+If both STUN and NAT hole-punching don't work due to strict firewall or NAT configurations, you can use a TURN (Traversal Using Relays around NAT) server. TURN is a more robust solution where the server acts as a relay, forwarding packets between the client and the server. This method is used when direct communication isn't possible due to NAT traversal issues.
+
+The server doesn't need to know the client's IP address explicitly; instead, it sends the packets to a TURN relay server, which forwards the packets to the client.
+
+**Server Can’t Reach Client Until Client Opens Port**. In practice, UDP will allow the server to send data to a client only after the client has sent the first packet. So, even if the server doesn't know the client’s IP address (due to NAT or firewall issues), the client can still send a datagram to the server, which opens up a communication path.
+
+However, if the client never sends that first packet, the server won't be able to reach the client directly because of NAT behavior. In scenarios where the client is behind a strict NAT (such as with mobile devices or corporate networks), this may require additional techniques like STUN, TURN, or even VPNs.
+
 ### `SSLServerSocket` and `SSLSocket`
 `SSLServerSocket` is to `ServerSocket` what `SSLSocket` is to `Socket`. These two APIs lets us secure our communications by stabilshing an encrypted connection between server and client. Before using these APIs you should get familiar with **`KeyStore`** API, both, the sender and client, will use this API. A **KeyStore** in Java is a collection of key entries, each identified by an alias, and can store private keys, public keys(Java refers to "Asymmetric Keys" as private and public keys), secret keys(this is how Java refers to "Symmetric Keys"), and trusted certificates(I think these are the Certificate Authorities).
 
