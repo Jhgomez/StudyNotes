@@ -96,6 +96,9 @@ Part of OpenJDK and Java SE(Standard Edition). `Socket` is the client and `Serve
 
 `DatagramSocket` uses UDP protocol, UDP doesn't guarantee packages to be delivered while TCP does. Header size of TCP is 20 bytes while Header size of UDP is 8 bytes. TCP introduces overhead due to its acknowledgment and retransmission mechanisms, which can slow down data transfer. `DatagramSocket` is used for network communication via the UDP, is suitable for applications where speed is more critical than reliability, and can be used to both send and receive data. Both, sender and reciever, uses `DatagramSocket` with `DatagramPacket` in both actions, sending and receiving.
 
+### Security Considerations with `DatagramSocket`
+You should alway encrypt your data in production, if working with `DatagramSocket`s  you should use `SSLContext sslContext = SSLContext.getInstance("DTLS");`  since DTLS is TLS implementation for datagrams, this way you can get your datagrams encrypted
+
 ### Important about `DatagramSocket`
 Since UPD is conectionless, If the client is behind a router, NAT (Network Address Translation) or a firewall could be blocking incoming UDP packets, preventing the server from directly sending datagrams to the client. But we can solve this issue with a few alternatives
 
