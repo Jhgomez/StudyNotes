@@ -394,3 +394,6 @@ public class client {
     }
 }
 ```
+
+# Protocols
+UDP, TCP, VOIP(voice over IP), WebRTC(Real time communication), the last two are used in applications like zoom, whatsapp, for making video and calls over internet and these two uses STUN servers to be able to get each end of the communication public IP address
