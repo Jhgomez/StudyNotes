@@ -5,4 +5,4 @@
   the difference from and APK & AAR vs JAR is that the former types can inclue Android resources and configuration manifests while JAR files can't, this means
   a kotlin and java module can't have a dependency on an android module.
 * [Create an Android Library](https://developer.android.com/studio/projects/android-library)
-* coachmark, reveal effect, spotlight, tour guide
+* coachmark, reveal effect, spotlight, tour guide, Product Tour, 
