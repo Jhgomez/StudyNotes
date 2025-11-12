@@ -4,5 +4,69 @@
   modules compile to JARs. An android-application and android-library modules can consume any of the previously mentioned generated artifacts(AAR and JAR).
   the difference from and APK & AAR vs JAR is that the former types can inclue Android resources and configuration manifests while JAR files can't, this means
   a kotlin and java module can't have a dependency on an android module.
-* [Create an Android Library](https://developer.android.com/studio/projects/android-library)
-* coachmark, reveal effect, spotlight, tour guide, Product Tour, 
+* [Create an Android Library](https://developer.android.com/studio/projects/android-library) **step to configure an android library module**
+* coachmark, reveal effect, spotlight, tour guide, Product Tour,
+
+# Publish Android library
+using git bash in windows
+1. First of all, you can check the gradle cookbook [here](https://cookbook.gradle.org/integrations/maven-central/publishing/)
+
+2. I choosed Vanniktech plugin, check their docu [here](https://vanniktech.github.io/gradle-maven-publish-plugin/central/)
+
+3. I followed their docu, so I had to create a user in maven central using my email, then create a namespace(which
+references my github profile), then I had to configure the plugin DSL in the gradle buildscript and in order to complete that
+configuration I created a key using GPG in gitbash(git windows utility with bash commands) with the bellow instructions,
+also I had to create a token in maven central, the plugin gradle config is exactly what you see in the plugin docu I referenced,
+check my repo for the full example[https://github.com/Jhgomez/Coachmark] in the coachmark module
+
+* All I did is follow documentation [here](https://vanniktech.github.io/gradle-maven-publish-plugin/central/), which
+is part of the same documentation that describes the requirements to publish to maven central using the mentioned 
+plugin. That documentation indicated to create the key following maven central's documentation [here](https://central.sonatype.org/publish/requirements/gpg/#generating-a-key-pair)
+so first do `gpg --gen-key` note that you can find more interactive commands to customize the properties of your key
+like the algorithm used to encrypt and the duration/expiration date of the key, etc. You need to enter your name, email,
+passhprase(password), each file in this repo will have the info about each key. Also be aware that you have to publish
+your public key, the instructions are in the docu
+
+* after creating it you need to create environment variables so that the plugin can find the key you just created and
+use it to sign the library articfact, that is going to be generated. The environmet variables will ge generated with
+the following bash commands, but first get your key's id with the command `gpg --list-keys`, you can sign diferent
+artifacts for different libraries you create with the same key, having a single key for different artifacts has pros
+and cons as well as having different keys for each artifact, is up to you. The key id is a very long alpha numeric
+value and you'll use it in the following commands, again this will create temporary env variables, so you need
+to execute the commands patter below everytime you publish a new version, also be aware you need to execute it from
+the same terminal you will use gradle to execute the plugin task that publishes to maven, I will leave the IDs and
+passwords in each project folder qui.md file
+
+```
+export ORG_GRADLE_PROJECT_signingInMemoryKey="$(gpg --armor --export-secret-keys <key_id>)"
+export ORG_GRADLE_PROJECT_signingInMemoryKeyPassword='myPasswordSlachKeyPhrase'
+```
+
+note `gpg --export-secret-keys --armor <key id>` prints the content of your secret key
+
+* Now you need to create a token in maven central, follow [this](https://central.sonatype.org/publish/generate-portal-token/)
+documentation, once you have it create the following gradle properties in the `gradle.properties` file in your project
+
+```
+mavenCentralUsername=yourUserNameAsListedInTheDocuIndicatedInThisStep
+mavenCentralPassword=yourTokensPasswordAsInReferencedDocu
+```
+
+* There is a few things we might want to know, for example newer version(like the one I used, 2.4.7) of gpg doesn't
+generate kbx files for each public key and a folder with the private keys, it should be called similar to `private-keys-v1.d`
+but "funny" thing is that this plugin doesn't use those files at the moment so, and it uses a "weird" set up I still
+might not understand fully, and instead it asks you to generate keys(actually only private key) with the "old" format,
+a format that seems to be the previous default, which is ".gpg" and or ".asc" and it seems that they used to be 
+called pubring.gpg and secring.gpg, and that is exactly what the command `gpg --export-secret-keys --armor <key_id>`,
+it is similar to exporting the secret key in the old format, so you may want to create and store the value returned
+by this command in a file with the names and extensions previously mentioned, however this didn't work for me for
+some reason, it looks like the plugin was not being able to find the public key by this private key when I used the
+gradle properties indicated in the docu so I changed to env variables approach and it work, but the approach is 
+"different" as we now pass the private key in an environmet variable and then the plugin along with gpg finds the
+public key that corresponds to that private key to sign the artifact, they call it an in memory environment variable
+
+* After all this is done you can execute the gradle task `./gradlew publishToMavenCentral`, then just check the 
+deployments section in your maven central's website, in your account, in the namespace section and in the deployments
+option you can confirm the lib is available from there, check [this](./gradlew publishToMavenCentral) link
+
+
