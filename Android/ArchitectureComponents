@@ -1,0 +1,24 @@
+# Views navigation
+
+```
+  getChildFragmentManager().addOnBackStackChangedListener();
+  
+  requireActivity().getOnBackPressedDispatcher().addCallback();
+  
+  NavHostFragment.findNavController(this);
+  
+  NavHostFragment.findNavController(this).getCurrentBackStackEntry().getSavedStateHandle().set();
+  NavHostFragment.findNavController(this).getCurrentBackStackEntry().getSavedStateHandle().getLiveData();
+  NavHostFragment.findNavController(this).getPreviousBackStackEntry().getSavedStateHandle().set();
+  NavHostFragment.findNavController(this).getPreviousBackStackEntry().getSavedStateHandle().getLiveData();
+  
+  
+  NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+          .findFragmentById(R.id.nav_host_fragment);
+  
+  NavController navController = navHostFragment.getNavController();
+  NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.bottom_nav_graph);
+  navGraph.setStartDestination(R.id.shop);
+  navController.setGraph(navGraph);
+  NavigationUI.setupWithNavController(binding.bottomNavView, navController);
+```
