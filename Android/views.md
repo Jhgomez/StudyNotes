@@ -59,5 +59,6 @@
 
 * **MaskFilter**: Base class for object that perform transformations on an alpha-channel mask before drawing it. A subclass of MaskFilter may be installed into a Paint. Blur and emboss are implemented as
   subclasses of MaskFilter. BlurMaskFilter only blurs the alpha mask of what you draw with a Paint in onDraw()—it creates a soft edge/“glow”. It does not Gaussian-blur arbitrary view content, and it doesn’t
-  affect child views drawn by the framework. It also often requires software rendering (setLayerType(LAYER_TYPE_SOFTWARE, …)), so it’s the wrong tool for a container blur.
+  affect child views drawn by the framework. It also often requires software rendering (setLayerType(LAYER_TYPE_SOFTWARE, …)), so it’s the wrong tool for a container blur. It looks good on text, you can do
+  `getPaint` on an TeztView
 
