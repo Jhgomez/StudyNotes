@@ -46,3 +46,18 @@
 | Unused Asset Cleanup	| 5-15% APK size reduction	| Android Lint |
 
 * Types of Drawables: there are several but in this case we want to mention "Nine-Patch"/"9-Patch" Images which are usually used for Stretchable Backgrounds
+
+* **9-Patch vs Vector**: In vector graphics all sides are scaled or stretched when we set it to any background whereas in 9-patch we can define which sides can scale or stretch so at runtime only those side scale
+  which we set it to scale in 9-patch tool.
+
+* **Shader**: They are applied to a paint objcet. Implementations we can use are:
+    * **BitmapShader**: Used to draw a bitmap as a texture. It can repeat or stretch the bitmap across the drawing area.
+    * **RadialGradient**: Creates a gradient that transitions between colors along a straight line.
+    * **SweepGradient**: Produces a gradient that sweeps around a central point in a circular fashion.
+    * **ComposeShader**:  Combines two shaders using a blending mode.
+    * **RuntimeShader**:  Introduced in Android 13, this allows developers to define custom per-pixel effects using the Android Graphics Shading Language (AGSL).
+
+* **MaskFilter**: Base class for object that perform transformations on an alpha-channel mask before drawing it. A subclass of MaskFilter may be installed into a Paint. Blur and emboss are implemented as
+  subclasses of MaskFilter. BlurMaskFilter only blurs the alpha mask of what you draw with a Paint in onDraw()—it creates a soft edge/“glow”. It does not Gaussian-blur arbitrary view content, and it doesn’t
+  affect child views drawn by the framework. It also often requires software rendering (setLayerType(LAYER_TYPE_SOFTWARE, …)), so it’s the wrong tool for a container blur.
+
