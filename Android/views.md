@@ -6,7 +6,7 @@
   general, but some specific transitions (such as Fade) may not be compatible with TextureView because they rely on android.view.ViewOverlay functionality, which does not currently work
   with TextureView. Transitions can be declared in XML resource files inside the res/transition directory.
 
-* public interface **TypeEvaluator<T>**/ package android.animation: nterface for use with the ValueAnimator.setEvaluator(TypeEvaluator) function. Evaluators allow developers to create animations on arbitrary
+* public interface **TypeEvaluator<T>**/ package android.animation: Interface for use with the ValueAnimator.setEvaluator(TypeEvaluator) function. Evaluators allow developers to create animations on arbitrary
   property types, by allowing them to supply custom evaluators for types that are not automatically understood and used by the animation system.
 
 * public class **ViewGroupOverlay** extends **ViewOverlay**/ package android.view: is an extra layer that sits on top of a ViewGroup (the "host view") which is drawn after all other content in that
@@ -22,3 +22,11 @@
     * Create an instance of the GestureDetector for your View
     * In the View.onTouchEvent(MotionEvent) method ensure you call onTouchEvent(MotionEvent). The methods defined in your callback will be executed when the events occur.
     * If listening for GestureDetector.OnContextClickListener.onContextClick(MotionEvent) you must call onGenericMotionEvent(MotionEvent) in View.onGenericMotionEvent(MotionEvent).
+
+* **ColorFilter vs Tint**: You can set color filter to an ImageView, drawable and paint objects and a tint color to a drawable, they are very similar since they change the color of a drawable, you could
+  even think of setting tint color property as a simple version of setting color tint, you might like to use tint property for simple use cases for that use the `setTint` method or the properties in the layout
+  with `android:tint` and `android:tintMode` to set mode, but for more complex tasks you should use color filter. You can use/set color filter in any Paint object, this means you can use it to draw on the canvas   of any custom view. There is three implementations of color filter interface `PortterDuffColorFIlter`, `LightingColorFIlter` and `ColorMatrixColorFilter` being the last one the most flexible meaning it
+  allows you to manipulate the colors even further. There are some alternatives to Color Filter like `Shader` and `MaskFilter`, you can not create a custom implementation of Color Filter if you
+  need "full power" you can use the OpenGL alternative which would give access to GLSL(GL shader language) shaders
+
+* **Pallete API**: API included in Android Support Library, it lets you extract prominent colors from an image. You can load your drawables as a Bitmap and pass it to Palette to access its colors. For more information, read [Selecting colors with the Palette API.](https://developer.android.com/develop/ui/views/graphics/palette-colors)
