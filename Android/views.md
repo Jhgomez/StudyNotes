@@ -30,3 +30,17 @@
   need "full power" you can use the OpenGL alternative which would give access to GLSL(GL shader language) shaders
 
 * **Pallete API**: API included in Android Support Library, it lets you extract prominent colors from an image. You can load your drawables as a Bitmap and pass it to Palette to access its colors. For more information, read [Selecting colors with the Palette API.](https://developer.android.com/develop/ui/views/graphics/palette-colors)
+
+* Using Glide vs Loading Local drawable resources: Leverage caching strategies. Implement disk and memory caching to prevent redundant resource loading. Using libraries such as Glide or Picasso can help reduce memory usage by managing image loading efficiently. On average, these libraries can decrease memory consumption by 50%, leading to smoother scroll performance and a more responsive interface.
+
+* Resource optimization
+
+| Optimization Technique |	Percentage Improvement | Tool/Technology |
+| ---------------------- | ----------------------- | --------------- |
+| Vector Graphics	| 80% file size reduction	| SVG |
+| Adaptive Icons	| 20% loading time decrease	| Android Adaptive SDK |
+| Image Compression	| 25-34% size savings	| WebP |
+| Memory Caching	| 50% memory usage reduction	| Glide/Picasso |
+| Lazy Loading	| 30% load time reduction	| Custom Implementation |
+| Resolution-Specific Assets | Variable improvement	| Android Resource Qualifiers |
+| Unused Asset Cleanup	| 5-15% APK size reduction	| Android Lint |
