@@ -44,3 +44,5 @@
 | Lazy Loading	| 30% load time reduction	| Custom Implementation |
 | Resolution-Specific Assets | Variable improvement	| Android Resource Qualifiers |
 | Unused Asset Cleanup	| 5-15% APK size reduction	| Android Lint |
+
+* Types of Drawables: there are several but in this case we want to mention "Nine-Patch"/"9-Patch" Images which are usually used for Stretchable Backgrounds
