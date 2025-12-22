@@ -10,11 +10,17 @@ In android if you don’t set an exception handler, then a default handler is se
 Usually, debbuging will have three phases, first, observe (you use logs here), second, reproduce the error, here, ideally, you’d reproduce it using a unit test if you believe there is a problem with your logic in the domain layer, or use an end to end test, this is usually done by mocking the response from services when making a request to the service. Third and last, now you open the bugger.
 
 ## Using Debbuger
-Since Kotlin 2 when debugging in AS or IntelliJ, variables are not optimized out by default, letting debug your code better, and in new versions of the IDE debugging with newer versions of the IDE will pause on the same break point across different coroutines but be aware it doesn’t follow a single corroutine execution, for that you should use the “step over” and “run to cursor” options, both guarantees to follow a single corroutine through its execution
+Since Kotlin 2 when debugging in AS or IntelliJ, variables are not optimized out by default, letting debug your code better, and in new versions of the IDE debugging with newer versions of the IDE will pause on the same break point across different coroutines but be aware it doesn’t follow a single corroutine execution, for that you should use the “step over” and “run to cursor” options, both guarantees to follow a single corroutine through its execution. You can get this functionallity from "step over", "step out", "runt to cursor", "smart step into", "smart step into launches", basically it remains within the corroutine where stepping started, [this is possible by](https://www.youtube.com/watch?v=3vaAVtnrzAM) using saving the corroutine id and filtering the corroutines with it
 
 FYI, if you need to wait for  corroutine to complete its execution you can call them inside them corroutineScope function or call join or joinAll on the job returned by it’s constructor(launch)
 
 More advanced tools is the “parallel stack” for corroutines in debugger, it shows the stack of corroutines and the relationship between them. The stack of corroutines in the debugger is actually pretty good and way more useful than their just pure stack trace in the console when an exception occurs. Also “debug agent” is a little harder to use but can help a lot in big systems with lots of corroutines, don’t use it in production, it doesn’t work in android runtime(android jvm) but you can use it in some unit tests for some android components.
+
+### [Corroutine View](https://www.youtube.com/watch?v=3vaAVtnrzAM)
+To use this tool i ti a good idea to give all the corroutines involved a unique name so you can debugg them. You can access it when using the debbuger on the right top you have the options "corroutines"
+
+### [Corroutine Dump in Thread Dumps](https://www.youtube.com/watch?v=3vaAVtnrzAM)
+This option, also available when using the debbuger, is located usually in the left top, in the left most icon and in the three dots icon, with this you could find out how many corroutines exists at a given point in time. Here you also see the thread dump
 
 ## [Performance](https://www.youtube.com/watch?v=QTX5_JV4TVU&t=1551s)
 For measuring backend systems you have tools like “micrometer”, it collects all measurements of the app and sends it to an appropriate collector like Prometheus + grafana, with those tools the metrics related to coroutines that you’d keep an eye on are, cpu usage, thread pool usage, and to some degree, also disk and network IO. Also in general you should set custom metrics like queue lengths, cache hits and misses, open connections, execution time for specific functions. Also Business metrics, active users, conversion rate, specific events.
