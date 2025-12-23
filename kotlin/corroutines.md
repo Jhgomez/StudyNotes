@@ -43,3 +43,6 @@ For cancellation using structured concurrency, let’s say you have a supend fun
   failure and launch it in a background scope in the virtual runtime, but it’s hard because you need to advance time instead of awaiting items and check what is there. Turbine provides a
   way to decouple the flow emitter from your test in a way that makes possible to look at the structure of the output, await new elements,  check your flow meets conditions like if it is
   an empty flow, or make sure the flow only produces a certain number of elements, it basically sets you up with a lot of good defaults for collecting a flow elements.
+
+# Libraries Using Coroutines
+* Arrow: sagas pattern, is a pattern used in micro services to ensure data consistency, it helps you do distributed transactions meaning it helps you ensure transactional behavior when multiple services are involved. In Kotlin you can use the arrow library with ktor to implement sagas pattern, under the hood it uses corroutines and there structured concurrency which is actually what it enables it to implement that pattern, as mentioned [here at 34m:00s](https://youtu.be/VyBxy3_Mj6Q?si=vCxPXSfWG_t1Ba40)
