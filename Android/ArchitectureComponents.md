@@ -131,3 +131,74 @@ The characteristics of these options are summarized in the following table:
 |  | Type of content | Access method | Permissions needed |	Can other apps access? | Files removed on app uninstall? |
 |--| --------------- | ------------- | ------------------ | ---------------------- | ------------------------------- |
 | App-specific files |	Files meant for your app's use only |	From internal\nstorage, `getFilesDir()` or `getCacheDir()`. From external storage, `getExternalFilesDir()` or `getExternalCacheDir()` | Never needed for internal storage. Not needed for external storage when your app is used on devices that run Android 4.4 (API level 19) or higher| No |	Yes |
+| Media |	Shareable media files (images, audio files, videos) |	`MediaStore` API | `READ_EXTERNAL_STORAGE` when accessing other apps' files on Android 11 (API level 30) or higher. `READ_EXTERNAL_STORAGE` or` WRITE_EXTERNAL_STORAGE` when accessing other apps' files on Android 10 (API level 29). Permissions are required for all files on Android 9 (API level 28) or lower | Yes, though the other app needs the `READ_EXTERNAL_STORAGE` permission | No |
+| Documents and other files |	Other types of shareable content, including downloaded files | Storage Access Framework	| None | Yes, through the system file picker | No |
+| App preferences |	Key-value pairs |	Jetpack Preferences library |	None | No |	Yes |
+| Database | Structured data | Room persistence library |	None | No | Yes |
+
+If your app's basic functionality requires certain data, such as when your app is starting up, place the data within internal storage directory or a database. App-specific files that are stored in external storage aren't always accessible because some devices allow users to remove a physical device that corresponds to external storage.
+
+## Cateogries of Storage Locations
+Android provides two types of physical storage locations: internal storage and external storage.
+
+Android represents external storage devices using a path, however the exact location of where your files can be saved might vary across devices. For this reason, don't use hard-coded file paths. To avoid accidental disclosure of information, don't use predictable patterns to filenames in ways that could reveal the kinds of information found within a file.
+
+Apps themselves are stored within internal storage by default. If your APK size is very large, however, you can indicate a preference within your app's manifest file to install your app on external storage instead:
+
+```
+<manifest ...
+  android:installLocation="preferExternal">
+  ...
+</manifest>
+```
+## Permissions and access to external storage
+Android defines the following storage-related permissions: `READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE`, and `MANAGE_EXTERNAL_STORAGE`.
+
+The approach to access to storage in Android has changed, previously you had to declare the permissions to read write any file outside the app-specific directories on external storage. More recent versions of Android rely more on a file's purpose than its location for determining an app's ability to access, and write to, a given file. In particular, if your app targets Android 11 (API level 30) or higher, the WRITE_EXTERNAL_STORAGE permission doesn't have any effect on your app's access to storage.
+
+Android 11 introduces the `MANAGE_EXTERNAL_STORAGE` permission, which provides write access to files outside the app-specific directory and `MediaStore`. Most apps doesn't actually need this permission but if you need it then search for a guide on how to manage all files on a storage device.
+
+Apps that target Android 10 (API level 29) and higher are given scoped access into external storage, or scoped storage, by default, this means they only have access to the app-specific directory on external storage, as well as specific types of media that the app has created.
+
+Check the [storage use cases and best practices](https://developer.android.com/training/data-storage/use-cases) guide for examples.
+
+## Viewing Your App Files in AS
+Use the Android Studio's `Device Explorer` for exploring a device's files, the following directories are particularly useful:
+
+* `data/data/<app_name>/`: Contains data files for your app stored on internal storage.
+* `sdcard/`: Contains user files stored on external user storage (pictures, etc.).
+
+## Access app-specific files
+You can store(read/write) your app's specific files in the following locations:
+
+* **Internal storage directories**: These directories include both a dedicated location for storing persistent files, and another location for storing cache data. On Android 10 (API level 29) and higher, these locations are encrypted. No other app can access this files
+* **External storage directories**: Has two locations as the internal storage, a location for persisten files and another for cache data, the difference is that is not encypted and it's possible for other apps to access these files if they have the propper permissions, however the files store on those locations are meant to be used by your app only. If you want to share files then store them in the shared storage part of the external storage
+
+When the user uninstalls your app, the files saved in app-specific storage are removed. 
+
+### Internal storage
+Internal directories tend to be small. Before writing app-specific files to internal storage, your app should [query the free](#quer-free-space) space on the device.
+
+## Query Free Space
+```
+// in this example the App needs 10 MB within internal storage.
+private static final long NUM_BYTES_NEEDED_FOR_MY_APP = 1024 * 1024 * 10L;
+
+StorageManager storageManager =
+        getApplicationContext().getSystemService(StorageManager.class);
+UUID appSpecificInternalDirUuid = storageManager.getUuidForPath(getFilesDir());
+long availableBytes =
+        storageManager.getAllocatableBytes(appSpecificInternalDirUuid);
+if (availableBytes >= NUM_BYTES_NEEDED_FOR_MY_APP) {
+    storageManager.allocateBytes(
+            appSpecificInternalDirUuid, NUM_BYTES_NEEDED_FOR_MY_APP);
+} else {
+    // this means the storage space availalbe in the user's device is not enough
+    // so we give the option to free space by clearing cache or removing files from its local unit
+
+    // To request that the user remove all app cache files instead, set
+    // "action" to ACTION_CLEAR_APP_CACHE.
+    Intent storageIntent = new Intent();
+    storageIntent.setAction(ACTION_MANAGE_STORAGE);
+}
+```
