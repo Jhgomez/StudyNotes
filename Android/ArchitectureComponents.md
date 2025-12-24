@@ -1,3 +1,6 @@
+# Source
+Almost all(if not all) of the subjects we mention here can be found from google's [trainnig materials here](https://developer.android.com/develop#core-areas)
+
 # Views navigation
 
 ```
@@ -114,3 +117,17 @@ queryIntentActivities() returns a list of all activities that can perform the in
 
  ## A nice example
  Find it [here](https://android-developers.googleblog.com/2009/11/integrating-application-with-intents.html)
+
+ # Storage
+ Android's file system provide the following types of storage to save your app data
+
+* App-specific storage: Store files that are meant for your app's use only, either in dedicated directories within an internal storage volume or different dedicated directories within external storage. Use the directories within internal storage to save sensitive information that other apps shouldn't access.
+* Shared storage: Store files that your app intends to share with other apps, including media, documents, and other files.
+* Preferences: Store private, primitive data in key-value pairs.
+* Databases: Store structured data in a private database using the Room persistence library.
+
+The characteristics of these options are summarized in the following table:
+
+|  | Type of content | Access method | Permissions needed |	Can other apps access? | Files removed on app uninstall? |
+|--| --------------- | ------------- | ------------------ | ---------------------- | ------------------------------- |
+| App-specific files |	Files meant for your app's use only |	From internal\nstorage,\n`getFilesDir()` or\n`getCacheDir()`\n\nFrom external\nstorage, \n`getExternalFilesDir()` or\n`getExternalCacheDir()` | Never needed for\ninternal storage\n\nNot needed for\nexternal storage when\nyour app is used on\ndevices that run\nAndroid 4.4 (API level\n19) or higher| No |	Yes |
