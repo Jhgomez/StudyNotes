@@ -110,4 +110,7 @@ ndroid automatically applies the CATEGORY_DEFAULT category to all implicit inten
 
 queryIntentActivities() returns a list of all activities that can perform the intent passed as an argument, and queryIntentServices() returns a similar list of services. Neither method activates the components; they just list the ones that can respond. There's a similar method, queryBroadcastReceivers(), for broadcast receivers.
 
- 
+## [Package visibility filtering on Android](https://developer.android.com/training/package-visibility)
+
+ ## A nice example
+ Find it [here](https://android-developers.googleblog.com/2009/11/integrating-application-with-intents.html)
