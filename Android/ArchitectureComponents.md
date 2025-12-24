@@ -130,5 +130,4 @@ The characteristics of these options are summarized in the following table:
 
 |  | Type of content | Access method | Permissions needed |	Can other apps access? | Files removed on app uninstall? |
 |--| --------------- | ------------- | ------------------ | ---------------------- | ------------------------------- |
-| App-specific files |	Files meant for your app's use only |	From internal\nstorage, `getFilesDir()` or `getCacheDir()`.
-From external storage, `getExternalFilesDir()` or `getExternalCacheDir()` | Never needed for\ninternal storage. Not needed for external storage when your app is used on devices that run Android 4.4 (API level 19) or higher| No |	Yes |
+| App-specific files |	Files meant for your app's use only |	From internal\nstorage, `getFilesDir()` or `getCacheDir()`. From external storage, `getExternalFilesDir()` or `getExternalCacheDir()` | Never needed for internal storage. Not needed for external storage when your app is used on devices that run Android 4.4 (API level 19) or higher| No |	Yes |
