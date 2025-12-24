@@ -130,7 +130,7 @@ The characteristics of these options are summarized in the following table:
 
 |  | Type of content | Access method | Permissions needed |	Can other apps access? | Files removed on app uninstall? |
 |--| --------------- | ------------- | ------------------ | ---------------------- | ------------------------------- |
-| App-specific files |	Files meant for your app's use only |	From internal\nstorage, `getFilesDir()` or `getCacheDir()`. From external storage, `getExternalFilesDir()` or `getExternalCacheDir()` | Never needed for internal storage. Not needed for external storage when your app is used on devices that run Android 4.4 (API level 19) or higher| No |	Yes |
+| App-specific files |	Files meant for your app's use only |	From internal storage, `getFilesDir()` or `getCacheDir()`. From external storage, `getExternalFilesDir()` or `getExternalCacheDir()` | Never needed for internal storage. Not needed for external storage when your app is used on devices that run Android 4.4 (API level 19) or higher| No |	Yes |
 | Media |	Shareable media files (images, audio files, videos) |	`MediaStore` API | `READ_EXTERNAL_STORAGE` when accessing other apps' files on Android 11 (API level 30) or higher. `READ_EXTERNAL_STORAGE` or` WRITE_EXTERNAL_STORAGE` when accessing other apps' files on Android 10 (API level 29). Permissions are required for all files on Android 9 (API level 28) or lower | Yes, though the other app needs the `READ_EXTERNAL_STORAGE` permission | No |
 | Documents and other files |	Other types of shareable content, including downloaded files | Storage Access Framework	| None | Yes, through the system file picker | No |
 | App preferences |	Key-value pairs |	Jetpack Preferences library |	None | No |	Yes |
@@ -179,6 +179,69 @@ When the user uninstalls your app, the files saved in app-specific storage are r
 ### Internal storage
 Internal directories tend to be small. Before writing app-specific files to internal storage, your app should [query the free](#quer-free-space) space on the device.
 
+* [Access and store files](https://developer.android.com/training/data-storage/app-specific#internal-access-store-files)
+* [Create Cache Files](https://developer.android.com/training/data-storage/app-specific#internal-create-cache):  cache directory is designed to store a small amount of your app's sensitive data. To determine how much cache space is currently available for your app, call `getCacheQuotaBytes()`. You should always maintain your app's cache files within internal storage.
+* [Remove cache files](https://developer.android.com/training/data-storage/app-specific#internal-remove-cache)
+
+### External Storage
+On Android 4.4 (API level 19) or higher, your app doesn't need to request any storage-related permissions to access app-specific directories within external storage.
+
+On devices that run Android 9 (API level 28) or lower, your app can access the app-specific files that belong to other apps, provided that your app has the appropriate storage permissions. apps that target Android 10 (API level 29) and higher are given scoped access into external storage, or scoped storage, by default. When scoped storage is enabled, apps cannot access the app-specific directories that belong to other apps.
+
+#### Verify that Storage is Available
+Verify that the volume is accessible before trying to read app-specific data from, or write app-specific data to, external storage.
+
+```
+// Checks if a volume containing external storage is available
+// for read and write.
+private boolean isExternalStorageWritable() {
+    return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+}
+
+// Checks if a volume containing external storage is available to at least read.
+private boolean isExternalStorageReadable() {
+     return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) ||
+            Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY);
+}
+```
+
+On devices without removable external storage, use the following command to enable a virtual volume for testing your external storage availability logic:
+
+```
+adb shell sm set-virtual-disk true
+```
+
+There can be more than one external storage unit and even an external storage can be created from a partition in the local storage, so to access the right external storage unit/partition, use the below code
+```
+File[] externalStorageVolumes =
+        ContextCompat.getExternalFilesDirs(getApplicationContext(), null);
+File primaryExternalStorage = externalStorageVolumes[0];
+```
+
+Chek more:
+* [Access persistent files](https://developer.android.com/training/data-storage/app-specific#external-access-files)
+* [Create Cache Files](https://developer.android.com/training/data-storage/app-specific#external-cache-create)
+* [Remove Cache Files](https://developer.android.com/training/data-storage/app-specific#external-cache-remove)
+
+#### Media content
+If your app works with media files that provide value to the user only within your app, it's best to store them in app-specific directories within external storage
+```
+@Nullable
+File getAppSpecificAlbumStorageDir(Context context, String albumName) {
+    // Get the pictures directory that's inside the app-specific directory on
+    // external storage.
+    File file = new File(context.getExternalFilesDir(
+            Environment.DIRECTORY_PICTURES), albumName);
+    if (file == null || !file.mkdirs()) {
+        Log.e(LOG_TAG, "Directory not created");
+    }
+    return file;
+}
+```
+
+It's important that you use directory names provided by API constants like DIRECTORY_PICTURES. These directory names ensure that the files are treated properly by the system. If none of the pre-defined sub-directory names suit your files, you can instead pass null into getExternalFilesDir(). This returns the root app-specific directory within external storage.
+
+
 ## Query Free Space
 ```
 // in this example the App needs 10 MB within internal storage.
@@ -200,5 +263,96 @@ if (availableBytes >= NUM_BYTES_NEEDED_FOR_MY_APP) {
     // "action" to ACTION_CLEAR_APP_CACHE.
     Intent storageIntent = new Intent();
     storageIntent.setAction(ACTION_MANAGE_STORAGE);
+
+    // You can also calculate devices available space with
+    // StorageStatsManager.getFreeBytes() / StorageStatsManager.getTotalBytes()
 }
 ```
+
+You can write the file right away(without checking available space), then catch an IOException if one occurs. You may need to do this if you don't know exactly how much space you need, like when changing an image from PNG to JPG before storing it
+
+### Create a storage management activity
+You can declare a custom "manage space" activity using the `android:manageSpaceActivity` attribute in the manifest file. File manager apps can invoke this activity even when your app doesn't export the activity; that is, when your activity sets `android:exported` to false.
+
+## Shared Storage(The opposite of app-specific storage)
+Android provides APIs for storing and accessing the following types of shareable data:
+
+* **Media content**: The system provides standard public directories for these kinds of files, so the user has a common location for all their photos, another common location for all their music and audio files, and so on. Your app can access this content using the platform's `MediaStore API`.
+* **Documents and other files**: The system has a special directory for containing other file types, such as PDF documents and books that use the EPUB format. Your app can access these files using the platform's Storage Access Framework. If your app wants to access a file within the MediaStore.Downloads collection that your app didn't create, you must use that Storage Access Framework
+* [Datasets](https://developer.android.com/training/data-storage/shared/datasets): On Android 11 (API level 30) and higher, the system caches large datasets that multiple apps might use. These datasets can support use cases like machine learning and media playback. Apps can access these shared datasets using the `BlobStoreManager` API.
+
+### Media
+App attribution of media files
+When scoped storage is enabled for an app that targets Android 10 or higher, the system attributes an app to each media file, which determines the files that your app can access when it hasn't requested any storage permissions. Each file can be attributed to only one app. Therefore, if your app creates a media file that's stored in the photos, videos, or audio files media collection, your app has access to the file.
+
+If the user uninstalls and reinstalls your app, however, you must request READ_EXTERNAL_STORAGE to access the files that your app originally created. This permission request is required because the system considers the file to be attributed to the previously installed version of the app, rather than the newly installed one.
+
+If your app works with media files that provide value to the user only within your app, it's best to store them in app-specific directories within external storage.
+
+### Storage volumes
+Apps that target Android 10 or higher can access the unique name that the system assigns to each external storage volume. This naming system helps you efficiently organize and index content, and it gives you control over where new media files are stored.
+
+The following volumes are particularly useful to keep in mind:
+
+* **VOLUME_EXTERNAL** volume provides a view of all shared storage volumes on the device. You can read the contents of this synthetic volume, but you cannot modify the contents.
+* **VOLUME_EXTERNAL_PRIMARY** volume represents the primary shared storage volume on the device. You can read and modify the contents of this volume.
+
+### [Location where media was captured](https://developer.android.com/training/data-storage/shared/media#location-media-captured)
+Some photographs and videos contain location information in their metadata, which shows the place where a photograph was taken or where a video was recorded.
+
+How you access this location information in your app depends on whether you need to access location information for a photograph or for a video.
+
+### [Update in native code](https://developer.android.com/training/data-storage/shared/media#update-native-code)
+If you need to write media files using native libraries, pass the file's associated file descriptor from your Java-based or Kotlin-based code into your native code.
+
+### Use cases that require an alternative to media store
+
+#### Working with other types of files
+If your app works with documents and files that don't exclusively contain media content, such as files that use the EPUB or PDF file extension, use the ACTION_OPEN_DOCUMENT intent action, as described in the guide to storing and accessing documents and other files.
+
+#### File sharing in companion apps
+In cases where you provide a suite of companion apps, such as a messaging app and a profile app, set up file sharing using content:// URIs. We also recommend this workflow as a security best practice
+
+## Access documents and other files from shared storage(Storage Access Framework)
+This is the "Storage Access Framework" we have mentioned a few times before in this document. On devices that run Android 4.4 (API level 19) and higher, your app can interact with a documents provider, including external storage volumes and cloud-based storage, using the Storage Access Framework. This framework allows users to interact with a system picker to choose a documents provider and select specific documents and other files for your app to create, open, or modify.
+
+Because the user is involved in selecting the files or directories that your app can access, this mechanism doesn't require any system permissions, and user control and privacy is enhanced. Additionally, these files, which are stored outside of an app-specific directory and outside of the media store, remain on the device after your app is uninstalled.
+
+Using the framework involves the following steps:
+
+1. An app invokes an intent that contains a storage-related action. This action corresponds to a specific use case that the framework makes available.
+2. The user sees a system picker, allowing them to browse a documents provider and choose a location or document where the storage-related action takes place.
+3. The app gains read and write access to a URI that represents the user's chosen location or document. Using this URI, the app can perform operations on the chosen location.
+
+### Use cases for accessing documents and other files
+The Storage Access Framework supports the following use cases for accessing files and other documents.
+
+* Create a new file: The ACTION_CREATE_DOCUMENT intent action allows users to save a file in a specific location.
+* Open a document or file: The ACTION_OPEN_DOCUMENT intent action allows users to select a specific document or file to open.
+* Grant access to a directory's contents: The ACTION_OPEN_DOCUMENT_TREE intent action, available on Android 5.0 (API level 21) and higher, allows users to select a specific directory, granting your app access to all of the files and sub-directories within that directory.
+
+## [Send simple data to other apps](https://developer.android.com/training/sharing/send)
+Android uses intents and their associated extras to let users share information quickly and easily using their favorite apps.
+
+Android provides two ways for users to share data between apps:
+
+The Android Sharesheet is primarily designed for sending content outside your app and/or directly to another user. For example, sharing a URL with a friend.
+The Android intent resolver is best suited for passing data to the next stage of a well-defined task. For example, opening a PDF from your app and letting users pick their preferred viewer.
+
+## [Receive simple data from other apps](https://developer.android.com/training/sharing/receive)
+Users of other apps frequently send data to your app through the Android Sharesheet or the intent resolver. Apps that send data to your app must set a MIME type for that data. Your app can receive data sent by another app in the following ways:
+
+* An Activity with a matching intent-filter tag in the manifest
+* [Sharing Shortcuts/Share Targets](https://developer.android.com/training/sharing/direct-share-targets) published by your app.
+  
+Direct Share targets are deep links into a specific Activity within your app. They often represent a person or a group, and the Android Sharesheet shows them. For example, a messaging app can provide a Direct Share target for a person that deep links directly into a conversation with that person. See Provide Direct Share targets for detailed instructions.
+
+## [Sharing files](https://developer.android.com/training/secure-file-sharing)
+Apps often have a need to offer one or more of their files to another app. For example, an image gallery may want to offer files to image editors, or a file management app may want to allow users to copy and paste files between areas in external storage. One way a sending app can share a file is to respond to a request from the receiving app.
+
+You can securely share files from your app to another app using content URIs generated by the Android FileProvider component and temporary permissions that you grant to the receiving app for the content URI.
+
+## [Printing FIles](https://developer.android.com/training/printing)
+Android users frequently view content solely on their devices, but there are times when showing someone a screen is not an adequate way to share information. Being able to print information from your Android application gives users a way to see a larger version of the content from your app or share it with another person who is not using your application. Printing also allows them to create a snapshot of information that does not depend on having a device, sufficient battery power, or a wireless network connection.
+
+In Android 4.4 (API level 19) and higher, the framework provides services for printing images and documents directly from Android applications. You can enable printing in your application, including printing images, HTML pages and creating custom documents for printing.
