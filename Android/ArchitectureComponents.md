@@ -27,6 +27,8 @@ Almost all(if not all) of the subjects we mention here can be found from google'
 ```
 
 # Itent and Intent Filters
+Using an implicit intent to start a service is a security hazard
+
 ## [Check for unsafe intent launches](https://developer.android.com/guide/components/intents-filters#CheckForUnsafeIntentLaunches)
 Configure your VmPolicy, with the below code. If your app targets Android 12 and uses the detectAll() method in its VmPolicy definition, the detectUnsafeIntentLaunch() method is called automatically.
 ```
@@ -119,10 +121,16 @@ queryIntentActivities() returns a list of all activities that can perform the in
  Find it [here](https://android-developers.googleblog.com/2009/11/integrating-application-with-intents.html)
 
  # Storage
+ There are three fundamental ways to save data on the device:
+
+* Internal storage
+* External storage
+* Content providers
+
  Android's file system provide the following types of storage to save your app data
 
 * App-specific storage: Store files that are meant for your app's use only, either in dedicated directories within an internal storage volume or different dedicated directories within external storage. Use the directories within internal storage to save sensitive information that other apps shouldn't access.
-* Shared storage: Store files that your app intends to share with other apps, including media, documents, and other files.
+* Shared storage: Store files that your app intends to share with other apps, including media, documents, and other files. consider using a content provider instead, which offers read and write permissions to other apps and can make dynamic permission grants on a case-by-case basis, this means you can use the app specific storage option and make it "public" through a content provider for control on who and when can access.
 * Preferences: Store private, primitive data in key-value pairs.
 * Databases: Store structured data in a private database using the Room persistence library.
 
@@ -187,6 +195,8 @@ Internal directories tend to be small. Before writing app-specific files to inte
 On Android 4.4 (API level 19) or higher, your app doesn't need to request any storage-related permissions to access app-specific directories within external storage.
 
 On devices that run Android 9 (API level 28) or lower, your app can access the app-specific files that belong to other apps, provided that your app has the appropriate storage permissions. apps that target Android 10 (API level 29) and higher are given scoped access into external storage, or scoped storage, by default. When scoped storage is enabled, apps cannot access the app-specific directories that belong to other apps.
+
+ Don't store executables or class files on external storage prior to dynamic loading. If your app does retrieve executable files from external storage, make sure the files are signed and cryptographically verified prior to dynamic loading(taken from "security checklist" documentation).
 
 #### Verify that Storage is Available
 Verify that the volume is accessible before trying to read app-specific data from, or write app-specific data to, external storage.
@@ -356,3 +366,60 @@ You can securely share files from your app to another app using content URIs gen
 Android users frequently view content solely on their devices, but there are times when showing someone a screen is not an adequate way to share information. Being able to print information from your Android application gives users a way to see a larger version of the content from your app or share it with another person who is not using your application. Printing also allows them to create a snapshot of information that does not depend on having a device, sufficient battery power, or a wireless network connection.
 
 In Android 4.4 (API level 19) and higher, the framework provides services for printing images and documents directly from Android applications. You can enable printing in your application, including printing images, HTML pages and creating custom documents for printing.
+
+## Content Providers
+Help an application manage access to data stored by itself or stored by other apps and provide a way to share data with other apps. They encapsulate the data and provide mechanisms for defining data security. Content providers are the standard interface that connects data in one process with code running in another process. you can configure a content provider to let other applications securely access and modify your app data. They provide an abstraction that lets you make modifications to your application data storage implementation without affecting other applications that rely on access to your data.
+
+A number of other classes rely on the ContentProvider class:
+
+* AbstractThreadedSyncAdapter
+* CursorAdapter
+* CursorLoader: this one was implemented using the [Loaders](https://developer.android.com/guide/components/loaders) but it seems that after android 9/API level 28 they where deprecated
+
+Some use cases of content providers are:
+* To implement custom search suggestions in your application.
+* To expose your application data to widgets.
+* To copy and paste complex data or files from your application to other applications.
+
+The Android framework includes content providers that manage data such as audio, video, images, and personal contact information. You can see some of them listed in the reference documentation for the android.provider package.
+
+A content provider can be used to manage access to a variety of data storage sources, including both structured data, such as a SQLite relational database, or unstructured data such as image files.
+
+If you are using a content provider for sharing data between only your own apps, we recommend using the android:protectionLevel attribute set to signature protection. Signature permissions don't require user confirmation, so they provide a better user experience and more controlled access to the content provider data when the apps accessing the data are signed with the same key. You can also set more granular access by declaring the android:grantUriPermissions attribute and using the FLAG_GRANT_READ_URI_PERMISSION and FLAG_GRANT_WRITE_URI_PERMISSION flags in the Intent object that activates the component. The scope of these permissions can be further limited by the <grant-uri-permission> element.
+
+# Services
+Services can also be protected using the `android:permission` attribute. By doing so, other applications need to declare a corresponding `<uses-permission>` element in their own manifest to be able to start, stop, or bind to the service. You can get the same behavior at rutning with the function `checkCallingPermission()` before executing the implementation of the call, however, it's recommend using the declarative permissions in the manifest, since those are less prone to oversight.
+
+# Security
+
+## [Play Integrity API](https://developer.android.com/google/play/integrity/overview)
+helps you check that user actions and server requests are coming from your genuine app, installed by Google Play, running on a genuine and certified Android device. 
+
+# Interprocess Communication
+Some apps attempt to implement IPC using traditional Linux techniques such as network sockets and shared files. However, we recommend instead that you use Android system functionality for IPC such as Intent, Binder or Messenger with a Service, and BroadcastReceiver.
+
+## Binder and Messenger interfaces(taken from "security checklist")
+Using Binder or Messenger is the preferred mechanism for RPC style IPC on Android. They provide well-defined interfaces that enable mutual authentication of the endpoints, if required.
+
+We recommend that you design your app interfaces in a way that doesn't require interface-specific permission checks. Binder and Messenger objects aren't declared within the application manifest, and therefore you can't apply declarative permissions directly to them. They generally inherit permissions declared in the application manifest for the Service or Activity within which they are implemented. If you are creating an interface that requires authentication and/or access controls, you must explicitly add those controls as code in the Binder or Messenger interface.
+
+# Extras
+
+## Sync adapter framework/AbstractThreadedSyncAdapter
+Is designed to facilitate the synchronization of data between a device and a remote server. It allows apps to manage data updates seamlessly, ensuring that users have access to the most current information without manual intervention. This framework is particularly useful for applications that require regular updates from a server, such as email clients, social media apps, and news aggregators.
+
+Be aware one of their requirements would be to implement a content provider, but in case you're already storing local data in another form you can [create a stub content provider](https://developer.android.com/training/sync-adapters/creating-stub-provider).
+
+## Security in a virtual machine
+Dalvik is Android's runtime virtual machine (VM). 
+
+there are two broad issues that might be different about writing apps for Android:
+
+* Some virtual machines, such as the JVM or .NET runtime, act as a security boundary, isolating code from the underlying operating system capabilities. On Android, the Dalvik VM is not a security boundary—the application sandbox is implemented at the OS level, so Dalvik can interoperate with native code in the same application without any security constraints.
+
+
+* Given the limited storage on mobile devices, it's common for developers to want to build modular applications and use dynamic class loading. When doing this, consider both the source where you retrieve your application logic and where you store it locally. Don't use dynamic class loading from sources that aren't verified, such as unsecured network sources or external storage, because that code might be modified to include malicious behavior.
+
+Dynamic vs Static Broadcast Receivers
+
+
