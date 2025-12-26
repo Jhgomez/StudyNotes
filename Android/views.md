@@ -62,3 +62,54 @@
   affect child views drawn by the framework. It also often requires software rendering (setLayerType(LAYER_TYPE_SOFTWARE, …)), so it’s the wrong tool for a container blur. It looks good on text, you can do
   `getPaint` on an TeztView
 
+* Live wallpapers: They make use of the ``
+```
+class MyWallpaperService : WallpaperService() {
+  override fun onCreateEngine(): Engine = WallpaperEngine()
+
+  private inner class WallpaperEngine : WallpaperService.Engine() {
+
+    override fun onTouchEvent(event: MotionEvent?) {
+      if (event?.action == MotionEvent.ACTION_DOWN) {
+        val canvas = surfaceHolder?.lockCanvas() ?: return
+
+        val paint = Paint().apply {
+          val randomColor = Random.nextInt(16_777_216)
+            .toString(16)
+            .padStart(6, '0')
+          color = Color.parseColor("#$randomColor")
+          style = Paint.Style.FILL
+        }
+        canvas.drawPaint(paint)
+
+        surfaceHolder.unlockCanvasAndPost(canvas)
+      }
+    }
+  }
+}
+```
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <application>
+
+  <service
+      android:name="MyWallpaperService"
+      android:enabled="true"
+      android:permission="android.permission.BIND_WALLPAPER">
+    <intent-filter>
+      <action android:name="android.service.wallpaper.WallpaperService" />
+    </intent-filter>
+
+    <meta-data
+        android:name="android.service.wallpaper"
+        android:resource="@xml/my_wallpaper" />
+  </service>
+
+  <uses-feature
+      android:name="android.software.live_wallpaper"
+      android:required="true" />
+  </application>
+</manifest>
+```
