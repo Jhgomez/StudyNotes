@@ -1,3 +1,5 @@
+Jetpack architecture components are viewmodel, lifecycleOwner, lifecycleObserver, room, LiveData, data binding, pagin, work manager. Android core architecture components are always the same 4, activity, content providers, broadcast receivers and services
+
 # Source
 Almost all(if not all) of the subjects we mention here can be found from google's [trainnig materials here](https://developer.android.com/develop#core-areas)
 
@@ -433,6 +435,9 @@ there are two broad issues that might be different about writing apps for Androi
 
 
 * Given the limited storage on mobile devices, it's common for developers to want to build modular applications and use dynamic class loading. When doing this, consider both the source where you retrieve your application logic and where you store it locally. Don't use dynamic class loading from sources that aren't verified, such as unsecured network sources or external storage, because that code might be modified to include malicious behavior.
+
+## Things That Can Not Change
+manifest package name is the certificate that application is signed with. The signing certificate represents the author of the application. If you change the certificate an application is signed with, it is now a different application because it comes from a different author. This different application can’t be uploaded to Market as an update to the original application, nor can it be installed onto a device as an update. Info taken from [Dianne's Hackborn article](https://android-developers.googleblog.com/2011/06/things-that-cannot-change.html)
 
 Dynamic vs Static Broadcast Receivers
 
