@@ -368,7 +368,7 @@ Android users frequently view content solely on their devices, but there are tim
 In Android 4.4 (API level 19) and higher, the framework provides services for printing images and documents directly from Android applications. You can enable printing in your application, including printing images, HTML pages and creating custom documents for printing.
 
 ## Content Providers
-Help an application manage access to data stored by itself or stored by other apps and provide a way to share data with other apps. They encapsulate the data and provide mechanisms for defining data security. Content providers are the standard interface that connects data in one process with code running in another process. you can configure a content provider to let other applications securely access and modify your app data. They provide an abstraction that lets you make modifications to your application data storage implementation without affecting other applications that rely on access to your data.
+Help an application manage access to data stored by itself or stored by other apps and provide a way to share data with other apps. They encapsulate the data and provide mechanisms for defining data security. Content providers are the standard interface that connects data in one process with code running in another process. you can configure a content provider to let other applications securely access and modify your app data. They provide an abstraction that lets you make modifications to your application data storage implementation without affecting other applications that rely on access to your data. They often provides its own UI for working with the data. They are primarily used by other applications, which access the provider using a provider client object. Together, providers and provider clients offer a consistent, standard interface to data that also handles interprocess communication and secure data access. Typically you use them in either of the following two ways, to access an existing content provider in another application or creating a new content provider in your application to share data with other applications.
 
 A number of other classes rely on the ContentProvider class:
 
@@ -378,14 +378,28 @@ A number of other classes rely on the ContentProvider class:
 
 Some use cases of content providers are:
 * To implement custom search suggestions in your application.
-* To expose your application data to widgets.
+* To expose your application data to widgets/Sending data to a widget
 * To copy and paste complex data or files from your application to other applications.
+* Sharing access to your application data with other applications
+* Returning custom search suggestions for your application through the search framework using `SearchRecentSuggestionsProvider`
+* Synchronizing application data with your server using an implementation of `AbstractThreadedSyncAdapter`
 
 The Android framework includes content providers that manage data such as audio, video, images, and personal contact information. You can see some of them listed in the reference documentation for the android.provider package.
 
 A content provider can be used to manage access to a variety of data storage sources, including both structured data, such as a SQLite relational database, or unstructured data such as image files.
 
 If you are using a content provider for sharing data between only your own apps, we recommend using the android:protectionLevel attribute set to signature protection. Signature permissions don't require user confirmation, so they provide a better user experience and more controlled access to the content provider data when the apps accessing the data are signed with the same key. You can also set more granular access by declaring the android:grantUriPermissions attribute and using the FLAG_GRANT_READ_URI_PERMISSION and FLAG_GRANT_WRITE_URI_PERMISSION flags in the Intent object that activates the component. The scope of these permissions can be further limited by the <grant-uri-permission> element.
+
+## Example(Content Provider)
+Use `ContentResolver` object in your application's Context to communicate with the provider as a client. A provider object(class implementing `ContentProvider`) receives data requests from clients, performs the requested action, and returns the results. This object has methods that call identically named methods in the provider object, an instance of one of the concrete subclasses of ContentProvider. The ContentResolver methods provide the basic "CRUD" (create, retrieve, update, and delete) functions of persistent storage.
+
+To access a provider, your application usually has to request specific permissions in its manifest file.
+
+I will not give a detail example but will describe the actions needed to implement one.
+
+As mentioned we need a provider that acts similar to a server in the sense that clients(ContentResolvers) communicate with them and also usually the clients will be other apps. Content providers are basically an interface the clients use to save, read and modify data, to do this you can store info in any way you want but usually that may be a relational local database or files on the side of the content provided(server), a local DB would be preffered if you need complex objects, and for files like picture, documents, you store and retrieve them as files usually from your private scoped local storage. However the content provider interface is similar to querying from a database and when you implement it you'll override methods for querying, insert, delete, update and when a client interacts with the provider it will be returned a `Cursor` object when reading which will let you iterate over the matches found from perfoming the query.
+
+You will also need to define the provider's authority string, content URIs, and column names(or file names). If you want the provider's application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you require for applications that want to access your data. Consider defining all these values as constants in a separate contract class. Later, you can expose this class to other developer.
 
 # Services
 Services can also be protected using the `android:permission` attribute. By doing so, other applications need to declare a corresponding `<uses-permission>` element in their own manifest to be able to start, stop, or bind to the service. You can get the same behavior at rutning with the function `checkCallingPermission()` before executing the implementation of the call, however, it's recommend using the declarative permissions in the manifest, since those are less prone to oversight.
