@@ -76,3 +76,12 @@ Some metrics you can read with it are:
 * **Process Memory (RSS)**: Shows the amount of physical memory currently in use by the app.
 * **Power Rails**: Appears when you profile on a physical device.
 * **Battery**: Shows your app's battery usage.
+
+#### Types of Charts
+Before talk about charts and sections in the Analysis pane we will talk about its sections and charts.
+
+* **Top down and bottom up charts**: 
+* ****
+* ****
+* ****
+* ****
