@@ -113,3 +113,10 @@ class MyWallpaperService : WallpaperService() {
   </application>
 </manifest>
 ```
+
+* The `<merge />` tag is extremely useful and can do wonders in your code. However, it suffers from a couple of limitation:
+
+  * <merge /> can only be used as the root tag of an XML layout
+  * When inflating a layout starting with a <merge />, you must specify a parent ViewGroup and you must set attachToRoot to true (see the documentation of the inflate() method)
+
+* `ViewStub` is a powerful variation of `<include />` that can help you further optimize your layouts without sacrificing features. You need to set the `layout` property to the layout you want to inflate into the `ViewStub`. When you are ready to inflate the stub, simply invoke the `inflate()` method. You can also simply change the visibility of the stub to VISIBLE or INVISIBLE and the stub will inflate. Note however that the `inflate()` method has the benefit of returning the root View of the inflate layout. It is very important to remember that after the stub is inflated, the stub is removed from the view hierarchy. As such, it is unnecessary to keep a long-lived reference, for instance in an class instance field, to a ViewStub. It's cheap and easy. The only drawback of `ViewStub` is that it currently does not support the `<merge />` tag.
