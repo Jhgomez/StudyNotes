@@ -120,3 +120,13 @@ class MyWallpaperService : WallpaperService() {
   * When inflating a layout starting with a <merge />, you must specify a parent ViewGroup and you must set attachToRoot to true (see the documentation of the inflate() method)
 
 * `ViewStub` is a powerful variation of `<include />` that can help you further optimize your layouts without sacrificing features. You need to set the `layout` property to the layout you want to inflate into the `ViewStub`. When you are ready to inflate the stub, simply invoke the `inflate()` method. You can also simply change the visibility of the stub to VISIBLE or INVISIBLE and the stub will inflate. Note however that the `inflate()` method has the benefit of returning the root View of the inflate layout. It is very important to remember that after the stub is inflated, the stub is removed from the view hierarchy. As such, it is unnecessary to keep a long-lived reference, for instance in an class instance field, to a ViewStub. It's cheap and easy. The only drawback of `ViewStub` is that it currently does not support the `<merge />` tag.
+
+* `Windwo` and `DecorView`: When you setup your user interface by calling `setContentView()` on an Activity, Android adds your views to the Activity's window. The window however does not contain only your views, but a few others created for you. The most important one is the `DecorView`. The `DecorView` is the view that actually holds the window's background drawable. Calling `getWindow().setBackgroundDrawable()` from your Activity changes the background of the window by changing the DecorView's background drawable. If you ever have an activity which background is not visible, probably because there is an opaque view on top of it like an `ImageView`, `MapView` or `WebView`, you can gain a little performance by setting the Activity's theme with the attribute `android:theme=@style/Theme.Custom` in the manifest inside the `<activty />` or `<application />` tag. According to [this document](https://android-developers.googleblog.com/2009/03/window-backgrounds-ui-speed.html), Android UI toolkit is not smart enough to prevent the drawing of views hidden by opaque children so we can leverage this optimization
+    ```
+    <resources>
+      <style name="Theme.NoBackground" parent="android:Theme">
+          <item name="android:windowBackground">@null</item>
+      </style>
+    </resources>
+    ```
+* 
