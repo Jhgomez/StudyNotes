@@ -135,3 +135,13 @@ class MyWallpaperService : WallpaperService() {
   provides a lot info about the event, you can distinguish gestures and position.
 
 * **Event Handling System**: Events represent user interactions with the application, they are managed by the Android framework and handled using event listeners and event handlers
+
+* `CollapsingToolbarLayout`: It wraps a `Toolbar` and at the same time it should be wrapped by an `AppBarLayout`
+
+* `AppBarLayout`: There is a few interesting use cases like when wrapping a `CollapsingToolbarLayout` with this view, also when creating a app bar(also called toolbar) with more than one child like when wrapping a `Toolbar` and a `TabLayout` with this view and in this use case usually there is a `CoordinatorLayout` wrapping the `AppBarLayout` to enable animations. Basically this view lets you create interesting and very custom app bars/top bars/toolbars 
+
+* `TopAppBar`/`Toolbar`/ `ActionBar`: They are basically the same visual component but is the different names you can find it with and also the names seend during its evolution throughout time, and basically they have different features basically the newer implementations have more "up to date" features, the newest implementation being `Toolbar` which can be found in material design
+
+* `DrawerLayout` with `NavigationView`: UI component implemented in material design library, basically the drawer is the `NavigationView` view which has to be wrapped by a `DrawerLayout`
+
+* **Views that can be integrated with NavController**: `TopAppBar`/`Toolbar`/ `ActionBar`, `CollapsingToolbarLayout`, `AppBarLayout`, `DrawerLayout` with `NavigationView`, and `BottomNavigationView`
