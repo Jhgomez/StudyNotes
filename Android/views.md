@@ -172,6 +172,16 @@ class MyWallpaperService : WallpaperService() {
   }
   ```
   To define the `isLargeLayout` variable use two resource qualifiers `res/values/bools.xml` and `res/values-large/bools.xml`
+  ```
+  <!-- true in large and false in regular size -->
+  <resources>
+    <bool name="large_layout">true</bool>
+  </resources>
+  ```
+  Then consume it with
+  ```
+  isLargeLayout = getResources().getBoolean(R.bool.large_layout);
+  ```
 
 * [Show an activity as a dialog on large screens](https://developer.android.com/develop/ui/views/components/dialogs#ActivityAsDialog): To show an activity as a dialog only on large screens, apply the Theme.Holo.DialogWhenLarge theme to the <activity> manifest element:
   ```
