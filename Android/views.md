@@ -144,6 +144,38 @@ class MyWallpaperService : WallpaperService() {
 
 * `DrawerLayout` with `NavigationView`: UI component implemented in material design library, basically the drawer is the `NavigationView` view which has to be wrapped by a `DrawerLayout`
 
-* **Dialogs**: If your app uses Activity 1.5.0 or higher, you can implement custom back navigation for a dialog by using `ComponentDialog` and its `OnBackPressedDispatcher`. `AlertDialog`s implement that interface so just by creating that type of dialogs you can get an instance of the back dispatcher
+* **Dialogs**: If your app uses Activity 1.5.0 or higher, you can implement custom back navigation for a dialog by using `ComponentDialog` and its `OnBackPressedDispatcher`. `AlertDialog`s implement that interface so just by creating that type of dialogs you can get an instance of the back dispatcher.
+
+* [Show a dialog fullscreen or as an embedded fragment](https://developer.android.com/develop/ui/views/components/dialogs#FullscreenDialog): First override `onCreateDialog` to add the below code
+  ```
+  Dialog dialog = super.onCreateDialog(savedInstanceState);
+  dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+  retun dialog;
+  ```
+  Then in your activity or fragment call something like this
+  ```
+  if (isLargeLayout) {
+      // The device is using a large layout, so show the fragment as a
+      // dialog.
+      myDialogFragment.show(fragmentManager, "dialog");
+  } else {
+      // The device is smaller, so show the fragment fullscreen.
+      FragmentTransaction transaction = fragmentManager.beginTransaction();
+      // For a polished look, specify a transition animation.
+      transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+      // To make it fullscreen, use the 'content' root view as the container
+      // for the fragment, which is always the root view for the activity.
+      transaction
+        .add(android.R.id.content, myDialogFragment)
+        .addToBackStack(null)
+        .commit();
+  }
+  ```
+  To define the `isLargeLayout` variable use two resource qualifiers `res/values/bools.xml` and `res/values-large/bools.xml`
+
+* [Show an activity as a dialog on large screens](https://developer.android.com/develop/ui/views/components/dialogs#ActivityAsDialog): To show an activity as a dialog only on large screens, apply the Theme.Holo.DialogWhenLarge theme to the <activity> manifest element:
+  ```
+  <activity android:theme="@android:style/Theme.Holo.DialogWhenLarge" >
+  ```
 
 * **Views that can be integrated with NavController**: `TopAppBar`/`Toolbar`/ `ActionBar`, `CollapsingToolbarLayout`, `AppBarLayout`, `DrawerLayout` with `NavigationView`, and `BottomNavigationView`
