@@ -25,8 +25,28 @@ Almost all(if not all) of the subjects we mention here can be found from google'
   NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.bottom_nav_graph);
   navGraph.setStartDestination(R.id.shop);
   navController.setGraph(navGraph);
+
   NavigationUI.setupWithNavController(binding.bottomNavView, navController);
 ```
+
+## Lower Level APIs
+### FragmentManager
+Is responsible for performing actions on an app's fragments, such as adding, removing, or replacing them while managing the back stack also. Each activity is associated with its own fragment manager which manages the fragments displayed inside it(`getSupportFragmentManager()`), at the same time a fragment also has a reference to two instances of fragment manager, `childFragmentManager` and `parentFragmentManager`, the former handles fragments hosted inside it(fragment inside as fragment) and the later gives a reference to the parent fragment's fragment manager(if it is a fragment inside a fragment) or the activity's fragment manager(if fragment is direct child of the activity).
+
+## High Level APIs
+### Navigation Library/Navigation Component three main parts
+* **Navigation Graph**
+* **NavHost(NavHostFramgnet)**: Is the container for all navigation within a specific area of the app's UI. It is basically a view of type `Framgnet`(this is what was used previously) or `FragmentContainrView`(this is the preffered type now a days) by its own those views are just views but to make it a navhost you need to specify the properties `android:name="androidx.navigation.fragment.NavHostFragment"`, `app:defaultNavHost="true"` this one enables NavHost to intercept the system back button presses, and `app:navGraph="@navigation/nav_graph"`, you should be able to set these properties programatically also. Basically fragments are replaced in and out of this view. This is also associated with the activitys fragment manager, and at the same time it associates the `NavController` in it, this means you can find the nav host using the fragment manager and you can find the nav controller from the nav host.
+* **NavController**: It is responsible for managing fragments within an Activity, it actually uses `FragmentManager` under the hood
+
+## [Navigation best practices for multi-module projects](https://developer.android.com/guide/navigation/integrations/multi-module)
+Since we're talking about modules/modularization and the UI layer(navigation code/logic lives in this layer) we will talk about feature modules, but that could mean different things depending on the context so, in this context a feature module is a module that encapsulates a distinct part of your application’s functionality. However, "feature module" is a term that is also used in the Play Feature Delivery describing a module that can be delivered conditionally or downloaded on-demand.
+
+Consider the feature modules like modules focused around one feature and provides a single navigation graph that encapsulates all of the destinations needed to implement that feature. Feature modules are included, either directly or indirectly, into your app module. The app module is responsible for providing the complete graph for your app and adding the NavHost to your UI.
+
+
+## NavigationUI
+
 
 # Itent and Intent Filters
 Using an implicit intent to start a service is a security hazard
