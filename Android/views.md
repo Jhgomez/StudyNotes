@@ -144,4 +144,6 @@ class MyWallpaperService : WallpaperService() {
 
 * `DrawerLayout` with `NavigationView`: UI component implemented in material design library, basically the drawer is the `NavigationView` view which has to be wrapped by a `DrawerLayout`
 
+* **Dialogs**: If your app uses Activity 1.5.0 or higher, you can implement custom back navigation for a dialog by using `ComponentDialog` and its `OnBackPressedDispatcher`. `AlertDialog`s implement that interface so just by creating that type of dialogs you can get an instance of the back dispatcher
+
 * **Views that can be integrated with NavController**: `TopAppBar`/`Toolbar`/ `ActionBar`, `CollapsingToolbarLayout`, `AppBarLayout`, `DrawerLayout` with `NavigationView`, and `BottomNavigationView`
