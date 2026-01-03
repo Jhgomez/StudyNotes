@@ -1,7 +1,7 @@
 Jetpack architecture components are viewmodel, lifecycleOwner, lifecycleObserver, room, LiveData, data binding, pagin, work manager. Android core architecture components are always the same 4, activity, content providers, broadcast receivers and services
 
 # Source
-Almost all(if not all) of the subjects we mention here can be found from google's [trainnig materials here](https://developer.android.com/develop#core-areas)
+Almost all(if not all) of the subjects we mention here can be found from google's [trainnig materials here](https://developer.android.com/develop#core-areas) and in the Android's documentation in the section "Design & Plan"
 
 # Views navigation
 
@@ -42,8 +42,15 @@ Is responsible for performing actions on an app's fragments, such as adding, rem
 ## [Navigation best practices for multi-module projects](https://developer.android.com/guide/navigation/integrations/multi-module)
 Since we're talking about modules/modularization and the UI layer(navigation code/logic lives in this layer) we will talk about feature modules, but that could mean different things depending on the context so, in this context a feature module is a module that encapsulates a distinct part of your application’s functionality. However, "feature module" is a term that is also used in the Play Feature Delivery describing a module that can be delivered conditionally or downloaded on-demand.
 
-Consider the feature modules like modules focused around one feature and provides a single navigation graph that encapsulates all of the destinations needed to implement that feature. Feature modules are included, either directly or indirectly, into your app module. The app module is responsible for providing the complete graph for your app and adding the NavHost to your UI.
+Feature modules are modules focused around one feature and provides a single navigation graph that encapsulates all of the destinations needed to implement that feature. Feature modules are included, either directly or indirectly, into your app module. The app module is responsible for providing the complete graph for your app and adding the NavHost to your UI. Use the `<include />` tag in your app module's to add the feature modules nav graphs to your main nav graph. After the main nav graph is created and compose by all other nav graphs in the feature modules you can create nav actions in the main nav graph. Common set of destinations, such as a login graph, should be added to your app module's navigation graph instead of each feature nav graph. Each feature module can then navigate across feature modules to navigate to those common destinations.
 
+If your app's top-level destinations are composed of UI elements provided by feature modules, the app module is a natural place to put the top-level navigation and UI elements and when this is true you can use `NavigationUI` to tie destinations to menu items of a `BottomNavigationView` if the ID of the item matches the ID of a destination(you can match a graph's id or the id of a fragment in a graph), then you can let `NavigationUI` handle the `BottomNavigationView` navigation with the following code
+
+```
+ NavigationUI.setupWithNavController(bottomNav, navController);
+```
+
+it's generally bad practice for your app module to have a hard dependency on a specific destination embedded deeply within your feature modules' navigation graph. In most cases, you want your app module to know only about the entry point to any embedded or included navigation graphs (this applies outside of feature modules too). If you need to link to a destination deep within your library's navigation graph, the preferred way to do this is by using a deep link. Deep linking is also the only way for a library to navigate to a destination in another library's navigation graph.
 
 ## NavigationUI
 
