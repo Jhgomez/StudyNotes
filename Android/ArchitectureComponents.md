@@ -52,6 +52,10 @@ If your app's top-level destinations are composed of UI elements provided by fea
 
 it's generally bad practice for your app module to have a hard dependency on a specific destination embedded deeply within your feature modules' navigation graph. In most cases, you want your app module to know only about the entry point to any embedded or included navigation graphs (this applies outside of feature modules too). If you need to link to a destination deep within your library's navigation graph, the preferred way to do this is by using a deep link. Deep linking is also the only way for a library to navigate to a destination in another library's navigation graph.
 
+Again, to navigate across independent/different feature modules use "Deep links", you can use either implicit or explicit deep links, the difference is when using implicit the back stack is not reset unlike explicit deep link navigation, where the back stack is replaced when navigating. Implicit use an URI and explicit use a pending intent.
+
+It is strongly recommended to always use the default launchMode of `standard` in the declaration of the activity's in the manifest file when using Navigation. When using `standard` launch mode, Navigation automatically handles deep links by calling `handleDeepLink()` to process any explicit or implicit deep links within the Intent. However, this does not happen automatically if the Activity is re-used when using an alternate launchMode such as `singleTop`. In this case, it is necessary to manually call `handleDeepLink()` in `onNewIntent()`
+
 ## NavigationUI
 
 
