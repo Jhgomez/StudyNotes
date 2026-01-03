@@ -56,8 +56,32 @@ Again, to navigate across independent/different feature modules use "Deep links"
 
 It is strongly recommended to always use the default launchMode of `standard` in the declaration of the activity's in the manifest file when using Navigation. When using `standard` launch mode, Navigation automatically handles deep links by calling `handleDeepLink()` to process any explicit or implicit deep links within the Intent. However, this does not happen automatically if the Activity is re-used when using an alternate launchMode such as `singleTop`. In this case, it is necessary to manually call `handleDeepLink()` in `onNewIntent()`
 
-## NavigationUI
+## [NavigationUI](https://developer.android.com/guide/navigation/integrations/ui)
+Contains static methods that manage navigation with the top app bar, the navigation drawer, and bottom navigation. Views that can be integrated with NavController are: TopAppBar/Toolbar/ ActionBar, CollapsingToolbarLayout, AppBarLayout, DrawerLayout with NavigationView, and BottomNavigationView
 
+With the top app bar `NavigationUI` uses the destination labels from your navigation graph to keep the title of the top app bar up-to-date.
+
+```
+AppBarConfiguration appBarConfiguration =
+            new AppBarConfiguration.Builder(navController.getGraph()).build();
+// or
+AppBarConfiguration appBarConfiguration =
+        new AppBarConfiguration.Builder(R.id.main, R.id.profile).build();
+
+// or ir you want Navigation button to appear as an Up button for all destinations
+// you may need the following set up if you need to navigate back to a previous activity from the top level destination fragment in other activity
+
+AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder()
+        .setFallbackOnNavigateUpListener(::onSupportNavigateUp)
+        .build();
+    
+NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+
+// for collapsing tool bars
+NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
+```
+
+Having a top app bar in the activity works well when the app bar's layout is similar in all destinations of the app. If, however, your top app bar changes across destinations, then consider removing the top app bar from the activity and instead you should define it in each destination fragment. This means you'd declare a `Toolbar` and possible variations with `AppBarLayout` accordingly in each fragment and then in the `onViewCreated` method link those views with the navigation controller with `NavigationUI.setupWithNavController`. This will result in the app bar animating with the rest of the layout during fragment transitions when a fragment transition is set.
 
 # Itent and Intent Filters
 Using an implicit intent to start a service is a security hazard
