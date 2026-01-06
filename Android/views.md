@@ -189,3 +189,13 @@ class MyWallpaperService : WallpaperService() {
   ```
 
 * **Views that can be integrated with NavController**: `TopAppBar`/`Toolbar`/ `ActionBar`, `CollapsingToolbarLayout`, `AppBarLayout`, `DrawerLayout` with `NavigationView`, and `BottomNavigationView`
+
+* **Action Mode/ActionMode**: 
+
+* **Types of Menus**: We can find **"Options Menu"s**, in an activity override method `onCreateOptionsMenu` and handle clicks in the menu items overriding `onOptionsItemSelected` and in a Fragment you need to get instance of activity, parse it to `MenuHost` and add a provider with the method `addMenuProvider` if you need to navigate when an option is selected then in the "options selected" method return the boolean value with the following code `NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);`. If you want to modify/update your menu then the [official documentation](https://developer.android.com/develop/ui/views/components/menus#ChangingTheMenu). Other type is **"Contextual Menu"**, they offer actions that affect a specific item, very commonly used with recyclerview items and there is two ways we can display a contextual menu, a **floating context menu** which is displayed similar to a dialog, to create pass the view you want to be attached the menu to to the method `registerForContextMenu()` and override methods `onCreateContextMenu`(here you inflate menu with menuInflater calling `getMenuInflater`) and `onContextItemSelected`. The second option we have to display a contextual menu is **contextual action mode** this is an implementation of `ActionMode`, they display a contextual action bar, or CAB, at the top of the screen with action items that affect the selected item(s). When this mode is active, users can perform an action on multiple items at once. This CAB isn't necessarily associated with the app bar. They operate independently, although the contextual action bar visually overtakes the app bar position, its UI is usually presented either when a click/touch and hold(LongClick) happens or items with a chedcbox are selected. Check [this documentation](https://developer.android.com/develop/ui/views/components/menus#CABforViews) to see how to implement it. The third and last last type of menu(after contextual menu) is a **"Popup Menu"**, this isn't the same as a context menu, which is generally for actions that affect selected content. For actions that affect selected content, use the contextual action mode or floating context menu. You can create a popup menu with the below code
+
+```
+PopupMenu popup = new PopupMenu(this, v);
+    popup.getMenuInflater().inflate(R.menu.actions, popup.getMenu());
+    popup.show();
+```
