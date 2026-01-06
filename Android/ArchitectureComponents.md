@@ -27,6 +27,31 @@ Almost all(if not all) of the subjects we mention here can be found from google'
   navController.setGraph(navGraph);
 
   NavigationUI.setupWithNavController(binding.bottomNavView, navController);
+
+  navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+     @Override
+     public void onDestinationChanged(@NonNull NavController controller,
+             @NonNull NavDestination destination, @Nullable Bundle arguments) {
+         if(destination.getId() == R.id.full_screen_destination) {
+             toolbar.setVisibility(View.GONE);
+             bottomNavigationView.setVisibility(View.GONE);
+         } else {
+             toolbar.setVisibility(View.VISIBLE);
+             bottomNavigationView.setVisibility(View.VISIBLE);
+         }
+
+        // or you could add an argument to your fragment and use it like:
+        boolean showAppBar = false;
+        if (arguments != null) {
+            showAppBar = arguments.getBoolean("ShowAppBar", false);
+        }
+        if(showAppBar) {
+            appBar.setVisibility(View.VISIBLE);
+        } else {
+            appBar.setVisibility(View.GONE);
+        }
+     }
+  });
 ```
 
 ## Lower Level APIs
@@ -57,7 +82,7 @@ Again, to navigate across independent/different feature modules use "Deep links"
 It is strongly recommended to always use the default launchMode of `standard` in the declaration of the activity's in the manifest file when using Navigation. When using `standard` launch mode, Navigation automatically handles deep links by calling `handleDeepLink()` to process any explicit or implicit deep links within the Intent. However, this does not happen automatically if the Activity is re-used when using an alternate launchMode such as `singleTop`. In this case, it is necessary to manually call `handleDeepLink()` in `onNewIntent()`
 
 ## [NavigationUI](https://developer.android.com/guide/navigation/integrations/ui)
-Contains static methods that manage navigation with the top app bar, the navigation drawer, and bottom navigation. Views that can be integrated with NavController are: TopAppBar/Toolbar/ ActionBar, CollapsingToolbarLayout, AppBarLayout, DrawerLayout with NavigationView, and BottomNavigationView
+Contains static methods that manage navigation with the top app bar, the navigation drawer, and bottom navigation. Views that can be integrated with NavController are: TopAppBar/Toolbar/ ActionBar, CollapsingToolbarLayout, AppBarLayout, DrawerLayout with NavigationView, and BottomNavigationView. `NavigationUI` uses `NavController`'s callback/listener called `OnDestinationChangedListener` to make these common UI components navigation-aware.
 
 With the top app bar `NavigationUI` uses the destination labels from your navigation graph to keep the title of the top app bar up-to-date.
 
@@ -82,6 +107,94 @@ NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfig
 ```
 
 Having a top app bar in the activity works well when the app bar's layout is similar in all destinations of the app. If, however, your top app bar changes across destinations, then consider removing the top app bar from the activity and instead you should define it in each destination fragment. This means you'd declare a `Toolbar` and possible variations with `AppBarLayout` accordingly in each fragment and then in the `onViewCreated` method link those views with the navigation controller with `NavigationUI.setupWithNavController`. This will result in the app bar animating with the rest of the layout during fragment transitions when a fragment transition is set.
+
+We have seen how to set up the top app bar, but what about navigation drawers and bottom navigation, as we mentioned before we can also set up the nav controller with those views also, but first we need to know that under the hood they use a `menu` component and is that menu component which will helps us link and navigate to a destination in the nav graph. The secret is we should match the below ids
+
+```
+in the nav graph
+
+<fragment android:id="@+id/matching_id"
+       android:label="@string/details"
+       android:name="com.example.android.myapp.DetailsFragment" />
+```
+
+```
+In a menu, its item id has to match the destination we want to navigate to id
+ <item
+      android:id="@+id/matching_id"
+      android:icon="@drawable/ic_details"
+      android:title="@string/details" />
+```
+
+An alternative scenerario to link menu items and destination in the nav graph is when the menu was added via the Activity's `onCreateOptionsMenu()` or a fragments callback, then you need to do this
+
+```
+// from a fragment
+
+@Override
+public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+
+    // Get MenuHost from the activity
+    MenuHost menuHost = requireActivity();
+
+    // Add a MenuProvider tied to the fragment's lifecycle
+    menuHost.addMenuProvider(new MenuProvider() {
+        @Override
+        public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+            menuInflater.inflate(R.menu.my_fragment_menu, menu);
+        }
+
+        @Override
+        public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+            return NavigationUI.onNavDestinationSelected(item, navController) || super.onMenuItemSelected(item);
+        }
+    }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+}
+
+
+// from an Activity
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.game_menu, menu);
+    return true;
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+    return NavigationUI.onNavDestinationSelected(item, navController)
+            || super.onOptionsItemSelected(item);
+}
+```
+
+After these values match then, for a drawer, first create the views, usually you would create a `DrawerLayout` inside it you have two items, `FragmentContainerView` and `NavigationView`(this is the actual drawer), then connect/link your drawer to your nav graph with
+
+```
+AppBarConfiguration appBarConfiguration =
+        new AppBarConfiguration.Builder(navController.getGraph())
+            .setDrawerLayout(drawerLayout)
+            .build();
+
+NavHostFragment navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment);
+NavController navController = navHostFragment.getNavController();
+NavigationView navView = findViewById(R.id.nav_view);
+NavigationUI.setupWithNavController(navView, navController);
+```
+
+After you do this, the top app bar helpers automatically transition between the drawer icon and the Up icon as the current destination changes. You don't need to use ActionBarDrawerToggle. Remember to link your menu items to the destinations in the graph as explained above.
+
+The last view we could configure with the graph is `BottomNavigationView`, so first, just add it to xml, then just do the following, and remember to link the menu items with the destinations in the nav graph as described above
+
+```
+NavHostFragment navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment);
+    NavController navController = navHostFragment.getNavController();
+    BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+    NavigationUI.setupWithNavController(bottomNav, navController);
+```
 
 # Itent and Intent Filters
 Using an implicit intent to start a service is a security hazard
