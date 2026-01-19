@@ -16,12 +16,14 @@
 
 * public class **GestureOverlayView** / package android.gesture: A transparent overlay for gesture input that can be placed on top of other widgets or contain other widgets.
 
-* public class **GestureDetector** / package android.view: Detects various gestures and events using the supplied MotionEvents. The GestureDetector.OnGestureListener callback will notify users when a
+* public class [GestureDetector](https://developer.android.com/develop/ui/views/layout/custom-views/making-interactive#inputgesture) / package android.view: Detects various gestures and events using the supplied MotionEvents. The GestureDetector.OnGestureListener callback will notify users when a
   particular motion event has occurred. This class should only be used with MotionEvents reported via touch (don't use for trackball events). To use this class:
 
     * Create an instance of the GestureDetector for your View
     * In the View.onTouchEvent(MotionEvent) method ensure you call onTouchEvent(MotionEvent). The methods defined in your callback will be executed when the events occur.
     * If listening for GestureDetector.OnContextClickListener.onContextClick(MotionEvent) you must call onGenericMotionEvent(MotionEvent) in View.onGenericMotionEvent(MotionEvent).
+ 
+  We can use this class to implement things like [drag and scale](https://developer.android.com/develop/ui/views/touch-and-input/gestures/scale)
 
 * **ColorFilter vs Tint**: You can set color filter to an ImageView, drawable and paint objects and a tint color to a drawable, they are very similar since they change the color of a drawable, you could
   even think of setting tint color property as a simple version of setting color tint, you might like to use tint property for simple use cases for that use the `setTint` method or the properties in the layout
@@ -214,3 +216,13 @@ PopupMenu popup = new PopupMenu(this, v);
  
 * **GestureDetector**: AI Edge Gesture Recognizer, A Google AI solution that uses machine learning to detect hands and recognize specific hand gestures in still images, video files, or live video streams.
 
+* **Event system/Input Events**: You have **event handlers** and **event listeners**, event handlers can be defined/customized by either overriding it's methods in a custom view, for example to handle a click which is actually a series of of touch events(`onTouchEvent()` method)
+
+* (How property animation differs from view animation)[https://developer.android.com/develop/ui/views/animations/prop-animation#property-vs-view]: In the view animation system if you animated a button to move across the screen, the button draws correctly, but the actual location where you can click the button does not change, so you have to implement your own logic to handle this. With the property animation system, these constraints are completely removed, and you can animate any property of any object (Views and non-Views) and the object itself is actually modified. The view animation system, however, takes less time to setup and requires less code to write.
+
+
+
+dispatchKeyEvent (KeyEvent event)
+Dispatch a key event to the next view on the focus path. This path runs from the top of the view tree down to the currently focused view. If this view has focus, it will dispatch to itself. Otherwise it will dispatch the next node down the focus path. This method also fires any key listeners.
+
+https://medium.com/androiddevelopers/unbundling-the-stable-windowmanager-a5471ff2907 windowlayoutinfo has a property called displayFeatures(FoldingFeature is the only DisplayFeature implementation)
