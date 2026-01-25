@@ -222,6 +222,9 @@ PopupMenu popup = new PopupMenu(this, v);
 
 * [`ViewPropertyAnimator` vs `ObjectAnimator`](https://android-developers.googleblog.com/2011/05/introducing-viewpropertyanimator.html): Here we can see that the first is a more performant way to do animations which is done by calling `animate()` on a view and then setting the properties we want to animate as if we were using a builder pattern
 
+* **Custom Views**: When creating a custom view, if you want to use 3D graphics, extend `SurfaceView` instead of `View`/`ViewGroup` and draw from a separate thread. See the `GLSurfaceViewActivity`( implementation of `SurfaceView` that uses the dedicated surface for displaying OpenGL rendering), otherwise if you want to do 2D 
+
+* Views/Widgets: Some interesting widgets, to name a few, are `Spinner`, `ViewPager` and `ViewPager2`, `AutoCompleteTextView`, `ImageSwitcher`, `TextSwitcher`, and `ViewSwitcher`.
 
 dispatchKeyEvent (KeyEvent event)
 Dispatch a key event to the next view on the focus path. This path runs from the top of the view tree down to the currently focused view. If this view has focus, it will dispatch to itself. Otherwise it will dispatch the next node down the focus path. This method also fires any key listeners.
