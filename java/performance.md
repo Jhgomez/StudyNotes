@@ -31,6 +31,8 @@ If we have various versions of Java installed on our computer, it’s important 
 
 JFR has two main concepts: events and dataflow.
 
+Note: A very recent JEP which improves JFR is "JEP 520: Method Timing and Tracing"
+
 ### Events
 JFR collects events that occur in the JVM when the Java application runs. These events are related to the state of the JVM itself or the state of the program. An event has a name, a timestamp, and additional information (like thread information, execution stack, and state of the heap).
 
@@ -329,3 +331,14 @@ Any profiler that shows you the generations in the heap, should help you answer 
 2. You should see some different tabs, "Overview", "monitor", "Threads", "Sampler", "Profiler", go to "Profiler", you will see more sections on your screen, to the right below the section with the those tabs you will another section with tabs, "CPU Settings" and "Memory settings", make sure "Profile object allocations and GC" and "Record Allocation Stack Traces" are checked and then click the button that says "Memory", which should be between "CPU" and "Stop" buttons, it will give pretty much similar numbers to the histogram but with an additional column called "Generations" this tells you how many age objects there are and not the age of the objects. It shows you dead objects but have not been garbage collected yet, for that go to the "Monitor" tab and click on "PerformGC" so dead objects are gone this will let you alone only with objects that are still alive, go back to "profiler", there might be a difference between the histogram you got from JMAP previously and the data, this depends on your configurations for example if you're tracking every 10 allocations and not every allocation and also this is a free tool so it is not perfect but it should do the job good enough.
 
 3. Now you can right click any occurrence you see on your screen and, maybe any object with high live objects/live bytes and choose "Take a Snapshot and Show Allocation Stack Traces", for example you can check a "String" object details, there you will see the parts in the app that are contributing to the number of instances/bytes of the class you're analyzing, in this case String. Basically you can track the stack to see where in the code there is your bytes mostly being created
+
+# [Java Microbenchmark Harness](https://openjdk.org/projects/code-tools/jmh/)
+[From this conference](https://www.youtube.com/watch?v=0yGhxA2ugdw&t=785s), this library is used to meassure times instead of tools like `System.nano` or `System.millis`, the former might be a better option than the latter for simple time metrics/meassurements in simple scenarios but for complex scenarios synchronizing this API across different sockets/threads causes cross-socket contention(competition among multiple processes or devices for access to shared resources, which can lead to conflicts and performance issues) since it would need to be synched across cores and that can cause latency also
+
+# specjbb2015
+Is a benchmark that is based on the usage model of a worldwide supermarket company with an IT infrastructure that handles a mix of point-of-sale requests, online purchases, and data-mining operations.
+
+Its purpose is to evaluate the performance of servers running typical Enterprise Java applications, providing a standardized way to measure the performance of JVM (Java Virtual Machine) software, hardware, and the underlying operating system. It is widely used by JVM vendors, hardware developers, researchers, and application developers to benchmark system capacity and latency. It also enable users to test multiple configurations to identify and overcome bottlenecks in the application, JVM, OS, or hardware layers.
+
+# JVM Configurations/Flags
+* `-XX:UseCompactObjectHeaders`: This flag will reduce the object's headers size, reducing headers overhead as described in "JEP 519: Compact Object Headers". It is off by default ass of today and the only trade off known up until now is that it limits the number of classes you have in your application to 4 million.
