@@ -344,8 +344,52 @@ Its purpose is to evaluate the performance of servers running typical Enterprise
 * `-XX:UseCompactObjectHeaders`: This flag will reduce the object's headers size, reducing headers overhead as described in "JEP 519: Compact Object Headers". It is off by default ass of today and the only trade off known up until now is that it limits the number of classes you have in your application to 4 million.
 
 # JIT vs AOT / C1 vs C2 vs Leyden
-The main difference between Java C1(a JIT compiler), C2(a JIT compiler), and AOT(Delivered by Leyden, Quarkus or GraalVM, we will focus in Leyden) lies in when the code is compiled (runtime vs. build time) and the trade-off between startup speed and peak performance. When we talk about compiling code in this context we refer to the action of compiling Java bytecode into native/machine code. C1 and C2 are Just-In-Time (JIT) compilers that optimize code while it runs, whereas AOT (Ahead-of-Time) compiles code before execution, AOT is possible using OpenJdk's project Layden, but there is also other options like Quarkus and GraalVM.
+The main difference between Java C1(a JIT compiler), C2(a JIT compiler), and AOT(Delivered by Leyden, Quarkus or GraalVM, we will focus in Leyden) lies in when the code is compiled (runtime vs. build time) and the trade-off between startup speed and peak performance. When we talk about compiling code in this context we refer to the action of compiling Java bytecode into native/machine code. C1 and C2 are Just-In-Time (JIT) compilers that optimize code while it runs, whereas AOT (Ahead-of-Time) compiles code before execution, AOT is possible using OpenJdk's project Leyden, but there is also other options like Quarkus and GraalVM.
 
-* C1 (Client Compiler): Fast compilation, low optimization. Used for quick startup. Usually used in short=lived applications.
+* C1 (Client Compiler): Fast compilation, low optimization. Used for quick startup. Usually used in short=lived applications. 
 * C2 (Server Compiler): Slow compilation, high optimization. Used for long-running, peak-performance applications.
 * AOT (Ahead-of-Time): Compiles code before runtime, bypassing the interpreter for fast startup but often with lower peak performance.
+
+## JIT vs AOT
+* Even though C1 is designed to be used for short-lived apps(usually because it starts apps very quickly by trading fast start up times for high optimizations, this means low optimizations produce faster start up times), as well as fast start up times(this actually may be the reason to be used in short-lived apps so both features are highly coupled), AOT is also meant to be used for some similar purposes/use casses, like to get fast start up times since the JIT compilation model, with its warm-up period, isn’t ideal for short-lived services or cold-start scenarios making AOT ideal for serverless and microservices architectures.
+* AOT could be more performant in memory usage since JIT compiler consumes additional resources at runtime, increasing memory usage. making AOT a good option for optimizing resources(depending on your use case of course).
+* Applications running with JIT may exhibit unpredictable performance due to the on-the-fly optimizations. In production environments, this variability can result in inconsistent user experiences, while AOT guarantees consistent optimizations
+
+## [AOT: GraalVM vs Quarkus vs Project Leyden](https://medium.com/@sibiponkumar/project-leyden-enhancing-javas-adaptability-and-consistency-in-modern-cloud-native-environments-cbed8750db1c)
+* GraalVM: Is a High-Performance Alternative JVM with Static Compilation. Its native image feature statically compiles java apps into native executables. This eliminates the JIT warm-up phase, providing near-instant startup, making it ideal for serverless and microservices deployments however while native images are highly efficient, they struggle with features like dynamic class loading, reflection, and certain libraries without additional configuration. This is because native binaries do not include a full JVM runtime, which limits dynamic capabilities. By avoiding the JIT’s runtime overhead, native images generally uses 30–50% less memory compared to standard JVM applications. A downside of native images is that they require configurations to handle Java’s dynamic features, making it less compatible with existing Java applications out of the box.
+
+* Quarkus: Is a Java Framework Optimized for Kubernetes. It aims to make Java work more seamlessly in containerized environments and provides a unified configuration and development model that optimizes for container-first architectures. It performs many optimizations at build-time, such as classpath scanning and bytecode generation, to reduce the overhead typically handled by the JVM at runtime. It can leverage GraalVM’s Native Image which means we get the same benefits as with GraalVM's native image(fast startup and redueces memory usage). Its start up times are faster than regular Java apps and is even faster when paired with GraalVM's native image and this behavior is the same for memory usage(it uses less memory than a regular Java app but even less memory when paired with GraalVM's native image). 
+
+* Project Leyden: This option enables developers optimize the Standard JVM for Consistency. Unlike GraalVM, which requires trade-offs for native image generation, Leyden seeks to enhance performance within the JVM itself, preserving full compatibility with Java’s runtime features. It aims to reduce both startup time and memory consumption by offering build-time optimizations and AOT strategies tailored for the JVM. By minimizing the JVM’s reliance on JIT and leveraging AOT where possible, Leyden aims for predictable performance, which is crucial for production environments. It is expected Leyden to improve app start up time and and memory usage but it is likely not going to match GraalVM native image's app start up and memory usage metrics. By limiting JIT optimizations Leyden will reduce variability in reponse times which will provide a more consistent runtime experience in cloud environments
+
+While GraalVM and Quarkus focus on native compilation to achieve performance gains, Project Leyden is aimed at enhancing the JVM itself. It achieves this by introducing AOT compilation within the JVM, allowing Java applications to retain key dynamic features, like runtime class loading and reflection, that are central to Java’s identity.
+
+## AOT with Project Leyden
+Compiling Java code ahead of time using Leyden consists in 3 phases:
+1. **trainning run** which will record the app's start up configurations like used classes
+2. **Cache Creation**, creates the AOT cache directory and files, storing the loaded and linked classes for later runs.
+3. **Production Run**, use the cache files to accelerate startup.
+
+### Code Snippet for Creating and Using an AOT Cache
+1. Record the configuration during a training run:
+  ```
+    $ java -XX:AOTMode=record -XX:AOTConfiguration=app.aotconf -cp app.jar com.example.App
+  ```
+
+2. Use the configuration file to generate the cache:
+  ```
+    $ java -XX:AOTMode=create -XX:AOTConfiguration=app.aotconf -XX:AOTCache=app.aot
+  ```
+
+3. Run the application using the AOT cache for faster startup:
+  ```
+    $ java -XX:AOTCache=app.aot -cp app.jar com.example.App
+  ```
+
+    The -XX:AOTCache option points to the generated cache file, which reduces startup time by loading classes from the cache rather than the class path.
+
+To make the most of AOT caching in production:
+
+* Make sure the training run should match production settings to ensure cache effectiveness. This includes using the same JDK version, class paths, and module configurations.
+* Limit the training run to typical scenarios (e.g., “smoke tests”) that load only necessary classes. Avoid large tests or unused classes that may bloat the cache size.
+* Mock external dependencies in the training run (like databases or network calls) to prevent loading additional classes not needed in production.
