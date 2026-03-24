@@ -342,3 +342,10 @@ Its purpose is to evaluate the performance of servers running typical Enterprise
 
 # JVM Configurations/Flags
 * `-XX:UseCompactObjectHeaders`: This flag will reduce the object's headers size, reducing headers overhead as described in "JEP 519: Compact Object Headers". It is off by default ass of today and the only trade off known up until now is that it limits the number of classes you have in your application to 4 million.
+
+# JIT vs AOT / C1 vs C2 vs Leyden
+The main difference between Java C1(a JIT compiler), C2(a JIT compiler), and AOT(Delivered by Leyden, Quarkus or GraalVM, we will focus in Leyden) lies in when the code is compiled (runtime vs. build time) and the trade-off between startup speed and peak performance. When we talk about compiling code in this context we refer to the action of compiling Java bytecode into native/machine code. C1 and C2 are Just-In-Time (JIT) compilers that optimize code while it runs, whereas AOT (Ahead-of-Time) compiles code before execution, AOT is possible using OpenJdk's project Layden, but there is also other options like Quarkus and GraalVM.
+
+* C1 (Client Compiler): Fast compilation, low optimization. Used for quick startup. Usually used in short=lived applications.
+* C2 (Server Compiler): Slow compilation, high optimization. Used for long-running, peak-performance applications.
+* AOT (Ahead-of-Time): Compiles code before runtime, bypassing the interpreter for fast startup but often with lower peak performance.
