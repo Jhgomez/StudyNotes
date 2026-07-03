@@ -242,6 +242,8 @@ PopupMenu popup = new PopupMenu(this, v);
 
 * **Theming**: Check material's [theming documentation](https://m2.material.io/develop/android/theming), you can see the shape theming and how you can define shape for specific types of views across the whole app or specifically for some instance of specific views
 
+* **Animating Icons**: You can use lottie, find the animated icons on websites like "Lord Icons" or "Lottie Files" and use Lottie, another option is to animate paths(vector images) individually and manually, another option is to use a tool called rive which has its own android library, all of these methods require you to get a vector image from similar websites to the ones I mentioned previosly. [here](https://www.youtube.com/watch?v=REyOGQiM7zc) is the YT channel that provided this info
+
 dispatchKeyEvent (KeyEvent event)
 Dispatch a key event to the next view on the focus path. This path runs from the top of the view tree down to the currently focused view. If this view has focus, it will dispatch to itself. Otherwise it will dispatch the next node down the focus path. This method also fires any key listeners.
 
