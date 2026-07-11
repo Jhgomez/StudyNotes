@@ -26,7 +26,7 @@
   We can use this API/interface to implement things like [drag and scale](https://developer.android.com/develop/ui/views/touch-and-input/gestures/scale)
 
 * **ColorFilter vs Tint**: You can set color filter to an ImageView, drawable and paint objects and a tint color to a drawable, they are very similar since they change the color of a drawable, you could
-  even think of setting tint color property as a simple version of setting color tint, you might like to use tint property for simple use cases for that use the `setTint` method or the properties in the layout
+  even think of setting tint color property as a simple version of setting color filter, you might like to use tint property for simple use cases for that use the `setTint` method or the properties in the layout
   with `android:tint` and `android:tintMode` to set mode, but for more complex tasks you should use color filter. You can use/set color filter in any Paint object, this means you can use it to draw on the canvas   of any custom view. There is three implementations of color filter interface `PortterDuffColorFIlter`, `LightingColorFIlter` and `ColorMatrixColorFilter` being the last one the most flexible meaning it
   allows you to manipulate the colors even further. There are some alternatives to Color Filter like `Shader` and `MaskFilter`, you can not create a custom implementation of Color Filter if you
   need "full power" you can use the OpenGL alternative which would give access to GLSL(GL shader language) shaders
