@@ -15,7 +15,15 @@ you can also try doing the [adaptive layout course/codelab](https://developer.an
 you can also find very nice examples in the android git profile, in the [nav3-recipes repo](https://github.com/android/nav3-recipes/tree/main/app/src/main/java/com/example/nav3recipes),
 a few very interesting samples are, app/src/main/java/com/example/nav3recipes/scenes/listdetail, app/src/main/java/com/example/nav3recipes/navscenedecorator(this may be the "most advance one"),
 app/src/main/java/com/example/nav3recipes/multiplestacks, nav3-recipes/app/src/main/java/com/example/nav3recipes/commonui(this one shows how to organize stacks usign a different approach
-than the last few mentioned here). This is possible through the `navDisplay`'s parameters(`sceneDecoratorStrategies` and `sceneStrategies`) But this is only for Android, now for CMP, the
+than the last few mentioned here). This is possible through the `navDisplay`'s parameters(`sceneDecoratorStrategies` and `sceneStrategies`), be aware that the order of these strategies
+matter, as the navDisplay will look into each of these strategies in the order they were added to its list to find the right decorator or scene strategy to return. During its search,
+navDisplay/navation will look into each strategy and that strategy will let navigation know whether its scene made a match, it works a little different for scene decorators than for
+scene stategies, for the latter it relies on the list of `navEntry`s in the current stack that it receives and is intended to help you check entries metadata, if the stack contains
+some `navEntry`s that matches the metadata a given strategy is expecting, then it forwards the instances of the nav antries that matched the metadata to a class implementing the
+`Scene` interface and that decides how those views are to be displayed. This lets you display the right scene, it usually also relies on the windows size class of the current screen size.
+The screen size parameter is exactly what the scene decorator usually uses to decide what scene decorator to add to the chosen scene. That decorator is also a scene that all it does
+is add some UI around the already found scene match by the scene strategy, which means you pass the scene content to the decorator scene o it can wrap some UI aroun it. This is
+now for CMP, the
 
 
 * `rememberSerializable` vs `rememberSaveable` vs `remember`: The first two save objects to `SavedStateRegistry`, which is a low-level Jetpack component that serves as the centralized
