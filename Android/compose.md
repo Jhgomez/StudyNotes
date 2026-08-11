@@ -29,7 +29,6 @@ using it as a constructor delegator is a nice pattern, in the overriden property
 `content` property. This logic implies that navigation first resolve the scene using `sceneStrategies` and then checks for `sceneDecoratorStrategies`, in that order since the scene
 returned by the former is decorated in the scene returned by the latter. now for CMP, the
 
-
 * `rememberSerializable` vs `rememberSaveable` vs `remember`: The first two save objects to `SavedStateRegistry`, which is a low-level Jetpack component that serves as the centralized
 bridge for saving and restoring UI state across system-initiated process death and configuration changes. It decouples state preservation from specific lifecycle components like Activities
 or Fragments, allowing any custom component to register its own state-saving logic. However, the former uses KotlinX serialization which could be a little less performant than `rememberSaveable`
@@ -46,4 +45,21 @@ which lets you instantiate viewmodels from a composable in a nav entry aka "cont
 dialog that launches an interaction with a use case which is not launched anywhere else in the UI, might worth creating a dedicated viewmodel for it which also hold its own state,
 and instead of injecting that use case to the "main" composable view model, we could only instantiate a viewmodel for as long as the dialog composable is on screen which can be done
 passing a "dedicated" view model store owner, that is created in the desired composable with `rememberViewMOdelStoreOwner`. this works when retrieving viewmodels using koin as well as
-just using compose's `viewModel` function
+just using compose's `viewModel` function. Ok so now we know what nav entry decorators do, but how to use them? well you make a list out of them and then with a `navEntryProvider` which is a
+DSL to declare navigation entries, navigation entries are composed of a key and a composable, that key is used to see what is the top key in the stack and match it to the nav entry composable
+to render it to the screen, the DSL and the nav entries declared in it are turned into a decorated navEntry list of entries that are decorated with all of the decorators passed in a list
+of decorator to the function `rememberDecoratedNavEntries`, it takes three params, first the backstack which is a list of `NavKey`s, that list can be created with any type of list, like `lisfOf`,
+`mutableListOf`, however that list wouldn't survive configuration changes if it was modified, but even if it was modified it would cause any recomposition since it is not a state object, so
+to do that you'd have to wrap it around a state object and a suitable way to write to the right place, in memory or "saved state registry" depending on if you want to survive recompositions only or
+survive configuration changes and system initiated process death also, however it is more easy than that, to get a list that can track only item that have changed, removed or changed its position and
+trigger recompositions then just use a `mutableStateListOf`, however that doesn't survive recompositions nor configurations changes nor system initiated process death, so then you would
+have to wrap it around the previously mentioned options, `remember` or `rememberSaveable`, however it is easier than that, just create a list that is stored in the correct "saved state registry"
+and therefore surviving all scenarios, recompositions, conf changes, system initiated process death, using the funtion `rememberNavBackStack`, that list is what you usually want to pass to the
+`rememberDecoratedNavEntries` function, the second param it takes is the list of decorators, the third is the NavKey declaration DSL called `entryProvider`, and at the end all this function does is return
+a list of `NavEntry` we can pass to the `NavDisplay` so it knows how to map the current top entry key in the stack to the right composable, however there is a caveat, this returned list doesn't
+survive system initiated process death, it only survives conf changes and recompositions, that is why you need make sure that the backstack is either created with `rememberNavBackStack` or is
+properly hoisted in something like a viewmodel that saves its state to a "saved state registry", and this also applies to the list of decorators however this last one may not be that critical.
+It is important to know that `rememberNavBackStack` used to persist the NavKeys in the stack only works for Android, and for CMP you need to use and overload that also takes a serializer of type
+`SavedStateConfiguration` that allows you to handle open polymorphism across all platforms as stated [here](https://kotlinlang.org/docs/multiplatform/compose-navigation-3.html#polymorphic-serialization-for-destination-keys)
+which shows how to do "Polymorphic serialization for destination keys﻿"
+
