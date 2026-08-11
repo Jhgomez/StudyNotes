@@ -7,6 +7,15 @@ the right navigation UI, which could be a navigation bar(bottom), a navigation r
 anymore, instead you should use an expanded navigation rail. The former API basically "automates" this process, however the former seems to be more "flexible" and can be implemented
 across all CMP targets.
 
+* **Navigation State** vs **Navigation Back Stack**: Basically the former is just an "abstract" concept and the latter is an actual component of the navigation3 API, so the state is
+represented by what the content of the back stack is, the back stack is a list of `NavKey`s(objects implementing `NavKey` interface), so we need to keep a reference to this list in
+order to make the `NavDisplay` "navigate" around `NavEntry`s. As mentioned a backstack is just a list of `NavKey`s which means we can create it anyhow but the how is important here
+since compose executes recompositions and the android frameworks has concepts like configuration changes and system initiated death.
+
+* **Multiple Back Stacks**: Before we talk about multiple back stack we should know that in material 3 Navigation Drawers are discouraged and they recommend using bottom nav bars,
+nav rails and expanded nav rails. Usually what you want is compose to be able to track the state changes of a list that survives recompositions, configuration changes and systgem
+initiated proess death, this is possible by using the "old concept" of "saved state"/"saved state registry" 
+
 * **Navigation3 Scene API**: The scene API allows us to achieve adaptive UI, it allows us to create decorator(for displaying navigation UI dinamically), and strategies, for creating
 canonical layouts(list-detall, feed layout, supporting pane, three-pane scaffold, find examples in androidx repo, in the [navigation3 examples](https://github.com/androidx/androidx/tree/androidx-main/compose/material3/adaptive/adaptive-navigation3/src/commonMain/kotlin/androidx/compose/material3/adaptive/navigation3)), but not only canonical layout, you can actually create
 dialogs(a scene that has composable A on the background and a composable B on top as a dialog, use the nav3 built in `DialogSceneStrategy`), Horizontal pager scene(a scene that lets you
