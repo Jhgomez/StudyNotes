@@ -18,12 +18,16 @@ app/src/main/java/com/example/nav3recipes/multiplestacks, nav3-recipes/app/src/m
 than the last few mentioned here). This is possible through the `navDisplay`'s parameters(`sceneDecoratorStrategies` and `sceneStrategies`), be aware that the order of these strategies
 matter, as the navDisplay will look into each of these strategies in the order they were added to its list to find the right decorator or scene strategy to return. During its search,
 navDisplay/navation will look into each strategy and that strategy will let navigation know whether its scene made a match, it works a little different for scene decorators than for
-scene stategies, for the latter it relies on the list of `navEntry`s in the current stack that it receives and is intended to help you check entries metadata, if the stack contains
-some `navEntry`s that matches the metadata a given strategy is expecting, then it forwards the instances of the nav antries that matched the metadata to a class implementing the
-`Scene` interface and that decides how those views are to be displayed. This lets you display the right scene, it usually also relies on the windows size class of the current screen size.
-The screen size parameter is exactly what the scene decorator usually uses to decide what scene decorator to add to the chosen scene. That decorator is also a scene that all it does
-is add some UI around the already found scene match by the scene strategy, which means you pass the scene content to the decorator scene o it can wrap some UI aroun it. This is
-now for CMP, the
+scene stategies, for the latter it relies on the list of `navEntry`s in the current stack that it receives in the parameter of a method of the strategy, the strategy is supposed to
+check entries metadata, that metadata is added to each `NavEntry` at the time it was declared, metadata seems to be a key-value map but keys must extend from `NavMetadataKey`, if the stack
+contains some `navEntry`s that matches the metadata a given strategy is expecting it will usually forward the instances of the nav antries that matched the metadata to a class implementing the
+`Scene` interface, the scene decides how those views are to be displayed, however if it doesn't make a match then it returns null, this way navigation can continue looking in other strategies.
+This lets you display the right scene, it usually also relies on the windows size class of the current screen size. Now that we have a scene telling compose what it should display(e.g. list-detail),
+it needs to look if there is a decorator that needs to be added around the chosen scene, usually a decorator relies solely on the current windows size class to choose what composable(decorator)
+will render. That decorator is also a scene that all it does is add some UI around the already found scene match by the scene strategy, which means you pass the scene to the decorator scene,
+using it as a constructor delegator is a nice pattern, in the overriden property `content`(this defines what a scene will render) we add the composable we want and call the wrapped scene
+`content` property. This logic implies that navigation first resolve the scene using `sceneStrategies` and then checks for `sceneDecoratorStrategies`, in that order since the scene
+returned by the former is decorated in the scene returned by the latter. now for CMP, the
 
 
 * `rememberSerializable` vs `rememberSaveable` vs `remember`: The first two save objects to `SavedStateRegistry`, which is a low-level Jetpack component that serves as the centralized
