@@ -8,9 +8,12 @@ anymore, instead you should use an expanded navigation rail. The former API basi
 across all CMP targets.
 
 * **Navigation3 Scene API**: The scene API allows us to achieve adaptive UI, it allows us to create decorator(for displaying navigation UI dinamically), and strategies, for creating
-canonical layouts(list-detall, feed layout, supporting pane, three-pane scaffold, find examples in androidx repo, in the [navigation3 examples](https://github.com/androidx/androidx/tree/androidx-main/compose/material3/adaptive/adaptive-navigation3/src/commonMain/kotlin/androidx/compose/material3/adaptive/navigation3)), you can also try doing the [adaptive layout course/codelab](https://developer.android.com/courses/pathways/android-basics-compose-unit-4-pathway-3) in google Android's documentation, you can also find very nice examples in the android git
-profile, in the [nav3-recipes repo](https://github.com/android/nav3-recipes/tree/main/app/src/main/java/com/example/nav3recipes), a few very interesting samples are,
-app/src/main/java/com/example/nav3recipes/scenes/listdetail, app/src/main/java/com/example/nav3recipes/navscenedecorator(this may be the "most advance one"),
+canonical layouts(list-detall, feed layout, supporting pane, three-pane scaffold, find examples in androidx repo, in the [navigation3 examples](https://github.com/androidx/androidx/tree/androidx-main/compose/material3/adaptive/adaptive-navigation3/src/commonMain/kotlin/androidx/compose/material3/adaptive/navigation3)), but not only canonical layout, you can actually create
+dialogs(a scene that has composable A on the background and a composable B on top as a dialog, use the nav3 built in `DialogScene`), Horizontal pager scene(a scene that lets you
+scroll horizontally through different screens like screen A, B and C, as if they where a lazy list but they are main screens that you can scroll through or even just a single page),
+you can also try doing the [adaptive layout course/codelab](https://developer.android.com/courses/pathways/android-basics-compose-unit-4-pathway-3) in google Android's documentation,
+you can also find very nice examples in the android git profile, in the [nav3-recipes repo](https://github.com/android/nav3-recipes/tree/main/app/src/main/java/com/example/nav3recipes),
+a few very interesting samples are, app/src/main/java/com/example/nav3recipes/scenes/listdetail, app/src/main/java/com/example/nav3recipes/navscenedecorator(this may be the "most advance one"),
 app/src/main/java/com/example/nav3recipes/multiplestacks, nav3-recipes/app/src/main/java/com/example/nav3recipes/commonui(this one shows how to organize stacks usign a different approach
 than the last few mentioned here). This is possible through the `navDisplay`'s parameters(`sceneDecoratorStrategies` and `sceneStrategies`) But this is only for Android, now for CMP, the
 
