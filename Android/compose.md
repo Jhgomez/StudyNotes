@@ -9,8 +9,30 @@ across all CMP targets.
 
 * **Navigation State** vs **Navigation Back Stack**: Basically the former is just an "abstract" concept and the latter is an actual component of the navigation3 API, so the state is
 represented by what the content of the back stack is, the back stack is a list of `NavKey`s(objects implementing `NavKey` interface), so we need to keep a reference to this list in
-order to make the `NavDisplay` "navigate" around `NavEntry`s by modifying the stack. As mentioned a backstack is just a list of `NavKey`s which means we can create it anyhow but the
-how is important here since compose executes recompositions and the android frameworks has concepts like configuration changes and system initiated death. 
+order to make the `NavDisplay` "navigate" around `NavEntry`s by modifying the stack, a `NavEntry` is created with the `entryProvider` DSL but it can be decorated as mentioned in
+**Important Navigation3 NavEntry Decorators**, which at the same time bundles the backstack inside the object returned by the function `rememberDecoratedNavEntries` which is in charge
+ of somehow absorbing the backstack, decorate the `NavEntries`(provided by the `entryProvider` dsl to the param with the same name) and bundle them with the stack(provided by the
+`backStack` param), it will also take a list of `NavEntry` decorators, and finally return a list of `NavEntry`s, the backstack somehow is implicitly available to the `NavDisplay`
+after we call this function(We will have to look into the source code to know how but it is probably using a `CompositionLocalProvider`) which kind of obscures the backstack being
+passed explicitly to `NavDisplay` to the developer so you have to keep a reference to it somewhere else so you can modify it, remember `NavEntry`s map `NavKey`s to specific
+composables/screens, in this setup we just pass a list of decorated `NavEntries` and a `onBack` parameter to `NavDisplay` and we can start modifying the stack to navigate across
+`NavEntry`s, what is important to know about the returned `NavEntry` list is that it only survives recompositions and config changes but not system-initiated process death, we will talk
+more about this detail because if we don't survive the stack state we could loose navigation state/app state across system-initiated process death and app recreation after process death,
+The other way to configure a `NavDisplay` is to pass a the backstack directly, the `onBack` lambda, and the entry in the form of `entryProvider` DSL. But we will focus in the `navDispaly`
+signature that takes the `EntryList` because the functionallity added to the entries by the decorators are essential in a modern apps. So now we are talking about two lists, first the
+backstack and then the nav entriest list, they are essentially list, and therefore anyway of creating a list will work, each with its own implications, using `listOf<NavEntry>()` and
+`mutableListOf<NavEntry>()` are definitely valid however you would need to store it in a way that whenever you need to add, remove, move items within the list, you need to create a new
+list, the initial list would be turned into a state using a funciton like `mutableState`, this way whenever we assign the new list holding the updated value of the stack it can trigger
+recompositions, but also wrapp it around `remember` or `rememberSaveable` depending on the persistence you want it to have but also if the object being wrapped is parcelable which is
+required by `rememberSaveable`, if you want to make it parcelable you may need to write its serializer manually, or you can store it in a `MainViewmodel` and put it in a state that is
+changed by a new instance of the state whenever you need to change the state of the stack, another way make the stack state trackable to compose is to use `mutableStateListOf` depending
+on the architecture of your app you could store it in the viewmodel or "locally" to your root composble or create an App state holder, which is what we usually preffer to do, however
+there is an even better way to create a `NavKey`(stack) list, that is the `rememberNavBackStack()` function, it takes a list of `NavKey`s and seems to return a `mutableStateList` wrapped
+arround `rememberSerializable` which we already talked about in this document, meaning that the list survives conf changes, recompositions and system-init process death, so now that we
+have a list that is presistent a trackable to compose runtime, we now can be sure that our nav entries list produced by `rememberDecoratedNavEntries` can be recreated across system-init
+process death and app recreation using the correct stack state and therefore landing to the correct screen when user returns to app. We will talk about hoisting the stack in a plain state
+holder class which follows the state holder pattern which is what `rememberLazyListState()` does, basically we wrap the components that make our app state capable to survive system-init
+process death around a state class which can only survive recompositions but not conf changes nor process death. Lets talk about it in **Multiple back stack** section below
 
 * **Multiple Back Stacks**: Before we talk about multiple back stack we should know that in material 3 Navigation Drawers are discouraged and they recommend using bottom nav bars,
 nav rails and expanded nav rails. Usually what you want is compose to be able to track the state changes of a list that survives recompositions, configuration changes and systgem
