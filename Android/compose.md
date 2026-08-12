@@ -35,8 +35,20 @@ holder class which follows the state holder pattern which is what `rememberLazyL
 process death around a state class which can only survive recompositions but not conf changes nor process death. Lets talk about it in **Multiple back stack** section below
 
 * **Multiple Back Stacks**: Before we talk about multiple back stack we should know that in material 3 Navigation Drawers are discouraged and they recommend using bottom nav bars,
-nav rails and expanded nav rails. Usually what you want is compose to be able to track the state changes of a list that survives recompositions, configuration changes and systgem
-initiated proess death, this is possible by using the "old concept" of "saved state"/"saved state registry" 
+nav rails and expanded nav rails. Usually what you want is compose to be able to track the state changes of a list that survives recompositions, configuration changes and sys-init
+proess death, this is possible by using the "old concept" of "saved state"/"saved state registry" which is provided by APIs like `rememberSaveable` and `rememberSerialisable` which we talk
+about in this doucment in another section, in navigation composables we mentioned here this is possible through the APIs mentined in **Navigation State vs Navigation Back Stack**. So here
+we want to talk about how to create some kind of nested navigation with multiple stacks, there is different approaches, you could do what is called  "exit through home" pattern, imagine you
+have three top level routes A, B and C, your nav bar show those three nav options, each of those routes can navigate to other routes in its flows, for example A can hoe A -> A1 -> A2 and B
+and C can do similar navigation, but in here the user always exits through the starting back stack. This means that Route A's entries are always in the list of entries, navigating to a top
+level route that is not the starting route replaces the other entries. For example, navigating A->B->C would result in entries for A+C, B's entries are removed. Another way to handle backstack
+is by actually keeping all visited routes, keeping a flattened back stack which is a combination of the individual back stacks of all the tabs, for example I go A->A1->A2->B->B1->C->C1->A2
+then my stack would be (B, B1, C, C1, A, A1, A2) at this moment B would be our exit point, an example of these approaches can be found [here](https://github.com/android/nav3-recipes/tree/main/app/src/main/java/com/example/nav3recipes/multiplestacks)
+for "exit through home" and [here](https://github.com/android/nav3-recipes/blob/main/app/src/main/java/com/example/nav3recipes/commonui/CommonUiActivity.kt) for the other approach. Ok so
+how to do multiple backstacks?, first create a `rememberNavState()` composable, this takes two params, the start `NavKey` and the list of top level `NavKey`s, create a stack using
+`rememberNavBackStack` and pass it the top level keys, then us this list and transform it into a map that uses the top level key as the key of a nested stack, do that with the collecitons
+function `associateWith` and inside the mapper create another stack with `rememberNavBackStack` that includes the top level key which is the root of the given nested stack, these lists
+persist across any scenario in Andriud only, we will talk about how it works in CMP in a second. 
 
 * **Navigation3 Scene API**: The scene API allows us to achieve adaptive UI, it allows us to create decorator(for displaying navigation UI dinamically), and strategies, for creating
 canonical layouts(list-detall, feed layout, supporting pane, three-pane scaffold, find examples in androidx repo, in the [navigation3 examples](https://github.com/androidx/androidx/tree/androidx-main/compose/material3/adaptive/adaptive-navigation3/src/commonMain/kotlin/androidx/compose/material3/adaptive/navigation3)), but not only canonical layout, you can actually create
