@@ -9,8 +9,8 @@ across all CMP targets.
 
 * **Navigation State** vs **Navigation Back Stack**: Basically the former is just an "abstract" concept and the latter is an actual component of the navigation3 API, so the state is
 represented by what the content of the back stack is, the back stack is a list of `NavKey`s(objects implementing `NavKey` interface), so we need to keep a reference to this list in
-order to make the `NavDisplay` "navigate" around `NavEntry`s. As mentioned a backstack is just a list of `NavKey`s which means we can create it anyhow but the how is important here
-since compose executes recompositions and the android frameworks has concepts like configuration changes and system initiated death.
+order to make the `NavDisplay` "navigate" around `NavEntry`s by modifying the stack. As mentioned a backstack is just a list of `NavKey`s which means we can create it anyhow but the
+how is important here since compose executes recompositions and the android frameworks has concepts like configuration changes and system initiated death. 
 
 * **Multiple Back Stacks**: Before we talk about multiple back stack we should know that in material 3 Navigation Drawers are discouraged and they recommend using bottom nav bars,
 nav rails and expanded nav rails. Usually what you want is compose to be able to track the state changes of a list that survives recompositions, configuration changes and systgem
@@ -50,7 +50,10 @@ type of object. This means all three can help us persist state across recomposit
 calls to `rememberSaveable` and `rememberSerializable` work correctly, it seems to provide access to a save state provider. Similarly you almos always want to use `ViewModelStoreNavEntryDecorator`
 decorator, which is obtain with the function `rememberViewModelStoreNavEntryDecorator()`, this one requires the previous mentioned decorator to be able to access a `SaveStateHandle` from
 a ViewModel which is very common in android development, this decorator provides access to a `ViewModelStoreOwner` in a `CompositionLocalProvider` called `LocalViewModelStoreOwner`
-which lets you instantiate viewmodels from a composable in a nav entry aka "content", a good practice would be to scope very specific viewmodels to child composables, for example a small
+which lets you instantiate viewmodels from a composable in a nav entry aka "content", which means it allows you to scope view models to a `NavEntry`, this changes the composables default behavior
+which is that viewModels are scoped to the nearest `ViewModelStoreOwner` which is usually a fragment or activity by default, causing viewmodels to be retained much longer than a composable
+lifecycle, it still alive even when the `NavEntry`/composable is not part of the composition, but scoping it to the `NavEntry` changes this behavior and makes sure the VM is cleared whenever
+a `NavEntry` is not part of the composition anymore, a good practice would be to scope very specific viewmodels to child composables, for example a small
 dialog that launches an interaction with a use case which is not launched anywhere else in the UI, might worth creating a dedicated viewmodel for it which also hold its own state,
 and instead of injecting that use case to the "main" composable view model, we could only instantiate a viewmodel for as long as the dialog composable is on screen which can be done
 passing a "dedicated" view model store owner, that is created in the desired composable with `rememberViewMOdelStoreOwner`. this works when retrieving viewmodels using koin as well as
