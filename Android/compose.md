@@ -45,10 +45,16 @@ level route that is not the starting route replaces the other entries. For examp
 is by actually keeping all visited routes, keeping a flattened back stack which is a combination of the individual back stacks of all the tabs, for example I go A->A1->A2->B->B1->C->C1->A2
 then my stack would be (B, B1, C, C1, A, A1, A2) at this moment B would be our exit point, an example of these approaches can be found [here](https://github.com/android/nav3-recipes/tree/main/app/src/main/java/com/example/nav3recipes/multiplestacks)
 for "exit through home" and [here](https://github.com/android/nav3-recipes/blob/main/app/src/main/java/com/example/nav3recipes/commonui/CommonUiActivity.kt) for the other approach. Ok so
-how to do multiple backstacks?, first create a `rememberNavState()` composable, this takes two params, the start `NavKey` and the list of top level `NavKey`s, create a stack using
-`rememberNavBackStack` and pass it the top level keys, then us this list and transform it into a map that uses the top level key as the key of a nested stack, do that with the collecitons
-function `associateWith` and inside the mapper create another stack with `rememberNavBackStack` that includes the top level key which is the root of the given nested stack, these lists
-persist across any scenario in Andriud only, we will talk about how it works in CMP in a second. 
+how to do multiple backstacks?, first create a `rememberNavState()` composable, this takes two params, the start `NavKey` and the list/set of top level `NavKey`s, use the set of top level
+`NavKey`s and transform it into a map that uses the top level key as the key and creates a stack for each key, each stack contains the top level `NavKey` as first element, do that with the
+collecitons function `associateWith`, inside the mapper create the stack with `rememberNavBackStack`, again it should include the top level key which will be the root of the given nested stack,
+these lists persist across any scenario in Android only, remember they use the `rememberSerializable` along with `mutableStateListOf` to be able to persist the list of keys, we will talk
+about how it works in CMP in a second. Now we need to create a NavState class that takes three params, the start key, a top level route key, at applications start up this is the home tab, and is basically
+the start key but wrapped just like the stack, using `rememberSerializable` and `mutableStateOf`, and the last param is the stack map we just created. The state class we are creating is what
+the composable should return wrapped around `remember` so it can survive compositions, whenever a conf change or a sys-init process death happens we will recreate this state very easily with
+the latest persisted top level route, and the state of the substacks for each top level route. But what about the acutal state holder?, the actual state holder is the class I just mentioned
+we need to return which encapsulates the three objects I just mentioned, the state holder class is just responsible for exposing the mutable state that represents via a class property
+that delegates to the mutable state that is received in the constructor just as a regular property,  the current top level
 
 * **Navigation3 Scene API**: The scene API allows us to achieve adaptive UI, it allows us to create decorator(for displaying navigation UI dinamically), and strategies, for creating
 canonical layouts(list-detall, feed layout, supporting pane, three-pane scaffold, find examples in androidx repo, in the [navigation3 examples](https://github.com/androidx/androidx/tree/androidx-main/compose/material3/adaptive/adaptive-navigation3/src/commonMain/kotlin/androidx/compose/material3/adaptive/navigation3)), but not only canonical layout, you can actually create
