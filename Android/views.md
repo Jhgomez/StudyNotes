@@ -4,7 +4,9 @@
   may not work correctly with either SurfaceView or TextureView, due to the way that these views are displayed on the screen. For SurfaceView, the problem is that the view is updated from a non-UI
   thread, so changes to the view due to transitions (such as moving and resizing the view) may be out of sync with the display inside those bounds. TextureView is more compatible with transitions in
   general, but some specific transitions (such as Fade) may not be compatible with TextureView because they rely on android.view.ViewOverlay functionality, which does not currently work
-  with TextureView. Transitions can be declared in XML resource files inside the res/transition directory.
+  with TextureView. Transitions can be declared in XML resource files inside the res/transition directory. An API you can use to customize transitions is "Propagations", these are only two classes,
+  the parent class is [`VisibilityPropagation`](https://developer.android.com/reference/android/transition/VisibilityPropagation), you have two implementation of this class `CircularPropagation` and
+  `SidePropagation`
 
 * public interface **TypeEvaluator<T>**/ package android.animation: Interface for use with the ValueAnimator.setEvaluator(TypeEvaluator) function. Evaluators allow developers to create animations on arbitrary
   property types, by allowing them to supply custom evaluators for types that are not automatically understood and used by the animation system.
