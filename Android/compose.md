@@ -122,13 +122,15 @@ some cases it could also hoist a specific Ui element state and also perform some
 could be a chat app that should display contact sugestinons when the user types "@", so we could hoist the Ui element state in the viewmodel in the form of a `mutableState<String>`, and
 perform some UI logic from the viewmodel(state owner/state holder) also, the UI logic in this case would be a function that assigns an updated value to the UI state(this would be UI logic),
 everytime it changes this launches a check, if the input contains the symbol then we perform some business logic(business logic is the implementation of product requirements) and search
-locally or remotely for matches, if they are found the screen level UI state is updated so the UI can render it, that is what the [documentation](https://developer.android.com/develop/ui/compose/state-hoisting#ui-element-state) states.
-It seems most of developers think your screen UI state should only be one, but it seems that the NowInAndroid app shows something different, they do combine some flows but a viewmodel could
-be producing more than one type of UI state, besides it might be problematic trying to emit a new single state from multiple flows that are not related in any way(combining flows), so insted
-you could have different state objects and therefore different state reads in your UI, this doesn't seems to be an antipattern and you should always chose the right tool, and not force your
-components into a one size fits all solution, and this extactly what is [stated here](https://developer.android.com/topic/architecture/ui-layer#additional-considerations), only goup states
-into state objects that are related, you can still have multiple streams if they can be rendered independently from each other. As you can see, there is two "types" of UI state, Screen UI
-State, this on usually lives in a VM but it could be a class(state holder), and the other type is UI-element state, the screen UI state is application data transformed by the ViewModel, or in
+locally or remotely for matches, if they are found the screen level UI state is updated so the UI can render it, that is what the [documentation](https://developer.android.com/develop/ui/compose/state-hoisting#ui-element-state) states. However some [other documentaion](https://developer.android.com/topic/architecture/ui-layer/stateholders#types-state)
+states: "UI logic state holder depends on information from the data or domain layers, you should pass that information to it from a business logic state holder. This is because the business
+logic state holder is longer lived than the UI logic state holder since it is independent of the UI lifecycle.", again, you can see all depends on your situation. It seems most of developers
+think your screen UI state should only be one, but it seems that the NowInAndroid app shows something different, they do combine some flows but a viewmodel could be producing more than one
+type of UI state, besides it might be problematic trying to emit a new single state from multiple flows that are not related in any way(combining flows), so insted you could have different
+state objects and therefore different state reads in your UI, this doesn't seems to be an antipattern and you should always chose the right tool, and not force your components into a one size
+fits all solution, and this extactly what is [stated here](https://developer.android.com/topic/architecture/ui-layer#additional-considerations), only goup states into state objects that are
+related, you can still have multiple streams if they can be rendered independently from each other. As you can see, there is two "types" of UI state, Screen UI State, this on usually lives in
+a VM but it could be a class(state holder), and the other type is UI-element state, the screen UI state is application data transformed by the ViewModel, or in
 other words, is what you need to display on the screen. And Ui-element state are the properties intrinsic to UI elements that influence how they are rendered(the visibility, the input text,
 enable/disable click). There is also two types of logic, Business logic, which usually changes app data state, thefore changing screen UI state, the vm could be in charge of applying some
 filters over it, or combine two different data sources, which is also business logic. These changes are triggered by user input/events aka user interactions with UI components or external
