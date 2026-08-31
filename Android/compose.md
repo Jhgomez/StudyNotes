@@ -131,7 +131,8 @@ is just passed to it since Business logic outlives Ui logic. It seems most of de
 different, they do combine some flows but a viewmodel could be producing more than one type of UI state, besides it might be problematic trying to emit a new single state from multiple flows
 that are not related in any way(combining flows), so insted you could have different state objects and therefore different state reads in your UI, this doesn't seems to be an antipattern and
 you should always chose the right tool, and not force your components into a one size fits all solution, and this extactly what is [stated here](https://developer.android.com/topic/architecture/ui-layer#additional-considerations),
-only goup states into state objects that are related, you can still have multiple streams if they can be rendered independently from each other. As you can see, there is two "types" of UI
+only goup states into state objects that are related, you can still have multiple streams if they can be rendered independently from each other, however you can combine stream sources of
+state change and one-shot APIs as sources of state changes, as you can [see here](https://developer.android.com/topic/architecture/ui-layer/state-production#one-shot-and). As you can see, there is two "types" of UI
 state, Screen UI State, this on usually lives in a VM but it could be a class(state holder), and the other type is UI-element state, the screen UI state is application data transformed by the
 ViewModel, or in other words, is what you need to display on the screen. And Ui-element state are the properties intrinsic to UI elements that influence how they are rendered(the visibility,
 the input text, enable/disable click). There is also two types of logic, Business logic, which usually changes app data state, thefore changing screen UI state, the vm could be in charge of
@@ -139,3 +140,9 @@ applying some filters over it, or combine two different data sources, which is a
 external resources like a response from a server. We also have UI logic, which acts over UI state, like changing the color or size of a text based on some value or screen state. Again UI state
 can be of two types, but we also said they both can live in the same state holder(if UI element state needs to interact with business logic), either way, we can say UI state is application data
 transformed by the ViewModel(state holder).
+
+* Events: In MVI events could be called Intents, and in that context events cause actions, those actions can result in state changes or side effects(navigate to another screen, show a dialog).
+However in the context of compose and in the context of Android's [UI layer architecture documentation](https://developer.android.com/topic/architecture/ui-layer/events), events still reperesent user input/actions/intents, however those are UI events, and they say there can be ViewModel events, like when a user clicks to download a file, the user event is the click, it
+can cause screen UI state changes, but it will download and when it is completed that can be considered a VM event, they both should cause immediate state changes, it needs to be safe
+so using kotlin channels or mutableSharedFlow is wonrg because it is not their nature, we could adapt a shared flow to reply the last messagge but that would make it behave like a state flow
+which is exactly why you should use a state flow instead, another option to reduce state changes and "stream" them asap is compose runtime state objects like `mutablesStateList` or `mutableState`, you can expose them with a private setter backing field
