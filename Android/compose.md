@@ -122,4 +122,4 @@ everytime it changes this launches a check, if the input contains the symbol the
 It seems most of developers think your screen UI state should only be one, but it seems that the NowInAndroid app shows something different, they do combine some flows but a viewmodel could
 be producing more than one type of UI state, besides it might be problematic trying to emit a new single state from multiple flows(combining flows), so insted you could have different state
 objects and therefore different state reads in your UI, this doesn't seems to be an antipattern and you should always chose the right tool, and not force your components into a one size fits
-all solution
+all solution. As you can see, there is two "types" of UI state, Screen UI State, this on usually lives in a VM but it could be a class(state holder), and the other type is UI-element state, the screen UI state is application data transformed by the ViewModel, or in other words, is what you need to display on the screen. And Ui-element state are the properties intrinsic to UI elements that influence how they are rendered(the visibility, the input text, enable/disable click)
