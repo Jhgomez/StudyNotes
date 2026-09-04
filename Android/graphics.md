@@ -60,7 +60,14 @@ A small image in any format that is small in disk space doesn't mean it will be 
 So what can we do? only load the bits you need, only load the size you need. Use resource qualifiers, for example if you put an image on the drawable resource folder, when the system loads it, it will upscale
 it automatically, so for example if you put an image in that folder and load it in a moder device, that image will upscale around 4(could be more in moder devices) times its on each axis, so it will require
 16 times more memory space, so if you put an HD image in there you could stress the memory of the phone, so that is why you use resource qualifiers, you could use the `drawable-nodpi` resource qualifier as
-resources in that folder wont be scaled at all. You should also keep only necessary bitmaps around and reuse bitmap, you do that by using a good bitmap cache like Coil
+resources in that folder wont be scaled at all. You should also keep only necessary bitmaps around and reuse bitmap, you do that by using a good bitmap cache like Coil.
+
+In Android you draw bitmaps directly with `Canvas.drawBitmap()` function, or indirectly by instantiating a `BitmapDrawable` and pass it as a background of a view.
+
+Text are bitmaps but their rendering pipeline involves actually transforming them from vector information obtained in the font file, the font file contains vector information, these vectors are also known as
+"glyphs", the obtained bitmaps are then copied to the screen, this is done by a C library that Android uses called `FreeTypeRenderer`, it receives vector info and transforms it into bitmaps that are then drawn
+into a cache known as `GlyphCache`, this cache can be thought as a big canvas and the system knows where on it a character lives, and if a character has been cache before, it will return the same character
+instead of creating a new one, it will re
 
 
 
