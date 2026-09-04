@@ -26,4 +26,40 @@ all its UI using bitmaps, so things like a button view(in XML) was a bitmap, tex
 JPEG< PNG, WebP, GIF, TIFF, in Android 12 it started supponting AVIF. BTW RGB only needs 3 bytes but it always store 4 bytes because it helps with memory alignment and this makes algorithms
 more simple. Again, there is different formats, it could be stored as a BMP(bitmap) which is basically an images raw data, in a 100 by 100 image it would be 40KB, this is because 100X100x4, remember
 4 is the space needed for an rgb color, Jpeg would be only 4k, and a gif would be only 156Bytes and PNG would be 1KB, PNG is good at changing in pixel color from one color to another, 
-but it is bad at drawing picture but PNG efficiency could vary depending on the image we need to represent, pictures could actually need more space than a GIF ins some instances
+but it is bad at drawing picture but PNG efficiency could vary depending on the image we need to represent, GIFs could actually need more memory than some other image formats in some instances,
+again, it all depends on the characteristics of the image. the color, color changes it is made from. Some of their diferences are
+
+* Jepg lets you choose how much you want to spend on disk versus the quality of image but you can not use translucency/alpha, it offers different levels of "lossines"
+* Jpeg Is opaque only, again, can't use translucency/alpha
+* GIF offers 1-bit transparency
+* GIF is limited to 256 colors(8 bits)
+* PNG offers full translucency("alpha") but it is a lossless format, so it's always going to be slightly bigger, specially photos
+* WebP offers more compression, you can choose between Lossy or Lossless and supports features like animation, alpha, etc
+* AVIF can do HDR, they can encode over 10 or 12 bit of color depth, for more precision and color information
+
+You choose your format based on the following characteristics
+
+* Lossines
+* Detail
+* Color Information
+* Translucency/Transparency
+* Size
+* Animation
+
+**Files Size != Loaded Size**
+For example when using a 3D renderer and loading some textures that are 4KB PNGs of gray color, but suppose their size is 4000x4000 gray PNGs, so they are only 4KB on disk space but when something like that 
+is expanded on RAM, it would use around 68MB or RAM. In Android we can get the exact amount of Bytes of RAM an image is using with the following code
+
+```
+var sq_sm: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.whitesquare_small)
+println("Small: , h, bytes = ${sq_sm.width}, ${sq_sm.height}, ${sq_sm.allocationByteCount}")
+```
+
+A small image in any format that is small in disk space doesn't mean it will be small in RAM when loaded 
+
+
+
+
+
+
+
