@@ -55,8 +55,12 @@ var sq_sm: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.whitesqua
 println("Small: , h, bytes = ${sq_sm.width}, ${sq_sm.height}, ${sq_sm.allocationByteCount}")
 ```
 
-A small image in any format that is small in disk space doesn't mean it will be small in RAM when loaded 
+A small image in any format that is small in disk space doesn't mean it will be small in RAM when loaded.
 
+So what can we do? only load the bits you need, only load the size you need. Use resource qualifiers, for example if you put an image on the drawable resource folder, when the system loads it, it will upscale
+it automatically, so for example if you put an image in that folder and load it in a moder device, that image will upscale around 4(could be more in moder devices) times its on each axis, so it will require
+16 times more memory space, so if you put an HD image in there you could stress the memory of the phone, so that is why you use resource qualifiers, you could use the `drawable-nodpi` resource qualifier as
+resources in that folder wont be scaled at all. You should also keep only necessary bitmaps around and reuse bitmap, you do that by using a good bitmap cache like Coil
 
 
 
