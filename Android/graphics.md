@@ -103,7 +103,9 @@ subtract one, now our path is zero, in this method every time the counter is not
 if we do this our star content is also filled with the requested color resulting in a circle filled with the requested color, but it shouldn't fill the star content, the solution to this is 
 change the direction of the points of the paths, if a path is inside another path and you don't want those filled then you need to have the inner path pixels have an opossite direction.
 
-
+Stroke width is just a convenience, this is true because what happens under the hood when you request a stroke for a cirlce of radio X and stroke width of Y, then the stroke is created by 
+drawing a circle with radio of X + Y and filling the space betwwen those two circles with the color you requested, but you could do this yourself so that is wht it is said is just a 
+convenience method
 
 
 
