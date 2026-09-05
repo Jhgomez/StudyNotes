@@ -67,7 +67,33 @@ In Android you draw bitmaps directly with `Canvas.drawBitmap()` function, or ind
 Text are bitmaps but their rendering pipeline involves actually transforming them from vector information obtained in the font file, the font file contains vector information, these vectors are also known as
 "glyphs", the obtained bitmaps are then copied to the screen, this is done by a C library that Android uses called `FreeTypeRenderer`, it receives vector info and transforms it into bitmaps that are then drawn
 into a cache known as `GlyphCache`, this cache can be thought as a big canvas and the system knows where on it a character lives, and if a character has been cache before, it will return the same character
-instead of creating a new one, it will re
+instead of creating a new one.
+
+## Bitmap Scaling
+They up-scale and down-scale somewhat poorly, not greatly. 
+
+## Bitmap Filtering
+There is several bitmap/pixel filtering methods/approaches/techniques, but android supports two. There is two operands in filtering calculations, source and destination. One is, point-sampled/point/pixel
+filtering, here the destination pixels color values are used to find the most similar pixels in the source and those are filtered in, all other colors in the source pixels are dropped. THe other is, 
+Bilinear filtering, here we the pixels around the pixels we need are used to calculate an average so the information persist in the form of an average, so in point filtering you lose information while in 
+bilinear filtering it is transformed but not lost
+
+## NinePatch Images(N-Patch)
+In Android these are used to be able to scale bitmaps/drawables correctly. But they are some work around, and what you actually would want is vectors.
+
+## Vectors
+They are canvas commands instead of pixel information. You can think of it mostly like `Canvas.drawPath()`, but also `Canvas.drawLine()`. When you draw a rounder rectangle or circle Android mostlikely will 
+ask the system to draw a path instead of using specific code drawing different shapes. `VectorDrawable`s are a set of canvas commands, from painting to path, and we have access to do transforms, gradients,
+matrix
+
+
+
+
+
+
+
+
+
 
 
 
