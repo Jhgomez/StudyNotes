@@ -83,8 +83,27 @@ In Android these are used to be able to scale bitmaps/drawables correctly. But t
 
 ## Vectors
 They are canvas commands instead of pixel information. You can think of it mostly like `Canvas.drawPath()`, but also `Canvas.drawLine()`. When you draw a rounder rectangle or circle Android mostlikely will 
-ask the system to draw a path instead of using specific code drawing different shapes. `VectorDrawable`s are a set of canvas commands, from painting to path, and we have access to do transforms, gradients,
-matrix
+ask the system to draw a path instead of using specific code drawing different shapes. `VectorDrawable`s are a set of canvas commands, from painting to path, we also have access to do transforms, gradients, matrix.
+
+Lottie is a library that lets you parse complex adobe after effects vector animations which are exported as json files with bodymotion
+
+## Types of fills in Paths
+So Paths objects rendered in Canvas are Vector graphics, there is two types of fill modes for paths, there is Non-zero and even-odd. In Even-odd imagine a star drawn inside a circle for
+example, for every row of pixels we should create a counter that starts at zero and we should walk the lines of pixels from left to right, btw, these lines are the physical screen rows of
+pixels, as soon as we find an intersection we should increase the counter by one, and when is 1 the counter is odd, and this tells us we are inside the path(inside the circle), so we should
+start filling the path, in the next intersection the counter is 2, is even, so we stop drawing/painting the fill, and after going through every row of pixels in the screen we will end up with 
+t he inner space of the path filled with the specified color. The other mode is Non-zero, it takes into account the winding of a path, in the same path example, the winding is the order in 
+which you've defined the points(the pixels of the path). So suppose the circle starts at 90 degrees angle, and its order is clock wise, the star is the same, the initial point is at a corner
+of the star that is also at the same X axis value as the circle starting point and with a Y axis value that is inside the circle, and it also draws its points in the same direction(clock-wise)
+now we are supposed to do go by pixel rows again, when we find the first point of the circle from left to right we check what would be the next pixel and if it is considered a point forward
+the current position instead of a previous point then we add one, the next point in the row would be a start path point, the next point is forward so we add one, now counter is two, next pixel
+in a path also belongs to the star but its next point value is lower than the last point we were in so that is considered "backwards" direction, so we subtract one, now our counter is one, the
+next pixel in a path is a cirlce's path pixel, but its next pixel relative to the current pixel being evaluated is also a lower value than the last pixel of the circle we evaluated so we 
+subtract one, now our path is zero, in this method every time the counter is not zero we draw the color, that means we fill its content with the requested color, but if you think abour it,
+if we do this our star content is also filled with the requested color resulting in a circle filled with the requested color, but it shouldn't fill the star content, the solution to this is 
+change the direction of the points of the paths, if a path is inside another path and you don't want those filled then you need to have the inner path pixels have an opossite direction.
+
+
 
 
 
