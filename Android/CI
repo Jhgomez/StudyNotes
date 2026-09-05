@@ -1,0 +1,9 @@
+# [Remote Cache Server](https://youtu.be/_UnRVsvGSjg)
+This is something big projects built with Gradle can leverage, you can cache the configuration phase outputs, saving you build time. Gradle consists of three phases, Initialization in which
+it reads gradle.settings to identify included builds and projects, so it determines the project structure. Configuration, applies plugins and creates the directed acyclic graph which is a 
+some sort of tree that determines the order and dependendencies between tasks, and finally the execution phase, it executes the task defined in the previous phase. You can cache youe 
+configuration outputs remotely, if you have Gradle enterprise they offer you their Build Cache Server, if you don't have enterprise access you can manage your own cache server with persitent
+storage, using Jar, Docker and Kubernetes, this is called "Gradle Build Cache Node" is a dedicated server application that operates as a remote backend for Gradle’s task output caching. It 
+allows teams and continuous integration (CI) systems to share compiled classes, test results, and other build outputs to drastically reduce build times across different machines. You can 
+also use the Gradle plugin that Androidx wrote that is backed by either Google Cloud Storage or AWS S3 buckets, [this is an implementation](https://github.com/androidx/gcp-gradle-build-cache)
+of the Gradle Remote Cache
