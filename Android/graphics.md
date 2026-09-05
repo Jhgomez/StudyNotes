@@ -107,6 +107,11 @@ Stroke width is just a convenience, this is true because what happens under the 
 drawing a circle with radio of X + Y and filling the space betwwen those two circles with the color you requested, but you could do this yourself so that is wht it is said is just a 
 convenience method
 
+It seems like when Android started it was using Skia(is a 2D renderer) which is a library that does CPU rendering but then in Android 3.0 they wrote a library called `libgui` that is
+basically Canvas on the GPU and at that point they used both, Skia for CPU rendering and `libgui` for GPU rendering, but then Skia gained GPU capabilities so they stopped using `libgui` 
+and started using Skia for GPU also. The techniques described here are mostly CPU rendering techniques, it could be that some vectors still have some CPU process, they are generated
+on the CPU and used as a mask by the GPU to mask off everything that is not the vector path
+
 
 
 
