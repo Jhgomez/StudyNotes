@@ -6,4 +6,4 @@ configuration outputs remotely, if you have Gradle enterprise they offer you the
 storage, using Jar, Docker and Kubernetes, this is called "Gradle Build Cache Node" is a dedicated server application that operates as a remote backend for Gradle’s task output caching. It 
 allows teams and continuous integration (CI) systems to share compiled classes, test results, and other build outputs to drastically reduce build times across different machines. You can 
 also use the Gradle plugin that Androidx wrote that is backed by either Google Cloud Storage or AWS S3 buckets, [this is an implementation](https://github.com/androidx/gcp-gradle-build-cache)
-of the Gradle Remote Cache
+of the Gradle Remote Cache, AndroidX(jetpack libraries) uses this plugin.
