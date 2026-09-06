@@ -152,4 +152,8 @@ which is exactly why you should use a state flow instead, another option to redu
 * In fragments and activities we have the component lifecycle and also the view lifecycle, both are represented by an interface called `LifecycleOwner`, but a component's lifecycle can
 live longer than the view's lifecycle, the view's lifecycle is known as `viewLifecycleOwner`, the fragment's and activity's lifecycle starts with `onCreate` and ends with `onDestroy`,
 the view's lifecycle starts with `onCreateView` and ends with `onDestroyView`, in compose we still have the fragments or activity's lifecycle but there is no view lifecycle,
-either a composable is part of the compositon or not, that's its lifecycle, and in compose we can interact with it's host component lifecycle with the following side effects 
+either a composable is part of the compositon or not, that's its lifecycle, and in compose we can interact with it's host component lifecycle with the following side effects
+
+* **UI tree**, and **UI hierarchy**: Although they might be used interchangeably in other guides, they have different meanings:
+          * The Composition is the record of the call graph of composable functions.
+          * The UI tree or UI hierarchy is the tree of LayoutNode constructed, updated, and maintained by the composition process.
