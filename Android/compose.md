@@ -146,3 +146,10 @@ However in the context of compose and in the context of Android's [UI layer arch
 can cause screen UI state changes, but it will download and when it is completed that can be considered a VM event, they both should cause immediate state changes, it needs to be safe
 so using kotlin channels or mutableSharedFlow is wonrg because it is not their nature, we could adapt a shared flow to reply the last messagge but that would make it behave like a state flow
 which is exactly why you should use a state flow instead, another option to reduce state changes and "stream" them asap is compose runtime state objects like `mutablesStateList` or `mutableState`, you can expose them with a private setter backing field
+
+* When using a `HorizontalPager` you might like to create a custom LifecycleOwner so that only the visible, settled page is RESUMED, while setting a maxState of STARTED for the adjacent, off-screen pages as [stated here](https://developer.android.com/topic/libraries/architecture/lifecycle#create-custom-lifecycle-owner)
+
+* In fragments and activities we have the component lifecycle and also the view lifecycle, both are represented by an interface called `LifecycleOwner`, but a component's lifecycle can
+live longer than the view's lifecycle, the view's lifecycle is known as `viewLifecycleOwner`, the fragment's and activity's lifecycle starts with `onCreate` and ends with `onDestroy`,
+the view's lifecycle starts with `onCreateView` and ends with `onDestroyView`, in compose we still have the fragments or activity's lifecycle but there is no view lifecycle,
+either a composable is part of the compositon or not, that's its lifecycle, and in compose we can interact with it's host component lifecycle with the following side effects 
