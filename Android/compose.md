@@ -162,7 +162,8 @@ UI, in configuration changes the UI is recreated in both UI toolkits. Find [here
 effects, like use the start effect for location collection, for video playback use resume effect, for starting and stopping network streaming you might be using a Kotlin Flow from a network socket and for that you use `collectAsStateWithLifecycle`, all this APIs will stop when the app is in the background(yo need to implement the on dispose callbacks, resume call it on pause,
 start calls it on sto) but also if the composable leaves the composition off course. In Compose, the LifecycleOwner is implicitly available through the CompositionLocal named
 `LocalLifecycleOwner`. By default, the root host of your composition hierarchy provides this owner. Navigation libraries (like Navigation 3) automatically creates a new LifecycleOwner to
-scope lifecycle states to specific sections of the UI to give each individual screen its own lifecycle, they probably use `rememberLifecycleOwner()` API
+scope lifecycle states to specific sections of the UI to give each individual screen its own lifecycle, they probably use `rememberLifecycleOwner()` API. State is safe: You can update
+`MutableState` (for example, with `uiState.value` = ...) at any time, even when the app is in the background. Compose waits until the app is visible to render the changes.
 
 * **UI tree**, and **UI hierarchy**: Although they might be used interchangeably in other guides, they have different meanings:
   * The Composition is the record of the call graph of composable functions.
