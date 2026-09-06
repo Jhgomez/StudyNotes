@@ -152,7 +152,17 @@ which is exactly why you should use a state flow instead, another option to redu
 * In fragments and activities we have the component lifecycle and also the view lifecycle, both are represented by an interface called `LifecycleOwner`, but a component's lifecycle can
 live longer than the view's lifecycle, the view's lifecycle is known as `viewLifecycleOwner`, the fragment's and activity's lifecycle starts with `onCreate` and ends with `onDestroy`,
 the view's lifecycle starts with `onCreateView` and ends with `onDestroyView`, in compose we still have the fragments or activity's lifecycle but there is no view lifecycle,
-either a composable is part of the compositon or not, that's its lifecycle, and in compose we can interact with it's host component lifecycle with the following side effects
+either a composable is part of the compositon or not, that's its lifecycle, and in compose we can interact with it's host component lifecycle with the following side effects `LifecycleEventEffect(Lifecycle.Event.ON_RESUME)`, `LifecycleStartEffect(Key)`, `LifecycleResumeEffect(cameraController)`. You can access to the host component'a lifecycle owner with the
+composition local `LocalLifecycleOwner`. and you interact with the compose equivalent of `viewLifeCycleOwner` with APIs like `LaunchedEffect`, `DisposableEffect`, `collectStateWithLifecycle`. Compose doesn't implement the `lifeCycleOwner` interface so that concept doesn't exist in compose itself, but they view that the `viewLifeCycleOwner` represents
+behave similarly to the lifecycle of a composable, when the user navigates forward or backward the view is destroyed in both cases, navigatin backwards also destroy the host component,
+forward navigations keeps destroys the UI but keeps the host component, when the app is sent to the background and if process is not killed by the system due to resource contraints while
+in background then the component is just in stop state and the UI remains in memory, in the views UI toolkit it means the view is also in stopped state(but still in memory), in compose it
+only means that the composition remains in memory, if the process is not killed by the system by the time we retunr the app to the foreground we just continue using the same instance of the
+UI, in configuration changes the UI is recreated in both UI toolkits. Find [here](https://developer.android.com/topic/libraries/architecture/lifecycle#use-cases) some use cases of lifecycle
+effects, like use the start effect for location collection, for video playback use resume effect, for starting and stopping network streaming you might be using a Kotlin Flow from a network socket and for that you use `collectAsStateWithLifecycle`, all this APIs will stop when the app is in the background(yo need to implement the on dispose callbacks, resume call it on pause,
+start calls it on sto) but also if the composable leaves the composition off course. In Compose, the LifecycleOwner is implicitly available through the CompositionLocal named
+`LocalLifecycleOwner`. By default, the root host of your composition hierarchy provides this owner. Navigation libraries (like Navigation 3) automatically creates a new LifecycleOwner to
+scope lifecycle states to specific sections of the UI to give each individual screen its own lifecycle, they probably use `rememberLifecycleOwner()` API
 
 * **UI tree**, and **UI hierarchy**: Although they might be used interchangeably in other guides, they have different meanings:
   * The Composition is the record of the call graph of composable functions.
