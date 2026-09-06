@@ -165,6 +165,9 @@ start calls it on sto) but also if the composable leaves the composition off cou
 scope lifecycle states to specific sections of the UI to give each individual screen its own lifecycle, they probably use `rememberLifecycleOwner()` API. State is safe: You can update
 `MutableState` (for example, with `uiState.value` = ...) at any time, even when the app is in the background. Compose waits until the app is visible to render the changes.
 
+* Android AGSL, `RuntimeShader`, `ShaderBrush` are only supported after Android 33, so in lower versios of Android instead of showing these, you could create a `SolidColor` instead of a
+ brush. To draw shader ins previous android versions you can use Timo's Drick [compose pixel shader library](https://github.com/timo-drick/compose_libraries/tree/main/opengl_pixel_shader)
+
 * **UI tree**, and **UI hierarchy**: Although they might be used interchangeably in other guides, they have different meanings:
   * The Composition is the record of the call graph of composable functions.
   * The UI tree or UI hierarchy is the tree of LayoutNode constructed, updated, and maintained by the composition process.
