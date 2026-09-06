@@ -155,5 +155,5 @@ the view's lifecycle starts with `onCreateView` and ends with `onDestroyView`, i
 either a composable is part of the compositon or not, that's its lifecycle, and in compose we can interact with it's host component lifecycle with the following side effects
 
 * **UI tree**, and **UI hierarchy**: Although they might be used interchangeably in other guides, they have different meanings:
-          - The Composition is the record of the call graph of composable functions.
-          - The UI tree or UI hierarchy is the tree of LayoutNode constructed, updated, and maintained by the composition process.
+ * The Composition is the record of the call graph of composable functions.
+ * The UI tree or UI hierarchy is the tree of LayoutNode constructed, updated, and maintained by the composition process.
