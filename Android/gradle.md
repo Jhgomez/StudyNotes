@@ -69,4 +69,6 @@ public key that corresponds to that private key to sign the artifact, they call 
 deployments section in your maven central's website, in your account, in the namespace section and in the deployments
 option you can confirm the lib is available from there, check [this](./gradlew publishToMavenCentral) link
 
-
+# Creating Custom Android Gradle Plugins
+If you want to create a customs gradle plugin for Android most likely you will need to extedn AGP, [here](https://developer.android.com/build/extend-agp)
+is a guide to extend your build and write gradle plugins for Android that extend the AGP
