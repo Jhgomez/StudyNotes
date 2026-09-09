@@ -71,7 +71,7 @@ option you can confirm the lib is available from there, check [this](./gradlew p
 
 # Creating Custom Android Gradle Plugins
 If you want to create a customs gradle plugin for Android most likely you will need to extedn AGP, [here](https://developer.android.com/build/extend-agp)
-is a guide to extend your build and write gradle plugins for Android that extend the AGP
+is a guide to extend your build and write gradle plugins for Android that extend the , this is used when creating convention plugins
 
 # Manage Your Build
 If you need to refresh the Gradle configurations of the "Android Gradle Plugin" for your Android's project app module you can search for
