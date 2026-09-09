@@ -92,4 +92,5 @@ track, and lower priority level resources are overwritten by higher priority lev
 instead of overwriting resources. There is one more "conflict" resolution that I haven't mentioned yet, flavors can have different dimensions,
 for example I can have a dimension for "free" and "premium", but also a dimension for "api", those dimensions are declared to the AGP (`flavorDimensions`),
 and then specified in the DSL of each declared flavor(`dimension` property), and in this case if you declare the same resource, for example same xml layout,
-in two specific build flavors source set, then the priority is given by the order of the dimensions declared in `flavorDimensions`.
+in two specific build flavors source set, then the priority is given by the order of the dimensions declared in `flavorDimensions`. You can
+also add dependencies specific to a build variant as [stated here](https://developer.android.com/build/dependencies#configure_dependencies_for_a_specific_build_variant)
