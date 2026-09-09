@@ -72,3 +72,24 @@ option you can confirm the lib is available from there, check [this](./gradlew p
 # Creating Custom Android Gradle Plugins
 If you want to create a customs gradle plugin for Android most likely you will need to extedn AGP, [here](https://developer.android.com/build/extend-agp)
 is a guide to extend your build and write gradle plugins for Android that extend the AGP
+
+# Manage Your Build
+If you need to refresh the Gradle configurations of the "Android Gradle Plugin" for your Android's project app module you can search for
+"Android Configure your build" or "Configure the Android Build System", you can also find the "Configure build variants" documenation there.
+In a nutshell, the build types tells how the app is built/packaged, if it needs to be debugable, if it needs to optimized(obfuscated), and
+signing configurations if needed, while the flavors helps you define what is the content of the app, this is because once you define flavors 
+you're expected to then create the source sets you may need, and in those source sets you can define specific resource files, such as strings,
+drawables, layouts, manifests, source files. Other important thing to know is, how those resources are then resolved at compile time, for example,
+can we have the same class defined across source sets?, btw a source set can be specific to the build type, build flavor, and build variant(a 
+combination of a build type combined with all possible combinations of all the flavor dimensions, I explain dimensions below),
+and you also need to take into account the default main source set which should be used to define code that is common to all of the other
+source sets, now, back to how the files are resolved, that is, from lowest to highest priority, main source set, flavor source set, 
+build type source set, build variant source set, according to the documentation a class should not be defined in the same resolution track,
+that means a class defined in main source set should not have another definition in the following source sets, and if you need different
+implementation of a class in each source set, then you should define it at a level where it will not conflict with another definition in the 
+same resolution track, however resources and manifest work differently as they actually can have different definitions in the same resolution
+track, and lower priority level resources are overwritten by higher priority level source set, if there is no conflict they are just merged
+instead of overwriting resources. There is one more "conflict" resolution that I haven't mentioned yet, flavors can have different dimensions,
+for example I can have a dimension for "free" and "premium", but also a dimension for "api", those dimensions are declared to the AGP (`flavorDimensions`),
+and then specified in the DSL of each declared flavor(`dimension` property), and in this case if you declare the same resource, for example same xml layout,
+in two specific build flavors source set, then the priority is given by the order of the dimensions declared in `flavorDimensions`.
