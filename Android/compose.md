@@ -160,7 +160,7 @@ in background then the component is just in stop state and the UI remains in mem
 only means that the composition remains in memory, if the process is not killed by the system by the time we retunr the app to the foreground we just continue using the same instance of the
 UI, in configuration changes the UI is recreated in both UI toolkits. Find [here](https://developer.android.com/topic/libraries/architecture/lifecycle#use-cases) some use cases of lifecycle
 effects, like use the start effect for location collection, for video playback use resume effect, for starting and stopping network streaming you might be using a Kotlin Flow from a network socket and for that you use `collectAsStateWithLifecycle`, all this APIs will stop when the app is in the background(yo need to implement the on dispose callbacks, resume call it on pause,
-start calls it on sto) but also if the composable leaves the composition off course. In Compose, the LifecycleOwner is implicitly available through the CompositionLocal named
+start calls it on sto) but also if the composable leaves the composition  interfaceoff course. In Compose, the LifecycleOwner is implicitly available through the CompositionLocal named
 `LocalLifecycleOwner`. By default, the root host of your composition hierarchy provides this owner. Navigation libraries (like Navigation 3) automatically creates a new LifecycleOwner to
 scope lifecycle states to specific sections of the UI to give each individual screen its own lifecycle, they probably use `rememberLifecycleOwner()` API. State is safe: You can update
 `MutableState` (for example, with `uiState.value` = ...) at any time, even when the app is in the background. Compose waits until the app is visible to render the changes.
@@ -172,4 +172,10 @@ scope lifecycle states to specific sections of the UI to give each individual sc
   * The Composition is the record of the call graph of composable functions.
   * The UI tree or UI hierarchy is the tree of LayoutNode constructed, updated, and maintained by the composition process.
  
-* **Useful Modifiers**: `paddingFromBaseline`, `selectableGroup`, `layout`(to customize an existing composable)
+* **Useful Modifiers**: `paddingFromBaseline`, `selectableGroup`, `layout`(to customize an exiglursting composable), `onSizeChanged`, `onGloballyPositioned`
+
+* **Custom Modifiers(Modifiers.Node vs Modifier.Element vs ModifierNodeElement**: `ModifierNodeElement` seems to be the a class which glues the `Element` interface and `Node` abstract class,
+the former(Elemeent) just represents an element in the modifier chain(`Modifier` is a linked list), and the latter seems to be the node that is added to the composition(UI tree), it represents
+the `Element` and we interact with it through an instance of a `ModifierNodeElement` which is in charge of implementing the `Element` interface and instantiate the class that implements
+the `Node` abstract class, after that, a modifier factory helps us instantiate the `ModifierNodeElement`, for example the `Modifier.background` modifier is the factory, it instantate a
+`BackgroundElement` and pass it to the Modifier collection, that class implements `ModifierNodeElement`(this implements the `Element` interface) of `BackgroundNode` type, that type is instantiated 
