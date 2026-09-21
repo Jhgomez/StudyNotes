@@ -171,3 +171,5 @@ scope lifecycle states to specific sections of the UI to give each individual sc
 * **UI tree**, and **UI hierarchy**: Although they might be used interchangeably in other guides, they have different meanings:
   * The Composition is the record of the call graph of composable functions.
   * The UI tree or UI hierarchy is the tree of LayoutNode constructed, updated, and maintained by the composition process.
+ 
+* **Useful Modifiers**: `paddingFromBaseline`, `selectableGroup`, `layout`(to customize an existing composable)
