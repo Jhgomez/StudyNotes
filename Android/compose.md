@@ -191,4 +191,8 @@ which gives us access to a list of `Measurables` which basically are its childre
 which is a DSL that defines the size of the `Layout` composable itself and in this DSL we can place children(if any children at all), the signature that doesn't accept any content/children should be
 used for truly leaf nodes, maybe we can use to draw shapes, this is the signature that `Spacer` uses under the hood. The next signature accepts one child, `Box`, `Column`, uses this signature. The last one
 accepts a list of composables, this could be used in complex composables where one children or more depends on the size or position of other children, basically we could get something similar to a
-constraint layout in this scenario
+constraint layout in this scenario. So I have mentiones `Layout`, the composable, and `layout` the DSL inside that composable, but there is more places, we see the word "layout", it can also be uses as
+a broad abstract term to refer to a Compose UI elements, it can also refer to the layout compose phase which is one of the three phases of the compose rendering pipeline, it can also be found in the class
+namw `LayoutNode`, which seems to be the only implementation of `ComposeUiNode` interface, `LayoutNode` is the object that "compose UI" library passes the compose runtime, it is not added by the layout
+composable, instead it is actually teaching the runtime how to instantiate it when it needs, so that is the object is generated in the tree by the runtime and the interface compose interact with is
+`ComposeUiNode`, compose UI is a client, in short, `LayoutNode` is the visual representation of an element in the UI tree(it is the result of the composition phase). 
