@@ -164,7 +164,7 @@ start calls it on sto) but also if the composable leaves the composition  interf
 `LocalLifecycleOwner`. By default, the root host of your composition hierarchy provides this owner. Navigation libraries (like Navigation 3) automatically creates a new LifecycleOwner to
 scope lifecycle states to specific sections of the UI to give each individual screen its own lifecycle, they probably use `rememberLifecycleOwner()` API. State is safe: You can update
 `MutableState` (for example, with `uiState.value` = ...) at any time, even when the app is in the background. Compose waits until the app is visible to render the changes.
-
+t
 * Android AGSL, `RuntimeShader`, `ShaderBrush` are only supported after Android 33, so in lower versios of Android instead of showing these, you could create a `SolidColor` instead of a
  brush. To draw shader ins previous android versions you can use Timo's Drick [compose pixel shader library](https://github.com/timo-drick/compose_libraries/tree/main/opengl_pixel_shader)
 
@@ -182,3 +182,13 @@ the `Node` abstract class, after that, a modifier factory helps us instantiate t
 When creating custom composable modifier factories take into account that those will run on every recomposition as stated [here](https://developer.android.com/develop/ui/compose/custom-modifiers#never-skipped),
 this happens because they return a value(comosables that return a value are not restartable nor skippable), in contrast, non-composable modifier factories can be hoisted out of composable
 functions to allow easier reuse and improve performance as stated [here](https://developer.android.com/develop/ui/compose/custom-modifiers#called-within-function)
+
+* [**Custom Layouts(composables)**](https://youtu.be/l6rAoph5UgI?si=YWKuJGogaQuThAqU): We see the word "layout" in different places in compose, `Layout` is the base composable of elements like
+`Column`, `Row`, etc, it gives us access to the layout phase of the compose, where we are expected to measure and place its children or itself, as you can see the layout phase is compose consists
+of two passes, measurement and placement, and at the same time, measurement pass needs should perform two actions, measure of its children and then decide its own size(probably you'd want to define
+its own size based on its children size), and then we place children (if any), but there is different signatures of the `Layout` composable used in different scenarios, they all accept a `MassurePolicy`
+which gives us access to a list of `Measurables` which basically are its children (if any, there is signature that doesn't accept children), and also gives us access to the next `layout` word ocurence,
+which is a DSL that defines the size of the `Layout` composable itself and in this DSL we can place children(if any children at all), the signature that doesn't accept any content/children should be
+used for truly leaf nodes, maybe we can use to draw shapes, this is the signature that `Spacer` uses under the hood. The next signature accepts one child, `Box`, `Column`, uses this signature. The last one
+accepts a list of composables, this could be used in complex composables where one children or more depends on the size or position of other children, basically we could get something similar to a
+constraint layout in this scenario
