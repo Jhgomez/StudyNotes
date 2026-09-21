@@ -178,4 +178,7 @@ scope lifecycle states to specific sections of the UI to give each individual sc
 the former(Elemeent) just represents an element in the modifier chain(`Modifier` is a linked list), and the latter seems to be the node that is added to the composition(UI tree), it represents
 the `Element` and we interact with it through an instance of a `ModifierNodeElement` which is in charge of implementing the `Element` interface and instantiate the class that implements
 the `Node` abstract class, after that, a modifier factory helps us instantiate the `ModifierNodeElement`, for example the `Modifier.background` modifier is the factory, it instantate a
-`BackgroundElement` and pass it to the Modifier collection, that class implements `ModifierNodeElement`(this implements the `Element` interface) of `BackgroundNode` type, that type is instantiated 
+`BackgroundElement` and pass it to the Modifier collection, that class implements `ModifierNodeElement`(this implements the `Element` interface) of `BackgroundNode` type, that type is instantiated.
+When creating custom composable modifier factories take into account that those will run on every recomposition as stated [here](https://developer.android.com/develop/ui/compose/custom-modifiers#never-skipped),
+this happens because they return a value(comosables that return a value are not restartable nor skippable), in contrast, non-composable modifier factories can be hoisted out of composable
+functions to allow easier reuse and improve performance as stated [here](https://developer.android.com/develop/ui/compose/custom-modifiers#called-within-function)
