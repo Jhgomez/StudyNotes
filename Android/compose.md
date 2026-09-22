@@ -172,7 +172,7 @@ t
   * The Composition is the record of the call graph of composable functions.
   * The UI tree or UI hierarchy is the tree of LayoutNode constructed, updated, and maintained by the composition process.
  
-* **Useful Modifiers**: `paddingFromBaseline`, `selectableGroup`, `layout`(to customize an exiglursting composable), `onSizeChanged`, `onGloballyPositioned`
+* **Useful Modifiers**: `paddingFromBaseline`, `selectableGroup`, `layout`(to customize an existing composable), `onSizeChanged`, `onGloballyPositioned`
 
 * **Custom Modifiers(Modifiers.Node vs Modifier.Element vs ModifierNodeElement**: `ModifierNodeElement` seems to be the a class which glues the `Element` interface and `Node` abstract class,
 the former(Elemeent) just represents an element in the modifier chain(`Modifier` is a linked list), and the latter seems to be the node that is added to the composition(UI tree), it represents
@@ -206,7 +206,12 @@ can fit the available viewport and then only compose the ones that are visible, 
 but here what we have is, in the measurement pass of the layout phase, we only measure some of the children(not all) and then using the size info of the ones we already measured(placebles) determine if
 we need to compose more children, this means that the measurement pass of the layout phase needs to happen before the composition phase of some children, this is called "Subcomposition", it is basically
 a deferred composition, this enables lazy components to add content on demand, lazy lists are built on top of this element. `BoxWithConstraints` uses a `SubComposeLayout` under the hood, this element
-grants you access with incoming constraints
+grants you access to incoming constraints, since it uses a `SubComposeLayout` it is doing what we mentioned before, that is, following a different rendering pipeline phases, so it goes from
+composition-layout(measure some children - use those masurements to define whether it should trigger the rendering pipeline of other children(composition phase) - placement)-Drawing, sub composition can
+have performance impact so only use it one child composition phase depends on another child's measurement but don't use it if what you have is a child measurement just depending on another child measurement.
+**BE AWARE COMPOSE ONLY ALLOWS YOU TO MEASURE A CHILD ONCE** but there are cases where a parent needs to know its child measure before you can measure all of them, that is what intrinsics are for, they
+ allow a parent to query its children before they're actually measured, intrinsic size is the natural or ideal size that a component requires to display its elements correctly, if you say I want the max
+intrinsic height then the children height with the highest hight will be used, and you can imagine what the min height will do, and similarly choosing either the highest or min width.
 
 * **How to "dinamically" know the size of a container UI Element so its children can use it**: There is different ways to get the object that can provide us with this info(`Constraints`), lets say we want
 to know the container width, if we passed the container a hardcoded value then we already know, we would just need to convert from density-independent pixels to pixels, but if you have a responsive approach
@@ -216,4 +221,7 @@ can define a minimun and maximum width or haight with modifiers like `Modifier.W
 passes to it, returning back to the modifiers used to pass down constraints to its children, the difference between `MOdifier.width()` vs `Modifier.fillMaxWidth()` vs `Modifier.widthIn()` is, that the former
 defines something similar to a `Modifier.requiredWidth()` but if the requested width is greater than the parent's constraints it will respect parent's constraints that is why I maybe should say that the
 `width` modifier defines a desired width, the middle one is dynamic and is useful in responsive UIs and it will always match the parent's constraint's max width, and the latter is also dynamic but requires
-the container to be at least some size and it can grow dynamically as much as needed but no more than the max value defined,
+the container to be at least some size and it can grow dynamically as much as needed but no more than the max value defined, so now we know the object but how do we get it? we can get it in a custom layout,
+inside the `MeassurePolicy` parameter, this is a functional interface which means we can override it by just using a lambda, that lambada passes to us the children that the layout has which we should measure
+using the constraints and them and then place them as we want inside the layout that is acting as parent/container, and the second parameter is the one we have been talking about, it returns to us all the info
+we have been talking about. There is one composable that also returns this object to us without having to implement a custom layout, it is `BoxWithConstraints`, the `layout` modifier also gives us access to it.
