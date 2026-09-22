@@ -227,3 +227,5 @@ the container to be at least some size and it can grow dynamically as much as ne
 inside the `MeassurePolicy` parameter, this is a functional interface which means we can override it by just using a lambda, that lambada passes to us the children that the layout has which we should measure
 using the constraints and them and then place them as we want inside the layout that is acting as parent/container, and the second parameter is the one we have been talking about, it returns to us all the info
 we have been talking about. There is one composable that also returns this object to us without having to implement a custom layout, it is `BoxWithConstraints`, the `layout` modifier also gives us access to it.
+
+* **Phase State Reads:** Each phase in compose can read state, if the state that a phase reads has not chagned then the phase can be skipped
