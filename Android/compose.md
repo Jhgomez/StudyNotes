@@ -195,4 +195,18 @@ constraint layout in this scenario. So I have mentiones `Layout`, the composable
 a broad abstract term to refer to a Compose UI elements, it can also refer to the layout compose phase which is one of the three phases of the compose rendering pipeline, it can also be found in the class
 namw `LayoutNode`, which seems to be the only implementation of `ComposeUiNode` interface, `LayoutNode` is the object that "compose UI" library passes the compose runtime, it is not added by the layout
 composable, instead it is actually teaching the runtime how to instantiate it when it needs, so that is the object is generated in the tree by the runtime and the interface compose interact with is
-`ComposeUiNode`, compose UI is a client, in short, `LayoutNode` is the visual representation of an element in the UI tree(it is the result of the composition phase). 
+`ComposeUiNode`, compose UI is a client, in short, `LayoutNode` is the visual representation of an element in the UI tree(it is the result of the composition phase). We also have the `layout` modifier
+which is used when creating custom layouts, it lets us change the size and position of the composable that it is applied in. So in terms of custom layouts what matter to us is the `Layout` composable,
+`layout` DSL, and `layout()` modifier. there are ways we can manipulate a child size without all the boiler plate of a custom layout, we can use the `Modifier.requireWidth` modifier setting this to an
+specific value which would ignore the parent's constraints applied on this child.
+
+* **Custom layouts with `SubCompositionLayout`**: This is the only UI element that does not follow the composition-layout-draw phase order, this is what lazy lists use, with this layout you can optimize
+performance because lets imagine you have a huge list of items you need to render (normally you just use a lazy list) what you would want to do is measure all these items then calculate how many of them
+can fit the available viewport and then only compose the ones that are visible, this is possible with `SubComposeLayout`, again, normally you would have the composition=layout(measure, place)-draw phases
+but here what we have is, in the measurement pass of the layout phase, we only measure some of the children(not all) and then using the size info of the ones we already measured(placebles) determine if
+we need to compose more children, this means that the measurement pass of the layout phase needs to happen before the composition phase of some children, this is called "Subcomposition", it is basically
+a deferred composition, this enables lazy components to add content on demand, lazy lists are built on top of this element. `BoxWithConstraints` uses a `SubComposeLayout` under the hood, this element
+grants you access with incoming constraints
+
+* **How to know the size of an object**: there is different scenarios but for example if we want to know the size of a container which could be define by the available size of the viewport or the size
+of its children, so you could use a `BoxWithConstraints` composable, you could also implement a 
