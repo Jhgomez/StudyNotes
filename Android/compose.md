@@ -208,5 +208,12 @@ we need to compose more children, this means that the measurement pass of the la
 a deferred composition, this enables lazy components to add content on demand, lazy lists are built on top of this element. `BoxWithConstraints` uses a `SubComposeLayout` under the hood, this element
 grants you access with incoming constraints
 
-* **How to know the size of an object**: there is different scenarios but for example if we want to know the size of a container which could be define by the available size of the viewport or the size
-of its children, so you could use a `BoxWithConstraints` composable, you could also implement a 
+* **How to "dinamically" know the size of a container UI Element so its children can use it**: There is different ways to get the object that can provide us with this info(`Constraints`), lets say we want
+to know the container width, if we passed the container a hardcoded value then we already know, we would just need to convert from density-independent pixels to pixels, but if you have a responsive approach
+like when using `fillMaxWidth` then you don't know, in this case no matter how small or big it children are, we already know the limit is the width of the available space but how much is it? we don't know,
+but the constraints object knows, so now its children can use it to define its width, we define those constraints with a the `width` modifier, as already mentioned `fillMaxWidth` defines Constraints too, we
+can define a minimun and maximum width or haight with modifiers like `Modifier.WidthIn`, and there is one "weird" modiifer called `Modifier.requireWidth()` which actually ignores the `Constraints` its parrent
+passes to it, returning back to the modifiers used to pass down constraints to its children, the difference between `MOdifier.width()` vs `Modifier.fillMaxWidth()` vs `Modifier.widthIn()` is, that the former
+defines something similar to a `Modifier.requiredWidth()` but if the requested width is greater than the parent's constraints it will respect parent's constraints that is why I maybe should say that the
+`width` modifier defines a desired width, the middle one is dynamic and is useful in responsive UIs and it will always match the parent's constraint's max width, and the latter is also dynamic but requires
+the container to be at least some size and it can grow dynamically as much as needed but no more than the max value defined,
