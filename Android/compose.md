@@ -172,7 +172,8 @@ t
   * The Composition is the record of the call graph of composable functions.
   * The UI tree or UI hierarchy is the tree of LayoutNode constructed, updated, and maintained by the composition process.
  
-* **Useful Modifiers**: `paddingFromBaseline`, `selectableGroup`, `layout`(to customize an existing composable), `onSizeChanged`, `onGloballyPositioned`
+* **Useful Modifiers**: `paddingFromBaseline`, `selectableGroup`, `layout`(to customize an existing composable), `onSizeChanged`, `onGloballyPositioned`, `wrapContentSize` lets you align
+the composable even when it is the content of a Surface composable
 
 * **Custom Modifiers(Modifiers.Node vs Modifier.Element vs ModifierNodeElement**: `ModifierNodeElement` seems to be the a class which glues the `Element` interface and `Node` abstract class,
 the former(Elemeent) just represents an element in the modifier chain(`Modifier` is a linked list), and the latter seems to be the node that is added to the composition(UI tree), it represents
