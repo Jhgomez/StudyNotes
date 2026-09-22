@@ -212,7 +212,8 @@ have performance impact so only use it one child composition phase depends on an
 **BE AWARE COMPOSE ONLY ALLOWS YOU TO MEASURE A CHILD ONCE** but there are cases where a parent needs to know its child measure before you can measure all of them, that is what intrinsics are for, they
  allow a parent to query its children before they're actually measured, once it gets information it can pass down its children a proper constraint, intrinsic size is the natural or ideal size that a
 component requires to display its elements correctly, if you say I want the max intrinsic height then the children height with the highest hight will be used, and you can imagine what the min height
-will do, and similarly choosing either the highest or min width.
+will do, and similarly choosing either the highest or min width. Intrinsics don't break the single measurement rule, what they do is they do some sort of premeasure, so they bend the single measurement rule
+a little.
 
 * **How to "dinamically" know the size of a container UI Element so its children can use it**: There is different ways to get the object that can provide us with this info(`Constraints`), lets say we want
 to know the container width, if we passed the container a hardcoded value then we already know, we would just need to convert from density-independent pixels to pixels, but if you have a responsive approach
