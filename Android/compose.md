@@ -244,7 +244,20 @@ has a collapsed state and is persistent, so compared to the modal and dismissibl
 didn't have a notion of a collapsed or expanded state the rail is collapsed and the drawers are expanded. Compared to the permanent nav drawer it is similar in the sense that the base line rail is also
 permanent but is different in the sense that it size is smaller, again, the drawer is expanded and the rail is collapsed, that is why in previous versions of material 3 android guide we were advised to
 combine rails and drawers as explained [here](https://developer.android.com/develop/ui/compose/designsystems/material3#navigation-components), we could still do that if we can come up with a creative
-design, but again it may not be what material 3 recommends but our creativity is the limit. But Material 3 has been updated and now we they advise us to use navigation rail that have expaned and
-collapsed states, and they also no tells us that the rail can have a modal and non-modal configurations and with these changes we most likely won't need to use nav drawers any more.
+design, but again it may not be what material 3 recommends but our creativity is the limit. Material 3 has received updates and now they advise us to use a navigation rail that has expaned and
+collapsed states, and they also tells us that the rail can have a modal and non-modal configurations and with these changes we most likely won't need to use nav drawers any more. To comply
+with this new guidelines we have been introduced `WideNavigationRail` and `ModalWideNavigationRail`, they have some similarities with drawers, the former is permanent so is similar to
+the permanent nav drawer, however is different from all drawers because it can have a collapsed state, in medium screens this would be the best state for your navigation UI, in large screens
+you may use the expanded state. The latter, modal nav rail, is similar to modal and dismissible nav drawers in the sense that it is displayed temporarily and the user most likely is the one
+choosing if it is shown or hidden, however it shares more similarities with modal drawer because it draws a dim/scrim above the content behind the drawer while blocking interactions as well,
+but the difference, again, relies on the fact that it can be in a expanded or collapsed state. Basically the configuration that we have lost with rails is the fact that in the modal
+configuration we can't interact with the content behind which is something the dismissible drawer enables us to do, but we have gained the ability to display the rail in a expanded or
+collapsed state. When using drawers we usually show them when users scroll on one of the horizontal edges of the screen, but we may also had a top app bar with an action that brought
+the drawer to the screen, in small screens we usually don't have both a drawer or rail, a top bar and a component I have not talked about yet, a Navigation bar, which is usually displayed
+at the bottom, usually we use a scaffold to add a navigation bar and/or a top app bar, so we usually don't have these three at the same time, top app bar, navigation bar and a drawer/rail
+however since the limit is our creativity, if we come up with a creative dessing we may have all these three displayed in the screen at same time at some point, for example LinkedIn has
+some sort of top bar, it is actually a search bar but its location is on top so it is similar, it has a navigation bar, and it can show you a permanent drawer/expanded wide nav rail if you
+do a scroll on the left edge, it actually draws a dim and block interactions with the main content which is also scroll to the right by the same amount of the drawer width. This is how they
+display their UI in a small form factor, but 
 
 
