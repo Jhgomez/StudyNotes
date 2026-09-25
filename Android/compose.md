@@ -230,3 +230,12 @@ using the constraints and them and then place them as we want inside the layout 
 we have been talking about. There is one composable that also returns this object to us without having to implement a custom layout, it is `BoxWithConstraints`, the `layout` modifier also gives us access to it.
 
 * **Phase State Reads:** Each phase in compose can read state, if the state that a phase reads has not chagned then the phase can be skipped
+
+* **Navigation Elements:** I refer to the Navigation Drawer and Navigation Rail, first we should know that material 3 now recommends using rails instead of drawers. Drawers in compose material 3 should be
+the outermost node(root) of a screen in order the screen to look "normal", in a regular set up this means that the drawer composable matches the viewport size (screen size), and it wraps something like
+a scaffold or a navigation element like `NavDisplay` if using Nav3, There is three types of drawers: modal, dismissible, and permanent. The difference between each other is that modal and dismissible
+drawers are only temporarily shown while permanent is always shown and shares the screen size with the content and therefore is more suitable for large screens. The difference between modal and dismissible
+is that the former draws a scrim over the screen content and blocks any interaction with it while the latter doesn't do that so you can clearly see the content below it and interact with it. The way they're
+implemented is using two components, a wrapper and the drawer content wrappers, the wrappers are these three: `ModalNavigationDrawer`, `DismissibleNavigationDrawer`, `PermanentNavigationDrawer`. The content
+shouldn't be a column, row, or similar, they should be the corresponding content wrapper (AKA drawer sheet) `ModalDrawerSheet`, `DismissibleDrawerSheet`, `PermanentDrawerSheet` this is because these
+content wrappers apply the material3 theme correctly, regularly you will fill these content wrappers with sections, each section consists of a title, a divider and N number of `NavigationDrawerItem`. 
