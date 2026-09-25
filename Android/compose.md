@@ -258,6 +258,7 @@ at the bottom, usually we use a scaffold to add a navigation bar and/or a top ap
 however since the limit is our creativity, if we come up with a creative dessing we may have all these three displayed in the screen at same time at some point, for example LinkedIn has
 some sort of top bar, it is actually a search bar but its location is on top so it is similar, it has a navigation bar, and it can show you a permanent drawer/expanded wide nav rail if you
 do a scroll on the left edge, it actually draws a dim and block interactions with the main content which is also scroll to the right by the same amount of the drawer width. This is how they
-display their UI in a small form factor, but 
+display their UI in a small form factor. Other way to change the navigation UI on different form factors is to show a `NavigationBar` in small screens, `WideNavigationRail` in collapsed
+mode in medium screens and a `WideNavigationRail` in expanded mode in large screens. 
 
 
