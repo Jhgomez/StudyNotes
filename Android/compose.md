@@ -225,7 +225,7 @@ passes to it, returning back to the modifiers used to pass down constraints to i
 defines something similar to a `Modifier.requiredWidth()` but if the requested width is greater than the parent's constraints it will respect parent's constraints that is why I maybe should say that the
 `width` modifier defines a desired width, the middle one is dynamic and is useful in responsive UIs and it will always match the parent's constraint's max width, and the latter is also dynamic but requires
 the container to be at least some size and it can grow dynamically as much as needed but no more than the max value defined, so now we know the object but how do we get it? we can get it in a custom layout,
-inside the `MeassurePolicy` parameter, this is a functional interface which means we can override it by just using a lambda, that lambada passes to us the children that the layout has which we should measure
+inside the `MeassurePolicy` parameter, this is a functional interface which means we can override it by just using a lambda, that lambada passes to us the children that them layout has which we should measure
 using the constraints and them and then place them as we want inside the layout that is acting as parent/container, and the second parameter is the one we have been talking about, it returns to us all the info
 we have been talking about. There is one composable that also returns this object to us without having to implement a custom layout, it is `BoxWithConstraints`, the `layout` modifier also gives us access to it.
 
@@ -238,4 +238,13 @@ drawers are only temporarily shown while permanent is always shown and shares th
 is that the former draws a scrim over the screen content and blocks any interaction with it while the latter doesn't do that so you can clearly see the content below it and interact with it. The way they're
 implemented is using two components, a wrapper and the drawer content wrappers, the wrappers are these three: `ModalNavigationDrawer`, `DismissibleNavigationDrawer`, `PermanentNavigationDrawer`. The content
 shouldn't be a column, row, or similar, they should be the corresponding content wrapper (AKA drawer sheet) `ModalDrawerSheet`, `DismissibleDrawerSheet`, `PermanentDrawerSheet` this is because these
-content wrappers apply the material3 theme correctly, regularly you will fill these content wrappers with sections, each section consists of a title, a divider and N number of `NavigationDrawerItem`. 
+content wrappers apply the material3 theme correctly, regularly you will fill these content wrappers with sections made of columns or whatever container you need but each section consists of a title,
+a divider and N number of `NavigationDrawerItem`.  However, material 3 actually advices us to replace modal and dismissible navigation drawers with a baseline `NavigationRail` composable, this navigation drawer only
+has a collapsed state and is persistent, so compared to the modal and dismissible nav drawers it is permanent while these drawers are only drawn on screen on demand, its size is smaller, even though it
+didn't have a notion of a collapsed or expanded state the rail is collapsed and the drawers are expanded. Compared to the permanent nav drawer it is similar in the sense that the base line rail is also
+permanent but is different in the sense that it size is smaller, again, the drawer is expanded and the rail is collapsed, that is why in previous versions of material 3 android guide we were advised to
+combine rails and drawers as explained [here](https://developer.android.com/develop/ui/compose/designsystems/material3#navigation-components), we could still do that if we can come up with a creative
+design, but again it may not be what material 3 recommends but our creativity is the limit. But Material 3 has been updated and now we they advise us to use navigation rail that have expaned and
+collapsed states, and they also no tells us that the rail can have a modal and non-modal configurations and with these changes we most likely won't need to use nav drawers any more.
+
+
