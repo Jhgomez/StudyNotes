@@ -283,9 +283,18 @@ that space. If the app bar is permament (is not collapsible) it should initially
 separation from the background. Search Bars are important So I will talk about them more in depth in another section.
 
 * **Search UI:** It consist of two things, first the search bar(some sort of app bar/top bar that has a search input field), and second, the search view (a container/list) that displays
-suggestions or search results and appears on the screen when the user clicks on the first component(search input), these two components are now collectively named search. In compose
-material3 current latest stable version 1.4.0 we have an implementation that aimed to simplify the whole search implementation and was merging the two components into one, it is `DockedSearchBar`, it was meant to be used in large screens in which going into a full screen search view is not the best approach, 
-seems this implementation of the guidelines is not going to survive on the new
-1.5.0 version, and in the alpha releases we already see it deprecated.  the compose implementations in material3 are the baseline `SearchBar` 
-
-
+suggestions or search results and appears on the screen when the user clicks on the first component(search input), these two components are now collectively named search. Before we go
+further you should know that we have to deal with large and small, medium and large screen sizes, that is why Material3 suggest two different ways to layout them, "full-screen" and
+"docked", the guidelines indicate that the former is preferred in small screen setups while the latter is preffered in large screens, but there is also two styles which don't depend on the
+form factor or screen size, is just a matter of style/design, we have "divided" and "contained", you should be able to use either or style in either or layout configuration, however be
+aware that the "contained" style is the material expressive choice as it defines some animations and a more stylistic look, so we have two axis, layout and style, in material3 current
+latest stable version 1.4.0 we were given `SearchBar` and `TopSearchBar` for small screen sizes, the former is the baseline, the latter builds on top of it but adds the ability to define
+`ScrollBehavior` which as mentioned before, enables us to make the bar collapsible. These two implementations of the bar should be used in conjunction with `ExpandedFullScreenSearchBar` or
+`ExpandedDockedSearchBar` which implement the "divided" style. this version of material3 in compose also gave us `DockedSearchBar` which is an implementation that seems to unify a search
+bar and a docked layout using the divided style all in one composable intended to be used in large screen setups. So initially material3 only gave us the divided style but in later updates
+of material3(material expressive) we were introduced the "contained" style, in android that means we need to use the 1.5.0 version the compose material3 library which starts introducing
+some of the updates in material expressive, in this version we are given the only implementation of the "contained" style, `ExpandedFullScreenContainedSearchBar`, as you can see it is only
+available as a full-scren layout which means we only have it available in small screens, we still don't have a docked layout with contained style search bar for large screens. In this
+version we were introduced `ExpandedDockedSearchBarWithGap` which seems to implement the "contained" style if we pass null to its `dropdownShape` parameter, another change we see is that
+`DockedSearchBar` was deprecated, since we are in the alpha version still these API may change but this is the
+current state.
