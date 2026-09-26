@@ -280,6 +280,12 @@ actions in the top bar. Avoid placing an overflow menu in the app bar when possi
 the home screen or refreshing it but Avoid using a it to open an expanded navigation rail. Use filled icons for clear, visible actions or use Outlined icons when using toggle buttons. The
 search container of the search app bar should fill 100% of the space between leading and trailing app bar elements until it reaches 312dp. Then, it should only grow further to fill 50% of
 that space. If the app bar is permament (is not collapsible) it should initially be the same color as the background, then fill with a contrasting color on scroll to provide visual
-separation from the background.
+separation from the background. Search Bars are important So I will talk about them more in depth in another section.
+
+* **Search UI:** It consist of two things, first the search bar(some sort of app bar/top bar that has a search input field), and second, the search view (a container/list) that displays
+suggestions or search results and appears on the screen when the user clicks on the first component(search input), these two components are now collectively named search. In compose
+material3 current latest stable version 1.4.0 we have an implementation that aimed to simplify the whole search implementation and was merging the two components into one, it is `DockedSearchBar`, it was meant to be used in large screens in which going into a full screen search view is not the best approach, 
+seems this implementation of the guidelines is not going to survive on the new
+1.5.0 version, and in the alpha releases we already see it deprecated.  the compose implementations in material3 are the baseline `SearchBar` 
 
 
