@@ -296,5 +296,9 @@ of material3(material expressive) we were introduced the "contained" style, in a
 some of the updates in material expressive, in this version we are given the only implementation of the "contained" style, `ExpandedFullScreenContainedSearchBar`, as you can see it is only
 available as a full-scren layout which means we only have it available in small screens, we still don't have a docked layout with contained style search bar for large screens. In this
 version we were introduced `ExpandedDockedSearchBarWithGap` which seems to implement the "contained" style if we pass null to its `dropdownShape` parameter, another change we see is that
-`DockedSearchBar` was deprecated, since we are in the alpha version still these API may change but this is the
-current state.
+`DockedSearchBar` was deprecated and they tell us to combien a `SearchBar` with `SearchBarState`, and `ExpandedDockedSearchBar`TopSearchBar, another deprecated implementation is
+`TopSearchBar` which again is used to add collapsible capabilites to the search bar, and now instead we should use `AppBarWithSearch` which seems to be doing pretty much the same as the
+previous ipmlementation but it adds `contentPadding` and `actions` composable parameter , since we are in the alpha version still these API may change but this is the
+current state. So to sum up, any of the search bars implementation can be used in any size screen, the search bar isn't really affected by the screen size other that its own size, it
+could use either or styles (divided or contained) but the search view would normally depend on the screen size, expanded layout for small screens and docked layout for large screens and
+it can use either or style.
