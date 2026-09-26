@@ -302,3 +302,13 @@ previous ipmlementation but it adds `contentPadding` and `actions` composable pa
 current state. So to sum up, any of the search bars implementation can be used in any size screen, the search bar isn't really affected by the screen size other that its own size, it
 could use either or styles (divided or contained) but the search view would normally depend on the screen size, expanded layout for small screens and docked layout for large screens and
 it can use either or style.
+
+BottomAppBar() { }
+
+FlexibleBottomAppBar() { }
+HorizontalFloatingToolbar() { }
+VerticalFloatingToolbar() { }
+
+Scaffold() { }
+
+NavigationBar() { }
