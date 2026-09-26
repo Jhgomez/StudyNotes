@@ -261,19 +261,25 @@ do a scroll on the left edge, it actually draws a dim and block interactions wit
 they display their UI in a small form factor. Other way to change the navigation UI on different form factors is to show a `NavigationBar` or `BottomAppBar` in small screens, `WideNavigationRail` in collapsed mode in medium screens and a `WideNavigationRail` in expanded mode in large screens. I talk a little more on the navigation UI common in small form factors
 
 * **Navigation UI in Small Form Factors `TopAppBar`, `TopSearchBar`, `NavigationBar`, `BottomAppBar`:** Regular cellphones are considered small form factors, I will only talk about the bars
-at the top and the bottom. The bars at the top, the bar at the top are often referred to as top bar or top app bar, they refer to the concept of a bar at the top of the screen however in
+at the top and the bottom. The bars at the top, the bar at the top are often referred to as top bar or top app bar or toolbat, they refer to the concept of a bar at the top of the screen however in
 practice we can find them with specific names. The view system gave us the first implementation `ActionBar` this is bar is controlled by the system and nowadays you usually don't want to
 use it due to compatibility issues and dificulty to customize its behaviour, that is why the material implementation in the view system gave us the `Toolbar` or its material
 implementation `MaterialToolbar`, it is usually wrapped inside a `CollapsingToolbarLayout`(optional, is a material impl) and then a `AppBarLayout`(also optional it can be any container,
 , is a material impl) which is then wrapped by `CoordinatorLayout` which also wraps another scrollable view and makes posible to get animations on the top bar. So we have seen a term,
-top bar, two implementations, `ActionBar` and `Toolbar`. In compose what we want is first, also hide the `ActionBar` and then use the material implementation `TopAppBar`, it is usually
+top bar, two implementations, `ActionBar` and `Toolbar`. In compose what we want is, first, also hide the `ActionBar` and then use the material implementation `TopAppBar`, it is usually
 used inside a Scaffold, we can turn this same composable into a collapsing toolbar by using nested scrolling, we just need to inform the parent container that we expect some nested
-scrolling, then we need to add some scrollable content and the `nestedScroll` modifier applied to the parent will do the job of expanding and collapsing our tool bar. In compose we much more
-than that implementation, we have a `TopSearchBar` provided by the material3 compose implementation, however that is deprecated in favor of `AppBarWithSearch` which seems to be a top bar
-with some search UI, The `TopAppBar` also has some variations, `MediumTopAppBar` and `LargeTopAppBar` which were introduced in an early version of material3 guidelines but they
-are replacing both by an top bar they refer to as flexible medium and large bars(`LargeFlexibleTopAppBar`, `MediumFlexibleTopAppBar`), it seems like these three replacements(
-`AppBarWithSearch`, `LargeFlexibleTopAppBar`, `MediumFlexibleTopAppBar`) in Android where introduced in some version of its 1.5.0 compose material3 implementation which is currently
-in alpha, and latest version as of now is `1.5.0-alpha29`. current stable version is `1.4.0` and some of the updated material3 guidelines have not yet arrived in the stable version
-and are only available in version `1.5.0`.
+scrolling with `nestedScroll` modifier, then we need to add some scrollable content and specify a `ScrollBehavior` to the top bar and parent will do the job of expanding and collapsing our
+tool bar. Material3 has much more than these 3 implementations, we have a `TopSearchBar` provided by the material3 compose implementation, however that is deprecated in favor of
+`AppBarWithSearch` which seems to be a top bar with some search UI, The small `TopAppBar` also has some alternatives besides the search bar, `CenterAlignedTopAppBar` which only difference
+seems to be that, it centers the title, we also have other variations, `MediumTopAppBar` and `LargeTopAppBar` which were introduced in an early
+version of material3 guidelines but they are replacing both by an top bar they refer to as flexible medium and large bars(`LargeFlexibleTopAppBar`, `MediumFlexibleTopAppBar`), it seems like
+these three replacements(`AppBarWithSearch`, `LargeFlexibleTopAppBar`, `MediumFlexibleTopAppBar`) in Android where introduced in some version of its 1.5.0 compose material3 implementation
+which is currently in alpha, and latest version as of now is `1.5.0-alpha29`. current stable version is `1.4.0` and some of the updated material3 guidelines have not yet arrived in the
+stable version and are only available in version `1.5.0`, note that compose BOM uses stable version. If the product has many actions, place those in a toolbar instead of showing the as
+actions in the top bar. Avoid placing an overflow menu in the app bar when possible. A logo in the left edge of a top bar can be purely cosmetic, or can trigger an action like returning to
+the home screen or refreshing it but Avoid using a it to open an expanded navigation rail. Use filled icons for clear, visible actions or use Outlined icons when using toggle buttons. The
+search container of the search app bar should fill 100% of the space between leading and trailing app bar elements until it reaches 312dp. Then, it should only grow further to fill 50% of
+that space. If the app bar is permament (is not collapsible) it should initially be the same color as the background, then fill with a contrasting color on scroll to provide visual
+separation from the background.
 
 
