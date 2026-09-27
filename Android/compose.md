@@ -288,20 +288,20 @@ further you should know that we have to deal with large and small, medium and la
 "docked", the guidelines indicate that the former is preferred in small screen setups while the latter is preffered in large screens, but there is also two styles which don't depend on the
 form factor or screen size, is just a matter of style/design, we have "divided" and "contained", you should be able to use either or style in either or layout configuration, however be
 aware that the "contained" style is the material expressive choice as it defines some animations and a more stylistic look, so we have two axis, layout and style, in material3 current
-latest stable version 1.4.0 we were given `SearchBar` and `TopSearchBar` for small screen sizes, the former is the baseline, the latter builds on top of it but adds the ability to define
-`ScrollBehavior` which as mentioned before, enables us to make the bar collapsible. These two implementations of the bar should be used in conjunction with `ExpandedFullScreenSearchBar` or
-`ExpandedDockedSearchBar` which implement the "divided" style. this version of material3 in compose also gave us `DockedSearchBar` which is an implementation that seems to unify a search
-bar and a docked layout using the divided style all in one composable intended to be used in large screen setups. So initially material3 only gave us the divided style but in later updates
-of material3(material expressive) we were introduced the "contained" style, in android that means we need to use the 1.5.0 version the compose material3 library which starts introducing
-some of the updates in material expressive, in this version we are given the only implementation of the "contained" style, `ExpandedFullScreenContainedSearchBar`, as you can see it is only
+latest stable version 1.4.0 we were given `SearchBar` and `TopSearchBar` for any screen sizes, the former is the baseline, the latter builds on top of it but adds the ability to define
+`ScrollBehavior` which as mentioned before, enables us to make the bar collapsible. These two implementations of the bar should be used in conjunction with any of the implementations
+of the search view, such as `ExpandedFullScreenSearchBar` or `ExpandedDockedSearchBar` which implement the "divided" style. this version of material3 in compose also gave us
+ `DockedSearchBar` which is an implementation that seems to unify a search bar and a docked layout using the divided style all in one composable intended to be used in large screen setups.
+So initially material3 only gave us the divided style but in later updates of material3(material expressive) we were introduced the "contained" style, in android that means we need to use the 1.5.0 version of compose material3 library which starts introducing
+some of the updates in material expressive, as of `1.5.0-alpha29` version the only implementation of "contained" style is `ExpandedFullScreenContainedSearchBar`, as you can see it's only
 available as a full-scren layout which means we only have it available in small screens, we still don't have a docked layout with contained style search bar for large screens. In this
 version we were introduced `ExpandedDockedSearchBarWithGap` which seems to implement the "contained" style if we pass null to its `dropdownShape` parameter, another change we see is that
-`DockedSearchBar` was deprecated and they tell us to combien a `SearchBar` with `SearchBarState`, and `ExpandedDockedSearchBar`TopSearchBar, another deprecated implementation is
-`TopSearchBar` which again is used to add collapsible capabilites to the search bar, and now instead we should use `AppBarWithSearch` which seems to be doing pretty much the same as the
+`DockedSearchBar` was deprecated and they tell us to combine a `SearchBar` with `SearchBarState`, and `ExpandedDockedSearchBar` , another deprecated implementation is
+`TopSearchBar` which, again, is used to add collapsible capabilites to the search bar, and now instead we should use `AppBarWithSearch` which seems to be doing pretty much the same as the
 previous ipmlementation but it adds `contentPadding` and `actions` composable parameter , since we are in the alpha version still these API may change but this is the
 current state. So to sum up, any of the search bars implementation can be used in any size screen, the search bar isn't really affected by the screen size other that its own size, it
 could use either or styles (divided or contained) but the search view would normally depend on the screen size, expanded layout for small screens and docked layout for large screens and
-it can use either or style.
+it can use either or style. 
 
 BottomAppBar() { }
 
