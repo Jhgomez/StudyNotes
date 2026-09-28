@@ -301,12 +301,15 @@ use the 1.5.0 version of compose material3 library which starts introducing some
 is `ExpandedFullScreenContainedSearchBar` for full-screen layouts and `ExpandedDockedSearchBarWithGap` for docked layouts (useful in medium and large screens). A change we see in this
 new version is that `DockedSearchBar` was deprecated and they tell us to combine a `SearchBar` with `SearchBarState`, and `ExpandedDockedSearchBar`, so we don't have that unified
 component anymore, another deprecated implementation is `TopSearchBar` which, again, is used to add collapsible capabilites to the search bar, and now instead we should use
-`AppBarWithSearch` which seems to be doing pretty much the same as the previous ipmlementation but it adds `contentPadding` and `actions` composable parameter, since we are in the
-alpha version still, these APIs may change but this is the current state. .So to sum up, any of the search bars implementation can be used in any size screen, the search bar isn't really affected by the screen size other that its own size, it
-could use either or styles (divided or contained) but the search view would normally depend on the screen size, expanded layout for small screens and docked layout for large screens and
-it can use either or style. 
+`AppBarWithSearch` which seems to be doing pretty much the same as the previous ipmlementation but it adds `contentPadding` and `actions` parameters, since we still are in the
+alpha version, these APIs may change but this is the current state. So to sum up, any of the search bars implementation can be used in any size screen, on the other hand material3
+recommends the docked layout search view in medium and large screens and the expanded search view in small screens the style you choose is up to you but the "contained" style
+implements material expressive. THe available implementations of search bar in version 1.4.0 is `SearchBar` and `TopSearchBar`, and in version 1.5.0 is `SearchBar` and
+`AppBarWithSearch`. For the expanded layout we have `ExpandedFullScreenSearchBar` (divided style) and `ExpandedFullScreenContainedSearchBar` (contained style). For the docked layout
+we have `ExpandedDockedSearchBar` (divided style) and `ExpandedDockedSearchBarWithGap`, the stable version provides only the divided style layouts and in the new version we have
+both styles.
 
-BottomAppBar() { }
+BottomAppBar() { 
 
 FlexibleBottomAppBar() { }
 HorizontalFloatingToolbar() { }
