@@ -6,3 +6,5 @@
 
     Android 16 (API level 36) overrides screen orientation, aspect ratio, and resizability restrictions, but this only seems to hold true for large screen devices
 
+
+https://developer.android.com/studio/write/lint
