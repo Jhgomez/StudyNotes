@@ -15,3 +15,7 @@ androidx.test:runner:1.1.1
 this to another build type by using the testBuildType property in your module-level build.gradle file.
 
 * You can learn how to change some of the instrumentation test configurations [here](https://developer.android.com/build/gradle-tips#configure-instrumentation-manifest-settings)
+
+
+https://developer.android.com/studio/test
+
