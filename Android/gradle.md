@@ -95,4 +95,4 @@ and then specified in the DSL of each declared flavor(`dimension` property), and
 in two specific build flavors source set, then the priority is given by the order of the dimensions declared in `flavorDimensions`. You can
 also add dependencies specific to a build variant as [stated here](https://developer.android.com/build/dependencies#configure_dependencies_for_a_specific_build_variant)
 
-* Use lazy gradle APIs as described [here](https://developer.android.com/studio/write/lint)
+* Use lazy gradle APIs as described [here](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html#sec:old_vs_new_configuration_api_overview)
