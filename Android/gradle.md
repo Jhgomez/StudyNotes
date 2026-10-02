@@ -94,3 +94,5 @@ for example I can have a dimension for "free" and "premium", but also a dimensio
 and then specified in the DSL of each declared flavor(`dimension` property), and in this case if you declare the same resource, for example same xml layout,
 in two specific build flavors source set, then the priority is given by the order of the dimensions declared in `flavorDimensions`. You can
 also add dependencies specific to a build variant as [stated here](https://developer.android.com/build/dependencies#configure_dependencies_for_a_specific_build_variant)
+
+* Use lazy gradle APIs as described [here](https://developer.android.com/studio/write/lint)
