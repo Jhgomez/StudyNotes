@@ -95,4 +95,18 @@ and then specified in the DSL of each declared flavor(`dimension` property), and
 in two specific build flavors source set, then the priority is given by the order of the dimensions declared in `flavorDimensions`. You can
 also add dependencies specific to a build variant as [stated here](https://developer.android.com/build/dependencies#configure_dependencies_for_a_specific_build_variant)
 
+* **[Varian API:](https://youtu.be/AZBW5StgF8o)** What is a variant? as you know we can define build types and product flavors, these are called
+variant dimmensions, we define those in the AGP DSL(we can define them in a a custom convention gradle plugin). AGP uses variant
+dimensions(combine them) to create several variant objects and an APK or Bundle will be built for each variant. Basically these variants provide
+to the tasks that produces their end results(artifacts, like class files, the merged manifest, APK/AAB files, Android Resources) this API is used
+to be able to customize the android build process, usually you'd get a task name, create a task that depends on its outputs, you can see a little
+more on this [gradle task ordering documentation](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html#sec:how_do_i_order_tasks)
+which lives inside a documentation that talks about "Avoiding Unnecessary Task Configuration with Task configuration avoidance API". AGP doesn't
+allows us to use those APIs because they consider the underliying task involved in the build process an "implementation detail", so they give us
+this abstraction to modify the artifacts produced by each build variant. Basically it lets you execute a custom task inside the build pipeline.
+The tasks that build the artifacts don't use the DSL values, what they actually use is the variant objects produced from the DSL, so what the
+variant API is doing is letting us modify the variant objects that are used as the actual tasks input. Lear about it lifecycle phases which is
+the actual interface we use to introduce a custom task that helps us change the artifacts in some way [here](https://developer.android.com/build/extend-agp#variant-api-artifacts-tasks)
+
+
 * Use lazy gradle APIs as described [here](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html#sec:old_vs_new_configuration_api_overview)
