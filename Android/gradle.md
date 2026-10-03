@@ -47,7 +47,7 @@ the actual interface we use to introduce a custom task that helps us change the 
 
 * Use lazy gradle APIs as described [here](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html#sec:old_vs_new_configuration_api_overview)
 
-* **Android Gradle plugin:** `com.android.tools.build:gradle` (found in the [AGP documentation](https://developer.android.com/build/releases/about-agp#updating-plugin))
+* **Android Gradle plugin in Convention Plugins:** `com.android.tools.build:gradle` (found in the [AGP documentation](https://developer.android.com/build/releases/about-agp#updating-plugin))
 this is the whole android plugin as an android library, applying the plugin as a library is considered a legacy way to apply plugin(you can see that in the Gradle
 plugins website). `com.android.tools.build:gradle-api` (found in ["Creating Gradle Plugins"](https://developer.android.com/build/extend-agp#why-compile-gradle-api)
 android documentation), is also a library, in that documentation they compare the one I mentioned first with this one, the difference lies in that the first is the
@@ -60,7 +60,13 @@ before the AGP automated the process for us just recently) I added the plugin wi
 `compileOnly("org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:2.4.0")`, the version seems to match the kotlin version I'm using for example in
 the `org.jetbrains.kotlin.plugin.compose` so I can keep these two in sync. My plugin is working, however there is another library,
  `android.tools.build:common`(found in NIA's Github repo), that I could use also, the question is, what is the most convenient way?, and, what is lighter? I mean
-I want to keep everything in sync, and if possible just use the interfaces, no need to pull up implementations.
+I want to keep everything in sync, and if possible just use the interfaces, no need to pull up implementations. We'll answer both in a go, `android.tools.build:common`
+artifact only contains the interface while the Android Kotlin plugin library contains the implementation and it seems like keeping either choice wouldn't be a problem
+however it feels more cohesive to have the two artifacts that provides the interfaces we need, they both use same version which is using the same version
+as the actual AGP plugins use(`com.android.application` and `com.android.library`) and in theory AGP use these artifacts under the hood. Another thing
+you might like to know is that the `android` DSL in an Android module is provided by `LibraryExtension` and in an Android application module,
+it is provided by `ApplicationExtension` and these two classes implements `CommonExtension` so if you want to create a common Kotlin extension function
+that can configure both types of modules you can use the common interface.
 
 # Publish Android library
 using git bash in windows
