@@ -57,16 +57,10 @@ I was trying to configure Kotlin through a custom convention plugin in an includ
 the DSL AGP("application" and "library" plugins of the AGP) provides to us to configure Kotlin, remember that the AGP now embeds Kotlin Gradle plugin, but It seems like
 the `gradle-api` artifact doesn't provide this API, so since I know configuring Kotlin would be possible through the Kotlin Android plugin(this is what we used to add
 before the AGP automated the process for us just recently) I added the plugin with the legacy approach
-`compileOnly("org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:2.4.0")`, the version seems to match the kotlin version I'm using for example in
-the `org.jetbrains.kotlin.plugin.compose` so I can keep these two in sync. My plugin is working, however there is another library,
- `android.tools.build:common`(found in NIA's Github repo), that I could use also, the question is, what is the most convenient way?, and, what is lighter? I mean
-I want to keep everything in sync, and if possible just use the interfaces, no need to pull up implementations. We'll answer both in a go, `android.tools.build:common`
-artifact only contains the interface while the Android Kotlin plugin library contains the implementation and it seems like keeping either choice wouldn't be a problem
-however it feels more cohesive to have the two artifacts that provides the interfaces we need, they both use same version which is using the same version
-as the actual AGP plugins use(`com.android.application` and `com.android.library`) and in theory AGP use these artifacts under the hood. Another thing
-you might like to know is that the `android` DSL in an Android module is provided by `LibraryExtension` and in an Android application module,
-it is provided by `ApplicationExtension` and these two classes implements `CommonExtension` so if you want to create a common Kotlin extension function
-that can configure both types of modules you can use the common interface.
+`compileOnly("org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:2.4.0")`, the version seems to match the kotlin version I'm using in
+the `org.jetbrains.kotlin.plugin.compose` so I can keep these two in sync. Another thing you might like to know is that the `android` DSL in an Android library module is
+provided by `LibraryExtension`, and in an Android application module it is provided by `ApplicationExtension`. These two classes implements `CommonExtension` so if you
+want to create a common Kotlin extension function that can configure both types of modules you can use the common interface.
 
 # Publish Android library
 using git bash in windows
