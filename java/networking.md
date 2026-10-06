@@ -397,3 +397,33 @@ public class client {
 
 # Protocols
 UDP, TCP, VOIP(voice over IP), WebRTC(Real time communication), the last two are used in applications like zoom, whatsapp, for making video and calls over internet and these two uses STUN servers to be able to get each end of the communication public IP address
+
+# Hello World Http Server
+This serv works on IPv4 and IPv6 
+
+```
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Inet6Address;
+import java.net.InetSocketAddress;
+
+int port = 8080;
+InetSocketAddress address = new InetSocketAddress(port);
+HttpServer server = HttpServer.create(address, 0);
+server.createContext("/", (exchange) -> {
+    String response = "Hello, World over IPv6!";
+    exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+    exchange.sendResponseHeaders(200, response.getBytes().length);
+
+    try (OutputStream os = exchange.getResponseBody()) {
+        os.write(response.getBytes());
+    }
+});
+
+server.setExecutor(null);
+server.start();
+```
