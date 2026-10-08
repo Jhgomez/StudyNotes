@@ -12,7 +12,14 @@ provides TLS, that means is only secure in the transport layer, what does it mea
 leaving to and from its hardware to the backend, however, the backend can face another challenge, depending on its infrastructure it will first hit a proxy or a load balancer, and
 either one of these two will actually decrypt the bytes and then forward the decrypted bytes to your application server and this can be considered a security breach as they will be
 transmmited as plain text, there is different ways to solve it, one way is to configure hybrid encryption at the application level. However at this point even if we had this
-configurations all set up in an Android application we would still be vulnerable to MITM attacks but why, thing is that a bad actor could install a tool like Charles Proxy to
+configurations all set up in an Android application we would still be vulnerable to MITM attacks, but why?, thing is that a bad actor could install a tool like Charles Proxy to
 catch your communications, the only thing it needs to do is to add Charles Proxy Root Certificate to the device and then its certificate will be trusted and it will be able to
 read all the messages between our cellphones and the backend, in theory you could intercept all communications meaning that in the initial messages the proxy would return a fake
-public key, then the client uses that public key to encrypt it's symmetric key and then sent it but now charles proxy can decrypt that message using its private key, 
+public key, then the client uses that public key to encrypt it's symmetric key and then sent it but now charles proxy can decrypt that message using its private key, and therefore
+decrypt subsequent messages. How can we solve this? We can do dynamic or static SSL pinning, you can do static SSL pining in different ways, but you will be required to embed
+some content in your app (actually dynamic pinning will also requiere this), you could embed the raw public certificate that the server will respond with in its handshake, in
+android using Okhttp you would use the function `sslSocketFactory`, but a more modern approach to static SSL pinning is using the public certificate hascode(SHA-256), thing is
+To get a TLS certificate signed by a CA, you first generate a key pair (public and private key). You then create a certificate signing request (CSR), which contains your public
+key and your identity information, signed with your private key to prove ownership. You send the CSR to the CA, which verifies your identity (or control of the domain), then issues
+a certificate: your public key and identity, signed by the CA's private key. The server then uses the certificate together with its private key, which never left the server, to
+establish TLS connections. But this is only if you're doing it manually. 
