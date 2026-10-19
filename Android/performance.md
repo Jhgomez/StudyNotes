@@ -262,3 +262,25 @@ that are very C like, the most performant way to use the JNI in Android is to on
 done on the Java side and the native function that you call should just take all those primitives(that includes arrays), this make the JNI code a lot easier because you don't have that dance of looking up 
 the java function from the C++ side, calling back the VM making sure you're doing it the right way which is usually the part that is "painful", this way your JNI becomes a really thin glued interface, it is 
 very easy to make mistakes, specially when you manipulate arrays because if you're not careful you're going to copy the entire array which is expensive.
+
+In Android you can think of the rendering pipeline end-to-end as three major components, the UI toolkit(all widgets) which sits on top of the canvas and when the window is doing its rendering the buffer that 
+the window rendered is handed over to the window compositor, which is called **surface flinger**, this flinger will take all the windows that are visible on screen and composite them together there is 
+different ways to do that. Canvas was backed by Skia, Chrome uses Skia also, Skia was a CPU base rendered(software rendered), and the window compositor itself was always using either OpenGL or something the 
+Android team called "hardware composer" which is basically an abstraction for OEMs, this tells the phone manufacturers "hey here are all the windows, tell us if you can render them yourself using som secret 
+sauce you have in your hardware, if you can't just give them back and we will use the CPU"(it changed to GPU later), but after new devices starting appearing, you had more inches and pixels per inch, the cpu 
+was not going to be able to do all the computations when there is more pixels on the screen, so the UI pipline/UI toolkit had to move to do rendering computations using the GPU and that was done by rewritting 
+some functions of the Canvas API, without changing the API itself, to make it use the GPU instead, GPU is commonly use by video game apps, video playback, media apps, that happened in Android 3, so the GPU 
+render was not using SKIA anymore, it was still using it for a few things specific to the Android UI toolkit, and all the way to Android P(around 2017) Android backed to SKIA again, because SKIA had been 
+working all that time in their own GPU renderer and it had reach the point where it made sense to stop Android investing in their own renderer and go back to it instead. The way a GPU renders is a little 
+different nowadays and this is more clear with computer shaders, but effectively have to send the GPU triangles that you can texture, so you have the concept of shaders which is a program that runs on every 
+pixel(per pixel) where you can compute the color of such pixel using mathematical operations, for example the modern way to render text is as vectors and that data is in the font files, in the old days they 
+where rendered by the CPU so the computation power wasn't available and therefore what it did is, it drawn each glyph(glifo, jeroglifico) into a texture and then for each character you want on screen it 
+generated two triangles and then make it point to that texture, this was called an atlas, but it was a very complex system, in the early stages of the GPU if you wanted to optimize its computations you had 
+to avoid changing state, the state to draw text is different to draw images, and so on, so what was happening at that point is that the commands where grouped by state to avoid changing state too much. In 
+Android you can do 3D graphics using three options, Android has a built in 3D graphics API for "simple" use cases, for more complex uses cases you have to either use a game engine, however they are kind of 
+heavy and they tend to take full screen, the third option is to write OpenGL or Vulkan code which is kind of complicated, btw Android uses all three grpahics engines, Skia, OpenGL, Vulkan, Skia on new chipsets 
+since 2024 could be using Vulkan under the hood, it seems also that OpenGl is not under development any more and Android requires Vulkan is required from Android 15(2024), also an OpenGL impelementation seems 
+to be working Vulkan under the hood. Android XR should be using the built it 3D rendered. In graphics AI and ML is doing work that is not LLM, like using micro neural networks being used as a form of data 
+compression to replace textures of materials, we are talking about really tiny networks that you know fit in a few lines of code in the shader, this is a specific problem being solved instead of having a big 
+model that you throw anything at
+
