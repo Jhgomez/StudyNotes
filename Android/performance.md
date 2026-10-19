@@ -189,5 +189,24 @@ internal fun throwIllegalStateException(message: String) {
 }
 ```
 
+As mentioned before, prefer using top level functions with good naming instead of companion object inside util or helper classes, as when you create companion objects it creates a static class and 
+when you create a static class and call it the semantics of Java and Kotlin is makes code to make sure the static class has been initialized, so everywhere you call that class the compiler has to 
+add code to make sure the static object has been initialized, this is in the case your helpers companion object includes methods only, meaning you're not actually initializing anything. and if this 
+code runs inside a loop then you're paying an extra heavy computation cost.
 
+SIMD, MMX, AVX, Neon, are special instruction sets that let a cpu operate on multiple pieces of data, you can also do some SIMD with a single register and that is called SWAR(stands for SIMD within 
+A Register), this is done in different places in compose, for example two places are, first when calculating the offset and pass it to a negative value, since the offset is wrapped ina Long(64-bits) 
+but the x and y coordinate are only integers(32 bits) so we can just check turn the bit that determines the number sign and flip it in parallel this means the instructions is executed in parallel, 
+in a single cpu cycle, so it is faster than if we would have unpacked the x, unpack the y, flip the each unpacked value individually and then pack it in another object also, instead here in a single 
+cpu cycle we get to change the bit, even though we still need to repack it as value classes are immutable, the other place this is done is in svg paths, usually coordinates then to have very exact 
+number(lots of decimals), but they are passed as strings, so what happens under the hood is that when the compiler groups characters in groups of four, remember each character in Java and Kotlin is 
+16 bits, so they are packed in a long, so we end up with 64 bits, so now we can perform 4 operations at a time to figure out if that group represents a number and do those calculations in parallel, 
+the process is, first since they are encoded strings, using the proper encoding format, we subtract the representation of 0(you can think of it in HEX, binary, or even decimal by the value a character 
+in the encoding format represents ASCII or Unicode in this case you don't care too much what would be the Unicode bits format such as UTF-8, UTF-16, etc), if the value is lower negative, then it can't 
+be a number, but if the value is positive, it could be a number, that is your first operation ran in parallel with SWAR, then we add to each character a "magic" number which is represented by the 
+encoding value of letter F, this is done because if you add the greatest value of number characters(which is 9) to the value of letter F you will not get any value greater than 127(decimal, but you can 
+make the conversion to binary or HEX), so values that are not numbers will be greater than 127, so the second parallel operation is add letter F encoding value, then you run two more checks in parallel, 
+which is two masking operations, so you run an `or` on the results of the two operations, which returns 1 if any of the bits of the two values is 1, remember 1 represents true and 0 represents false 
+just what an `or` would normally do, and then an `and` to a mask that sets the top bits which would be the value of -128, and if the result is all zeros then you know it is all digits. Most of the times 
+fewer instructions mean optimized code.
 
