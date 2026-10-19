@@ -225,3 +225,31 @@ Check the app performance score in the android documentation, always keep compos
 up profiles tells the ART what pieces of code the apps needs to start and that info is used to reorganize the DEX files in the APK to put the start up code together and close to each other so that memory 
 and disk cache can benefit from it.
 
+Another thing I learnt from [this video](https://youtu.be/M6extgmQQNw?si=vyU6_-LvJo451WUd) explaining how system services work, I learnt that the whenever we request for a service the system returns us a 
+manager, that manager doesn't directly has the code that process our requests, we will talk more about that in a second and also about some performance implications underneath, first we need to know that 
+these services are accessed through the context, the context is an object that allows us to access system functionality, it lets us interact with the underlying OS through a layer called "Application 
+Framework" which are all the APIs that communicate with underlying components of the OS architecture, services are part of that layer(i.e. Location service) and pretty much all the classes we use to develop 
+our apps also, we can access to it from practically anywhere in the presentation layer, the 4 main components of Android apps all extend the `ContextWrapper` class, this class at the same time extend the 
+`Context` class, the context class defines the methods we can operate over an instance of what is called `ContextImpl` which is the object that actually has all the actual code that executes whenever we need 
+to communicate with the system to get different resources, the wrapper contains it and delegates all the logic to it, that object has a reference to something that seem like a collection called 
+`SystemServiceRegistry`, that registry is a set of callback(provider) you execute whenever you reach for a system service, the first time you call for a service the callback is executed and creates an 
+instance of a manager, all subsequent call to that service return the same manager object, there is only one instance of each service in the system however ther can be many more instances of a manager, if 
+the app has two activities and each request the same service then you'd have created two manager instances that rely on the same service but are two different instances, however a manager lives in your 
+application process while most services live in a process called "System Server", so in order for them to communicate you need to do some IPC, so they rely on an API called "Android Interface Definition 
+Language"(AIDL) which you use to define two other interfaces on the manager side that is known as "Proxy" and the name of the proxy implementation usually doesn't even include that word, on the system 
+process side which is running the service(it could be other process other than the `SystemServer`) the created interface is known as "Stub", this is done because the IPC communication is done using `Binder` 
+and the reason it uses AIDL is because it simplifies and seems to standardizes how IPC is done using `Binder`, so when you interact with your manager it interacts with an object that could be refer to as 
+"Proxy" which can communicate with the process running the service through and interface that is referred to as "Stub" using "Binder" under the hood, however this is where we can optimize our code because 
+when you send an object from one process to the other using `Binder` this creates a copy of the object in the other process making the original object in the origin process not eligible to be garbage 
+collected on the origin process side, not until the reference to the copy object in the destination process has been destroyed which according to what is said in the video doesn't happen as fast/often as 
+you'd like which could cause memory leaks, for example if you implement a listener in your activity and pass that listener to an service if the activity is destroyed the activity resources are not released 
+immediately, leaking resources no matter what you do, so what you want to do is not pass resource consuming objects like an activity, instead it could be an anonymous object or just an object implementing 
+some callback class. There is a component in between the two processes, the app process and the process running the service(i.e. System Server), called `ServiceManager`, services are registered here using 
+unique name, for example the `SystemServer` process starts when the device starts, it creates instances of some services the system needs, each service generates a **Stub** that we mentioned previously, 
+these **stubs** are passed to the `ServiceManager` by each service and they are converted into something called `IBinder`, this binder is some sort of handle to the service, according to the video the 
+`ServiceManager` also has a record of registered services by name, which previously it was said that services where registered by name in the `ContextImpl` registry, when the app request a service this 
+request is handled by the `ServiceManager`, when a manager(i.e. LocationManager) is created the first time it asks the `ServiceManager` for the IBinder that matches the name of the requested service, the 
+returned object can be used to generate a **Proxy** which is the component that the origin process uses to communicate via `Binder`, for example, an alarm manager proxy is called `iAlamrManager`. Check 
+services running on a device with adb command `adb shell service list`
+
+
