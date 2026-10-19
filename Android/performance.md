@@ -210,3 +210,4 @@ which is two masking operations, so you run an `or` on the results of the two op
 just what an `or` would normally do, and then an `and` to a mask that sets the top bits which would be the value of -128, and if the result is all zeros then you know it is all digits. Most of the times 
 fewer instructions mean optimized code.
 
+
