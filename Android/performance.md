@@ -252,4 +252,13 @@ request is handled by the `ServiceManager`, when a manager(i.e. LocationManager)
 returned object can be used to generate a **Proxy** which is the component that the origin process uses to communicate via `Binder`, for example, an alarm manager proxy is called `iAlamrManager`. Check 
 services running on a device with adb command `adb shell service list`
 
+[Inside the Renderer](https://www.youtube.com/watch?v=lkpV7EzayfU)
 
+ART reorders field properties(instance properties) of a class based on their type and their name, so depending how you access them and how you name them then you will be affected by cache misses or not, 
+it changes cache 
+
+When you use JNI they library you're using is loaded and automatically you have the APIs that can talk to that library, obviously you're very limited in what you can do and also the library must expose APIs 
+that are very C like, the most performant way to use the JNI in Android is to only make JNI calls that would pass down from java primitive types from, all the calling java methods extracting data should be 
+done on the Java side and the native function that you call should just take all those primitives(that includes arrays), this make the JNI code a lot easier because you don't have that dance of looking up 
+the java function from the C++ side, calling back the VM making sure you're doing it the right way which is usually the part that is "painful", this way your JNI becomes a really thin glued interface, it is 
+very easy to make mistakes, specially when you manipulate arrays because if you're not careful you're going to copy the entire array which is expensive.
