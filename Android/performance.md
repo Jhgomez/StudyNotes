@@ -210,4 +210,18 @@ which is two masking operations, so you run an `or` on the results of the two op
 just what an `or` would normally do, and then an `and` to a mask that sets the top bits which would be the value of -128, and if the result is all zeros then you know it is all digits. Most of the times 
 fewer instructions mean optimized code.
 
+In Kotlin `mutableMapOf()` returns a `LinkedHashMap()`, this could be bad for jetbrains because they now can never change the implementation since people might be relying in the ordered elements that 
+a linked has, this map is expensive because it generates a lot of objects to keep the insertion order, also iterating over the map is really expensive and it misses cache a lot this is because the 
+objects in the map could have been allocated in anywhere in RAM(as opposed to values in an array where data locality can be leveraged), instead in android collections package there is a scattered 
+map(`mutableScatterMapOf<T, T>`), the API is similar to a hashmap, it has three arrays, an array of keys, an array of values, and array of metadata(one byte per entry), when you want to read a value 
+from the map, you read one byte from the metadata, the it read value and key arrays, and since they are using arrays under the hood, your reads could benefit from the cache, this map insert and does 
+a `foreach` faster than `LinkedHashMap` but it removes a little slower, even when it is slower removing you still have a memory efficient data structure because it doesn't allocate any objects on your 
+behalf, only when it needs to grow or shrink, it can look up 8 positions in the metadata to find the value you want.
+
+In Kotlin when we do `String.toFloat()` it parses the float and if not a float numeric string, then it return null, however that is a very expensive computation because is made with regular expressions, 
+which are expensive on their own, it allocates 930 objects whenever you call that
+
+Check the app performance score in the android documentation, always keep compose updated to its latest version, use R8 to shrink and optimize the app, use baseline profiles and startup profiles, start 
+up profiles tells the ART what pieces of code the apps needs to start and that info is used to reorganize the DEX files in the APK to put the start up code together and close to each other so that memory 
+and disk cache can benefit from it.
 
