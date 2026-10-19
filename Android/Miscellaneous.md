@@ -36,8 +36,18 @@ they allow immediate user interaction. These systems form the backbone of video 
   UI toolkit of [this example](https://github.com/romainguy/experiment-apex/blob/main/apex/src/main/java/dev/romainguy/apex/Integration.kt), `RootElement` is similar
   to it, as you can see it keeps a reference to the holder which provides the Canvas.
 
-
-
+  Every rendering system needs something that can be called a "render loop" or some sort of pulse to know when to draw on screen, this is because rendering systems
+  need to draw ne content at some interval(usually that is called FPS, frames per second, the ideal rate for the human eye is 60-120 frames per second to see a very
+  fluent screen), in Android that happens via `Choreographer`, it basically provides a callback on every frame, this helps the rendering system know when is the
+  appropriate time to collect the rendering info and then displaying it, previously this was done randomly(without using a pulse) in Android but now it is done using
+  this pulse, if you do it randomly you could get some tearing(drawing at the same time as the screen is being refreshed, means you may be drawing your next frame at
+  the same time as the previous frame is also displayd causing animation to look rather messy and also input events should be gotten directly before you start drawing
+  stuff which reduces latency when the user taps on the screen and when the result of the taps appear as rendering objects on screen), so display synchronization
+  avoids "tearing" and optimizes input latency, this pulse is in sync with whatever the underlying hardware is doing to refresh. The difference between a UI toolkit,
+  either the view system or compose, and games, is that first you need to know games usually run using some engine like Unity, Unreal, etc, and those engines actually
+  override the whole view hierarchy and even the window that a normal application would need to be displayed and render effectively only when needed(when invalidations
+  happens) so that is the difference, ui toolkit rendering elements re-render only when they have been invalidated while game engines usually render on a loop, meaning
+  they render each frame even if there is no changes, which is a reason why games could drain more battery than a regular app
   
 
 
