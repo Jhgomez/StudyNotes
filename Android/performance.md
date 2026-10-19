@@ -110,3 +110,12 @@ the bad thing is that wherever you call the enclosing class kotlinc creates code
 companion object is private and internal constants then you should use top-level constants and use the right name space since that would be the only problem, naming them so they 
 can explain their location, and you might prefer top-level functions as well.
 
+Data locality is the practice of positioning computation as close to the physical data storage as possible. By moving processing code to the data rather than streaming massive 
+datasets over a network, systems reduce latency, minimize network congestion, and vastly improve processing speeds. At the micro-level, data locality refers to how data is 
+structured in system memory to maximize CPU cache performance. Because retrieving data from RAM takes far longer than fetching it from L1/L2 caches, software engineers write code 
+that favors sequential memory access (e.g., arrays over linked lists). This exploits cache line architecture, allowing adjacent data to be loaded into the CPU instantly.
+
+Be aware that if you're running benchmarks then you're not running the whole app and therefore you won't see GC runs, when you allocate your objects they will be close to each 
+other in memory so it's not what's going to happen in real life and that is why you actually need both micro-benchmark and macrho-benchmarks
+
+
