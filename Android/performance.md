@@ -86,7 +86,7 @@ Before talk about charts and sections in the Analysis pane we will talk about it
 * ****
 * ****
 
-# (Micro Optimizations)[https://www.youtube.com/watch?v=Z9-Z16glXRU]
+# [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
 `@JvmInline` to you value classes, if you're only wrapping a value for type safety and readability then use value classes instead of data classes, if you do so you get the 
 benefit of type safety of classes(data classes to), without the overhead of actually allocating a class at runtime, instead the compiler copies the value assigned to the value 
@@ -118,4 +118,49 @@ that favors sequential memory access (e.g., arrays over linked lists). This expl
 Be aware that if you're running benchmarks then you're not running the whole app and therefore you won't see GC runs, when you allocate your objects they will be close to each 
 other in memory so it's not what's going to happen in real life and that is why you actually need both micro-benchmark and macrho-benchmarks
 
+BTW most android devices are ARM64 now a days and ARM64 and aarch64 are virtually the same instruction set
+
+Better eviction strategy for LRU caches
+
+## Key Differences Between JVM and Android Runtimes
+
+**File Architecture**: The JVM reads individual .class files (or packages of them inside .jar archives). Android uses .dex files, which merge all application classes into a single 
+compressed file to deduplicate data and save memory.
+
+**Virtual Machine Style**: The JVM is a stack-based virtual machine, meaning it uses an internal operand stack to evaluate expressions and execute operations. Android runtimes—such 
+as the legacy Dalvik Virtual Machine or the modern Android Runtime (ART)—are register-based, meaning they use virtual registers to store data.
+
+**Bytecode Set**: Because of the structural differences listed above, the instruction set (bytecode) inside a .class file is fundamentally unreadable to a runtime expecting .dex 
+instructions, and vice versa.
+
+Also introduce benchmarks in you CI to monitor for regressions. Whenever you want to optimize you app, fist read the code, then profile your app, then question yourself and investigate, 
+most of the times the issue is not what you think it is, almost always is something else, the profiler you almost always want to use is the memory profiler and start tracking down 
+memory allocations that you think should not exists, so read the code as you profile the app and track down memory allocations, always question yourself and investigate the code you're 
+looking at, after you write the optimization, always write a benchmark, is very common to don't get the results that you're expecting, it can vary, sometimes is slower, or faster, include
+benchmarks in your CI so you can track performance across time because is easy to introduce regressions, whenever you commit code you could get alerts, it could be good to get alerts even 
+if the performance got better so you can investigate why and understand better.
+
+# [Optimizing Kotlin Code in Practice](https://youtu.be/wLvGCnNLs7c?si=F9FXgYZdftGB0rWK)
+
+To do profiling and optimization better you need hardware and software, try to choose the slowest device that can target your app, if it runs decently in that device it will run much better 
+in other devices, usually benchmarking makes your device temperature hot, so you should use any method to cool it down. Use macro and micro benchmark libraries these libraries do several 
+"optimizations" like disabling animations, lock the clocks of the device to avoid different frequencies of the CPU while benchmark is running to minimize interference with the benchmark. Use 
+the Kotlin explorer to see what your code compiles to understand your code a little better, also you might like to use compiler explorer website, then to understand the compiled to(assembler 
+instructions) you might like to have AI explain you what the code is doing line by line. Try to benchmark the following code which has performance issues, and is reading the pixels of bitmap 
+being read vertically, meaning info is firstly read by columns in order to find the greatest red value 
+
+```
+val pixels = IntArray(1920 * 1080)
+// get pixels of bitmap
+
+var maxRed = 0
+benchmarkRule.measureRepeated {
+    for (x in 0 until 1920) {
+	for (y in 0 until 1080) {
+	    val index = y * 1920 + x
+	    maxRed = maxOf(maxRed, pixels[index].red)
+	}
+    }
+}
+```
 
