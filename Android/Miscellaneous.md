@@ -20,6 +20,26 @@ they allow immediate user interaction. These systems form the backbone of video 
   over class inheritance. Instead of objects containing both data and behavior, an ECS rigidly separates them into three parts: Entities (unique IDs), Components
   (pure data), and Systems (pure logic).
 
+  All rendering systems need something to render to, they can be referred to as Rendering Surface or Drawing Surface, on Android that something is a Surface, a
+  surface can be retrieved by TextureView, SurfaceView, Window or a custom layout. The view system and compose both access the window surface via the canvas.
+
+  Android supplies the canvas from the surface, so the communication with the surface happens in draw and onDraw. When an activity starts and the window, decorview,
+  content view is created, a surface is created under the hood
+
+  You should be able to get a frame callback in any rendering system/UI toolkit, it is a callback that runs on every frame.
+
+  In Android the WindowManager is the component basically pulling all the string with the help of other components to provide a way our activities can interact with
+  the surface, there is something called `ViewRootImpl`, it kind of holds a reference to the window(IWindow) that is in the system server, it is some sort of root
+  element that is responsible for connecting the underlying surface and its canvas with the activity and is also responsible for triggering the first layout, top
+  level layout, top level drawing, top level motion, and event dispatching, in theory it should receive a reference to a `SurfaceHolder` there is much more going on
+  and there is more components participating in this process(it means it might not literally be doing that directly but the idea behind the process is that), in the
+  UI toolkit of [this example](https://github.com/romainguy/experiment-apex/blob/main/apex/src/main/java/dev/romainguy/apex/Integration.kt), `RootElement` is similar
+  to it, as you can see it keeps a reference to the holder which provides the Canvas.
+
+
+
+  
+
 
 
 
