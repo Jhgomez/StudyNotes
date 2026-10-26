@@ -37,4 +37,11 @@ configurations as stated [here](https://developer.android.com/privacy-and-securi
 * [Share Dara Securely Across Apps](https://developer.android.com/privacy-and-security/security-best-practices#permissions-share-data): If you need to share data
 such as having a PDF app open a PDF your app owns, grant one time access to the opening app only, also, use `content://` URIs, not `file://` URI
 
+* **AI Risk Assessment:** A great way to mitigate AI risks in practice is using industry tools like the [SAIF Risk Self-Assessment](https://saif.google/risk-self-assessment)
+to better understand and mitigate risks. Also check ["Mitigate AI rIsk in your app"](https://developer.android.com/privacy-and-security/risks/ai-risks/risks-mitigations)
+
+
+
+
+
 * [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth): 
