@@ -14,10 +14,13 @@ create `WebMessagePort`, these allow both native and JS send messages to ports a
 binary payload support), however a more modern solution is use `WebViewCompat.addWebMessageListener`. Check "How Do You Use WebMessagePort As An Alternative
 to addJavascriptInterface()?" in StackOverflow for an explanation on how to use `WebMessagePort` and/or check this [implementation sample](https://github.com/commonsguy/cw-omnibus/tree/master/WebKit/SensorPort). Another way to interface between the app and the WebView is `WebView.addJavascriptInterface`, it injects a Java or Kotlin object
 directly into the WebView's JavaScript context. JavaScript can call methods on this object synchronously or asynchronously as if it were a local JS object. For JS to
-be able to call a method must be annotated with @JavascriptInterface. Since the app cannot easily verify which frame or origin inside the WebView triggered
+be able to call a method must be annotated with `@JavascriptInterface`. Since the app cannot easily verify which frame or origin inside the WebView triggered
 the method this solution is considered somewhat risky if used in not tursted content, so use it only if necessary and in trusted and in sites you control, but
 in this case and almost always apps shouldn't let users navigate to sites that are outside of your control. Whenever possible, use an allowlist to restrict the
 content loaded by your app's WebView objects. In addition, never enable JavaScript interface support unless you completely control and trust the content in your 
 app's WebView objects
 
+* **SSL Pinning:**  You can do SSL pinning using different methods, OkHttp let's you set SSL pinning by client but you can do it app-wide by addin network security
+configurations as stated [here](https://developer.android.com/privacy-and-security/security-best-practices#network-security-config)
 
+* [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth): 
