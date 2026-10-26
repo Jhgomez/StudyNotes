@@ -40,8 +40,7 @@ such as having a PDF app open a PDF your app owns, grant one time access to the 
 * **AI Risk Assessment:** A great way to mitigate AI risks in practice is using industry tools like the [SAIF Risk Self-Assessment](https://saif.google/risk-self-assessment)
 to better understand and mitigate risks. Also check ["Mitigate AI rIsk in your app"](https://developer.android.com/privacy-and-security/risks/ai-risks/risks-mitigations)
 
-
-
-
+* [Mitigate security risks in your app](https://developer.android.com/privacy-and-security/risks): Documentation offers us a list of common security risks separated
+by categories which include: Storage, Cryptography, Network Communication, Platform Interaction, Code Quality
 
 * [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth): 
