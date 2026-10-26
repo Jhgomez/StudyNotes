@@ -34,4 +34,7 @@ app's WebView objects
 * **SSL Pinning:**  You can do SSL pinning using different methods, OkHttp let's you set SSL pinning by client but you can do it app-wide by addin network security
 configurations as stated [here](https://developer.android.com/privacy-and-security/security-best-practices#network-security-config)
 
+* [Share Dara Securely Across Apps](https://developer.android.com/privacy-and-security/security-best-practices#permissions-share-data): If you need to share data
+such as having a PDF app open a PDF your app owns, grant one time access to the opening app only, also, use `content://` URIs, not `file://` URI
+
 * [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth): 
