@@ -43,4 +43,10 @@ to better understand and mitigate risks. Also check ["Mitigate AI rIsk in your a
 * [Mitigate security risks in your app](https://developer.android.com/privacy-and-security/risks): Documentation offers us a list of common security risks separated
 by categories which include: Storage, Cryptography, Network Communication, Platform Interaction, Code Quality
 
-* [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth): 
+* [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth):
+
+* **Trusted CA and SSL Pinning:**  Some apps choose to limit the set of certificates they accept by either limiting the set of CAs they trust or by certificate pinning.
+You can limit or add CAs in your app as explained [here](https://developer.android.com/privacy-and-security/security-config#CustomTrust). Certificate pinning is done by
+providing a set of certificates by hash of the public key (SubjectPublicKeyInfo of the X.509 certificate). A certificate chain is then valid only if the certificate
+chain contains at least one of the pinned public keys. In android you can configure them using [this](https://developer.android.com/privacy-and-security/security-config#CertificatePinning)
+guide
