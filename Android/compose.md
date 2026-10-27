@@ -318,3 +318,6 @@ VerticalFloatingToolbar() { }
 Scaffold() { }
 
 NavigationBar() { }
+
+* **SelectableContainer:** Wrapping `Text` composables around it lets you enable text selection, `TextFields` allows text selection out of the box. Check more info on how to copy
+and paste different types of data with ClipboardManager [here](https://developer.android.com/develop/ui/views/touch-and-input/copy-paste)
