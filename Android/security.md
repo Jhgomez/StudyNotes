@@ -44,7 +44,13 @@ to better understand and mitigate risks. Also check ["Mitigate AI rIsk in your a
 by categories which include: Storage, Cryptography, Network Communication, Platform Interaction, Code Quality
 
 * [Encrypt Plaint Text With KeyStore](https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets): You can use keystor to ecnrypt plain
-text, you could use this in combination with Datastore to store auth tokens safely, or to do End-to-End or Hybrid encryption in network communications.
+text, you could use this in combination with Datastore to store auth tokens safely, or to do End-to-End or Hybrid encryption in network communications. This is a concept
+based on Java Encryption, so learn more about Java Keystore in [this](https://youtu.be/NH49dTEYPg0?si=sS4dlTBXeikHq6aL) series. A very interesting concept is that java
+has different keystore file formats to create the a keystore file, the most secure file format, as far as I know, PKCS12. However there is something even more secure
+called PKCS11, this is an API interface used to talk to physical or remote hardware security unit, this is backed by hardware security module(HSM), basically this is a
+hardware bridge and is possible by specifying a configuration file, it can connect directly to a HSM module or through a native .so (Linux) or .dll (Windows) library.
+As long as that driver file exposes a standard C interface, Java does not care whether the backend is hardware or software. This is what Android keystore does using
+trusted execution environment(TEE) or SE(Secure Element)
 
 * [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth):
 
