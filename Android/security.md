@@ -43,6 +43,9 @@ to better understand and mitigate risks. Also check ["Mitigate AI rIsk in your a
 * [Mitigate security risks in your app](https://developer.android.com/privacy-and-security/risks): Documentation offers us a list of common security risks separated
 by categories which include: Storage, Cryptography, Network Communication, Platform Interaction, Code Quality
 
+* [Encrypt Plaint Text With KeyStore](https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets): You can use keystor to ecnrypt plain
+text, you could use this in combination with Datastore to store auth tokens safely, or to do End-to-End or Hybrid encryption in network communications.
+
 * [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth):
 
 * **Trusted CA and SSL Pinning:**  Some apps choose to limit the set of certificates they accept by either limiting the set of CAs they trust or by certificate pinning.
