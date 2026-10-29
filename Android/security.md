@@ -52,17 +52,20 @@ hardware bridge and is possible by specifying a configuration file, it can conne
 As long as that driver file exposes a standard C interface, Java does not care whether the backend is hardware or software. This is what Android keystore does using
 trusted execution environment(TEE) or SE(Secure Element)
 
-* **Cryptograhpy**: We have symmetric and asymmetric keys, the latter are said to be more secure. Asymmetric keys are known as private keys/key pairs, private keys and
+* **Cryptograhpy**: We have symmetric and asymmetric keys, the latter are said to be more secure generally because most of the key sizes it can produce are larger and
+also the algorithms used in creating the keys are more complex and sophisticated. Asymmetric keys can sometimes be called private keys/key pairs, private keys and
 key pairs concepts are very related because, a key-pair consists of a private and a public key, the public key is generated from the private key, if the public key is
-lost for any reason it can be just extracted from the private key again, a pure key-pair is used in things like SSH connections, they serve as the SSH keys. You could
-use them to encrypt/cipher a text but symemtric keys are preferred for doing this because they have less bytes, therefore making encrypting texts less resource consuming.
-The most common use case for asymmetric keys is in HTTPS communications, we can generate a TLS/SSL certificate from a private key, these certificates contains the
-public key, they can be self signed or we can request a certificate authority to sign our certificate. Self signed certificates usually act as Root certificates AKA
-a certificate authority(CA), these root certificates can sign intermediate certificates(to create a certificate you create a private key with its corresponding
-CSR(certificate signing request)), when a CA signs a CSR the generated certificate contains its public key and some metadata about the authority that signed the
-certificate in the request, when you request an private authority to sign a CSR it uses its self signed request as well as its private key, you can then use
-the new signed certificate as well as the new private key to sign other CSRs, converting the certificate who signed the latest request in a what is called "an intermediate
-Certificate" and the certificate in the latest request in "a leaf certificate", root and intermediated certificates add to the certificate chain of a leaf certificate
+lost for any reason it can be just extracted from the private key again, a pure key-pair is used in things like SSH connections, they authenticate the client and the
+server. You could use them to encrypt a text but symemtric keys are preferred for doing this because they're faster and less resource consuming when encrypting texts,
+but also asymmetric encrytpion algorithms (like RSA, ECC) can not encrypt a payload that is bigger than its key size. The most common use case for asymmetric keys is
+in HTTPS communications, we can generate a TLS/SSL certificate using a private key, that private key is used to create a certificate signing request(CSR), the CSR is
+signed with the your private key and contains the public key and your identity, this CSR is then signed by issuer(CA) which generates the actual certificate, they can
+be self signed or we can request a certificate authority to sign our certificate. Both self signed and signed by a CA certificates can act on behalf a certificate
+authority, a CA can not exist without a certificate which is always a self signed certificate, this certificate is the root certificate, intermediate certificates can
+authenticate and generate leaf certificates by signing CSRs on behalf the CA, this is only possible if the self signed certificate or intermediate certificate was
+issued with the `basicConstraints: CA:TRUE` extension. If you don't create a self signed certificate with that extension then you would use it for getting HTTPS
+communications in development environments or in internal server communications. Every intermediate certificate that signs a leaf certificate adds to chain of a leaf
+certificate.
 
 
 * [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth):
