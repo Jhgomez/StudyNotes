@@ -52,19 +52,26 @@ hardware bridge and is possible by specifying a configuration file, it can conne
 As long as that driver file exposes a standard C interface, Java does not care whether the backend is hardware or software. This is what Android keystore does using
 trusted execution environment(TEE) or SE(Secure Element)
 
-* **Cryptograhpy**: We have symmetric and asymmetric keys, the latter are said to be more secure generally because most of the key sizes it can produce are larger and
-also the algorithms used in creating the keys are more complex and sophisticated. Asymmetric keys can sometimes be called private keys/key pairs, private keys and
-key pairs concepts are very related because, a key-pair consists of a private and a public key, the public key is generated from the private key, if the public key is
-lost for any reason it can be just extracted from the private key again, a pure key-pair is used in things like SSH connections, they authenticate the client and the
-server. You could use them to encrypt a text but symemtric keys are preferred for doing this because they're faster and less resource consuming when encrypting texts,
-but also asymmetric encrytpion algorithms (like RSA, ECC) can not encrypt a payload that is bigger than its key size. The most common use case for asymmetric keys is
-in HTTPS communications, we can generate a TLS/SSL certificate using a private key, that private key is used to create a certificate signing request(CSR), the CSR is
-signed with the your private key and contains the public key and your identity, this CSR is then signed by issuer(CA) which generates the actual certificate, they can
-be self signed or we can request a certificate authority to sign our certificate. Both self signed and signed by a CA certificates can act on behalf a certificate
-authority, a CA can not exist without a certificate which is always a self signed certificate, this certificate is the root certificate, intermediate certificates can
-authenticate and generate leaf certificates by signing CSRs on behalf the CA, this is only possible if the self signed certificate or intermediate certificate was
-issued with the `basicConstraints: CA:TRUE` extension. If you don't create a self signed certificate with that extension then you would use it for getting HTTPS
-communications in development environments or in internal server communications. Every intermediate certificate that signs a leaf certificate adds to chain of a leaf
+* **Cryptography**: We have symmetric and asymmetric keys, asymmetric encryption solves the key-distribution problem (is more secure against key-interception risks
+because the private key is never shared), whereas symmetric encryption (such as AES-256) actually offers higher mathematical strength per bit than standard asymmetric
+algorithms (such as RSA-2048), they basically have different roles and in practice can not substitute each other, rather, they work together, neither is ideal on its
+own because they’re just impractical or limited in each other’s roles. TLS/SSL secure communications using HTTPS uses both, it does hybrid encryption. You can also do
+hybrid encryption at the application-layer or message-level for encrypting payloads on top of TLS/SSL, this approach is used in apps that require even more secure
+communications because it protects against man in the middle attacks, which could succeed if an attacker gets to bypass TLS with a proxy using a certificate that the
+user's device trusts, in this context hybrid encryption guarantees that the body of the message is encrypted all the way down to the server application, this matters
+because because load balancers, CDNs, API gateways and reverse proxies decrypt TLS (they are known as TLS terminators), and the content would be vulnerable when
+traveling between those and the actual server application consuming the data. Asymmetric keys can sometimes be called private keys/key pairs, private keys and key pairs
+concepts are very related because, a key-pair consists of a private and a public key, the public key is generated from the private key, if the public key is lost for
+any reason it can be just extracted from the private key again, a pure key-pair is used in things like SSH connections, they authenticate the client and the server. You
+could use them to encrypt a text but symmetric keys are preferred for doing this because they're faster and less resource consuming when encrypting texts. The most
+common use case for asymmetric keys is in HTTPS communications, we can generate a TLS/SSL certificate using a private key, that private key is used to create a
+certificate signing request(CSR), the CSR is signed with your private key and contains the public key and your identity, this CSR is then signed by issuer(CA) which
+generates the actual certificate, but they can be self signed, or as I already mentioned, we can request a certificate authority to sign our certificate. Both self
+signed and signed by a CA certificates can act on behalf of a certificate authority, a CA can not exist without a certificate which is always a self signed certificate,
+this certificate is the root certificate, intermediate certificates can issue leaf certificates by signing CSRs on behalf of the CA, this is only possible if the self
+signed certificate or intermediate certificate was issued with the `basicConstraints: CA:TRUE` extension. If you don't create a self signed certificate with that extension
+then you would use it for getting HTTPS communications in development environments or in internal server communications. A chain of certificates is a concept that exists
+due to this parent-child relationship between root and intermediate certificates, intermediate with other intermediate certificates, and an intermediate or root and leaf
 certificate.
 
 
