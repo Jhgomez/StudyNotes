@@ -74,6 +74,19 @@ then you would use it for getting HTTPS communications in development environmen
 due to this parent-child relationship between root and intermediate certificates, intermediate with other intermediate certificates, and an intermediate or root and leaf
 certificate.
 
+* Java Criptography Architecture Engine Classes And Algorithms: In [this](https://docs.oracle.com/en/java/javase/27/security/java-cryptography-architecture-jca-reference-guide.html#GUID-A7EEDE25-C4C0-4C28-94EA-262858AE9212)
+guide we learn that engine classes provide the interface to a specific type of cryptographic service, independent of a particular cryptographic algorithm or provider.
+They can either provide cryptographic operations (for example, encryption, digital signatures, and message digests), or provid generators or converters of cryptographic
+material (keys and algorithm parameters), or provide objects (keystores or certificates) that encapsulate the cryptographic data and can be used at higher layers of
+abstraction. Lets define some of them that are of particular interest to me in the context of Android development:
+
+  * SecureRandom: Used to generate random or pseudo-random numbers.
+  * Cipher: Initialized with keys, these used for encrypting/decrypting data. There are various types of algorithms: symmetric bulk encryption (for example, AES), asymmetric encryption (for example, RSA), and password-based encryption (for example, PBE).
+  * KeyPairGenerator: Used to generate a new pair of public and private keys suitable for use with a specified algorithm.
+  * KeyGenerator: Used to generate new secret keys for use with a specified algorithm.
+  * KeyStore: Used to create and manage a keystore. A keystore is a database of keys. Private keys in a keystore have a certificate chain associated with them, which authenticates the corresponding public key. A keystore also contains certificates from trusted entities.
+
+  You can find the algorithms that each engine class supports [here](https://docs.oracle.com/en/java/javase/27/docs/specs/security/standard-names.html)
 
 * [Biometric Authentication](https://developer.android.com/identity/sign-in/biometric-auth):
 
