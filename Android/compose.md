@@ -1,5 +1,6 @@
 * [SwipeToDismissBox](https://developer.android.com/develop/ui/compose/touch-input/user-interactions/swipe-to-dismiss): Allows you to swipe to dismiss or update an item by
-swiping it to the left or right.
+swiping it to the left or right. In [this advanced animations](https://developer.android.com/develop/ui/compose/animation/advanced) examples we see how to implement, a
+swipe to dismiss functionality using animations
 
 * `NavigationSuiteScaffold` vs `SceneDecoratorStrategy`: Both APIs helps us achieve adaptive layouts, the former seems to only be available in Android and not CMP and is part of the
 `androidx.compose.material3.adaptive.navigationsuite` package, so it is not exactly part of a navigation library on itself however it integrates well with any navigation library,
