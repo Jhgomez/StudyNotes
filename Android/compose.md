@@ -323,6 +323,9 @@ NavigationBar() { }
 and paste different types of data with ClipboardManager [here](https://developer.android.com/develop/ui/views/touch-and-input/copy-paste), when using `ClipboardManager` check
 [here](https://developer.android.com/privacy-and-security/risks/secure-clipboard-handling) how to use it securely
 
+* **Graphics Layer Interesting Capabilities:** Be able to control how the content of a composable, that is using its draw layer, is composited with other content already drawn on
+screen is possible using [Compositing Strategy](https://developer.android.com/develop/ui/compose/graphics/draw/modifiers#compositing-strategy)s.
+
 * **Morph Shapes In Compose:** [Here](https://developer.android.com/develop/ui/compose/graphics/draw/shapes#morph-shapes) we can see compose graphics APIs allows us to morph between
 shapes on the graphics layer(draw pass). [Here](https://developer.android.com/develop/ui/compose/graphics/draw/shapes#morph-button) we have an example animationg on click, with this
 we can achieve Material3 Expressive. This is possible by drawing `Morph(Polygon, Polygon)` objects.
