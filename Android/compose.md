@@ -322,3 +322,10 @@ NavigationBar() { }
 * **SelectableContainer:** Wrapping `Text` composables around it lets you enable text selection, `TextFields` allows text selection out of the box. Check more info on how to copy
 and paste different types of data with ClipboardManager [here](https://developer.android.com/develop/ui/views/touch-and-input/copy-paste), when using `ClipboardManager` check
 [here](https://developer.android.com/privacy-and-security/risks/secure-clipboard-handling) how to use it securely
+
+* **Morph Shapes In Compose:** [Here](https://developer.android.com/develop/ui/compose/graphics/draw/shapes#morph-shapes) we can see compose graphics APIs allows us to morph between
+shapes on the graphics layer(draw pass). [Here](https://developer.android.com/develop/ui/compose/graphics/draw/shapes#morph-button) we have an example animationg on click, with this
+we can achieve Material3 Expressive. This is possible by drawing `Morph(Polygon, Polygon)` objects.
+
+* **Creating Custom Shader Brush:** It is possible to create a more custom shader brush using the approach shown [here](https://developer.android.com/develop/ui/compose/graphics/draw/brush#brush-size),
+you just need to create an object that extends `ShaderBrush` class
