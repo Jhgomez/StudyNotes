@@ -327,5 +327,12 @@ and paste different types of data with ClipboardManager [here](https://developer
 shapes on the graphics layer(draw pass). [Here](https://developer.android.com/develop/ui/compose/graphics/draw/shapes#morph-button) we have an example animationg on click, with this
 we can achieve Material3 Expressive. This is possible by drawing `Morph(Polygon, Polygon)` objects.
 
-* **Creating Custom Shader Brush:** It is possible to create a more custom shader brush using the approach shown [here](https://developer.android.com/develop/ui/compose/graphics/draw/brush#brush-size),
-you just need to create an object that extends `ShaderBrush` class
+* **Shader Brush:**  There is different shader brushes in compose, one interesting capability is using an [image as a brush](https://developer.android.com/develop/ui/compose/graphics/draw/brush#image-as-brush),
+you just need to initialize it like `ShaderBrush(ImageShader(ImageBitmap.imageResource(id = R.drawable.dog)))`. It is possible to create a more custom shader brush using the approach
+shown [here](https://developer.android.com/develop/ui/compose/graphics/draw/brush#brush-size),
+you just need to create an object that extends `ShaderBrush` class.
+
+* [Creating a Custom Painter](https://developer.android.com/develop/ui/compose/graphics/images/custompainter): A Painter object is used to represent something that can be drawn
+(a replacement to the Drawable APIs defined in Android) and influence measurement and layout of the corresponding composable that is using it . A BitmapPainter takes an
+ImageBitmap that can draw a Bitmap on screen. It is possible to create a custom painter, just extend the Painter class, and implement the `onDraw` method, which allows access to
+the `DrawScope` to draw custom graphics. You can also override the `intrinsicSize`, which will be used to influence the Composable that it is contained in.
