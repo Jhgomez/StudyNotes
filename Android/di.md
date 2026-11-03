@@ -25,6 +25,10 @@ You can declare bindings using any of these methods
 
 * Using `@Inject` in constructors
 * Using `@Provides` and `@Binds` in modules(classes or interfaces that are annotated with `@Module`)
+* Creating an abstract method directly inside a component returning a scoped annotated or unscoped class with a constructor binding (this is the only way adding
+scope annotations to a class have effect otherwise the annotation is just some sort of documentation)
+* Injecting through a component's factory using an abstract method inside the factory. This is truly an implicit scoped binding (if the component is annotated
+with a scope)
 
 TODO explain maps and sets
 
