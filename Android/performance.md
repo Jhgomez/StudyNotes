@@ -10,6 +10,65 @@ You should:
 
 Be aware calling `reportFullyDrawn()` by using the `FullyDrawnReporter` or `ReportDrawn()` lets the system know when the app is ready to be interacted with by a user. This enables access to the TTFD metric. This metric can be used for benchmarking and enables improved Startup Profile creation.
 
+# Memory Management 
+Android processes share memory. To start a new app process, the system forks the Zygote process then loads and runs the app's code in the new process. This approach allows most of the RAM pages allocated for framework code and resources to be shared across all app processes. There is other ways it shares memory but the point is
+that due to the extensive use of shared memory, determining how much memory your app is using requires care, but there are techniques to determine the app's memory
+use as described in the [create a heap dump](https://developer.android.com/studio/profile/capture-heap-dump) documentation.
+
+To determine the memory footprint for an application, any of the following metrics may be used:
+
+* Resident Set Size (RSS): The number of shared and non-shared pages used by the app
+* Proportional Set Size (PSS): The number of non-shared pages used by the app and an even distribution of the shared pages (for example, if three processes are sharing 3MB, each process gets 1MB in PSS)
+* Unique Set Size (USS): The number of non-shared pages used by the app (shared pages are not included)
+
+The heap of a process starts at the required size by the app and then it can grow dinamically but only up to a limit tha the system defines for each app. The exact heap
+size limit varies between devices based on how much RAM the device has available overall. If your app has reached the heap capacity and tries to allocate more memory, it 
+can receive an `OutOfMemoryError` The logical size of the heap is not the same as the amount of physical memory used by the heap. When inspecting your app's heap, 
+Android computes a value called the Proportional Set Size (PSS), which accounts for both dirty and clean pages that are shared with other processes—but only in an amount
+that's proportional to how many apps share that RAM. This (PSS) total is what the system considers to be your physical memory footprint. In the previously mentioned 
+section, "Create a Heap Dump", you can learn how to read this info. 
+
+`getMemoryClass()` method returns an integer indicating the number of megabytes available for your app's heap, you can use this info for example, to determine how much data is safe to keep in a cache. 
+
+Apps in the background can be cached, a cached process that retains resources that it currently does not need affects the system's overall performance. The less memory
+your app consumes while in the cache, the better its chances are not to be killed and to be able to quickly resume. 
+
+## Stressful App Test
+`stressapptest` is a memory interface test that helps create realistic, high-load situations to test various memory and hardware limitations for your app. With the 
+ability to define time and memory limitations, this allows you to write instrumentation to verify real-world encounters of high-memory situations. For example, use the
+following set of commands to push the static library in your data file system, make it executable, and run a stress test for 20 seconds of 990 MBs:
+
+```
+adb push stressapptest /data/local/tmp/
+    adb shell chmod 777 /data/local/tmp/stressapptest
+    adb shell /data/local/tmp/stressapptest -s 20 -M 990
+```
+
+`stressapptest` can be used to request memory allocations larger than freely available. This type of request can raise various alerts, which you should be aware of from the development side. 
+
+# [Memory allocation among processes](https://developer.android.com/topic/performance/memory-management)
+
+The Android platform runs on the premise that free memory is wasted memory. It tries to use all of the available memory at all times. For example, the system keeps apps
+in memory after they've been closed so the user can quickly switch back to them. For this reason, Android devices often run with very little free memory. Memory 
+management is vital to properly allocate memory among important system processes and many user applications.
+
+On Android, storage isn’t used for swap space like it is on other Linux implementations since frequent writing can cause wear on this memory, and shorten the life of the storage medium.
+
+The system can move annnonymous dirty pages and dirty pages to zRAM, dirty pages are pages that contain ram that is a copy of a file which original exists on storage,
+the system would not be able to restore these pages so it doesn't delete them when it needs to free memory up and instead it compresses them into the zRAM. It can be
+decompressed later, however compressing and decompressing can cause UI janks this whole process is responsibility of the "kernel swap daemon" (kswapd), however when
+the system can not free more memory by compressing pages, it then starts killing processes which is responsiblity of "Low-memory killer" (LKM) when this happens the
+system uses `onTrimMemory()` to notify an app that memory is running low and that it should reduce its allocations. If this is not sufficient, the kernel starts 
+killing processes to free up memory. The systems kills processes based on a score, processes with a high score are killed first. Background apps are first to be killed,
+and system processes are last to be killed. Background apps are killed first, then the most recent previous app that was used is killed (you can think of it as the last app to be killed in the background apps list), then the home app, then the services started by apps, Perceptible apps (not foreground apps but are perceptible like 
+listening to music), then the Foreground app, then framework services such as telephony and wi=fi, then the system process, then very low level processes used by the 
+system like `kswapd`
+
+You should always diagnose heavy memory critical user journeys, these include 
+
+* Loading and manipulating complex media or large bitmaps.
+* Hosting WebView instances. See here for how to [manage and diagnose webview memory](https://developer.android.com/develop/ui/views/layout/webapps/manage-webview-memory)
+
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
 
