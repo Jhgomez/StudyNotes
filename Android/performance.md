@@ -69,6 +69,11 @@ You should always diagnose heavy memory critical user journeys, these include
 * Loading and manipulating complex media or large bitmaps.
 * Hosting WebView instances. See here for how to [manage and diagnose webview memory](https://developer.android.com/develop/ui/views/layout/webapps/manage-webview-memory)
 
+## Avoid memory churn
+Garbage collection events don't affect your app's performance. Numerous garbage collection events ocurring in a short period of time can quickly drain the battery as
+well as marginally increase the time to set up frames due to necessary interactions between the garbage collector and app threads. The more time the system spends on
+garbage collection, the faster the battery drains.
+
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
 
@@ -355,10 +360,12 @@ model that you throw anything at
 # TIps
 
 * For bitmaps that are used like thumbnails or just don't need transparency set the Bitmap config to use RGB565 instead the default ARGB4X since the default uses
-  twice as much as the suggested one
+  twice as much as the suggested one. In Coil, you can use the `bitmapConfig` property to configure it.
 * Glide and Coil helps you downscale and use a bitmap pool for more performant memory usage
 * You can find 	duplicated bitmap usage using the AS profiler with a "Analyze Memory Usage" profile, this gives you a Heap dump, duplicated bitmaps are highlighted
   automatically
+* Use the APK analyzer tool to ensure that you aren't packaging larger than required image files. Reduce the sizes or consider placing the images on a server and only
+  downloading them when required.
 * The profiler in android studio has a "Find memory leaks with LeakCanary" option which will help you find memory leaks
 * `ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles prgramatically, it gives you two types of profile collection
   `App-driven` and `Event-driven`, in the former you define the start and the end of the collection process and the latter are automatically collected by the system. As
@@ -373,6 +380,11 @@ model that you throw anything at
   so our app can free memory more effectively to avoid the OS killing our app and or slow user experiences due to page swapping, register in `Activity`, `Fragment`,
   `Service`, or even your custom `Application` class (Using it in the Application class is highly effective for global cache management) for the `onTrimMemory()`
   callback. This is useful due to the RAM behavior explained [here](https://android-developers.googleblog.com/2026/08/app-broader-memory-limits.html), where you can
-  see compressing and decompressing pages can prevent immediate eviction but adds CPU overhead, which can result in noticeable UI jank and experience slowdowns.
-* Crashlytics version 20.1.0 introduces additional debug data to help you catch, prioritize, and fix Out-Of-Memory exceptions and memory limiter kills. 
+  see compressing and decompressing pages can prevent immediate eviction but adds CPU overhead, which can result in noticeable UI jank and experience slowdowns. And
+  look [here](https://developer.android.com/topic/performance/memory/manage-app-memory#release) for the official documenation
+* Crashlytics version 20.1.0 introduces additional debug data to help you catch, prioritize, and fix Out-Of-Memory exceptions and memory limiter kills.
+* Add LeakCanary library to your app to receive Logcats when a possible memory leak happens when activities, fragments, viewmodels, services are destroyed
+* Use `SparseArray`, `SparseBooleanArray`, and `LongSparseArray` instead of `Hashmap`
+* Use lite protobufs instead of regular ones as regular ones generates more code
+  
   
