@@ -30,8 +30,8 @@ scope annotations to a class have effect otherwise the annotation is just some s
 * Injecting through a component's factory using an abstract method inside the factory. This is truly an implicit scoped binding (if the component is annotated
 with a scope)
 * A module can include other modules which grants access to the bindings declared in the included module to the hosting module.
-
-TODO explain maps and sets
+* Multibindings, dagger allows you to bind several objects into a collection even when the objects are bound in different modules using multibindings. You
+  can have different implementations to be grouped into a single set or map
 
 You can consume the bindings with any of the following methods
 * Field Injection, this requires your component to create an abstract method with the class that contains the injected fields as a parameter, you then should
@@ -129,6 +129,71 @@ fun provideHotPlateHeater(): Heater {
 }
 ```
 
+# Multibindings
+Now that we know more about bindings, lets see this more advance way of declaring bindings. You can group different implementations of a typ4 or different type values
+into a set or a map. To group them into a set just add `@IntoSet` to your bindings `@Porvides`, `@Binds`. You can also pass several values at once using  
+`@ElementsIntoSet`. You can consume bindings grouped into a set just by setting a dependency on a set of the object type. As mentioned before, the component can expose
+the bindings that its modules provide by adding abstract methods returning those binds types inside the component, those abstract methods can also return the set. A
+`Provider` or `Lazy` can wrap the set but the set can not wrap those types. You can have multiple set of the same type of object, you do that by adding a qualifier
+annotation to the bindings that add to the set, then you can consume the set just by adding the qualifier to the places were that set is injected. 
+
+To contribute an entry to a multibound map, add a method to a module that returns the value and is annotated with `@IntoMap` and with another custom annotation that 
+specifies the map key for that entry. Keys must be unique. Unlike Set multibindings, duplicate keys are not allowed in Map multibindings. And to be able to create
+multiple maps of the same type you use the qualifier annotation, just like with sets. Then you can inject (consume the bindings grouped into a map) either the map 
+itself (Map<K, V>) or a map containing value providers (`Map<K, Provider<V>>`, when you don’t want all of the values to be instantiated). Dagger includes some keys
+annotations like `@Provides @IntoMap @StringKey("foo")` or `@Provides @IntoMap @ClassKey(Thing.class)`, in a component you could expose those maps like 
+`Map<String, Long> longsByString()` and  `Map<Class<?>, String> stringsByClass()`
+
+You can create your own create your own key annotations like 
+
+```
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER
+)
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey
+@interface MyNumberClassKey {
+  Class<? extends Number> value();
+}
+```
+
+in Kotlin 
+
+```
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER
+)
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey
+annotation MyNumberClassKey(val value: KClass<out Number>)
+```
+
+you use them to add bindings to the map like the following
+
+```
+@Provides @IntoMap
+@MyNumberClassKey(Integer.class)
+static Integer provideIntegerValue(AnotheBinding binding) {
+  return binding.aProperty;
+}
+```
+
+or 
+```
+@Provides @IntoMap
+@MyNumberClassKey(Integer.class)
+fun provideIntegerValue(binding: AnotheBinding): Integer {
+  return binding.aProperty
+}
+```
+
+and them consume the map with the following syntax `Map<Class<? extends Number>, String> stringsByNumberClass()` in java and 
+`fun stringsByNumberClass(): Map<Class<out Number>, String> ` or just as a constructor parameter in constructor bindnigs 
+`@Inject constructor (private val numbers: @JvmSuppressWildcards Map<Class<out Number>, String>)`. 
+
+With Kotlin sources, the type argument of a multibinding set may end up being replaced with a wildcard type, i.e. `Foo` turns into `? extends Foo`. In such cases 
+you might get an error like the following: "[Dagger/MissingBinding] Map<String, ? extends Foo> cannot be provided without an @Provides-annotated method". To fix 
+such an error you need to annotate your element with `@JvmSuppressWildcards` at the injection site, e.g. `@Inject lateinit var foo: Map<String, @JvmSuppressWildcards Foo>`.
 
 
 
