@@ -310,3 +310,10 @@ model that you throw anything at
   the OOM this manager monitors for out of memory errors, when this occurs a heap dump is created also, so this is more powerful than just a stack trace. This manager
   lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report to your
   servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
+* [This Document](https://android-developers.googleblog.com/2026/06/prioritizing-memory-efficiency-steps-for-android-17.html#Trim): Shows us how to register a callback
+  so our app can free memory more effectively to avoid the OS killing our app and or slow user experiences due to page swapping, register in `Activity`, `Fragment`,
+  `Service`, or even your custom `Application` class (Using it in the Application class is highly effective for global cache management) for the `onTrimMemory()`
+  callback. This is useful due to the RAM behavior explained [here](https://android-developers.googleblog.com/2026/08/app-broader-memory-limits.html), where you can
+  see compressing and decompressing pages can prevent immediate eviction but adds CPU overhead, which can result in noticeable UI jank and experience slowdowns.
+* Crashlytics version 20.1.0 introduces additional debug data to help you catch, prioritize, and fix Out-Of-Memory exceptions and memory limiter kills. 
+  
