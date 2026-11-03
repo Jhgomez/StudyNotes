@@ -85,4 +85,47 @@ the a binding with a scoped annotation inside a module, the unscoped binding tur
 the component where the module lives. Bewary the paremeterles binding `@Binds` method cannot be scoped or qualified, and the return type cannot have a scoped 
 `@Inject` constructor.
 
-f
+## Components
+A component can have a scoped or not, if it has a scoped its modules can only declare bindings with the same scope or unscoped bindings. Components may have multiple 
+scope annotations applied. This declares that they all refer to the same scope, and so that component may include scoped bindings with any of the scopes it declares.
+
+It is your responsibility to add instnatiate components correctly. That means, for example with a component with the singleton scope, that you should instantiate it
+in a class that lives throught the application life cycle, in android that is the application class. You could miss use such component if you instantiate it more than
+once, it wouldn't be a singleton
+
+## More Ways To Manage Bindings
+### @Qualifier
+Sometimes we have more than one implementation of a class that we want to inject but we don't want to be injected as the implementation, instead just the interface
+and if we have two implementations this can be conflicting, but we can use the `@Qualifier` annotation, but we need to create our own qualifiers. A qualifier is
+any annotation that itself has a @Qualifier annotation, this means we need to create our own annotations, in Java we do
+
+```
+@Qualifier
+@Documented
+@Retention(RUNTIME)
+public @interface Named {
+  String value() default "";
+}
+```
+
+in Kotlin 
+
+```
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ContextDispatcher(val dispatcher: Dispatcher)
+```
+
+There is actually a built in Qualifier, `@Named`, in filed injection is used like `@Inject @Named("water") Heater waterHeater;`. and in binding you use them like
+
+```
+@Provides 
+@Named("hot plate") 
+fun provideHotPlateHeater(): Heater {
+  return ElectricHeater(70)
+}
+```
+
+
+
+
