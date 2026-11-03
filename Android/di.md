@@ -13,12 +13,12 @@ unscoped or scoped (it has to match the scope of the component that it will be a
 have much of a purpose but you can create them. So the relationship we have is ( "->" means lives in), "unscoped bindings" -> anywhere (because dagger just knows
 how to create instances of these classes but each call to this bindings create a new instance, so they can be injected to other bindings, an instance of it can
 be turned into a scoped binding if declared inside a module), "scoped bindings" -> modules -> components, but also implicit "scoped bindings" can be created if
-they are added directly in the component, using either a constructor binding (a constructor annotated with @Inject but also annotated with the scope) and creating 
-a function that returns it inside the component (it would be an abstract function) this creates an implicit scoped binding but the scope annotation in a class
-only works in this scenario, it doesn't has any effect inside a module unless the binding is annotated with the scope, the other way to create an implicit binding
-is using a builder factory in your component (an inteface annotated with `Component.Factory` can declare a method with parameters annotated with `@BindsInstance`
-this creates an implicit scoped binding, btw this last option is used to pass objects that we can not create but want to inject into the graph. Lets see more
-info in detail
+they are added directly in the component, using either a constructor binding (a constructor annotated with @Inject but also annotate the class with the scope) and 
+creating a function that returns it inside the component (it would be an abstract function) this creates an implicit scoped binding, actually you don't even need to 
+add it to the component explicitly, as long as you add the scope to the class it will be tied to the component declaring the same scope, the other way to create an 
+implicit binding is using a builder factory in your component (an interface annotated with `Component.Factory` can declare a method with parameters annotated with 
+`@BindsInstance` this creates an implicit scoped binding, btw this last option is used to pass objects that we can not create but want to inject into the graph. 
+Lets see more info in detail
 
 ## Ways Of Declaring Bindings vs Ways of Getting Existing Bindings Injected into a class(Injecting dependencies)
 You can declare bindings using any of these methods
@@ -71,6 +71,9 @@ a new instance is produced, any component annotated with whatever scope is annot
 but it means it can only consume unscoped bindings meaning that it will produce a new instance of whatever object it declared bindings for meaning that declaring
 an unscoped component doesn't even makes any sense instead you would rather just declare the constructor binding, and also know that a constructor unscoped binding
 can only consume other unscoped bindings, this means you can not declare a dependency on a scoped binding in a constructor unscoped binding.
+
+The constructors with this annotation can also be scoped. If we add the scope annotation to the class (not the constructor) then the class is tied to the 
+lifecycle of the component that declares the same scope
 
 ## @Povides, @Binds inside modules
 A module is either a class, object(specific to kotlin, it is a singleton class), interface or abstract class that is annotated with `@Module`. `@Provides` and
