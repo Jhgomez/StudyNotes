@@ -1,6 +1,15 @@
 # [Get your App Performance Score](https://developer.android.com/topic/performance/app-score#static-score)
 The App Performance Score provides app developers with static and dynamic assessments. Here we are instructed on values we should be monitoring like app startup time, existensce of baselie profiles
 
+You should:
+
+* Meassure App start up time
+* Measure app startup time from a notification
+* Measure animation and scroll rendering
+* Measure full screen rendering issues,  how long it takes for the screen to be fully rendered and become interactive
+
+Be aware calling `reportFullyDrawn()` by using the `FullyDrawnReporter` or `ReportDrawn()` lets the system know when the app is ready to be interacted with by a user. This enables access to the TTFD metric. This metric can be used for benchmarking and enables improved Startup Profile creation.
+
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
 
@@ -284,3 +293,20 @@ to be working Vulkan under the hood. Android XR should be using the built it 3D 
 compression to replace textures of materials, we are talking about really tiny networks that you know fit in a few lines of code in the shader, this is a specific problem being solved instead of having a big 
 model that you throw anything at
 
+# TIps
+
+* For bitmaps that are used like thumbnails or just don't need transparency set the Bitmap config to use RGB565 instead the default ARGB4X since the default uses
+  twice as much as the suggested one
+* Glide and Coil helps you downscale and use a bitmap pool for more performant memory usage
+* You can find 	duplicated bitmap usage using the AS profiler with a "Analyze Memory Usage" profile, this gives you a Heap dump, duplicated bitmaps are highlighted
+  automatically
+* The profiler in android studio has a "Find memory leaks with LeakCanary" option which will help you find memory leaks
+* `ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles prgramatically, it gives you two types of profile collection
+  `App-driven` and `Event-driven`, in the former you define the start and the end of the collection process and the latter are automatically collected by the system. As
+  of 11/3/27 the events it tracks automatically are ANRs, APP_FULLY_DRAWN, KILL_TASK_MANAGER, KILL_RECENTS, KILL_FORCE_STOP, COLD_START, KILL_EXCESIVE_CPU_USAGE, ANOMALY,
+  OOM (out of memory), with the android 17 restriction on memory usage the ANOMALY trigger is really useful because it identifies performance anomalies detected by the
+  system, it supports memory and binary spam, if a memory usage exceeds a threshold it creates a heapdump which allows you to use this trigger to examin resouce
+  allocations and the app state to identify the root cause. I the app is terminated due to violating the android 17 memory usage limit it will provide a heap dump. With
+  the OOM this manager monitors for out of memory errors, when this occurs a heap dump is created also, so this is more powerful than just a stack trace. This manager
+  lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report to your
+  servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
