@@ -34,15 +34,24 @@ with a scope)
 TODO explain maps and sets
 
 You can consume the bindings with any of the following methods
-* Field Injection, this requires you component to create an abstract method with the class that contains the injected fields as a parameter, you then should
-use an instance of the component that contains the method and call the method passing the reference to the class that you want to inject the bindings to.
+* Field Injection, this requires your component to create an abstract method with the class that contains the injected fields as a parameter, you then should
+  use an instance of the component that contains the method and call the method passing the reference to the class that you want to inject the bindings to.
+  Another way to do this field inejction is using `MembersInjector<AClassWIthFieldInjection>`, for this you declare an abstract function in the component like
+  `fun pluginInjector(): MembersInjector<AnalyticsPlugin>`
 * You can also create abstract methods inside the component, that returns the bindings that where declared in its modules, and then using the instance of the
-* component call those methods, but also the methods adding a binding directly to the component as mentioned above.
+  component call those methods, but also the methods adding a binding directly to the component as mentioned above.
 * But the previous ways of consuming bidngs is only possible in classes where an instance of the component exists and therefore is the entry point to a component's
-graph at runtime, but in classes where creating an instance of the component is not practical or doesn't make sense, we can use constructor injection,
-you just need to declare the bindings you need inside a constructor that is annotated with `@Inject`
-* This options sits in between of granting access to a binding for consumption and declareing the binding, and it is the way a binding is provisioned, what I
-mean is that methods 
+  graph at runtime, this is needed because a framework entry point (a class that you may define but you don't instantiate, is the framework who isntantiate it like
+  an activity or the main method in java) may have fields that need to be injected or just generate instances of bindings, is what I talked about in the previous
+  points. But in classes where creating an instance of the component is not practical or doesn't make sense, we can use constructor injection,
+  you just need to declare the bindings you need inside a constructor that is annotated with `@Inject`
+* You can modify the behavior of how a binding is provided when consumed by wrapping the binding inside provision method, these are explained a little more
+  [here](https://dagger.dev/api/latest/dagger/Component.html#provision-methods). These are `Provider<T>` and `Lazy<T>`, the type param represents the binding
+  type which can be scoped or unscoped, if scoped the behavior is basically the same for both since they have to respect the scope so a single instance is
+  created lazily with either or and then this same instance is returned whenever `get()` is called, but for unscoped bindings this you can really see the
+  difference, `Provider` returns a new instance everytime `get()` is called on the provider (even on the same instance of provider) but `lazy` only returns
+  one instance per instance of `lazy` this means that different instances of `lazy` generates differents instances of the binding but both, `Lazy` and `Provider`,
+  instantiate the class lazily. A provider can contain a lazy method
 
 TODO explain field injection, constuctor, function, Provider, Lazy and MembersInjector
 
