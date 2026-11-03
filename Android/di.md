@@ -29,8 +29,20 @@ You can declare bindings using any of these methods
 scope annotations to a class have effect otherwise the annotation is just some sort of documentation)
 * Injecting through a component's factory using an abstract method inside the factory. This is truly an implicit scoped binding (if the component is annotated
 with a scope)
+* A module can include other modules which grants access to the bindings declared in the included module to the hosting module.
 
 TODO explain maps and sets
+
+You can consume the bindings with any of the following methods
+* Field Injection, this requires you component to create an abstract method with the class that contains the injected fields as a parameter, you then should
+use an instance of the component that contains the method and call the method passing the reference to the class that you want to inject the bindings to.
+* You can also create abstract methods inside the component, that returns the bindings that where declared in its modules, and then using the instance of the
+* component call those methods, but also the methods adding a binding directly to the component as mentioned above.
+* But the previous ways of consuming bidngs is only possible in classes where an instance of the component exists and therefore is the entry point to a component's
+graph at runtime, but in classes where creating an instance of the component is not practical or doesn't make sense, we can use constructor injection,
+you just need to declare the bindings you need inside a constructor that is annotated with `@Inject`
+* This options sits in between of granting access to a binding for consumption and declareing the binding, and it is the way a binding is provisioned, what I
+mean is that methods 
 
 TODO explain field injection, constuctor, function, Provider, Lazy and MembersInjector
 
@@ -53,10 +65,15 @@ can only consume other unscoped bindings, this means you can not declare a depen
 
 ## @Povides, @Binds inside modules
 A module is either a class, object(specific to kotlin, it is a singleton class), interface or abstract class that is annotated with `@Module`. `@Provides` and
-`@Binds` is the way you add bindings in a module is the preferred way to declare bindings because Dagger only needs the module at compile time, and can avoid class loading the module at runtime.
-`@Binds` can only be declared in abstract methods and therefore the modules where they're declared can only be interfaces or abstract classes, 
-, but you should
-prefer interface or abstract class because when you use them Dagger only needs the module at compile time which means it doesn't need to load the class at 
-runtime which also means that it is more performant, `@Bind`s should be preferred over `@Provides`,  they're abstract methods and hence the preference on 
-interfaces and , everything that `@Binds` does can be done with `@Provides` but not the way around,
-you'll understand why in a second. 
+`@Binds` is the way you add bindings in a module. `@Binds` is the preferred way to declare bindings because Dagger only needs the module at compile time, and 
+can avoid class loading the module at runtime. `@Binds` can only be declared in abstract methods and therefore the modules where they're declared can only be 
+interfaces or abstract classes, not loading a class is delivers more performance. Everything that `@Binds` does can be done with `@Provides` but not the way 
+around, this is becasue, as mentioned, `@Binds` are abstract methods and therefore don't have a body, that is why `@Provides` is the only way to inject objects
+from a third party lirbary or SDK which we can instantiate on demand but we can't modify the class declaration source code. One interesting way of using
+`@Binds` is you can explicitly declare a binding in a module using a zero-parameter `@Binds` method but only if the class constructor is annotated with `@Inject`.
+You can turn an uscoped binding that is declared only using its constructor that is annotated with an `@Inject` into an effectively scoped binding if you declare
+the a binding with a scoped annotation inside a module, the unscoped binding turns into a effectively scoped binding inside the component and when consumed inside
+the component where the module lives. Bewary the paremeterles binding `@Binds` method cannot be scoped or qualified, and the return type cannot have a scoped 
+`@Inject` constructor.
+
+f
