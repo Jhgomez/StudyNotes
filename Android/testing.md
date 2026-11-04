@@ -19,3 +19,14 @@ this to another build type by using the testBuildType property in your module-le
 
 https://developer.android.com/studio/test
 
+* Espresso vs UIAutomator: Android engineering teams combine both frameworks in the same test suite. For example, you can use Espresso to navigate through your app's internal
+  screens rapidly, and then invoke UI Automator the moment a system permission dialog or system notification appears.
+
+  | ---------------- | -------------- |
+  | Feature	Espresso | 	UI Automator |
+  | Scope	Single app (in-app UI) |	Cross-app and system-level UI |
+  | Execution Process	Runs in-process alongside the app |	Runs out-of-process via the accessibility layer |
+  | Speed	Fast (direct view hierarchy access)	| Slower (inter-process communication overhead) |
+  | System/OS Access	Cannot touch system UI, permissions, or other apps | Can interact with notification shade, permissions, and settings |
+  | Synchronization	Automatic (via IdlingResource) |	Manual/explicit waiting often required 
+
