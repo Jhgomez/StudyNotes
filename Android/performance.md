@@ -21,6 +21,8 @@ To determine the memory footprint for an application, any of the following metri
 * Proportional Set Size (PSS): The number of non-shared pages used by the app and an even distribution of the shared pages (for example, if three processes are sharing 3MB, each process gets 1MB in PSS)
 * Unique Set Size (USS): The number of non-shared pages used by the app (shared pages are not included)
 
+[Here](https://developer.android.com/topic/performance/memory/guide/concepts#rss-pss-uss) is a visual representation of these distributions.
+
 The heap of a process starts at the required size by the app and then it can grow dinamically but only up to a limit tha the system defines for each app. The exact heap
 size limit varies between devices based on how much RAM the device has available overall. If your app has reached the heap capacity and tries to allocate more memory, it 
 can receive an `OutOfMemoryError` The logical size of the heap is not the same as the amount of physical memory used by the heap. When inspecting your app's heap, 
