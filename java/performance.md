@@ -301,7 +301,8 @@ In this case we will use GCViewer, any GC log that your JVM produces you can loa
 Using a GC Analyzer will let answer the **"Do I have a leak?"** question which is important and can be a starting point
 
 ## JPS and JMAP Java Utilities
-This tools will let us answer the **"What is leaking(which classes)?"** question
+This tools will let us answer the **"What is leaking(which classes)?"** question. Be aware that `jcmd` is an official replacement to `jmap`, the histrograms mentioned here are basically GC histrograms `jcmd <pid> GC.class_histogram`
+or heap dumps `jcmd <pid> GC.heap_dump leak.hprof` (you need somehting like VIsualVM to read these heap dumps)
 
 1. Run the `jps` command from your terminal, if you have the JAVA_HOME or the Java's bin directory on your PATH environment variable you can just execute it without the full address to the bin directory, this will give you the java processes list along with their ID number that are running in your computer
 
@@ -319,6 +320,8 @@ Heap dump is basically a description of the heap at a certain moment in time and
 3. Other way to do a heap dump JMX:com.sun.management.HotSpotDiagnostic.dumpHeap(), you can also do it from jconsole, visualvm, and even programmatically
 
 4. Other way to do it is with the java utility `jcmd`, use command `jcmd <pid> GC.heap_dump <file_path>`
+5. JMX Extensions defines a way to interact with managed beans "MBeans", there is two implementations that I know, `jconsole` is a JDK tool, and JMX console which lives inside JMC. You can do heap dumps with it alos but you have
+   to open your JVM to it.
 
 ### Heap Dump Viewers
 You need a profiler and some utilities for this. you can try "Ecplipse MAT". You can just load a heap dump using its UI. Just open it and it can analyze it and identify possible suspects. Eclipse MAT is a great tool that you can use to start drilling down to identify the instance in the app that is causing this problem
