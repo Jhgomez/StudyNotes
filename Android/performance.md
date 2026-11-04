@@ -40,8 +40,8 @@ following set of commands to push the static library in your data file system, m
 
 ```
 adb push stressapptest /data/local/tmp/
-    adb shell chmod 777 /data/local/tmp/stressapptest
-    adb shell /data/local/tmp/stressapptest -s 20 -M 990
+adb shell chmod 777 /data/local/tmp/stressapptest
+adb shell /data/local/tmp/stressapptest -s 20 -M 990
 ```
 
 `stressapptest` can be used to request memory allocations larger than freely available. This type of request can raise various alerts, which you should be aware of from the development side. 
@@ -81,6 +81,22 @@ with a single thread of execution. By default, all components of the same applic
 If an application component starts and there is already a process for that application, because another component from the application already started, then the 
 component starts within that process and uses the same thread of execution. However, you can arrange for different components in your application to run in separate 
 processes, and you can create additional threads for any process.
+
+# [Inspect your app's process state and budget](https://developer.android.com/topic/performance/memory/app-memory-budgets#inspect-process-state)
+Starting Android 17 apps can declare memory budgets. You can define different budgets for when your app is the inte foreground, perceptible and background. One way to 
+inspect your app's active process state and importance during development is by querying Activity Manager using ADB:
+
+```
+adb shell dumpsys activity processes <package-name>
+```
+
+To inspect your app's current resident memory usage:
+```
+adb shell dumpsys meminfo <package-name>
+```
+
+an example for a multiprocess streaming music app using memory budgets is [here](https://developer.android.com/topic/performance/memory/app-memory-budgets#multi-process-budgets)
+
 
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
