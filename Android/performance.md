@@ -74,6 +74,14 @@ Garbage collection events don't affect your app's performance. Numerous garbage 
 well as marginally increase the time to set up frames due to necessary interactions between the garbage collector and app threads. The more time the system spends on
 garbage collection, the faster the battery drains.
 
+# [Processes and Threads](https://developer.android.com/guide/components/processes-and-threads)
+When an application component starts and the application doesn't have any other components running, the Android system starts a new Linux process for the application 
+with a single thread of execution. By default, all components of the same application run in the same process and thread, called the main thread.
+
+If an application component starts and there is already a process for that application, because another component from the application already started, then the 
+component starts within that process and uses the same thread of execution. However, you can arrange for different components in your application to run in separate 
+processes, and you can create additional threads for any process.
+
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
 
