@@ -453,6 +453,15 @@ model that you throw anything at
   occurs using the the `ProfilingManager` and registering for a result callback that returns the heap dump when the app is started again. Since the OOM memory or onTrim
   callback be caused due to a memory leak it is a good starting point to troubleshoot potential leaks.
 
+* Traces vs Profiles: Really hard to explain but at least in this context we have System traces, I already explained what they are previously, using the AS profiler or
+  perfetto we can trace throught time cpu usage, what a thread is doing, how thread and processes work together, frame rate, dropped frames. Profiles, in AS we have
+  the memory profiler, CPU profiler this is weird because this can be an alias for system tracing, network profiler, and energy profiler. Flame charts and call charts
+  plot method execution CPU time consumed over a duration (period of time). Besides tracing and profiling we have snapshots which are just profiles at a specific point
+  in time, these are Heap Dumps and Stack Traces
+
+* Always profile a Release or Benchmark build with <profileable android:shell=”true”/>. This ensures R8 optimizations are active while granting the Android Studio
+  Profiler full visibility into CPU and memory allocations.
+
 
 Heap Dump Vs Allocation Tracking, Sampling vs Instrumenting
   
