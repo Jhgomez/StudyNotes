@@ -425,5 +425,21 @@ model that you throw anything at
   file in a package-specific directory on external storage, get the file with `adb pull /sdcard/Android/data/com.your.package/files/my_app_trace.trace` and drag and drop
   it in AS profiler. An interesting code is `Coreographer.getInstance().postFrameCallback { handler.postAtFronOfQueue { Debug.stopMethodTracing() } }`, this will help
   you something similar to a trace (over time) and a stack trace.
+
+* Emulator vs Physical Device: For performance tracing use a physical device, the more constrained the phone is the better so you can feel first-hand the parts of the
+  app that can drop frames and cause UI janks, an emulator is not the best for performance tracing because they have the computer's hardware available which is not
+  realistic, phone's are generally not as powerful as desktops and laptops but also the performance might depend on what you're running on your machine, so deffinitely
+  use a physical device. For memory profiling neither one makes a difference.
+
+* For CPU profiling/tracing you're app should be marked as profileable, this configuration is similar to a release build, we can't use a debuggagle build because it is
+  not optimized because this is the only way for you to be able to step into the execution to debug your app at runtime, it comes at a performance cost but the benefits
+  to developing your app are greater. Profileable builds will not have allocation tracking available, they don't have access to the same level of debug hooks as debuggable
+  builds. So you should have different build types, one for release, one for debug it is for development, as usual, it can also be used to profile memory usage, allocation
+  tracking, and one for profileable, this profileable variant can be used for macrobenchmark tests, looking performance characteristics, for optimizing CPU usage, fix janks,
+  lower battery compsumption. Macrobenchmark can make sure the app is as closed to a release build as possible, it can make sure the test run just as if the code was
+  already precompiled either by AOT or JIT (JIT turn in AOT later)
+
+
+Heap Dump Vs Allocation Tracking, Sampling vs Instrumenting
   
   
