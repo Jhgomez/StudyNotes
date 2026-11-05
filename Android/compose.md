@@ -342,3 +342,6 @@ you just need to create an object that extends `ShaderBrush` class.
 (a replacement to the Drawable APIs defined in Android) and influence measurement and layout of the corresponding composable that is using it . A BitmapPainter takes an
 ImageBitmap that can draw a Bitmap on screen. It is possible to create a custom painter, just extend the Painter class, and implement the `onDraw` method, which allows access to
 the `DrawScope` to draw custom graphics. You can also override the `intrinsicSize`, which will be used to influence the Composable that it is contained in.
+
+* `TabRow` vs `PrimaryTabRow` vs `ScrollableTabRow`: The former was the early implementation of a tab layout in compose, the latter two are the new ones, you can combine them
+  with `HorizontalViewPager` for a full experience
