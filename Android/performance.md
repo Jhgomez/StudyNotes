@@ -412,5 +412,13 @@ model that you throw anything at
 * Add LeakCanary library to your app to receive Logcats when a possible memory leak happens when activities, fragments, viewmodels, services are destroyed
 * Use `SparseArray`, `SparseBooleanArray`, and `LongSparseArray` instead of `Hashmap`
 * Use lite protobufs instead of regular ones as regular ones generates more code
+
+* System traces tells us everything that is happening in the device, this information helps us understand when and what our application is doing, for example it can show
+  us how long our app took to star,  when a thread is doing blocking I/O, it allows you to identify slow operations and understand how different threads work together.
+  Once we have identify places where things are not working as expected we have to understand why, so we do Stack sampling, Stack sampling also shows us whats happening
+  but also helps us understand why, but collecting those traces have a performance impact, so you can't rely solely on them to understand how the apps is actually doing.
+  You can take stack samples using the sampling profiler, beware that if you collect stack samples without a systrace first you may be inspecting the wrong information
+  for example you could be sampling the wrong thread, not the thread which is actually doing the work you're concerned about. Stack samples shows proportions not timing
+  info
   
   
