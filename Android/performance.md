@@ -437,7 +437,17 @@ model that you throw anything at
   builds. So you should have different build types, one for release, one for debug it is for development, as usual, it can also be used to profile memory usage, allocation
   tracking, and one for profileable, this profileable variant can be used for macrobenchmark tests, looking performance characteristics, for optimizing CPU usage, fix janks,
   lower battery compsumption. Macrobenchmark can make sure the app is as closed to a release build as possible, it can make sure the test run just as if the code was
-  already precompiled either by AOT or JIT (JIT turn in AOT later)
+  already precompiled either by AOT or JIT (JIT turn in AOT later). Collecting garbage is not expensive under responislb euse of memory but if you're producing a lot of
+  garbage it can trigger GC collections too oftes which can drain battery more quickly, so avoid allocating too many objects in places like the innermost part of a for loop
+  and it could even cause some UI janks
+
+* Android live allocation tracking using the memory profiler. It introduces performance overhead but can help identify memory leaks, just be aware that the GC behavior is
+  unpredictable and therefore this is a complicated task. The memory profiler allows you to see the allocations happening in throught th app, you can see how and what is
+  being allocated and some details about what the objects are, you can also track them through time (visually) and see them being deallocated (collected). Using that
+  information you can approach memory leak hunting with a repeatable task, for example, navigating to a screen, trace it, then go return to previous scene and then forward
+  again to the same scene a few times, you can record these profile sessions and if an object(s) is not being GC then you should be able to start noticing, macrobenchmark
+  can automate cpu usage profiling but can also collect memory traces, so you could have a test that does the navigation and then collect a memory trace so you can then
+  take a look
 
 
 Heap Dump Vs Allocation Tracking, Sampling vs Instrumenting
