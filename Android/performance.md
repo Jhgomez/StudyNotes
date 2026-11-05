@@ -109,6 +109,8 @@ data by periodically sampling the state and memory use of all running applicatio
 memory usage reporting in Android Settings. View stats for the last 3 hours `adb shell dumpsys procstats --hours 3`. This returns us min/avg/max of RSS, PSS and USS at the same
 time, if you see max is significantly higher than min, and the average creeps up over time as sample count increases.
 
+# Here talk abou AHAT (Android Heap Analysis Tool)
+
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
 
