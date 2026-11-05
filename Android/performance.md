@@ -462,6 +462,8 @@ model that you throw anything at
 * Always profile a Release or Benchmark build with <profileable android:shell=”true”/>. This ensures R8 optimizations are active while granting the Android Studio
   Profiler full visibility into CPU and memory allocations.
 
+* Avoid manual `WakeLock` management; use `WorkManager` for background tasks to keep the CPU running while the device screen is off
+
 
 Heap Dump Vs Allocation Tracking, Sampling vs Instrumenting
   
