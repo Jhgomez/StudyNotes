@@ -28,7 +28,10 @@ size limit varies between devices based on how much RAM the device has available
 can receive an `OutOfMemoryError` The logical size of the heap is not the same as the amount of physical memory used by the heap. When inspecting your app's heap, 
 Android computes a value called the Proportional Set Size (PSS), which accounts for both dirty and clean pages that are shared with other processes—but only in an amount
 that's proportional to how many apps share that RAM. This (PSS) total is what the system considers to be your physical memory footprint. In the previously mentioned 
-section, "Create a Heap Dump", you can learn how to read this info. 
+section, "Create a Heap Dump", you can learn how to read this info. So these pages can be either clean or dirty, clean are pages that are file-backed, means that they 
+represent a resource that was loaded from storage and can be reproduce very easily, dirty happens when we change somehting in those files, if we modify a file and it is
+not written to storage yet, and there is also anonymous data, the heap our app uses actually ives in anonymous pages, anonymous is everything that is not backed by a a file
+in the storage
 
 `getMemoryClass()` method returns an integer indicating the number of megabytes available for your app's heap, you can use this info for example, to determine how much data is safe to keep in a cache. 
 
@@ -94,11 +97,17 @@ adb shell dumpsys activity processes <package-name>
 
 To inspect your app's current resident memory usage:
 ```
-adb shell dumpsys meminfo <package-name>
+adb shell dumpsys meminfo -a <package-name>
 ```
 
-an example for a multiprocess streaming music app using memory budgets is [here](https://developer.android.com/topic/performance/memory/app-memory-budgets#multi-process-budgets)
+an example for a multiprocess streaming music app using memory budgets is [here](https://developer.android.com/topic/performance/memory/app-memory-budgets#multi-process-budgets).
+You Can learn more about the command above [here](https://developer.android.com/topic/performance/memory/guide/tools-overview), in Android 18 this also prints memory limit
+set by the system, budget, budget at runtime or the adb.
 
+Use [procstats](https://developer.android.com/topic/performance/memory/guide/tools-overview#procstats). While meminfo provides a snapshot in time, procstats provides historical 
+data by periodically sampling the state and memory use of all running applications. This is the primary tool used for long-term memory health monitoring and is what drives the 
+memory usage reporting in Android Settings. View stats for the last 3 hours `adb shell dumpsys procstats --hours 3`. This returns us min/avg/max of RSS, PSS and USS at the same
+time, if you see max is significantly higher than min, and the average creeps up over time as sample count increases.
 
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
@@ -436,10 +445,10 @@ model that you throw anything at
   to developing your app are greater. Profileable builds will not have allocation tracking available, they don't have access to the same level of debug hooks as debuggable
   builds. So you should have different build types, one for release, one for debug it is for development, as usual, it can also be used to profile memory usage, allocation
   tracking, and one for profileable, this profileable variant can be used for macrobenchmark tests, looking performance characteristics, for optimizing CPU usage, fix janks,
-  lower battery compsumption. Macrobenchmark can make sure the app is as closed to a release build as possible, it can make sure the test run just as if the code was
-  already precompiled either by AOT or JIT (JIT turn in AOT later). Collecting garbage is not expensive under responislb euse of memory but if you're producing a lot of
-  garbage it can trigger GC collections too oftes which can drain battery more quickly, so avoid allocating too many objects in places like the innermost part of a for loop
-  and it could even cause some UI janks
+  lower battery compsumption. Instead of BuildTypes you can do different run configs, this is noted in the tools.md file. Macrobenchmark can make sure the app is as closed
+  to a release build as possible, it can make sure the test run just as if the code was already precompiled either by AOT or JIT (JIT turn in AOT later). Collecting garbage
+  is not expensive under responislb euse of memory but if you're producing a lot of garbage it can trigger GC collections too oftes which can drain battery more quickly, so
+  avoid allocating too many objects in places like the innermost part of a for loop and it could even cause some UI janks
 
 * Android live allocation tracking using the memory profiler. It introduces performance overhead but can help identify memory leaks, just be aware that the GC behavior is
   unpredictable and therefore this is a complicated task. The memory profiler allows you to see the allocations happening in throught th app, you can see how and what is
