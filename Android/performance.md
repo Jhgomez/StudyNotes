@@ -419,6 +419,11 @@ model that you throw anything at
   but also helps us understand why, but collecting those traces have a performance impact, so you can't rely solely on them to understand how the apps is actually doing.
   You can take stack samples using the sampling profiler, beware that if you collect stack samples without a systrace first you may be inspecting the wrong information
   for example you could be sampling the wrong thread, not the thread which is actually doing the work you're concerned about. Stack samples shows proportions not timing
-  info
+  info. Perfetto offers us the advantage of helping you understand system behavior and inner process communication, while AS profiler focuses on the app exclusively.
+  You'll trace using Perfetto to identify places where app is spending too much time, and then go deeper with stack samples
+* You can start a method tracing programatically with `Debug.startMethodTracing("my_app_trace")` and `Debug.stopMethodTracing()`. The system saves the resulting .trace
+  file in a package-specific directory on external storage, get the file with `adb pull /sdcard/Android/data/com.your.package/files/my_app_trace.trace` and drag and drop
+  it in AS profiler. An interesting code is `Coreographer.getInstance().postFrameCallback { handler.postAtFronOfQueue { Debug.stopMethodTracing() } }`, this will help
+  you something similar to a trace (over time) and a stack trace.
   
   
