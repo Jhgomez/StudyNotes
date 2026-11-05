@@ -264,6 +264,13 @@ PopupMenu popup = new PopupMenu(this, v);
 
 * Android offers several ways to access the UI thread from other threads. Here is a list of methods that can help: `Activity.runOnUiThread(Runnable)`, `View.post(Runnable)`,
   `View.postDelayed(Runnable, long)`
+
+* **Drag And Drop:** To start a drag operation you need to call View.startDragAndDrop. Which gesture or action triggers this is up to you as an app developer. The API guide recommends
+  doing this from View.OnLongClickListener.onLongClick and this seems to be the de-facto standard, but you are free to use other gestures (single tap, tap and drag etc). However, if
+  you go for a unconventional drag start gesture, note that the framework implementation assumes that the pointer (touch or mouse) is down while the drag is starting, and the most
+  recent touch/click position is used as the original position of the drag shadow. See also android.support.v13.view.DragStartHelper which uses different gestures for touch and mouse
+  (click and drag works better for mouse than a long click). By default a drag and drop operation is constrained by the window containing the view that started the drag. To enable
+  cross-window and cross-app drag and drop add View.DRAG_FLAG_GLOBAL to the flags passed to the View.startDragAndDrop call. Find an example [here](https://android.googlesource.com/platform/developers/samples/android/+/refs/heads/main/ui/window/DragAndDropAcrossApps/)
   
 dispatchKeyEvent (KeyEvent event)
 Dispatch a key event to the next view on the focus path. This path runs from the top of the view tree down to the currently focused view. If this view has focus, it will dispatch to itself. Otherwise it will dispatch the next node down the focus path. This method also fires any key listeners.
