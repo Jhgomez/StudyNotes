@@ -447,7 +447,11 @@ model that you throw anything at
   information you can approach memory leak hunting with a repeatable task, for example, navigating to a screen, trace it, then go return to previous scene and then forward
   again to the same scene a few times, you can record these profile sessions and if an object(s) is not being GC then you should be able to start noticing, macrobenchmark
   can automate cpu usage profiling but can also collect memory traces, so you could have a test that does the navigation and then collect a memory trace so you can then
-  take a look
+  take a look. You can track native allocations using perfetto (metadata and more). You could also override the `onTrimMemory()` callback at component or app level and
+  request user permission to capture a Heap Dump at runtime, because it is a resource consuming task it is a good idea to ask the user to authorize you to do the dump
+  which you can forward to your server, you collect it programmatically with `Debug.dumpHprofData(filePath)`. You can also get a heap dump programatically whe an OOM
+  occurs using the the `ProfilingManager` and registering for a result callback that returns the heap dump when the app is started again. Since the OOM memory or onTrim
+  callback be caused due to a memory leak it is a good starting point to troubleshoot potential leaks.
 
 
 Heap Dump Vs Allocation Tracking, Sampling vs Instrumenting
