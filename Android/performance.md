@@ -134,7 +134,9 @@ java -jar ahat.jar heap.hprof
 ```
 
 On the browser you can find your activity, this helps you find GC Roots, the collector treats GC root as always reachable object. The GC root can contain a series of references
-to other objects that finally point to a leaked object.
+to other objects that finally point to a leaked object. **Sample Path from GC Root** option shows the chain of references preventing the object from being garbage collected, and
+**Object Size** shows how much memory is being retained by this specific instance. AHAT has a specialized view for identifying leaked Activities, which are one of the most common 
+and impactful memory leaks in Android.
 
 ## [With Perffeto](https://developer.android.com/topic/performance/memory/guide/java-memory#using-perfetto)
 Perfetto can also capture Java heap dumps as part of a system-wide trace by enabling the android.java_hprof data source in your Perfetto config. This is useful for correlating 
