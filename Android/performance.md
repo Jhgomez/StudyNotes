@@ -109,7 +109,39 @@ data by periodically sampling the state and memory use of all running applicatio
 memory usage reporting in Android Settings. View stats for the last 3 hours `adb shell dumpsys procstats --hours 3`. This returns us min/avg/max of RSS, PSS and USS at the same
 time, if you see max is significantly higher than min, and the average creeps up over time as sample count increases.
 
-# Here talk abou AHAT (Android Heap Analysis Tool)
+# Obtaining heap dumps
+## Using AHAT (Android Heap Analysis Tool)](https://developer.android.com/topic/performance/memory/guide/java-memory#obtain-java-heap-dumps)
+To run this command, you must build your app with `<profileable android:shell="true"/>` or `<debuggable>`. As mentioned in this document you can actually create a run config to
+run your app with profiling enabled. In java you can use `jcmd` to do GC heap dumps to get hprof files.
+
+```
+# 1. Trigger the dump (the command takes a moment to complete):
+adb shell am dumpheap -g -b png com.android.memorylab /data/local/tmp/heap.hprof
+
+# 2. Pull the file to your development machine:
+adb pull /data/local/tmp/heap.hprof .
+```
+
+then launch AHAT
+
+```
+ahat heap.hprof
+
+# or run the standalone jar
+java -jar ahat.jar heap.hprof
+
+# open the broswer in http://localhost:7100.
+```
+
+On the browser you can find your activity, this helps you find GC Roots, the collector threats GC root as always reachable object. THe GC root can contain a series of references
+to other objects that finally point to a leaked object. For example if a class stores an activitie's context reference and the activity is reconstructed due to config changes then
+we have a leak, in this case the GC root is the 
+
+## [With Perffeto](https://developer.android.com/topic/performance/memory/guide/java-memory#using-perfetto)
+Perfetto can also capture Java heap dumps as part of a system-wide trace by enabling the android.java_hprof data source in your Perfetto config. This is useful for correlating 
+heap state with other system events. Unlike standard .hprof files, Perfetto's Java heap dumps only capture the object reference graph, not the actual data contents of fields and
+only perfetto can read them
+
 
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
