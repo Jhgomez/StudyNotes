@@ -110,7 +110,7 @@ memory usage reporting in Android Settings. View stats for the last 3 hours `adb
 time, if you see max is significantly higher than min, and the average creeps up over time as sample count increases.
 
 # Obtaining heap dumps
-## Using AHAT (Android Heap Analysis Tool)](https://developer.android.com/topic/performance/memory/guide/java-memory#obtain-java-heap-dumps)
+## [Using AHAT (Android Heap Analysis Tool)](https://developer.android.com/topic/performance/memory/guide/java-memory#obtain-java-heap-dumps)
 To run this command, you must build your app with `<profileable android:shell="true"/>` or `<debuggable>`. As mentioned in this document you can actually create a run config to
 run your app with profiling enabled. In java you can use `jcmd` to do GC heap dumps to get hprof files.
 
@@ -133,15 +133,82 @@ java -jar ahat.jar heap.hprof
 # open the broswer in http://localhost:7100.
 ```
 
-On the browser you can find your activity, this helps you find GC Roots, the collector threats GC root as always reachable object. THe GC root can contain a series of references
-to other objects that finally point to a leaked object. For example if a class stores an activitie's context reference and the activity is reconstructed due to config changes then
-we have a leak, in this case the GC root is the 
+On the browser you can find your activity, this helps you find GC Roots, the collector treats GC root as always reachable object. The GC root can contain a series of references
+to other objects that finally point to a leaked object.
 
 ## [With Perffeto](https://developer.android.com/topic/performance/memory/guide/java-memory#using-perfetto)
 Perfetto can also capture Java heap dumps as part of a system-wide trace by enabling the android.java_hprof data source in your Perfetto config. This is useful for correlating 
 heap state with other system events. Unlike standard .hprof files, Perfetto's Java heap dumps only capture the object reference graph, not the actual data contents of fields and
 only perfetto can read them
 
+## Examples
+A GC root is not always directly holding the leaked object, the GC only traces roots for these types:
+* Static fields of loaded classes
+* Local variables and parameters on the stack of a live thread
+* Live threads themselves
+* JNI global references from native code
+* Objects used as monitors (synchronized) and a few JVM-internal ones
+
+Everything else is an ordinary heap object. Let's see what this means with two examples:
+
+```
+class MyActivity: Actiivity() {
+   static LeakClass anInstance;
+
+  void onCreate() {
+    if (anInstance == null) {
+       anInstance = new LeachClass(this.context);
+    }
+  }
+}
+```
+
+In here the only reason this is a leak is because `anInstance` is a stattic field, if it wasn't then it would survive config changes and therefore no leak would exist. But since
+it is a static field it will outlive an activity's lifecycle and since it is a static field it is also the GC root and the path to the GC root looks like:
+
+```
+MyActivity.class  (static field anInstance)   ← GC root
+  → LeakClass
+    → context
+      → MyActivity #1 (destroyed on rotation)  ← leaked
+        → Window, DecorView, the whole view tree, resources...
+```
+
+But if we pass the context to a singleton repository provided by the Dagger singleton component, then it looks like this:
+
+```
+ActivityThread.sCurrentActivityThread     ← GC root (static field)
+  → ActivityThread.mInitialApplication
+    → MyApp (your @HiltAndroidApp)
+      → ApplicationComponentManager
+        → SingletonC (generated Dagger component)
+          → DoubleCheck (the scoped provider caching the instance)
+            → Repository
+              → context
+                → MainActivity (destroyed)   ← leaked
+```
+
+Notice the root isn't the repo. `ActivityThread` is a class that manages an app's process, its `main` method is the entry point of android apps, where the main Looper is set up, it creates 
+the `ActivityThread` object, stores it in the static field `sCurrentActivityThread`, and then calls `Looper.loop()` forever. That loop is your main thread. That static field of type 
+`ActivityThread` holds both the app and activity instance:
+
+```
+ActivityThread
+ ├─ mInitialApplication → MyApp → Dagger component → Repository → old MainActivity
+ └─ mActivities (map of ActivityClientRecord) → current MainActivity
+```
+
+When the old activity is destroyed, its record is removed from mActivities. That path is gone. The only remaining path to the old activity is through the application, the singleton component
+and the repository, and that’s why it leaks. But as I mentioned a thread stack is also a root so we have at least two routes leading to the same object:
+```
+static ActivityThread.sCurrentActivityThread ─┐
+                                              ├→ ActivityThread object → MyApp → …
+main thread stack (ActivityThread.main local) ┘
+```
+
+This is becaus The main thread’s stack has the `ActivityThread.main()` frame. That frame’s local variable references the same `ActivityThread` object, and Looper.loop() is still running on top
+of it. Depending on the tool and its version you're using you may see either or root in this case, but the solution would be the same, just notice that the class causing the leak is not the 
+GC root in this case.
 
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
