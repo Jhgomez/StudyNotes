@@ -138,6 +138,12 @@ to other objects that finally point to a leaked object. **Sample Path from GC Ro
 **Object Size** shows how much memory is being retained by this specific instance. AHAT has a specialized view for identifying leaked Activities, which are one of the most common 
 and impactful memory leaks in Android.
 
+### [Diffing Heap Dumps](https://developer.android.com/topic/performance/memory/guide/java-memory#diffing-heap-dumps)
+Taking a "clean" dump as a baseline and comparing it against a dump captured after you have performed some actions is a great way to find leaks and AHAT makes it easy for us.
+```
+java -jar out/host/linux-x86/framework/ahat.jar leaked.hprof --baseline base.hprof
+```
+
 ## [With Perffeto](https://developer.android.com/topic/performance/memory/guide/java-memory#using-perfetto)
 Perfetto can also capture Java heap dumps as part of a system-wide trace by enabling the android.java_hprof data source in your Perfetto config. This is useful for correlating 
 heap state with other system events. Unlike standard .hprof files, Perfetto's Java heap dumps only capture the object reference graph, not the actual data contents of fields and
@@ -569,7 +575,11 @@ model that you throw anything at
   perfetto we can trace throught time cpu usage, what a thread is doing, how thread and processes work together, frame rate, dropped frames. Profiles, in AS we have
   the memory profiler, CPU profiler this is weird because this can be an alias for system tracing, network profiler, and energy profiler. Flame charts and call charts
   plot method execution CPU time consumed over a duration (period of time). Besides tracing and profiling we have snapshots which are just profiles at a specific point
-  in time, these are Heap Dumps and Stack Traces
+  in time, these are Heap Dumps and Stack Traces. The line between each other is really hard to draw because, for example, an allocation memory trace in perfetto
+  traces all allocations as events which enables you to align allocations with other events (what was allocated during a frame) but is really expensive and In a large
+  production apps, this can make the app nearly unusable. AS has the memory profiler, profiles will only sampele and aggregate allocations, i.e. it gives you statistics
+  and tiny and rare allocations can be missed but the heavy ones will show relliably, it is aggregated because it can return a flame graph which will tell you who allocates
+  the most (not a timeline as a trace). 
 
 * Always profile a Release or Benchmark build with <profileable android:shell=”true”/>. This ensures R8 optimizations are active while granting the Android Studio
   Profiler full visibility into CPU and memory allocations.
