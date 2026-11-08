@@ -95,3 +95,33 @@ creating coroutines you need either a scope like in the example or use a scoping
 runBlocking gives us access to the coroutineScope of the coroutine it was called in but it also implicitly blocks the thread that coroutine is running on, so it is a bridge between the main thread and child 
 coroutines and will automatically wait all its direct children coroutines to complete. In `suspend fun main()` there is practically only one coroutine running on the main thread. In frameworks like Swing, JavaFx
 you do have a main dispatcher so you can use it instead of accessing the main thread this way.
+
+I talk more about exceptions in coroutines below but knowing that exceptions can affect an app differently depending on the platform the app is running on will be useful. for example consider the below code
+
+```
+suspend fun main() {
+    val scope = CoroutineScope(context = Dispatchers.Default)
+
+    scope.launch(CoroutineName("root")) {
+        launch(CoroutineName("A")) {
+            launch(CoroutineName("B")) {
+                delay(500)
+                println("Print B")
+            }
+
+            launch(CoroutineName("Ex")) {
+                throw Exception("Boom")
+            }
+        }
+
+        launch(CoroutineName("C")) {
+            delay(3000)
+            println("Print C")
+        }
+
+    }
+
+    delay(5000)
+    println("Ends without Exception")
+}
+```
