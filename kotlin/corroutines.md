@@ -147,3 +147,28 @@ handler to your coroutine then it doesn't makes sense to have called `supervisor
 use of `supervisorScope` a bad pattern in Android because they ignore the capabilities that it grants them, in JVM apps they really don't make a difference adding an exception handler to the coroutine as still grants 
 other children the ability to continue excuting even when other siblins thow. I'll explain more about this in a second but what you should keep in mind is that when you use `supervisorScope` is most likely because 
 you want to create coroutines capable of handling errors specially on Android, what you get for free in both, JVM and Android, is that errors don't propaggate to the parent and siblings.
+
+The behavior I'm going to describe next also applies to coroutines builders (`launch`, `async`) but only in some circumstances that I will explain later. Lets consider the following code 
+
+```
+suspend fun main() {
+    coroutineScope {
+        launch(CoroutineName("A")) {
+            launch(CoroutineName("B")) {
+                delay(500)
+                println("Print B")
+            }
+
+            launch(CoroutineName("Ex")) {
+                throw Exception("Boom")
+            }
+        }
+
+        launch(CoroutineName("C")) {
+            delay(3000)
+            println("Print C")
+        }
+
+    }
+}
+```
