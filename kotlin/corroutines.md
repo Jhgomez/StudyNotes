@@ -287,3 +287,28 @@ This code will not crash and log "Root Boom" in the system logs. But this code
         }
 ```
 Won't crash and Will print "A Boom" and "Print C" because of the previously discussed behaviors
+
+## Warning
+
+* This code Breaks structure concurrency
+
+  ```
+  val job = scope.launch {
+    scope.launch {
+      delay(3000)
+      println("never prints")
+    }
+
+    scope.launch(Job()) {
+      delay(7000)
+      println("Prints but is a leak")
+    }
+  }
+
+  delay(2000)
+  job.cancel()
+  ```
+
+  This breaks structure concurency because I instantiated manually a Job instance and passed it to the second children. Because of this when I cancel the top most coroutine, the second children (is not a
+  children actually because it breaks structured concurrency) keeps running and after 5 seconds it prints and completes. If this is not what I intend to do then it is a leak, a better approach may be to
+  keep a reference to that Job I created explicitly so I can cancel it if I need, which still break structure concurrency but doesn't leak resources by accident.
