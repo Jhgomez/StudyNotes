@@ -134,3 +134,16 @@ those erros and exceptions, keeping the running. That is why the example above p
 Android this is a common behavior, in Android even unchecked exceptions crash the app so is logical that all thread's handler crashes the app on any exception. In JVM apps you can launch coroutines on the main 
 thread in two different ways, first is to block the main thread with `runBlocking` and launch coroutines from it. Second is to use the Main dispatcher but this option is only available in UI frameworks such as 
 JavaFx and Swing.
+
+All scoping functions are suspend functions, the difference between them is in how they handle their children's exceptions, withContext and coroutineScope behave almost the same but the former most common correct 
+use is to change dispatcher of the context it will run on, while `coroutineScope` nor `supervisorCoroutineScope` lets you explicitly change the context the coroutine they are going to create runs on. In short all 
+scoping functions shine the most in suspend functions because they allow you to create coroutines inside a suspend function, the most "simple" scoping function is `coroutineScope` because it only creates a 
+coroutine using the same context it was launched on or it uses default values in some circunstances such as in a `suspend` main function, `withContext` is a little more complex because you could break structure 
+concurrency with it if not used correctly, and the most common correct use case is the one I mentioned (change the dispatcher), `supervisorScope` is also more complex because is up to the programmer to give purpose 
+to its existence specially on Android i.e. if we call it and don't add a handler to catch exceptions then by default the coroutine that is reporting the exception to `supervisorScope` will be held responsible for 
+reporting it to the thread where it was launched, so it is said that `supervisorScope` refuses exceptions, and the coroutine that notified the exception has to report it to the thread's handler (as mentioned before). 
+In both types of JVM apps, those which have a Main dispatcher and those who don't, the handler never crahses the app, while in Android the handler crashes the app so here if you actually don't add a exception 
+handler to your coroutine then it doesn't makes sense to have called `supervisorScope` because all the app will crash. Coroutines created inside `supervisorScope` which don't handle errors could make considering the 
+use of `supervisorScope` a bad pattern in Android because they ignore the capabilities that it grants them, in JVM apps they really don't make a difference adding an exception handler to the coroutine as still grants 
+other children the ability to continue excuting even when other siblins thow. I'll explain more about this in a second but what you should keep in mind is that when you use `supervisorScope` is most likely because 
+you want to create coroutines capable of handling errors specially on Android, what you get for free in both, JVM and Android, is that errors don't propaggate to the parent and siblings.
