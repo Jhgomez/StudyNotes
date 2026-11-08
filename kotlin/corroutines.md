@@ -184,4 +184,30 @@ travels.
    never notifies the parent Job it actually rethrows the exception back to its caller instead but only after all children has been cancelled, so the exception bubbles from the background thread to the main's
    function body which is a coroutine through `coroutineScope`, again `coroutineScope` throws exception to the caller and never reports the parent Job, the main's body now fails and therefore main thread too
 
+Here we learn that scoping functions throw unhandled exceptions to the caller (`withContext`, `coroutineScope`, `supervisorScope`, `runBlocking` also), so we can wrap them in a try catch if we need. In constrats 
+with this behavior, somehting else happens when using `supervisorScope`, consider the below code
+
+```
+suspend fun main() {
+    supervisorScope {
+        launch(CoroutineName("A")) {
+            launch(CoroutineName("B")) {
+                delay(500)
+                println("Print B")
+            }
+
+            launch(CoroutineName("Ex")) {
+                throw Exception("Boom")
+            }
+        }
+
+        launch(CoroutineName("C")) {
+            delay(3000)
+            println("Print C")
+        }
+
+    }
+}
+```
+
 
