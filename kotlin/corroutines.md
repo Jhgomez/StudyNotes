@@ -57,3 +57,29 @@ they talk about them because they require extra considerations. State flows have
 
 # Libraries Using Coroutines
 * Arrow: sagas pattern, is a pattern used in micro services to ensure data consistency, it helps you do distributed transactions meaning it helps you ensure transactional behavior when multiple services are involved. In Kotlin you can use the arrow library with ktor to implement sagas pattern, under the hood it uses corroutines and there structured concurrency which is actually what it enables it to implement that pattern, as mentioned [here at 34m:00s](https://youtu.be/VyBxy3_Mj6Q?si=vCxPXSfWG_t1Ba40)
+
+# Bird's Eye View
+
+All Scoping functions wait for child coroutines to complete without needing to call `join` or `await` explicitly, actually all coroutines wait for they children to complete. In the following example the only purpose of calling `join` is to keep the program alive.
+
+```
+suspend fun main() {
+    val scope = CoroutineScope(context = Dispatchers.Default)
+
+    scope.launch(CoroutineName("root")) {
+        launch(CoroutineName("A")) {
+            launch(CoroutineName("B")) {
+                delay(500)
+                println("Print B")
+            }
+        }
+
+        launch(CoroutineName("C")) {
+            delay(3000)
+            println("Print C")
+        }
+
+    }.join()
+}
+```
+
