@@ -210,9 +210,80 @@ suspend fun main() {
 }
 ```
 
-Here "Print C" is printed on console, this happens because the coroutine `supervisorScope` creates a job who refuses exceptions that children report to it, this job behaves like a `SupervisorJob` but it is not. Because the `supervisorScope` job refuses exceptions this makes other children inmune to exceptions happening on other siblings, and `supervisorScope` survives to exceptions in children because of this. `supervisorScope` only stops exceptions propagation at the first level depth in a `supervisorScope`. What happens is:
+Here "Print C" is printed on console, this happens because the coroutine `supervisorScope` creates a job who refuses exceptions that children report to it, this job behaves like a `SupervisorJob` but it is 
+not. Because the `supervisorScope` job refuses exceptions this makes other children inmune to exceptions happening on other siblings, and `supervisorScope` survives to exceptions in children because of this. 
+`supervisorScope` only stops exceptions propagation at the first level depth in a `supervisorScope`. What happens is:
 
 1. Step 1 is same as with `coroutineScope`. "Ex" throws so it fails, Ex calls `childCancelled(exception)` on its parent’s Job.
 2. Step 2 is same as with `coroutineScope`. "A" is cancelled so it calls `childCancelled(exception)` on its parent’s Job. Also, all other "A"'s children are cancelled ("B")
-3. "A"'s parent job is `supervisorScope` job. "A" just tried to notifiy its parent job but `supervisorScope`'s job refuses the exception, so "A" is made responsible for handling the exception, and the first thing it does after it is pushed to this responsibility is to check its coroutine context looking for a `CoroutineExceptionHandler` which could have been inherited or declare explicitly for it, if one exists it uses it to handle the exception, this an effective way of handling exceptions (you can also configure a scope correctly too but I talk about below), if none exists then it notifies the thread it was running on of the exception, so when "A" completes (after "B" and "Ex" have finished), the handler is called on the thread "A" is running on at that moment. In JVM this means our app won't crash because of this and we just enjoy siblings not being cancelled but in android this means the app will still crash anyways (of course there is other strategies to guard against crashes due to exceptions like try catch surround the code that may throw, or catching exceptions thrown by `withContext`, `coroutineScope`), so in Android using `supervisorScope` without guarding againts exceptions that might happens can be considered an antipatern, and you can guard against those just like I said, by wrapping the body inside a coroutine that may throw inside a try/catch, or declaring a handler on the child’s launch or in a parent context.
-4. `supervisorScope` is still running so "C" keeps running and prints "Print C", and then supervisorScope returns normally.
+3. "A"'s parent job is `supervisorScope` job. "A" just tried to notifiy its parent job but `supervisorScope`'s job refuses the exception, so "A" is made responsible for handling the exception, and the first
+   thing it does after it is pushed to this responsibility is to check its coroutine context looking for a `CoroutineExceptionHandler` which could have been inherited or declare explicitly for it, if one exists
+   it uses it to handle the exception, this an effective way of handling exceptions (you can also configure a scope correctly too but I talk about below), if none exists then it notifies the thread it was
+   running on of the exception, so when "A" completes (after "B" and "Ex" have finished), the handler is called on the thread "A" is running on at that moment. In JVM this means our app won't crash because of
+   this and we just enjoy siblings not being cancelled but in android this means the app will still crash anyways (of course there is other strategies to guard against crashes due to exceptions like try catch
+   surround the code that may throw, or catching exceptions thrown by `withContext`, `coroutineScope`), so in Android using `supervisorScope` without guarding againts exceptions that might happens can be
+   considered an antipatern, and you can guard against those just like I said, by wrapping the body inside a coroutine that may throw inside a try/catch, or declaring a handler on the child’s launch or in a
+   parent context.
+5. `supervisorScope` is still running so "C" keeps running and prints "Print C", and then supervisorScope returns normally.
+
+Previously I descried how a hierarchy comprised of coroutine builders (`launch` and `async`) are cancelled when an exceptions arises, and this holds true in any case, I mean if a piece of the structured 
+concurrency is comprised only by coroutines created with coroutine builders then nothing stops them from cancelling other siblings and parents until they find a `coroutineScope`, `withContext`, `runBlocking`,
+which all three throw the exception in the caller site. Then this hierarchy can find a `supervisorSCope` which will stop the parent and siblings from being cancelled if configured properly. But we have one more
+behavior we should describe. That is when using a `SupervisorJob` I will explain later but basically you should only explicitly define a job on the Scope that will launch the coroutines, nothing stops you from
+defining a `Job`/`SupervisorJob` explicitly in each coroutine builder but that can break structured concurrency and create a leak if is not what you intend to do. In android we don't even deal with declaring
+a scope very often as the Android Framework provides us with already defined scopes in the presentation layer, for Activities and Fragments they give us `lifecycleScope`, for viewmodel we have `viewmodelScope`,
+both run on the main dispatcher so be careful there, and both uses `SupervisorScope`, I already gave an idea of how this job behaves. It allows direct children of the scopes to handle exceptions, only works
+at the first level, other levels will cancel as in previous explanations unless they use the mechanisms I described before, for example, in Android
+
+```
+        val handler = CoroutineExceptionHandler { context, throwable ->
+            Log.d("MainAk", "${context[CoroutineName.Key]?.name} ${throwable.message}")
+        }
+
+        lifecycleScope.launch(CoroutineName("Root") + handler) {
+            launch(CoroutineName("A") + handler) {
+                launch(CoroutineName("B") + handler) {
+                    delay(1000)
+                    Log.d("MainAk","Print B")
+                }
+
+                launch(CoroutineName("Ex") + handler) {
+                    throw Exception("Boom")
+                }
+            }
+
+            launch(CoroutineName("C")) {
+                delay(4000)
+                Log.d("MainAk","Print C")
+            }
+        }
+```
+
+This code will not crash and log "Root Boom" in the system logs. But this code
+
+```
+        val handler = CoroutineExceptionHandler { context, throwable ->
+            Log.d("MainAk", "${context[CoroutineName.Key]?.name} ${throwable.message}")
+        }
+
+        lifecycleScope.launch(CoroutineName("Root") + handler) {
+            supervisorScope {
+                launch(CoroutineName("A") + handler) {
+                    launch(CoroutineName("B") + handler) {
+                        delay(1000)
+                        Log.d("MainAk","Print B")
+                    }
+
+                    launch(CoroutineName("Ex") + handler) {
+                        throw Exception("Boom")
+                    }
+                }
+
+                launch(CoroutineName("C")) {
+                    delay(4000)
+                    Log.d("MainAk","Print C")
+                }
+            }
+        }
+```
+Won't crash and Will print "A Boom" and "Print C" because of the previously discussed behaviors
