@@ -172,3 +172,16 @@ suspend fun main() {
     }
 }
 ```
+
+As mentioned before, in this JVM app coroutine scope will automatically switch to the default dispatcher because the main's function coroutine context is all empty and there is nothing to inherit from, so it 
+chooses the default dispatcher by default. I could have used `withContext(Dispatcher.Default)` but the behavior when an exception occurs in one of its children is the same and as follows: First know that the 
+coroutine where the exception was thrown is running in a background thread but it actually ends up being thrown in the main thread and therefore crashes the app in either Android or JVM apps, lets see how that 
+travels.
+
+1. "Ex" throws so it fails, Ex calls `childCancelled(exception)` on its parent’s Job.
+2. "A" is cancelled so it calls `childCancelled(exception)` on its parent’s Job. Also, all other "A"'s children are cancelled ("B")
+3. It reaches and cancels the coroutine created by `coroutineScope`, therefore all its children are cancelled. The `coroutineScope` coroutine is "special" in the sense that it doesn't call `childCancelled` and
+   never notifies the parent Job it actually rethrows the exception back to its caller instead but only after all children has been cancelled, so the exception bubbles from the background thread to the main's
+   function body which is a coroutine through `coroutineScope`, again `coroutineScope` throws exception to the caller and never reports the parent Job, the main's body now fails and therefore main thread too
+
+
