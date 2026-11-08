@@ -60,7 +60,8 @@ they talk about them because they require extra considerations. State flows have
 
 # Bird's Eye View
 
-All Scoping functions wait for child coroutines to complete without needing to call `join` or `await` explicitly, actually all coroutines wait for they children to complete. In the following example the only purpose of calling `join` is to keep the program alive.
+All Scoping functions wait for child coroutines to complete without needing to call `join` or `await` explicitly, actually all coroutines wait for they children to complete. In the following example 
+the only purpose of calling `join` is to keep the program alive.
 
 ```
 suspend fun main() {
@@ -83,3 +84,14 @@ suspend fun main() {
 }
 ```
 
+In the above code if I remove `join()` the program completes almost instantly without printing anything (without waiting), but if I remove `join()` and add a `delay(4000)` outside the root coroutine but right 
+before the program's last line then the print statements actually print, so there is no need to call join, this is because as I said "all coroutines wait for their children to complete" but since the root 
+coroutine was launched with a different scope which at the same time it's using a different context (different job and dispatcher) than the main's function coroutine (actually main's function coroutine is all 
+empty it has no context, therefore no dispatcher, no handler, no job) there is no parent-child relationship between them, therefore the main's function coroutine doesn't wait for those, but if I instead had 
+launched root coroutine inside a scoping function and since scoping functions are suspend functions then the main's function coroutine is suspended until the coroutine launched by the scoping function is 
+completed and since all coroutine builders (regular builder and scoping functions also) wait for their coroutine children to complete then the program holds until everything is completed, this also means that 
+when a scoping function is launched from the main function there is no context to inherit from and it chooses the default dispatcher by default and its job doesn't have a parent job, so before you can start 
+creating coroutines you need either a scope like in the example or use a scoping function as I mentioned, or you caj do `fun main() = runBlocking` then you can launch more coroutines on the main thread because 
+runBlocking gives us access to the coroutineScope of the coroutine it was called in but it also implicitly blocks the thread that coroutine is running on, so it is a bridge between the main thread and child 
+coroutines and will automatically wait all its direct children coroutines to complete. In `suspend fun main()` there is practically only one coroutine running on the main thread. In frameworks like Swing, JavaFx
+you do have a main dispatcher so you can use it instead of accessing the main thread this way.
