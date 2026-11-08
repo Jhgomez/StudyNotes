@@ -125,3 +125,12 @@ suspend fun main() {
     println("Ends without Exception")
 }
 ```
+
+This is obviously a JVM Kotlin app, the only thing that is printed is "Ends without Exception" we will understand more why in a moment, but in short is because all exceptions in a coroutine, if not catch before 
+reaching the thread it is executing on, will be passed to the thread's handler (doesn't apply for `withContext`, `coroutineScope`, `runBlocking` scooping functions, as we will learn the reason is that scooping 
+functions actually throw exceptions back to the caller while coroutines running directly from a scope as well as `supervisorJob` invokes the thread's handler,  as explained next), `Thread.uncaughtExceptionHandler.uncaughtException(thread, exception)` function implementation differ between Android and actual JVM Kotlin apps (running on a JVM and not an android runtime ART or Dalvik), in 
+Android this handler actually rethrows all exceptions, checked (Exceptions) and uncheked (RuntimeException) and Errors happening in the main and background threads, while in the JVM all threads only prints 
+those erros and exceptions, keeping the running. That is why the example above prints the last message while in android a similar code would have crashed the app either on the main or any background thread, in 
+Android this is a common behavior, in Android even unchecked exceptions crash the app so is logical that all thread's handler crashes the app on any exception. In JVM apps you can launch coroutines on the main 
+thread in two different ways, first is to block the main thread with `runBlocking` and launch coroutines from it. Second is to use the Main dispatcher but this option is only available in UI frameworks such as 
+JavaFx and Swing.
