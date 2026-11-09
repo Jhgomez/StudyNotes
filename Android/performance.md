@@ -74,6 +74,8 @@ You should always diagnose heavy memory critical user journeys, these include
 * Loading and manipulating complex media or large bitmaps.
 * Hosting WebView instances. See here for how to [manage and diagnose webview memory](https://developer.android.com/develop/ui/views/layout/webapps/manage-webview-memory)
 
+The source code used in this examples and more info can be found in [this AOSP repo](https://android.googlesource.com/platform/development/+/android17-release/guides/memory/)
+
 ## Avoid memory churn
 Garbage collection events don't affect your app's performance. Numerous garbage collection events ocurring in a short period of time can quickly drain the battery as
 well as marginally increase the time to set up frames due to necessary interactions between the garbage collector and app threads. The more time the system spends on
@@ -144,21 +146,7 @@ Taking a "clean" dump as a baseline and comparing it against a dump captured aft
 java -jar out/host/linux-x86/framework/ahat.jar leaked.hprof --baseline base.hprof
 ```
 
-### [Recording allocation stack traces](https://developer.android.com/topic/performance/memory/guide/java-memory#recording-allocation-stack-traces)
-**Sample Path from GC Root** tells you why an object is still alive, it doesn't tell you how it was created. Allocation stack traces provide the exact line of code that allocated 
-an object. Thew below commands record every allocation's stack trace, this is computationally expensive and consumes significant memory. In a large production app, this can make 
-the app nearly unusable.
-
-```
-
-```
-
-## [With Perffeto](https://developer.android.com/topic/performance/memory/guide/java-memory#using-perfetto)
-Perfetto can also capture Java heap dumps as part of a system-wide trace by enabling the android.java_hprof data source in your Perfetto config. This is useful for correlating 
-heap state with other system events. Unlike standard .hprof files, Perfetto's Java heap dumps only capture the object reference graph, not the actual data contents of fields and
-only perfetto can read them
-
-## Examples
+### Examples
 A GC root is not always directly holding the leaked object, the GC only traces roots for these types:
 * Static fields of loaded classes
 * Local variables and parameters on the stack of a live thread
@@ -226,6 +214,30 @@ main thread stack (ActivityThread.main local) ┘
 This is becaus The main thread’s stack has the `ActivityThread.main()` frame. That frame’s local variable references the same `ActivityThread` object, and Looper.loop() is still running on top
 of it. Depending on the tool and its version you're using you may see either or root in this case, but the solution would be the same, just notice that the class causing the leak is not the 
 GC root in this case.
+
+### [Recording allocation stack traces](https://developer.android.com/topic/performance/memory/guide/java-memory#recording-allocation-stack-traces)
+**Sample Path from GC Root** tells you why an object is still alive, it doesn't tell you how it was created. Allocation stack traces provide the exact line of code that allocated 
+an object. Thew below commands record every allocation's stack trace, this is computationally expensive and consumes significant memory. In a large production app, this can make 
+the app nearly unusable.
+
+```
+# Increase the allocation tracker's stack depth (requires a process restart)
+adb shell setprop dalvik.vm.allocTrackerMaxStack 16
+
+adb shell am force-stop com.android.memorylab
+adb shell am start --track-allocation -n com.android.memorylab/.MainActivity
+```
+
+After running those commands, you interact with your app, and then take a heap dump. Open the dump in AHAT. Navigate to a large `byte[]` instance. (e.g., inspect `MainActivity` →
+`mJavaAllocations` (`ArrayList`) → elementData (`Object[]`) → array element [0]). In the instance view, look at the Allocation Site section. It will show the full stack trace 
+leading to `MainActivity.allocateJava`
+
+## [With Perffeto](https://developer.android.com/topic/performance/memory/guide/java-memory#using-perfetto)
+Perfetto can also capture Java heap dumps as part of a system-wide trace by enabling the android.java_hprof data source in your Perfetto config. This is useful for correlating 
+heap state with other system events. Unlike standard .hprof files, Perfetto's Java heap dumps only capture the object reference graph, not the actual data contents of fields and
+only perfetto can read them
+
+
 
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
