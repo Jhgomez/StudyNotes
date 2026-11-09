@@ -237,7 +237,11 @@ Perfetto can also capture Java heap dumps as part of a system-wide trace by enab
 heap state with other system events. Unlike standard .hprof files, Perfetto's Java heap dumps only capture the object reference graph, not the actual data contents of fields and
 only perfetto can read them
 
-
+# [App Code Is Memory](https://developer.android.com/topic/performance/memory/guide/app-code#why-matters)
+Your app instructions load from an `.apk` file, this means that code is file-backed. When you write code in Java and Kotlin, that code is actually turned into assembler instructions.
+Assembler instructions depend on the architecture of the CPU, the most common architecture in mobile phones is `ARM64 ISA` which is a RISC (Reduce Instruction Set Computer). Each
+instruction in this architecture takes 4 Bytes of storage, when it is loaded into RAM the same ammount of bytes are copied into RAM. For example iterating on a list with an Iterator
+rather than a simple for loop can be more expensive because of Iterator's method calls and its alloaction itself. You can measure code impact using `meminfo` and `showmap`
 
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
