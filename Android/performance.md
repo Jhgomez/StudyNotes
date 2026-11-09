@@ -144,6 +144,15 @@ Taking a "clean" dump as a baseline and comparing it against a dump captured aft
 java -jar out/host/linux-x86/framework/ahat.jar leaked.hprof --baseline base.hprof
 ```
 
+### [Recording allocation stack traces](https://developer.android.com/topic/performance/memory/guide/java-memory#recording-allocation-stack-traces)
+**Sample Path from GC Root** tells you why an object is still alive, it doesn't tell you how it was created. Allocation stack traces provide the exact line of code that allocated 
+an object. Thew below commands record every allocation's stack trace, this is computationally expensive and consumes significant memory. In a large production app, this can make 
+the app nearly unusable.
+
+```
+
+```
+
 ## [With Perffeto](https://developer.android.com/topic/performance/memory/guide/java-memory#using-perfetto)
 Perfetto can also capture Java heap dumps as part of a system-wide trace by enabling the android.java_hprof data source in your Perfetto config. This is useful for correlating 
 heap state with other system events. Unlike standard .hprof files, Perfetto's Java heap dumps only capture the object reference graph, not the actual data contents of fields and
