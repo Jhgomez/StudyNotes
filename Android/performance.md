@@ -243,6 +243,14 @@ Assembler instructions depend on the architecture of the CPU, the most common ar
 instruction in this architecture takes 4 Bytes of storage, when it is loaded into RAM the same ammount of bytes are copied into RAM. For example iterating on a list with an Iterator
 rather than a simple for loop can be more expensive because of Iterator's method calls and its alloaction itself. You can measure code impact using `meminfo` and `showmap`
 
+# [Keep background work alive with a lean process](https://developer.android.com/topic/performance/memory/guide/process-splitting)
+Many apps perform legitimate work when their UI is no longer visible, such as downloading large asset packs, synchronizing local databases, streaming audio, recording exercise 
+workouts, or maintaining a connected-device session. When this background work runs inside the same OS process as your foreground UI and graphics engine, the entire process stays
+at an elevated importance level together with all of the memory that the UI allocated. This means that if the app is running a lightweight service and while the app is in the background
+this could block the system from reclaiming memory that the UI was using. In order to fix this you just run the service in a different process, just add the propery `android:process=":bg"`
+in its manifest declaration. I think this applies to the firebase messaging service, I have to test to make sure it is ok to initialize it in a different process but in theory that
+actually is the most responsible resource use.
+
 # Inspecting Performance
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
 
