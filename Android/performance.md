@@ -251,7 +251,7 @@ this could block the system from reclaiming memory that the UI was using. In ord
 in its manifest declaration. I think this applies to the firebase messaging service, I have to test to make sure it is ok to initialize it in a different process but in theory that
 actually is the most responsible resource use.
 
-# Inspecting Performance
+# [Inspecting Performance](https://developer.android.com/topic/performance/inspecting-overview)
 You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
 
 * App startup
@@ -260,7 +260,14 @@ You most likely want to or may actually need to inspect your app's performance o
 * Long running work
 * Operations in the background, such as I/O and networking
 
-There are two main approaches when inspecting performance, manual and automated. It's likely that you start with manual debugging when inspecting a new area.
+There are three ways of inspecting what is happening so you can see if it aligns with your expectations, passibe, manual and automated. 
+
+## Passive
+Is when you find slow rendering by interacting with your app directly, or when you find info using Logcat.
+
+You can search for skipped frames in Logcat using `package:mine tag: Choreographer`, this is complex because devices can render at different rates, for example, 90 frames per second. If a frame last more than 700 milliseconds is considered a frozen frame and you can search them with `package:mine tag: OpenGLRenderer` they will say "Davey!", after 5 seconds delay you get a ANR. You can spot slow app startups searching for `tag: ActivityTaskManager Displayed` this is the time-to-initial-display (TTID) which is the time it took to draw the first frame when an activity is opened, if you use the Activity's method `reportFullyDrawn()` which would represent the time-to-fully-drawn (TTFD), this uses the `FullyDrawnReporter` under the hood, you can see it with `tag: Fully drawn`.
+
+**DON'T USE AN EMULATOR TO MEASSURE PERFORMANCE**, **DEBUGABLE CAN BE USED WHEN YOU NEED HEAP DUMPS AND STACK TRACES BUT NOT FOR PROFILING**, instead use a physical device with and using a release version of your app(`profileable` is based on release build type) this is because you should use an environment that is as close as possible to production.
 
 ## Manual inspection
 Perfetto is the best tool to inspect performance on devices Android 9 and higher. check the [Quickstart: Record traces on Android](https://perfetto.dev/docs/getting-started/system-tracing) guide. Also watch the
@@ -335,6 +342,12 @@ Before talk about charts and sections in the Analysis pane we will talk about it
 * ****
 * ****
 * ****
+
+## Automated
+### Macrobenchmark
+Be aware that a debuggable app is effectively profileable, if we add it to the manifest in android it really only takes effect in a non-debuggable build type, like release, and when used in a release build it allows the app to be profileable without being debuggable, profileable apps introduce a small overhead compared to debuggable apps, the former allows us to trace cpu usage, and we can see drop frames, what a thread is doing, power consumption. It usually is the starting point when debugging performance, but debuggable apps are useful to further troubleshoot performance issues, it enables more useful debugging capabilities, but not for performance meassuring which is what macrobenchmark is for. When you are measuring performance and when you're debugging performance (system traces only, not sampling like heap dumps) you need an environment similar or identical to what the user sees (release builds) . So basically Macrobenchmark is used to meassure performance, this should be done using an environment that is similar or identical to production, to what the user sees, thing is that you could acutally run it with full optimization on (obfuscate, shrink and optimize) this works until you notice some metrics are not good enough or looks bad, so you will want to debug this but if you check the traces that this library generates for you automatically will see obfuscated class and method names, so you wouldn't be able to understand what is wrong, you can solve this by adding this line to your proguard rules: `-dontobfuscate`. I would add it temporarily so I can get a trace but remove it after fixed so we can continue testing on a real production environment, 
+
+Use Macrobenchmark to prevent problems before they hit production. In [this video(6:30)](https://youtu.be/-Mgy_nTMCtc?si=UMeificD5sQaXcml) we are told that in order to configure Macrobenchmark tests, we need to add a build type, in the video android studio adds it automatically to the app module gradle file but this seems to either have changed over time and also there is other ways to configure them correcly (Using run configurations), in newer versions of the "Now in android" app it seems like it is not even set manually, meaning a build type is added automatically and they only add it to the `app` and `benchmark` module, in the video the app module set `debuggable = false` and in the `benchmark` module this flag is true, so that I need to clarify. They show how to set up my macrobenchmark. They show we can use startup modes, `COLD` useful for app start up, it helps you understand it better. `WARM` or `HOT` are used when you don't require cold starts such as caching mechanisms or user flows that won't need to start cold, in the test call `pressHome()` to reset the state of the device your benchmarks on, `startActivityAndWait()` which starts default activity and until first frame is drawn, these two function calls are enough to measure TTID, Macrobenchmark will stop by default after TTID. For a TTFD you'd need to wait for a specific UI state like having a text on screen and you do that with `UIAutomator` (`device` object). Benchmarks should run on a physical device. The results are created in `outputs/connected_android_test_additional_output/benchmark/connected/SOME_CODE`, you can find them as a json format also so you can parse them and plot them as part of your CI pipeline. Macrobenchmark results include system traces.
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
