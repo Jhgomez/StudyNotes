@@ -394,7 +394,11 @@ Tracing involves collecting highly detailed data about the execution of a system
 info in a trace you can fix a bug without reproducing it. It is impractical to read traces directly so you use a combination of trace analysis libraries and trace viewers, the libraries
 provide a way to define trace events programmatically and viewers lets you see those events on a timeline. So tracing is some sort of performance analysis logging but it reflects it in
 a structured way so you can see the timeline. In production what you need is **"field metrics"** we will talk more about it, this way you avoid the overhead of collecting traces in 
-production but you're still able to spot performance issues which you can then trace in a lab environment. The most common types of profiling are memory profiling and CPU profiling. 
+production but you're still able to spot performance issues which you can then trace in a lab environment. 
+
+Profiling involves sampling some usage of a resource by a program. A single continuous session of recording is known as a profile, so under this concept a CPU system trace could be 
+a profile because is a single continuous session. Each sample collects the function callstack, I explain a CPU system trace I did below. The most common types of profiling are memory 
+profiling and CPU profiling. So it seems that both names can be used interchangeably 
 
 * System trace: They provide a bird eye view of CPU usage, you can see system how your app interacts with the system/hardware, it is timing information so you can see the info
   through time, like how long did a frame take. Almost every video I have seen about performance debugging says this is the first step when debugging performance because it helps
@@ -415,9 +419,10 @@ production but you're still able to spot performance issues which you can then t
   `Compose.recomposoe`, but this one is the one that experiments the 2s sleep, and therefore also all of the previous callers are also delayed, when that ends it just do its work,
   when its work is done `Recomposer.recompose` returns, then `animation` returns and this line continues its works which is `traverslar` and the same cycle repeats, `traversal` calls
   `meassure` which calls `onMeassure` and so on until everything starts returning to `traversal`, when `travesal` returns then `doFrame` returns, when `doFrame` returns we have a
-  frame draw on screend. So as you can see it gives us an idea, for example if you see recomposition taking too long then you can go look into anything that is recomposing but this
-  time using other traces types. This traces can contain system and user-defined events, these are triggered through function calls. There is two types of event,
-  Trace slices, they represent the time between different points in your code, you add them with `Trace.beginSection` and `Trace.endSection`. Trace counters, numeric values that
+  frame draw on screen. You can also see that before a frame is visible on screen a call to `DrawFrames` in the render thread has to completed. I was able to see how work
+  in the main thread relates to work in render thread. So as you can see it gives us an idea, for example if you see recomposition taking too long then you can go look into anything
+  that is recomposing but this time using other traces types. This traces can contain system and user-defined events, these are triggered through function calls. There is two types of
+  event, Trace slices, they represent the time between different points in your code, you add them with `Trace.beginSection` and `Trace.endSection`. Trace counters, numeric values that
   represent metrics, for example heap size. They can be added with `Trace.setCounter`
 
   System traces also contain metrics which can be created from PerfettoSQL queries and can be used to perform analysis or compare traces. System traces work great for finding
