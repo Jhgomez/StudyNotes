@@ -387,7 +387,14 @@ measure TTID, Macrobenchmark will stop by default after TTID. For a TTFD you'd n
 find them as a json format also so you can parse them and plot them as part of your CI pipeline. Macrobenchmark results include system traces. 
 
 ## [Profile types and when each is helpful](https://developer.android.com/topic/performance/tracing/profile-types-overview)
-So profiles seems to be a more general term because we can refer to traces as profiles also.
+So profiles seems to be a more general term because we can refer to traces as profiles also, however it is said Tracing and profiling are two different techniques used in performance
+analysis. 
+
+Tracing involves collecting highly detailed data about the execution of a system. Traces contain enough detail to fully reconstruct the timeline of events, so if you look at the right
+info in a trace you can fix a bug without reproducing it. It is impractical to read traces directly so you use a combination of trace analysis libraries and trace viewers, the libraries
+provide a way to define trace events programmatically and viewers lets you see those events on a timeline. So tracing is some sort of performance analysis logging but it reflects it in
+a structured way so you can see the timeline. In production what you need is **"field metrics"** we will talk more about it, this way you avoid the overhead of collecting traces in 
+production but you're still able to spot performance issues which you can then trace in a lab environment. The most common types of profiling are memory profiling and CPU profiling. 
 
 * System trace: They provide a bird eye view of CPU usage, you can see system how your app interacts with the system/hardware, it is timing information so you can see the info
   through time, like how long did a frame take. Almost every video I have seen about performance debugging says this is the first step when debugging performance because it helps
@@ -413,9 +420,12 @@ So profiles seems to be a more general term because we can refer to traces as pr
   Trace slices, they represent the time between different points in your code, you add them with `Trace.beginSection` and `Trace.endSection`. Trace counters, numeric values that
   represent metrics, for example heap size. They can be added with `Trace.setCounter`
 
-  System traces also contain metrics which can be created from PerfettoSQL queries and can be used to perform analyses or compare traces. System traces work great for finding
+  System traces also contain metrics which can be created from PerfettoSQL queries and can be used to perform analysis or compare traces. System traces work great for finding
   latency issues caused by delays, waits, or scheduling problems, so you can diagnose latency problems. It can help you spot duplicated computations. Finding lock contentions
-  are possible because you can see what a thread is doing
+  are possible because you can see what a thread is doing.
+
+  * Stack Sample Profiles: They record samples of code execution and saves call stack information at a set rate. In android studio that feature has changed name over time,
+  I think it was previously called method tracing, but now is called "Find CPU Hotspots (Callstack Sample)" 
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
