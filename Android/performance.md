@@ -396,9 +396,24 @@ provide a way to define trace events programmatically and viewers lets you see t
 a structured way so you can see the timeline. In production what you need is **"field metrics"** we will talk more about it, this way you avoid the overhead of collecting traces in 
 production but you're still able to spot performance issues which you can then trace in a lab environment. 
 
-Profiling involves sampling some usage of a resource by a program. A single continuous session of recording is known as a profile, so under this concept a CPU system trace could be 
-a profile because is a single continuous session. Each sample collects the function callstack, I explain a CPU system trace I did below. The most common types of profiling are memory 
-profiling and CPU profiling. So it seems that both names can be used interchangeably 
+Profiling involves sampling some usage of a resource by a program. A single continuous session of recording is known as a profile. Each sample collects the function callstack, The most 
+common types of profiling are memory profiling and CPU profiling. It seems the line between system trace and sampling is really thin, you could even use it interchangeably because
+a continuous session profile can be seen as a System trace, maybe I'm wrong but as os right now it seems my conclusion is correct. However the difference might rely in that a sample
+is perceived to collect a more detailed call stack, this call stack can be referred as stack trace and it is said that collecting this info consumes more resources, btw in theory
+these only work with debuggable builds. Samples take time to collect so you can't use timing information from profiles (in android studio these are known as 
+"Stack sampling profiles"/"call stack samples") to understand if something is taking too long, instead this is what system traces are for. Because work in Android can be distributed
+across threads and processes, i.e, you could be doing a binder transaction on main thread so the work will be done in another thread or process. If the work is being done on another
+thread during the period of time we want to debug, and you take a stack sample of the main thread you may end up with a stack that implicates the wrong thing, which is something you
+can see with a trace, you can see how different pieces of work connects with each other; therefore, you usually want to take a trace and then a stack sample/profile. BTW A SLEEPING 
+THREAD MEANS THAT IT IS BLOCKED AND THIS IS USUALLY BECAUSE IT IS DOING IO OR NETWORK CALLS OR IT COULD BE BEING BLOCKED ON PURPPOSE. In AS the stack samples functionality uses
+[simpleperf](https://android.googlesource.com/platform/system/extras/+/master/simpleperf/doc/README.md) under the hood to take the stack sample profiles. It shows you Java method
+calls as well as native functions and syscalls. There is another option previously called "Trace Java Methods" for stack method sampling profiles which seems to have changed its name
+to "Find CPU Hotspots (Java/Kotiln method recording)" which will instrument and trace every method you enter and exit which tends to have way too much overhead to be reasonable.
+
+So in the end all below are profiles, yes even system traces, but each has different characteristics. System traces don't consume as much resources as Stack sampling profiles. Traces
+can be seen as the logging of performance debuging they seem to be a little more detailed on CPU info while RAM usage is not too detail and it has a lot more info as already mentioned, 
+and profiles is just a very detail sample of cpu or RAM usage, in CPU you see method calls and in RAM you see memory allocations.
+
 
 * System trace: They provide a bird eye view of CPU usage, you can see system how your app interacts with the system/hardware, it is timing information so you can see the info
   through time, like how long did a frame take. Almost every video I have seen about performance debugging says this is the first step when debugging performance because it helps
@@ -410,9 +425,9 @@ profiling and CPU profiling. So it seems that both names can be used interchange
   and by looking at the lines it seems like it is something about the rendering pipeline and not my code. the first call is `Choreographer.doFrame`, then that calls, `animation`,
   next to animation I have `traversal` but this is called after the thread is not blocked anymore, below that line I have a line with calls to `Recomposer.recompose` right next
   to it aligning with the `taversal` portion on top I have `meassure` and `draw-VRI` then below it I have `Compose.recompose`, this level has also some other calls next to it
-  the first call next (it doesn't matter what it is right now) is actually a block of calls, it is so small that I can see much about it and the smallest size I can trace do
+  the first call next (it doesn't matter what it is right now) is actually a block of calls, it is so small that I can see much about it and the smallest size I can trace dobe
   shows some info but I'm not going to look into it because there are quite a few of them but that set of tasks end aligns with the `meassure` call I mentioned previously, below this
-  line I can see some binder activity happening. What I can tell from this info, I already know I'm blocking the thread but suppose I didn't know, when this block of task I mentioned
+  line I can see some binder activity happening. What I can tell from this info, I already know I'm blocking the thread but suppose I didn't know, when , his block of task I mentioned
   starts this represents the sleep time end, this meand the thread is not sleeping anymore at this point and from there until the frame ends there is also some running state, some
   small sleeping in `traversal`, you can put your pointer on top of these portions and it will tell you the time they spent running and idle. What you need to understand here is that
   this do show us some kind of LIFO stack, being the `choreographer.doFrame` the first call, which calls `animation` which calls, `recomposer.recompooe`, which calls
@@ -423,14 +438,17 @@ profiling and CPU profiling. So it seems that both names can be used interchange
   in the main thread relates to work in render thread. So as you can see it gives us an idea, for example if you see recomposition taking too long then you can go look into anything
   that is recomposing but this time using other traces types. This traces can contain system and user-defined events, these are triggered through function calls. There is two types of
   event, Trace slices, they represent the time between different points in your code, you add them with `Trace.beginSection` and `Trace.endSection`. Trace counters, numeric values that
-  represent metrics, for example heap size. They can be added with `Trace.setCounter`
+  represent metrics, for example heap size. They can be added with `Trace.setCounter`. Trace points are used to try to narrow down root causes of performance issues, however instead
+  of using those you can actually take some stack samples / stack traces using "stack sample profiles"
 
   System traces also contain metrics which can be created from PerfettoSQL queries and can be used to perform analysis or compare traces. System traces work great for finding
   latency issues caused by delays, waits, or scheduling problems, so you can diagnose latency problems. It can help you spot duplicated computations. Finding lock contentions
   are possible because you can see what a thread is doing.
 
-  * Stack Sample Profiles: They record samples of code execution and saves call stack information at a set rate. In android studio that feature has changed name over time,
-  I think it was previously called method tracing, but now is called "Find CPU Hotspots (Callstack Sample)" 
+* Stack Sample Profiles: They record samples of code execution and saves call stack information at a set rate. In android studio that feature has changed name over time,
+  I think it was previously called method tracing, but now is called "Find CPU Hotspots (Callstack Sample) or Method Sampling". There is another stack method sample profile
+  option in AS, it was previously called "Trace Java Methods" which seems to have changed its name to "Find CPU Hotspots (Java/Kotiln method recording)" which will instrument
+  and trace every method you enter and exit, which tends to have way too much overhead to be reasonable.
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
