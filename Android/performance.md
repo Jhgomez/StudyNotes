@@ -448,7 +448,12 @@ and profiles is just a very detail sample of cpu or RAM usage, in CPU you see me
 * Stack Sample Profiles: They record samples of code execution and saves call stack information at a set rate. In android studio that feature has changed name over time,
   I think it was previously called method tracing, but now is called "Find CPU Hotspots (Callstack Sample) or Method Sampling". There is another stack method sample profile
   option in AS, it was previously called "Trace Java Methods" which seems to have changed its name to "Find CPU Hotspots (Java/Kotiln method recording)" which will instrument
-  and trace every method you enter and exit, which tends to have way too much overhead to be reasonable.
+  and trace every method you enter and exit, which tends to have way too much overhead to be reasonable, that said, the former could miss recording work that happens in between
+  samples because sampling is done at a set rate while the latter is a continuous session sample. These recording gives you information in terms of methods that where called.
+  check [this video](https://youtu.be/21lY_MMiD2g?si=kYo_kzbJTRuFVjJp) to learn more about method stack profiles. In the flame charts, Orange color functions represent android
+  platform code while light yellow are functions in our app and dark yellow is java functions. In here you don't need an physical device, that is only for meassuring performance
+  with Macrobenchmark and debugging performance with system traces. For method sampling either at a set rate or as a continuous session it seems that you can use either configuration
+  as long as it is not obfuscated because if not the method names will be obfuscated.
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
