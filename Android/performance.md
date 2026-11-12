@@ -441,8 +441,11 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   that is recomposing but this time using other traces types. This traces can contain system and user-defined events, these are triggered through function calls. There is two types of
   event, Trace slices, they represent the time between different points in your code, you add them with `Trace.beginSection` and `Trace.endSection`. Trace counters, numeric values that
   represent metrics, for example heap size. They can be added with `Trace.setCounter`. Trace points are used to try to narrow down root causes of performance issues, however instead
-  of using those you can actually take some stack samples / stack traces using "stack sample profiles"
-
+  of using those you can actually take some stack samples / stack traces using "stack sample profiles". A good example of how traces helps you, since you can see relationships between
+  different pieces of work being done you can visually see that every frame that needs to update what the users sees on screen delegates drawing to the render thread, this means
+  you can see that when render thread returns from the `drawFrames` request on the first frame (for example) only then the frame is considered done which means the user now sees
+  your UI
+ 
   System traces also contain metrics which can be created from PerfettoSQL queries and can be used to perform analysis or compare traces. System traces work great for finding
   latency issues caused by delays, waits, or scheduling problems, so you can diagnose latency problems. It can help you spot duplicated computations. Finding lock contentions
   are possible because you can see what a thread is doing.
@@ -452,10 +455,31 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   option in AS, it was previously called "Trace Java Methods" which seems to have changed its name to "Find CPU Hotspots (Java/Kotiln method recording)" which will instrument
   and trace every method you enter and exit, which tends to have way too much overhead to be reasonable, that said, the former could miss recording work that happens in between
   samples because sampling is done at a set rate while the latter is a continuous session sample. These recording gives you information in terms of methods that where called.
-  check [this video](https://youtu.be/21lY_MMiD2g?si=kYo_kzbJTRuFVjJp) to learn more about method stack profiles. In the flame charts, Orange color functions represent android
-  platform code while light yellow are functions in our app and dark yellow is java functions. In here you don't need an physical device, that is only for meassuring performance
-  with Macrobenchmark and debugging performance with system traces. For method sampling either at a set rate or as a continuous session it seems that you can use either configuration
-  as long as it is not obfuscated because if not the method names will be obfuscated.
+  check [this video](https://youtu.be/21lY_MMiD2g?si=kYo_kzbJTRuFVjJp) to learn more about method stack profiles. Click specific threads to see a thread call stack in isolation
+  . In the flame charts, Orange color functions represent android platform code while light yellow are functions in our app and dark yellow is java functions. You don't necessarily
+  need an physical device because they don't give you timming info but you rather get statistics, however a phyisical device is always bettter, always use a physical when meassuring
+  performance with Macrobenchmark and debugging performance with system traces. For method sampling either at a set rate or as a continuous session it seems that you can use either
+  or build type, however know that unoptimized code and not obfuscated code can help you debug through the stack with your function names, for example, continuing with the
+  system trace I made previously, I created a function called `myFun` which is called right before I call my first composable in my actiivty, this fucntion blocks the main thread
+  for 2 seconds `Thread.Sleep(2000)`. If I run using a debug build I will see the function name however something else happens under the hood also, I have this code in my app
+  `(context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0` this verifies if the manifest of the installed app is debuggable, when I install the app in a debug
+  build it returns true, but if I start the app using the profiler even though it was installed as a debug build the code checking for debug builds now returns false but my code
+  is still unoptimized and not obfuscated but now it seems to be not really debuggable and if I close and open the app the flag stil returns false now, so it modifies the installed
+  app, so it looks like I get some build where minify is disable, no shrinking nor no obfuscation, but is really not debugable any more, if you try to attach the debugger it won't
+  work. So when the profiler sees you use a debug build and start the profiler it just turns off shrinking and obfuscation, which is something you can do manually with the
+  `-dontoptimize` and `-dontobfuscate` proguard rules in a release build. In conclusion always use a release build and if you want to debug with more detail add the "dont obfuscate"
+  and "dont optimize" proguard rules, if you only do "not obfuscate" it could still be optimized so some functions could be inlined and won't exists in the stack, and if you only do
+  "don't optimize" then you will see obfuscated names. Take this into account when taking traces manually with `adb` tools, always use a release build for system traces, and
+  cpu call stack samples, however memory sampling and traces can only be done with true debug builds. You can collect call stacks programmatically so you can remove noise
+  from your samples, btw those samples are stored on device so you need `adb` to pull them up to your computer (see the tips section). With these profiles you can spot code with a
+  lot of CPU activity, so it helps you understand how your **code** behaves, note the keyword here is the code. Sampling profiles gives you statistical information, it is an
+  agregatted of all samples
+
+* Heap Dumps: they're a snapshot of your app's Java heap memory. They help you understand memory usage, this means you can spot object using a lot of memory which you can then
+optimize. This info can help you spot memory leaks, duplicated objects and bad memory usage patterns in general. They do require a debug build.
+
+* Heap Profiles: They take samples when memory is allocated. They can help you spot memory churns, by reducing memory churns you can reduce garbage collection and reduce power
+consumption and even janks (slow rendering) since heavy garbage collections can affect main thread. You can spot memory leaks using these profiles
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
@@ -659,12 +683,17 @@ model that you throw anything at
 
 * For bitmaps that are used like thumbnails or just don't need transparency set the Bitmap config to use RGB565 instead the default ARGB4X since the default uses
   twice as much as the suggested one. In Coil, you can use the `bitmapConfig` property to configure it.
+  
 * Glide and Coil helps you downscale and use a bitmap pool for more performant memory usage
+* 
 * You can find 	duplicated bitmap usage using the AS profiler with a "Analyze Memory Usage" profile, this gives you a Heap dump, duplicated bitmaps are highlighted
   automatically
+  
 * Use the APK analyzer tool to ensure that you aren't packaging larger than required image files. Reduce the sizes or consider placing the images on a server and only
   downloading them when required.
+  
 * The profiler in android studio has a "Find memory leaks with LeakCanary" option which will help you find memory leaks
+  
 * `ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles prgramatically, it gives you two types of profile collection
   `App-driven` and `Event-driven`, in the former you define the start and the end of the collection process and the latter are automatically collected by the system. As
   of 11/3/27 the events it tracks automatically are ANRs, APP_FULLY_DRAWN, KILL_TASK_MANAGER, KILL_RECENTS, KILL_FORCE_STOP, COLD_START, KILL_EXCESIVE_CPU_USAGE, ANOMALY,
@@ -674,15 +703,20 @@ model that you throw anything at
   the OOM this manager monitors for out of memory errors, when this occurs a heap dump is created also, so this is more powerful than just a stack trace. This manager
   lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report to your
   servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
+  
 * [This Document](https://android-developers.googleblog.com/2026/06/prioritizing-memory-efficiency-steps-for-android-17.html#Trim): Shows us how to register a callback
   so our app can free memory more effectively to avoid the OS killing our app and or slow user experiences due to page swapping, register in `Activity`, `Fragment`,
   `Service`, or even your custom `Application` class (Using it in the Application class is highly effective for global cache management) for the `onTrimMemory()`
   callback. This is useful due to the RAM behavior explained [here](https://android-developers.googleblog.com/2026/08/app-broader-memory-limits.html), where you can
   see compressing and decompressing pages can prevent immediate eviction but adds CPU overhead, which can result in noticeable UI jank and experience slowdowns. And
   look [here](https://developer.android.com/topic/performance/memory/manage-app-memory#release) for the official documenation
+  
 * Crashlytics version 20.1.0 introduces additional debug data to help you catch, prioritize, and fix Out-Of-Memory exceptions and memory limiter kills.
+  
 * Add LeakCanary library to your app to receive Logcats when a possible memory leak happens when activities, fragments, viewmodels, services are destroyed
+  
 * Use `SparseArray`, `SparseBooleanArray`, and `LongSparseArray` instead of `Hashmap`
+  
 * Use lite protobufs instead of regular ones as regular ones generates more code
 
 * System traces tells us everything that is happening in the device, this information helps us understand when and what our application is doing, for example it can show
@@ -693,10 +727,11 @@ model that you throw anything at
   for example you could be sampling the wrong thread, not the thread which is actually doing the work you're concerned about. Stack samples shows proportions not timing
   info. Perfetto offers us the advantage of helping you understand system behavior and inner process communication, while AS profiler focuses on the app exclusively.
   You'll trace using Perfetto to identify places where app is spending too much time, and then go deeper with stack samples
+  
 * You can start a method tracing programatically with `Debug.startMethodTracing("my_app_trace")` and `Debug.stopMethodTracing()`. The system saves the resulting .trace
   file in a package-specific directory on external storage, get the file with `adb pull /sdcard/Android/data/com.your.package/files/my_app_trace.trace` and drag and drop
-  it in AS profiler. An interesting code is `Coreographer.getInstance().postFrameCallback { handler.postAtFronOfQueue { Debug.stopMethodTracing() } }`, this will help
-  you something similar to a trace (over time) and a stack trace.
+  it in AS profiler. An interesting code is `Coreographer.getInstance().postFrameCallback { handler.postAtFronOfQueue { Debug.stopMethodTracing() } }`, this will let you
+  collect more specific call stacks.
 
 * Emulator vs Physical Device: For performance tracing use a physical device, the more constrained the phone is the better so you can feel first-hand the parts of the
   app that can drop frames and cause UI janks, an emulator is not the best for performance tracing because they have the computer's hardware available which is not
