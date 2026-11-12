@@ -411,9 +411,11 @@ calls as well as native functions and syscalls. There is another option previous
 to "Find CPU Hotspots (Java/Kotiln method recording)" which will instrument and trace every method you enter and exit which tends to have way too much overhead to be reasonable.
 
 So in the end all below are profiles, yes even system traces, but each has different characteristics. System traces don't consume as much resources as Stack sampling profiles. Traces
-can be seen as the logging of performance debuging they seem to be a little more detailed on CPU info while RAM usage is not too detail and it has a lot more info as already mentioned, 
-and profiles is just a very detail sample of cpu or RAM usage, in CPU you see method calls and in RAM you see memory allocations.
-
+can be seen as the logging of performance debuging, AS profilers seem to be a little more detailed on CPU info while RAM usage is not too detail and it has a lot more info as already
+mentioned, and profiles is just a very detail sample of cpu or RAM usage, in CPU you see method calls and in RAM you see memory allocations. Traces can not feasibly capture execution
+of extreme high frequency events e.g. every function call. Profiling on the other hand can record extreme high frequency events like function calls and significantly cut down how much
+info they store by taking samples. Profiles that collect every function call output GB of data everysecond so it they are impractical for anything beyond investigating small snippets
+of code. Traces show you resource usage but doesn't tell why it happened nor what code is beign executed during that time.
 
 * System trace: They provide a bird eye view of CPU usage, you can see system how your app interacts with the system/hardware, it is timing information so you can see the info
   through time, like how long did a frame take. Almost every video I have seen about performance debugging says this is the first step when debugging performance because it helps
