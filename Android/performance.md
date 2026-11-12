@@ -475,6 +475,9 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   lot of CPU activity, so it helps you understand how your **code** behaves, note the keyword here is the code. Sampling profiles gives you statistical information, it is an
   agregatted of all samples
 
+  To understand more how flame charts are generated look [here](https://developer.android.com/studio/profile/inspect-traces#flame_chart) but basically calls to the same function
+  that have the same set of parents are agregated if another call to the same function is done with a different parent chain then they are displayed separately.
+
 * Heap Dumps: they're a snapshot of your app's Java heap memory. They help you understand memory usage, this means you can spot object using a lot of memory which you can then
 optimize. This info can help you spot memory leaks, duplicated objects and bad memory usage patterns in general. They do require a debug build.
 
@@ -685,8 +688,8 @@ model that you throw anything at
   twice as much as the suggested one. In Coil, you can use the `bitmapConfig` property to configure it.
   
 * Glide and Coil helps you downscale and use a bitmap pool for more performant memory usage
-* 
-* You can find 	duplicated bitmap usage using the AS profiler with a "Analyze Memory Usage" profile, this gives you a Heap dump, duplicated bitmaps are highlighted
+  
+* You can find duplicated bitmap usage using the AS profiler with a "Analyze Memory Usage" profile, this gives you a Heap dump, duplicated bitmaps are highlighted
   automatically
   
 * Use the APK analyzer tool to ensure that you aren't packaging larger than required image files. Reduce the sizes or consider placing the images on a server and only
@@ -699,10 +702,10 @@ model that you throw anything at
   of 11/3/27 the events it tracks automatically are ANRs, APP_FULLY_DRAWN, KILL_TASK_MANAGER, KILL_RECENTS, KILL_FORCE_STOP, COLD_START, KILL_EXCESIVE_CPU_USAGE, ANOMALY,
   OOM (out of memory), with the android 17 restriction on memory usage the ANOMALY trigger is really useful because it identifies performance anomalies detected by the
   system, it supports memory and binary spam, if a memory usage exceeds a threshold it creates a heapdump which allows you to use this trigger to examin resouce
-  allocations and the app state to identify the root cause. I the app is terminated due to violating the android 17 memory usage limit it will provide a heap dump. With
-  the OOM this manager monitors for out of memory errors, when this occurs a heap dump is created also, so this is more powerful than just a stack trace. This manager
-  lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report to your
-  servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
+  allocations and the app state to identify the root cause. If the app is terminated due to violating the android 17 memory usage limit it will provide a heap dump. With
+  the OOM this manager monitors for out of memory errors, when this occurs a heap dump is created also, so this is more powerful than just a stack trace in crahsaliytics.
+  This manager lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report
+  to your servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
   
 * [This Document](https://android-developers.googleblog.com/2026/06/prioritizing-memory-efficiency-steps-for-android-17.html#Trim): Shows us how to register a callback
   so our app can free memory more effectively to avoid the OS killing our app and or slow user experiences due to page swapping, register in `Activity`, `Fragment`,
@@ -720,9 +723,9 @@ model that you throw anything at
 * Use lite protobufs instead of regular ones as regular ones generates more code
 
 * System traces tells us everything that is happening in the device, this information helps us understand when and what our application is doing, for example it can show
-  us how long our app took to star,  when a thread is doing blocking I/O, it allows you to identify slow operations and understand how different threads work together.
+  us how long our app took to start,  when a thread is doing blocking I/O, it allows you to identify slow operations and understand how different threads work together.
   Once we have identify places where things are not working as expected we have to understand why, so we do Stack sampling, Stack sampling also shows us whats happening
-  but also helps us understand why, but collecting those traces have a performance impact, so you can't rely solely on them to understand how the apps is actually doing.
+  but it helps us understand what code is executing, but collecting those traces have a performance impact, so you can't rely solely on them to understand how the apps is actually doing.
   You can take stack samples using the sampling profiler, beware that if you collect stack samples without a systrace first you may be inspecting the wrong information
   for example you could be sampling the wrong thread, not the thread which is actually doing the work you're concerned about. Stack samples shows proportions not timing
   info. Perfetto offers us the advantage of helping you understand system behavior and inner process communication, while AS profiler focuses on the app exclusively.
@@ -736,20 +739,20 @@ model that you throw anything at
 * Emulator vs Physical Device: For performance tracing use a physical device, the more constrained the phone is the better so you can feel first-hand the parts of the
   app that can drop frames and cause UI janks, an emulator is not the best for performance tracing because they have the computer's hardware available which is not
   realistic, phone's are generally not as powerful as desktops and laptops but also the performance might depend on what you're running on your machine, so deffinitely
-  use a physical device. For memory profiling neither one makes a difference.
+  use a physical device. For memory profiling (sampling) preffer a physical device but an emulator should be enough.
 
 * For CPU profiling/tracing you're app should be marked as profileable, this configuration is similar to a release build, we can't use a debuggagle build because it is
   not optimized because this is the only way for you to be able to step into the execution to debug your app at runtime, it comes at a performance cost but the benefits
   to developing your app are greater. Profileable builds will not have allocation tracking available, they don't have access to the same level of debug hooks as debuggable
-  builds. So you should have different build types, one for release, one for debug it is for development, as usual, it can also be used to profile memory usage, allocation
-  tracking, and one for profileable, this profileable variant can be used for macrobenchmark tests, looking performance characteristics, for optimizing CPU usage, fix janks,
-  lower battery compsumption. Instead of BuildTypes you can do different run configs, this is noted in the tools.md file. Macrobenchmark can make sure the app is as closed
+  builds. So you may have different build types, debugging performance you can use a run configuration or just android studio profilers as they will configure the installed
+  APK as necessary but for benchmarking with Macrobenchmark for performance measuring you do need different build types and you can see how to configure that in the
+  Macrobenchmark documentation. Instead of BuildTypes you can do different run configs, this is noted in the tools.md file. Macrobenchmark can make sure the app is as closed
   to a release build as possible, it can make sure the test run just as if the code was already precompiled either by AOT or JIT (JIT turn in AOT later). Collecting garbage
   is not expensive under responislb euse of memory but if you're producing a lot of garbage it can trigger GC collections too oftes which can drain battery more quickly, so
   avoid allocating too many objects in places like the innermost part of a for loop and it could even cause some UI janks
 
 * Android live allocation tracking using the memory profiler. It introduces performance overhead but can help identify memory leaks, just be aware that the GC behavior is
-  unpredictable and therefore this is a complicated task. The memory profiler allows you to see the allocations happening in throught th app, you can see how and what is
+  unpredictable and therefore this is a complicated task. The memory profiler allows you to see the allocations happening throught the app, you can see how and what is
   being allocated and some details about what the objects are, you can also track them through time (visually) and see them being deallocated (collected). Using that
   information you can approach memory leak hunting with a repeatable task, for example, navigating to a screen, trace it, then go return to previous scene and then forward
   again to the same scene a few times, you can record these profile sessions and if an object(s) is not being GC then you should be able to start noticing, macrobenchmark
@@ -759,19 +762,6 @@ model that you throw anything at
   which you can forward to your server, you collect it programmatically with `Debug.dumpHprofData(filePath)`. You can also get a heap dump programatically whe an OOM
   occurs using the the `ProfilingManager` and registering for a result callback that returns the heap dump when the app is started again. Since the OOM memory or onTrim
   callback be caused due to a memory leak it is a good starting point to troubleshoot potential leaks.
-
-* Traces vs Profiles: Really hard to explain but at least in this context we have System traces, I already explained what they are previously, using the AS profiler or
-  perfetto we can trace throught time cpu usage, what a thread is doing, how thread and processes work together, frame rate, dropped frames. Profiles, in AS we have
-  the memory profiler, CPU profiler this is weird because this can be an alias for system tracing, network profiler, and energy profiler. Flame charts and call charts
-  plot method execution CPU time consumed over a duration (period of time). Besides tracing and profiling we have snapshots which are just profiles at a specific point
-  in time, these are Heap Dumps and Stack Traces. The line between each other is really hard to draw because, for example, an allocation memory trace in perfetto
-  traces all allocations as events which enables you to align allocations with other events (what was allocated during a frame) but is really expensive and In a large
-  production apps, this can make the app nearly unusable. AS has the memory profiler, profiles will only sampele and aggregate allocations, i.e. it gives you statistics
-  and tiny and rare allocations can be missed but the heavy ones will show relliably, it is aggregated because it can return a flame graph which will tell you who allocates
-  the most (not a timeline as a trace). 
-
-* Always profile a Release or Benchmark build with <profileable android:shell=”true”/>. This ensures R8 optimizations are active while granting the Android Studio
-  Profiler full visibility into CPU and memory allocations.
 
 * Avoid manual `WakeLock` management; use `WorkManager` for background tasks to keep the CPU running while the device screen is off
 
