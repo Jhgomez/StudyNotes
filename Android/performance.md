@@ -392,7 +392,9 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
 
   You can define trace points to see app's code execution time directly in a system trace as explained [here](https://developer.android.com/topic/performance/tracing/custom-events).
 
-  You can add in-process trace events, it is useful for debugging coroutines as shown [here](https://developer.android.com/topic/performance/tracing/in-process-tracing)
+  You can add in-process trace events, it is useful for debugging coroutines as shown [here](https://developer.android.com/topic/performance/tracing/in-process-tracing). This library
+  seems to be a replacement to `androidx.tracing` library because this library performance is not that good, everysingle trace section can add 1,220ns in a Pixel 6A, and it can't add
+  additional app context, its labels can only be 147 charcters, and is Android only. While this other option supports KMP, has no label length limit, 
 
 * Stack Sample Profiles: They record samples of code execution and saves call stack information at a set rate. In android studio that feature has changed name over time,
   I think it was previously called method tracing, but now is called "Find CPU Hotspots (Callstack Sample) or Method Sampling". There is another stack method sample profile
@@ -428,7 +430,6 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   In AS profiler you have "Callstack Sample" for method profiling with samples, and ["Java/Kotlin Method recording"](https://developer.android.com/studio/profile/record-java-kotlin-methods)
   which are really resource heavy because it records method calls with timing info, so they are some special kind of profile because they also seem to have some tracing characteristics
 
-  
 
 * Heap Dumps: they're a snapshot of your app's Java heap memory. They help you understand memory usage, this means you can spot object using a lot of memory which you can then
 optimize. This info can help you spot memory leaks, duplicated objects and bad memory usage patterns in general. They do require a debug build. See [this](https://developer.android.com/studio/profile/capture-heap-dump)
@@ -442,7 +443,17 @@ are recorded using [Track memory consumption (Java/Kotlin allocations)](https://
 
 ## Perfetto
 There is perefetto command line tool and perfetto UI. The command line tool (part of android SDK) lets you collect performance information from Android devices via the Android 
-Debug Bridge (ADB). Invoke the `perfetto` tool using the `adb shell perfetto ...` command, more info [here](https://developer.android.com/tools/perfetto). 
+Debug Bridge (ADB). Invoke the `perfetto` tool using the `adb shell perfetto ...` command, more info [here](https://developer.android.com/tools/perfetto).
+
+https://perfetto.dev/docs/analysis/trace-processor
+https://perfetto.dev/docs/tracing-101
+https://perfetto.dev/docs/getting-started/system-tracing
+https://perfetto.dev/docs/analysis/stdlib-docs
+https://perfetto.dev/docs/getting-started/android-trace-analysis
+
+## Tracing in Compose
+https://developer.android.com/develop/ui/compose/tooling/tracing
+https://developer.android.com/develop/ui/compose/performance
 
 ## Profiling Methods
 As we already know, we can do manual profiling with method tracing using profilers, and is also posible to record system traces directly on a physical device, those are manual 
