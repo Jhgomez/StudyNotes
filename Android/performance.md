@@ -388,7 +388,9 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   Perfetto command-line tool (Android 10 and higher) you open this traces in Perfetto UI. Compared to AS system trace which focus on your app only, perfetto allows you to see all
   processes in the devices. System tracing utility (system traces on device). In Android 10 (API level 29) or higher, the on-device trace files are saved in Perfetto format, while
   earlier versions of android save them in Systrace format. The last option is Systrace command-line tool which is a legacy platform-provided command-line tool. I inlcude a sectino
-  just for [perfetto](#perfetto) below.
+  just for [perfetto](#perfetto) below. If you're not using the AS profilers you need to manage all configurations yourself so make sure to use a profileable build that is based on
+  release, and enable or disable optimization and ofusctation as needed, all other options other the AS profilers won't show you a warning if you try to take a system trace of a
+  debuggable build for example.
 
   You can define trace points to see app's code execution time directly in a system trace as explained [here](https://developer.android.com/topic/performance/tracing/custom-events).
 
@@ -443,7 +445,47 @@ are recorded using [Track memory consumption (Java/Kotlin allocations)](https://
 
 ## Perfetto
 There is perefetto command line tool and perfetto UI. The command line tool (part of android SDK) lets you collect performance information from Android devices via the Android 
-Debug Bridge (ADB). Invoke the `perfetto` tool using the `adb shell perfetto ...` command, more info [here](https://developer.android.com/tools/perfetto).
+Debug Bridge (ADB). Invoke the `perfetto` tool using the `adb shell perfetto ...` command, more info [here](https://developer.android.com/tools/perfetto). However instead of
+using the command line to record traces you can also do that directly from Perfetto UI or from a device as previously mentioned.
+
+Perfetto command line traces needs a config file which uses textproto format. You can use this base configuration provided in [here](https://perfetto.dev/docs/getting-started/system-tracing) 
+by the perfetto team `curl -O https://raw.githubusercontent.com/google/perfetto/main/tools/record_android_trace`,  that website is also a guide on how to get started, this will 
+download a file with no extension, it is a script. Then run the command below
+
+```
+# See python3 record_android_trace --help for more details.
+python3 record_android_trace \
+   -o trace_file.perfetto-trace
+   # This option configure the trace to run for 10s.
+   -t 10s \
+   # This option configures the main buffer size to be 32MB.
+   -b 32mb \
+   # This option enables atrace annotations from all apps on the system.
+   -a '*' \
+   # These options specify some of the most important instrumentation on the
+   # device: CPU scheduling/frequency to know what is running on the CPUs and
+   # the importance the system placed on that work and atrace annotations to
+   # have context on what was happening inside userspace processes (platform
+   # and app).
+   sched freq view ss input
+
+# Other example I found in a yt video https://youtu.be/phhLFicMacY
+phyton3 ./record_android_trace -o starup-trace.perfetto-trace sched freq idle am wm gfx view binder_driver hal dalvik camera input res memory
+```
+
+but I ended up with the command below, this one gives me the "Expected Timeline" and "Actual Timeline". BTW, the first command I showed didn't give the frame time info,
+with the second command I did get it but it seems like it is adding info I don't need for start time system trace. It seems like some frame info also lives in the `surfaceFlinger`
+process which in the first command I didn't get, but dropped frames are only shown in my app process. The given script uses the perfetto comand line tool but it offers very
+helpful functionality at development time, it automatically check the connected device to get info like API level, it also offers backwards compatibility in devices with 
+Android 10 and lower. it saves the traces in the correct directory in the device, it can stop the trace automatically if you set a time duration, and it launches pefetto UI
+automatically which means it pulls the trace file automatically for you. You can configure it further either with a config file or you can pass sort options (only when not 
+using `-c/--config`, short options of "Atrace" events are: sched, gfx, am, wm (see --list). short options of "Ftrace" events are: sched/sched_switch, kmem/kmem (see --list-ftrace),
+to see those options run `python3 ./record_android_trace --list`
+
+```
+python3 ./record_android_trace -o starup-trace.perfetto-trace -a '*' sched freq idle am wm gfx view binder_driver dalvik input res
+```
+
 
 https://perfetto.dev/docs/analysis/trace-processor
 https://perfetto.dev/docs/tracing-101
