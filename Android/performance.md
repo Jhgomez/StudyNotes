@@ -450,6 +450,8 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   latency issues caused by delays, waits, or scheduling problems, so you can diagnose latency problems. It can help you spot duplicated computations. Finding lock contentions
   are possible because you can see what a thread is doing.
 
+  You can learn how to read this profiles in AS [here](https://developer.android.com/studio/profile)
+
 * Stack Sample Profiles: They record samples of code execution and saves call stack information at a set rate. In android studio that feature has changed name over time,
   I think it was previously called method tracing, but now is called "Find CPU Hotspots (Callstack Sample) or Method Sampling". There is another stack method sample profile
   option in AS, it was previously called "Trace Java Methods" which seems to have changed its name to "Find CPU Hotspots (Java/Kotiln method recording)" which will instrument
@@ -478,11 +480,21 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   To understand more how flame charts are generated look [here](https://developer.android.com/studio/profile/inspect-traces#flame_chart) but basically calls to the same function
   that have the same set of parents are agregated if another call to the same function is done with a different parent chain then they are displayed separately.
 
+  Usually you want to collapse frames from the Java virtual machine (for example `android::AndroidRuntime::start` and `art::{...}`), and the system kernel (for example
+  `[kernel.kallsyms]+{offset}`). Usually this corresponds to collapsing frames related to `[kernel.kallsyms]`, `/apex/`, and `/system/*`.
+
+  In AS profiler you have "Callstack Sample" for method profiling with samples, and ["Java/Kotlin Method recording"](https://developer.android.com/studio/profile/record-java-kotlin-methods)
+  which are really resource heavy because it records method calls with timing info, so they are some special kind of profile because they also seem to have some tracing characteristics
+
 * Heap Dumps: they're a snapshot of your app's Java heap memory. They help you understand memory usage, this means you can spot object using a lot of memory which you can then
-optimize. This info can help you spot memory leaks, duplicated objects and bad memory usage patterns in general. They do require a debug build.
+optimize. This info can help you spot memory leaks, duplicated objects and bad memory usage patterns in general. They do require a debug build. See [this](https://developer.android.com/studio/profile/capture-heap-dump)
+documentation to learn how to read them. in heap dumps you can spot small memory leaks easier if the dump is taken after a long session, it seems those object go to the top,
+most likely because the they survive collections happening in the young gneration and therefore promoted to the  old Generation. Objects that survive enough collection cycles in
+the young generation are promoted to the old generation
 
 * Heap Profiles: They take samples when memory is allocated. They can help you spot memory churns, by reducing memory churns you can reduce garbage collection and reduce power
-consumption and even janks (slow rendering) since heavy garbage collections can affect main thread. You can spot memory leaks using these profiles
+consumption and even janks (slow rendering) since heavy garbage collections can affect main thread. You can spot memory leaks using these profiles. It seems like in AS these
+are recorded using [Track memory consumption (Java/Kotlin allocations)](https://developer.android.com/studio/profile/record-java-kotlin-allocations)
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
@@ -734,7 +746,8 @@ model that you throw anything at
 * You can start a method tracing programatically with `Debug.startMethodTracing("my_app_trace")` and `Debug.stopMethodTracing()`. The system saves the resulting .trace
   file in a package-specific directory on external storage, get the file with `adb pull /sdcard/Android/data/com.your.package/files/my_app_trace.trace` and drag and drop
   it in AS profiler. An interesting code is `Coreographer.getInstance().postFrameCallback { handler.postAtFronOfQueue { Debug.stopMethodTracing() } }`, this will let you
-  collect more specific call stacks.
+  collect more specific call stacks. However with this approach you're doing a continuous tracing which is consumes more resources and can make your app run really slow,
+  so to profile methods with lees overhead take samples ` startMethodTracingSampling()` and stop it the same way, This info is found [here](https://developer.android.com/studio/profile/generate-trace-logs)
 
 * Emulator vs Physical Device: For performance tracing use a physical device, the more constrained the phone is the better so you can feel first-hand the parts of the
   app that can drop frames and cause UI janks, an emulator is not the best for performance tracing because they have the computer's hardware available which is not
