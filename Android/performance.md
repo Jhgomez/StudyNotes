@@ -271,83 +271,16 @@ second. If a frame last more than 700 milliseconds is considered a frozen frame 
 it took to draw the first frame when an activity is opened, if you use the Activity's method `reportFullyDrawn()` which would represent the time-to-fully-drawn (TTFD), this 
 uses the `FullyDrawnReporter` under the hood, you can see it with `tag: Fully drawn`.
 
-**DON'T USE AN EMULATOR TO MEASSURE PERFORMANCE**, **DEBUGABLE CAN BE USED WHEN YOU NEED HEAP DUMPS AND STACK TRACES BUT NOT FOR PROFILING**, instead use a physical device 
-with and using a release version of your app(`profileable` is based on release build type) this is because you should use an environment that is as close as possible to 
-production.
+**DON'T USE AN EMULATOR TO MEASSURE PERFORMANCE**, **DEBUGABLE CAN BE USED WHEN YOU NEED HEAP DUMPS**. When doing system traces or profiling CPU performance, and taking call
+stack samples and recording continous call stack sessions you will always want a `profileable` build, these builds are based on top of release builds, since you are measuring
+CPU performance you almost always want these builds to be optimized and most of the times obfuscated also, but sometimes when doing method traces/profiles you need to disable
+obfuscation temporarily. For cpu performance debugging and measurement you NEED a physical device. Debugging memory on the other hand needs debug builds (not release, 
+nor profileable).
 
 ## Manual inspection
-Perfetto is the best tool to inspect performance on devices Android 9 and higher. check the [Quickstart: Record traces on Android](https://perfetto.dev/docs/getting-started/system-tracing) guide. Also watch the the in-depth series on [performance debbugging](https://www.youtube.com/playlist?list=PLWz5rJ2EKKc-xjSI-rWn9SViXivBhQUnp). We will also talk more about 
-manual inspecction when we talk about types of traces, like 
-system traces, stack traces, etc.
-
-You can check more about perfetto later but in this section we will talk about Android Studio Profilers
-
-### [Android Studio Profilers/Profile your app performance](https://developer.android.com/studio/profile)
-Be aware in Windows and Linux only you can run the standalone profiler without having to run android studio by going to folder "studio-installation-folder/bin" and executing "profiler"
-
-In order to [profile your app](https://developer.android.com/studio/profile), you will be required to have the following
-
-* An app with a release build variant that has the profileable manifest configuration enabled, also known as a profileable app. By default, apps have this configuration set to true. It is defined inside the
-  application tag `<profileable android:shell="true" />`. Or Use a debuggable app instead of a profileable app if you need to record Java/Kotlin allocations, capture a heap dump, or see the Interaction
-  timeline in task views that provide it.
-* A virtual or physical test device that runs API level 29 or higher and has Google Play.
-* Android Gradle Plugin 7.3 or higher.
-
-#### Profileable v. debuggable apps
-A debuggable app is based on the debug build variant of your app and lets you use development tools such as the debugger; however, it comes with some performance costs. A profileable app is based on 
-the release build variant of your app and enables a subset of common profiling tasks without the performance overhead of the debug build.
-
-#### Build and run a profileable or debuggable app
-To build and run a profileable app in Android Studio, follow these steps:
-
-1. Create a run/debug configuration if you don't already have one. Basically this is done automatically by Android studio whenever you run a test, or just run the app, or run an app with the debbuger, you can
-   in the tools.md file the setion "Create and edit run/debug configurations".
-2. Select your release build variant (Build > Select Build Variant).
-3. Click "More actions(is three dots icon to the right of the play icon to run an app)  > Profile '<NameOfRunConfig>' with low overhead(small guage icon)  or Profile 'app' with complete data(a bigger gauge icon)".
-   Again, for full profile make it debbugable if not just make it profileable and use the low overhead option, a profileable app lets you do most common profiling tasks.
-
-If for any reason instrcutions above fail, you can build and run a profileable app manually
-
-#### Start profiling/Record A System Trace
-1. Select a process from the list in the Home tab within the Profiler pane. In most cases, you'll want to select the top process that represents your app.
-2. Select a profiling task from the Tasks section. If you don't know where to start, get an overall view of performance activity by inspecting your app live.
-3. Use the Start profiler task from drop-down to select whether to start the profiler task from startup or attach to the process as it's running.
-4. Click Start profiler task. The task starts in its own tab.
-5. Interact with your app so activities are triggered.
-6. Stop the recording (if applicable), wait for it to parse, and see the results.
-
-The recordings are saved for the duration of the current Android Studio session; if you want to keep them for longer, export them by clicking Export recording . Not all trace types can be exported.
-
-To edit your profiler task recording configuration, click "profiler settings" icon. There are two main settings you can toggle:
-
-* For tasks that involve sampling, the Sample interval represents the time between each sample. The shorter the interval you specify, the faster you reach the file size limit for the recorded data.
-* The File size limit represents the amount of data that can be written to the connected device. When you stop recording, Android Studio parses this data and displays it in the profiler window. If
-  file is too large AS might have problems parsing it. if you're recording either a trace with a short sampling interval or an instrumented trace while your app calls many methods in a short time,
-  you'll generate large trace files quickly. If you use a connected device running Android 8.0 (API level 26) or higher, there isn't a limit on the file size of the trace data, and the File size
-  limit value is ignored. 
-
-#### Reading Sytem Trace(With AS profilers)
-After you record a trace, for example, if you notice a spike in the modem power rail, you should go to the threads section and see what thread activity could be causing the spike at the time.
-
-Some metrics you can read with it are:
-* **CPU Usage**: Shows CPU usage of your app as a percentage of total available CPU capacity by time.
-* **Interactions**: Shows user interaction and app lifecycle events along a timeline (requires a debuggable app process and a device running API level 26 or higher).
-* **Display**: Shows info related to how smooth your app UI renders. Select Lifecycle to inspect how long it takes your app to render each frame on the main thread and RenderThread.
-  This info is helpful for investigating bottlenecks that cause UI jank and low framerates.
-* **Threads**: Shows the threads that your app and various system processes run on. To learn about how to use system traces to investigate and help reduce UI jank, see Detect UI jank.
-* **CPU cores**:  Shows the activity on each core in your device. Hold the pointer over a thread activity to see which thread this core is running on at that particular time.
-* **Process Memory (RSS)**: Shows the amount of physical memory currently in use by the app.
-* **Power Rails**: Appears when you profile on a physical device.
-* **Battery**: Shows your app's battery usage.
-
-#### Types of Charts
-Before talk about charts and sections in the Analysis pane we will talk about its sections and charts.
-
-* **Top down and bottom up charts**: 
-* ****
-* ****
-* ****
-* ****
+Perfetto is the best tool to inspect performance on devices Android 9 and higher. check the [Quickstart: Record traces on Android](https://perfetto.dev/docs/getting-started/system-tracing) 
+guide. Also watch the the in-depth series on [performance debbugging](https://www.youtube.com/playlist?list=PLWz5rJ2EKKc-xjSI-rWn9SViXivBhQUnp). We will also talk more about 
+manual inspecction when we talk about types of traces, like system traces, stack traces, etc.
 
 ## Automated
 ### Macrobenchmark
@@ -387,8 +320,7 @@ measure TTID, Macrobenchmark will stop by default after TTID. For a TTFD you'd n
 find them as a json format also so you can parse them and plot them as part of your CI pipeline. Macrobenchmark results include system traces. 
 
 ## [Profile types and when each is helpful](https://developer.android.com/topic/performance/tracing/profile-types-overview)
-So profiles seems to be a more general term because we can refer to traces as profiles also, however it is said Tracing and profiling are two different techniques used in performance
-analysis. 
+Tracing and profiling are two different techniques used in performance analysis. 
 
 Tracing involves collecting highly detailed data about the execution of a system. Traces contain enough detail to fully reconstruct the timeline of events, so if you look at the right
 info in a trace you can fix a bug without reproducing it. It is impractical to read traces directly so you use a combination of trace analysis libraries and trace viewers, the libraries
@@ -495,6 +427,30 @@ the young generation are promoted to the old generation
 * Heap Profiles: They take samples when memory is allocated. They can help you spot memory churns, by reducing memory churns you can reduce garbage collection and reduce power
 consumption and even janks (slow rendering) since heavy garbage collections can affect main thread. You can spot memory leaks using these profiles. It seems like in AS these
 are recorded using [Track memory consumption (Java/Kotlin allocations)](https://developer.android.com/studio/profile/record-java-kotlin-allocations)
+
+## Profiling Methods
+As we already know, we can do manual profiling with method tracing using profilers, and is also posible to record system traces directly on a physical device, those are manual 
+aproaches to recording profiles. Automated and instrumented ways of recording profiles is using Macrobenchmark (system traces) and starting method tracing with 
+`Debug.startMethodTracing`, we can enhance those by adding trace points also. But sometimes there is difficult to debug errors in production, and we have different options for
+this, like `Crashalitycs`, which can gives us a system trace (it seems like it uses `ApplicationExitInfo ` under the hood, you also have `ApplicationStartInfo`), it can also
+provide us a heap dump (it uses `ProfilingManager ` under the hood). But we have `ProfilingManager` to collect profiles in production, it helps us debug rare issues in 
+production, it helps us collect data from many users to analyze it. Compared to manual profile collection, profiles collected with this manager offer more timing control
+because they can be based on events or just on demand at specific points, you can use them locally as well as to collect in the field profiles, so they are more scalable,
+however less customization. They are very useful because you can collect a profile even if you're not able to reproduce a bug locally, you can find and fix performnce
+issue using data collected in the field. Data from other apps is removed because by redacting the profiles before returning the information so they protect user's privacy,
+therefoe, they are less complete than manual locally collected profiles.
+
+### [Profiling Manager](https://developer.android.com/topic/performance/tracing/profiling-manager/overview)
+`ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles (system traces and heap dumps) programmatically, it gives you 
+two types of profile collection
+`App-driven` and `Event-driven`, in the former you define the start and the end of the collection process and the latter are automatically collected by the system. As
+of 11/3/27 the events it tracks automatically are ANRs, APP_FULLY_DRAWN, KILL_TASK_MANAGER, KILL_RECENTS, KILL_FORCE_STOP, COLD_START, KILL_EXCESIVE_CPU_USAGE, ANOMALY,
+OOM (out of memory), with the android 17 restriction on memory usage the ANOMALY trigger is really useful because it identifies performance anomalies detected by the
+system, it supports memory and binary spam, if a memory usage exceeds a threshold it creates a heapdump which allows you to use this trigger to examin resouce
+allocations and the app state to identify the root cause. If the app is terminated due to violating the android 17 memory usage limit it will provide a heap dump. With
+the OOM this manager monitors for out of memory errors, when this occurs a heap dump is created also, so this is more powerful than just a stack trace in crahsaliytics.
+This manager lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report
+to your servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
