@@ -384,6 +384,15 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
 
   You can learn how to read this profiles in AS [here](https://developer.android.com/studio/profile)
 
+  In Android you have different ways to capture system profiles as shown [here](https://developer.android.com/topic/performance/tracing), you can use the AS CPU an memory profiler,
+  Perfetto command-line tool (Android 10 and higher) you open this traces in Perfetto UI. Compared to AS system trace which focus on your app only, perfetto allows you to see all
+  processes in the devices. System tracing utility (system traces on device). In Android 10 (API level 29) or higher, the on-device trace files are saved in Perfetto format, while
+  earlier versions of android save them in Systrace format. The last option is Systrace command-line tool which is a legacy platform-provided command-line tool.
+
+  You can define trace points to see app's code execution time directly in a system trace as explained [here](https://developer.android.com/topic/performance/tracing/custom-events).
+
+  You can add in-process trace events, it is useful for debugging coroutines as shown [here](https://developer.android.com/topic/performance/tracing/in-process-tracing)
+
 * Stack Sample Profiles: They record samples of code execution and saves call stack information at a set rate. In android studio that feature has changed name over time,
   I think it was previously called method tracing, but now is called "Find CPU Hotspots (Callstack Sample) or Method Sampling". There is another stack method sample profile
   option in AS, it was previously called "Trace Java Methods" which seems to have changed its name to "Find CPU Hotspots (Java/Kotiln method recording)" which will instrument
@@ -450,6 +459,8 @@ allocations and the app state to identify the root cause. If the app is terminat
 the OOM this manager monitors for out of memory errors, when this occurs a heap dump is created also, so this is more powerful than just a stack trace in crahsaliytics.
 This manager lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report
 to your servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
+
+
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
