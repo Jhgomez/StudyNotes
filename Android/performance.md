@@ -371,12 +371,12 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   frame draw on screen. You can also see that before a frame is visible on screen a call to `DrawFrames` in the render thread has to completed. I was able to see how work
   in the main thread relates to work in render thread. So as you can see it gives us an idea, for example if you see recomposition taking too long then you can go look into anything
   that is recomposing but this time using other traces types. This traces can contain system and user-defined events, these are triggered through function calls. There is two types of
-  event, Trace slices, they represent the time between different points in your code, you add them with `Trace.beginSection` and `Trace.endSection`. Trace counters, numeric values that
-  represent metrics, for example heap size. They can be added with `Trace.setCounter`. Trace points are used to try to narrow down root causes of performance issues, however instead
-  of using those you can actually take some stack samples / stack traces using "stack sample profiles". A good example of how traces helps you, since you can see relationships between
-  different pieces of work being done you can visually see that every frame that needs to update what the users sees on screen delegates drawing to the render thread, this means
-  you can see that when render thread returns from the `drawFrames` request on the first frame (for example) only then the frame is considered done which means the user now sees
-  your UI
+  event, Trace slices, they represent the time between different points in your code, you add them with `Trace.beginSection` and `Trace.endSection` or `trace("secionName") {}`. Trace
+  counters, numeric values that represent metrics, for example heap size. They can be added with `Trace.setCounter`. Trace points are used to try to narrow down root causes of
+  performance issues, however instead of using those you can actually take some stack samples / stack traces using "stack sample profiles". A good example of how traces helps you,
+  since you can see relationships between different pieces of work being done you can visually see that every frame that needs to update what the users sees on screen delegates drawing
+  to the render thread, this means you can see that when render thread returns from the `drawFrames` request on the first frame (for example) only then the frame is considered done
+  which means the user now sees your UI.
  
   System traces also contain metrics which can be created from PerfettoSQL queries and can be used to perform analysis or compare traces. System traces work great for finding
   latency issues caused by delays, waits, or scheduling problems, so you can diagnose latency problems. It can help you spot duplicated computations. Finding lock contentions
@@ -442,8 +442,7 @@ therefoe, they are less complete than manual locally collected profiles.
 
 ### [Profiling Manager](https://developer.android.com/topic/performance/tracing/profiling-manager/overview)
 `ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles (system traces and heap dumps) programmatically, it gives you 
-two types of profile collection
-`App-driven` and `Event-driven`, in the former you define the start and the end of the collection process and the latter are automatically collected by the system. As
+two types of profile collection `App-driven` and `Event-driven`, in the former you define the start and the end of the collection process and the latter are automatically collected by the system. As
 of 11/3/27 the events it tracks automatically are ANRs, APP_FULLY_DRAWN, KILL_TASK_MANAGER, KILL_RECENTS, KILL_FORCE_STOP, COLD_START, KILL_EXCESIVE_CPU_USAGE, ANOMALY,
 OOM (out of memory), with the android 17 restriction on memory usage the ANOMALY trigger is really useful because it identifies performance anomalies detected by the
 system, it supports memory and binary spam, if a memory usage exceeds a threshold it creates a heapdump which allows you to use this trigger to examin resouce
