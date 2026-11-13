@@ -387,7 +387,8 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   In Android you have different ways to capture system profiles as shown [here](https://developer.android.com/topic/performance/tracing), you can use the AS CPU an memory profiler,
   Perfetto command-line tool (Android 10 and higher) you open this traces in Perfetto UI. Compared to AS system trace which focus on your app only, perfetto allows you to see all
   processes in the devices. System tracing utility (system traces on device). In Android 10 (API level 29) or higher, the on-device trace files are saved in Perfetto format, while
-  earlier versions of android save them in Systrace format. The last option is Systrace command-line tool which is a legacy platform-provided command-line tool.
+  earlier versions of android save them in Systrace format. The last option is Systrace command-line tool which is a legacy platform-provided command-line tool. I inlcude a sectino
+  just for [perfetto](#perfetto) below.
 
   You can define trace points to see app's code execution time directly in a system trace as explained [here](https://developer.android.com/topic/performance/tracing/custom-events).
 
@@ -427,6 +428,8 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   In AS profiler you have "Callstack Sample" for method profiling with samples, and ["Java/Kotlin Method recording"](https://developer.android.com/studio/profile/record-java-kotlin-methods)
   which are really resource heavy because it records method calls with timing info, so they are some special kind of profile because they also seem to have some tracing characteristics
 
+  
+
 * Heap Dumps: they're a snapshot of your app's Java heap memory. They help you understand memory usage, this means you can spot object using a lot of memory which you can then
 optimize. This info can help you spot memory leaks, duplicated objects and bad memory usage patterns in general. They do require a debug build. See [this](https://developer.android.com/studio/profile/capture-heap-dump)
 documentation to learn how to read them. in heap dumps you can spot small memory leaks easier if the dump is taken after a long session, it seems those object go to the top,
@@ -436,6 +439,10 @@ the young generation are promoted to the old generation
 * Heap Profiles: They take samples when memory is allocated. They can help you spot memory churns, by reducing memory churns you can reduce garbage collection and reduce power
 consumption and even janks (slow rendering) since heavy garbage collections can affect main thread. You can spot memory leaks using these profiles. It seems like in AS these
 are recorded using [Track memory consumption (Java/Kotlin allocations)](https://developer.android.com/studio/profile/record-java-kotlin-allocations)
+
+## Perfetto
+There is perefetto command line tool and perfetto UI. The command line tool (part of android SDK) lets you collect performance information from Android devices via the Android 
+Debug Bridge (ADB). Invoke the `perfetto` tool using the `adb shell perfetto ...` command, more info [here](https://developer.android.com/tools/perfetto). 
 
 ## Profiling Methods
 As we already know, we can do manual profiling with method tracing using profilers, and is also posible to record system traces directly on a physical device, those are manual 
@@ -459,8 +466,6 @@ allocations and the app state to identify the root cause. If the app is terminat
 the OOM this manager monitors for out of memory errors, when this occurs a heap dump is created also, so this is more powerful than just a stack trace in crahsaliytics.
 This manager lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report
 to your servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
-
-
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
