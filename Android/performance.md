@@ -528,7 +528,7 @@ however less customization. They are very useful because you can collect a profi
 issue using data collected in the field. Data from other apps is removed because by redacting the profiles before returning the information so they protect user's privacy,
 therefoe, they are less complete than manual locally collected profiles.
 
-## Optimizng in Practice
+## Improve Performance
 * Stay off the main thread, you can guarantee using strict mode
   ```
   if (debug) {
@@ -543,10 +543,24 @@ therefoe, they are less complete than manual locally collected profiles.
 * Since system can kill the app in low end devices, always use creation extras in VM, use `SavedStateHandle`, in activities and fragments use `savedInstanceState` in the
   `onSaveInstanceState` and `onCreate` methods. In compose use `rememberSaveable` or `rememberSerializable`
 
-* For performance monitoring in the field you can use "Android Vitals" available in the play console, use Firebase Performance Monitoring, it collects can collect performance
-  info about specific fucntions with the annoation `@AddTrace(name, enable)`, even crashlytics can help debug OOM errors. Use the "JankStats" library
-  `androidx.metrics:metrics-performance`
-`
+
+## [Performance Monitoring](https://youtu.be/GiBu21pP9I0?si=L4A9BnFe_O5DMcMa)
+For performance monitoring in the field you can use "Android Vitals" available in the play console. Use Firebase Performance Monitoring, it can collect performance
+info about specific fucntions with the annoation `@AddTrace(name, enable)`, usingn its gradle plugin you can get network request durations report in firebase console. even crashlytics can help debug OOM errors. Use the "JankStats" library
+`androidx.metrics:metrics-performance`
+
+You can use Firebase Test Lab in your CI pipeline to run benchmark tests, they have a scripting interface you can use to run bencharmks on every build. On every commit 
+that lands to your release branch or before it is merged onto the main branch
+  your CI pipeline can run your benchmark suite, this way you can compare between releases and catch performance regressions if metrics rise above a well defined threshold
+  before they land to production. To automate reporting you need to set thresholds for every important metric to you and then compare it to a previous benchmark. Google
+  recommends to not compare a build against another build, instead take a group of builds before the changes land and then compare to another group of builds taken after the changes have been landed to the codebase. So the steps would be
+
+* Write Macrobenchmarks
+* Run on physical devices
+* Collect Metrics
+* Store benchmark results for processing
+* Run step fitting algorithm in CI to detect regressions
+
 ### [Profiling Manager](https://developer.android.com/topic/performance/tracing/profiling-manager/overview)
 `ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles (system traces and heap dumps) programmatically, it gives you 
 two types of profile collection `App-driven` and `Event-driven`, in the former you define the start and the end of the collection process and the latter are automatically collected by the system. As
@@ -557,6 +571,10 @@ allocations and the app state to identify the root cause. If the app is terminat
 the OOM this manager monitors for out of memory errors, when this occurs a heap dump is created also, so this is more powerful than just a stack trace in crahsaliytics.
 This manager lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report
 to your servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
+
+## Macrobenchmark
+Jetpack Benchmarks are standard JUnit instrumentation tests that run on an Android device,  Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running also config changes, 
+hot start is  `Activity.onStarrt` happens when app is briefly in the background and is moved to the foreground again 
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
@@ -839,8 +857,6 @@ model that you throw anything at
   callback be caused due to a memory leak it is a good starting point to troubleshoot potential leaks.
 
 * Avoid manual `WakeLock` management; use `WorkManager` for background tasks to keep the CPU running while the device screen is off
-
-* You can use Firebase Test Lab in your CI pipeline to run benchmark tests.
 
 
 Heap Dump Vs Allocation Tracking, Sampling vs Instrumenting
