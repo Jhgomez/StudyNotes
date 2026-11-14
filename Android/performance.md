@@ -546,8 +546,13 @@ therefoe, they are less complete than manual locally collected profiles.
   }
   ```
 * Since system can kill the app in low end devices, always use creation extras in VM, use `SavedStateHandle`, in activities and fragments use `savedInstanceState` in the
-  `onSaveInstanceState` and `onCreate` methods. In compose use `rememberSaveable` or `rememberSerializable`
+  `onSaveInstanceState` and `onCreate` methods. In compose use `rememberSaveable` or `rememberSerializable`.
 
+* Avoid wakelocks, there is partial and full wakelocks, the former only avoid the CPU from sleeping and the former also affects the UI. Wakelocks provide a gate for other
+  processes to continue consuming CPU also so it ends up cause battery drain.
+
+In order to understand the impact of performance changes/improvements you can do local tracing (inspact), bencharking (after doing changed meassure improvements), and 
+take in field metrics (monitoring) so we can know when we need to improve.
 
 ## [Performance Monitoring](https://youtu.be/GiBu21pP9I0?si=L4A9BnFe_O5DMcMa)
 For performance monitoring in the field you can use "Android Vitals" available in the play console. Use Firebase Performance Monitoring, it can collect performance
@@ -568,6 +573,8 @@ before the changes land and then compare to another group of builds taken after 
 
 When Creating the pipeline that cna do the step fitting alogrithm look [this article](https://medium.com/androiddevelopers/fighting-regressions-with-benchmarks-in-ci-6ea9a14b5c71)
 
+You can also collect data in the field with `ProfilingManager`, `ApplicationStartInfo`, and `ApplicationExitInfo`
+
 ### [Profiling Manager](https://developer.android.com/topic/performance/tracing/profiling-manager/overview)
 `ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles (system traces and heap dumps) programmatically, it gives you 
 two types of profile collection `App-driven` and `Event-driven`, in the former you define the start and the end of the collection process and the latter are automatically collected by the system. As
@@ -582,7 +589,6 @@ to your servers, then you can use perfetto to inspect the heap dump as shown in 
 ## Macrobenchmark
 Jetpack Benchmarks are standard JUnit instrumentation tests that run on an Android device,  Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running also config changes, 
 hot start is  `Activity.onStarrt` happens when app is briefly in the background and is moved to the foreground again 
-
 
 ## Microbenchmark
 These are great for everything that is CPU-bound or processing a lot of data, so you can meassure the CPU of the code you execute 
@@ -603,6 +609,16 @@ You can generate baseline profiles from a CI pipeline, firts write the tests tha
 the tests on an emulator, then the pipeline needs to copy the generated profile into `source/main` folder and then build the app with the profile, this means that you first need
 to build the benchmark variant that generates the profile but then you build the release version and optionally you can copy the profile as a commit to your version control so
 you can use it to build the next release if its needed
+
+Meassuring performance improvements delivered by  baseline profiles in production can be done with the tools I mentioned, Android vitals, Firebase performance monitor. and for
+start up profiles you can query start up time using `ApplicationStartInfo`. You can also measure baseline profiles improvements in the field using profile verifiers to confirm 
+profile compilation has succeeded. You can also roll out two different APKs in the playstore but is a little difficult to do so.
+
+## Startup Profiles
+Is another form of profile guided optimization which takes the most important code for users interaction and allows the system to precompile it at installation time, it is loaded
+separately from the other app's code making startup time even faster. Start up profiles guide R8 to be able to perform optimization through R8. For example, R8 could inline some
+that actually only runs after start up into the start up path but when R8 has start up profiles it can avoid this "optimizations" that actually could regress start up time because 
+if R8 moves more code into start up path then more code needs to be loaded at start up. These profiles trade application size for application performance
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
