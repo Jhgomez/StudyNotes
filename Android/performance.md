@@ -586,15 +586,75 @@ the OOM this manager monitors for out of memory errors, when this occurs a heap 
 This manager lets you register a result listener which will only provide you with the information on the next app start up, and from that listener you send the report
 to your servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
 
-## Macrobenchmark
-Jetpack Benchmarks are standard JUnit instrumentation tests that run on an Android device,  Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running also config changes, 
-hot start is  `Activity.onStarrt` happens when app is briefly in the background and is moved to the foreground again 
+## Benchmark
 
-## Microbenchmark
+### Macrobenchmark
+Jetpack Benchmarks are standard JUnit instrumentation tests that run on an Android device,  Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running also config changes, 
+hot start is  `Activity.onStarrt` happens when app is briefly in the background and is moved to the foreground again. Always run these tests in a physical device or using "Firebase Test Lab"
+
+These test allows you to meassure startup timming, frame timming, CPU and memory usage (they record system traces automatically which you can use to track regressions), and you
+can add custom metrics.
+
+```
+// cusotm metrics shown in https://youtu.be/xMylnxek5a4?si=lpjxJCcreBMvbL6Z 12:50
+val jitCompilationMetric = TraceSectionMetric(sectionName = "JIT Compiling %", label = "JIT compilation")
+
+// tracks time spent in class initialization. It should go down when a baseline profile is applied
+val classInitMetric = TraceSectionMetric(sectionName = "L%/%;", label = "ClassInit")
+```
+
+By tracking JIT you can see how effecting a baseline profile is because baseline profiles remove the need of JIT compilation. High percentages of JIT compilation can cause slow rendering and slower startup time.
+
+| | | | | | | | | |
+| - | - | - | - | - | - | - | - | - |
+| ClassInitCount | min | 7,111 | median | 7114 | max | 7120 | | |
+| ClassInitSumMs | min | 94.1 | median | 100.6 | max | 110.7 | | |
+| JIT compilationCount | min | 171.0 | median | 255.5 | max | 298.0 | | |
+| JIT compilationSumMs | min | 376.6 | median | 490.7 | max | 567.2 | | |
+| frameCount | min | 231.0 | median | 291.5 | max | 329.0 | | |
+| timeToInitialDisplayMs | min | 359.7 | median | 368.1 | max | 394.2 | | |
+| frameDurationCpuMs | P50 | 3.8 | P90 | 6.8 | P95 | 13.1 | P99 | 64.4 |
+| frameOverrunMs | P50 | -9.7 | P90 | -4.3 | P95 | 7.4 | P99 | 141.0 |
+
+An interesting part of this benchmark is the inflection point in P90 to P95 in "frameOverrunMs" because it shows good numbers replaced by bad numbers,
+in this metrics a negative number means we are renderign framse earlier that its deadline and a positive number means I'm missing the deadline so they
+are janky frames. BTW reddit start up time using R8 and profile guided optimizations is 881ms
+
+#### App Startup Insights
+They enhance benchmark results by providing you with detail info on issues that occurred while benchmarking. These insights can alert you if there is issues with blocking operations, lock conentions,
+installation time, DEX processing, application binding, JIT compilation, resource loading, high number of broadcasts. Add it to your project with `androidx.benchmark:benchmark-traceprocessor` and 
+add it to a test benchmark like this
+
+```
+benchmarRule.measureRepeated(experimentConfig = ExperimentalConfig(StartupInsightsConfig(true))) { // your benchmark }
+```
+
+### Microbenchmark
 These are great for everything that is CPU-bound or processing a lot of data, so you can meassure the CPU of the code you execute 
 
+### UI Automator
+It is used in benchmark to define and perform interactions with your app. Previously you had to explictly wait if a screen is loading but now it waits 10S automatically
+
+```
+// start app
+startApp()
+
+// Click a button
+onElement { textAsString() == "Search" }.click()
+
+// scoll elelment
+onElement { isScrollable }.fling(Direction.DOWN)
+
+onElement { isEditable && contentDescription == "Prompt" }.text = "some text"
+
+onElement { id == "Parent" }.
+	onElement { id == "Child" }.
+	onElement { id == "Grandchild" }
+	.click()
+```
+
 ## Baseline Profiles
-A baseline profile is just a list of classes and methods with annotations, this list is used later on by the system at installation time 
+A baseline profile is just a list of classes and methods with annotations, this list is used later on by the system at installation time.
 
 You can measure Macrobenchmark Baseline Profiles improvements in your app using Macrobenchmark since you can start your app in the test using different compilation modes, so you
 can see what is the start up time with no compilation and compare it to the start up time using pre compilation, and you can even compare again full AOT compilation which should
@@ -619,6 +679,9 @@ Is another form of profile guided optimization which takes the most important co
 separately from the other app's code making startup time even faster. Start up profiles guide R8 to be able to perform optimization through R8. For example, R8 could inline some
 that actually only runs after start up into the start up path but when R8 has start up profiles it can avoid this "optimizations" that actually could regress start up time because 
 if R8 moves more code into start up path then more code needs to be loaded at start up. These profiles trade application size for application performance
+
+They remove the need for JIT compile the code at start up (baseline profiles also do this but this is more focused on start up as described above) and makes it faster because
+a lot of JIT can cause slow rendering and startup performance.
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
