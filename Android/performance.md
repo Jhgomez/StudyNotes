@@ -548,8 +548,25 @@ therefoe, they are less complete than manual locally collected profiles.
 * Since system can kill the app in low end devices, always use creation extras in VM, use `SavedStateHandle`, in activities and fragments use `savedInstanceState` in the
   `onSaveInstanceState` and `onCreate` methods. In compose use `rememberSaveable` or `rememberSerializable`.
 
-* Avoid wakelocks, there is partial and full wakelocks, the former only avoid the CPU from sleeping and the former also affects the UI. Wakelocks provide a gate for other
-  processes to continue consuming CPU also so it ends up cause battery drain.
+* Avoid wake locks, there is partial and full wake locks, the former only avoid the CPU from sleeping and the former also avoids the from UI sleeping, when devices sleep they
+  enter in a low-power state which makes sures that the CPU is not doing too much work, in android Doze is a power saving mode state when the cpu is sleeping/idle. Wakelocks
+  provide a gate for other processes to continue consuming CPU also so it ends up cause battery drain. There are two ways to acquire a wake lock, manually by using
+  `PowerManager` (often used with a foreground service). Avoid manual `WakeLock` management; the other way of acquiring a wake lock is indirectly/automatically by using APIs
+  such as `WorkManager` for background tasks to keep the CPU running while the device screen is off, if not used correctly `WorkManager` can tirgger the excessive partial wakelocks
+  metric in android vitals. In [this video](https://youtu.be/xMylnxek5a4?si=pahT767ogy7_0Oc3)(27:27) we are told that google play considers partial wake locks excesive when all of
+  the wake locks accumulated while running in the background run for three or more hours in a 24-hour period for more than 5% of total app sessions. There are valid reasons to
+  acquire a wake lock such as, to complete a user-initiated action such as downloading a large file. Previously you would use background services to schedule a periodic sync in
+  the background to download fresh conent for offline viewing but now you should use APIs like `JobScheduler` or event better `WorkManager` (they acquire wake locks on your behalf).
+  For playing audio in the background you don't need a manual wake lock because the system automatically acquires a wake lock (these wake locks are currently excempt from the
+  excesive wake lock calculation in app vitals). For communicating with an external device via Bluetooth you may need manual wake locks if you need communication while the screen
+  is off but you can also try using `WorkManager`. For tracking location APIs you don't need manual wakelocks as when location events are received in `LocationManager` a brief wake
+  lock is held to alert the device. Check [oficial documentation](https://developer.android.com/develop/background-work/background-tasks/awake/wakelock) for more. To debug wake locks
+  you need a debuggable instance of the app, go to android studio "VIew > Tool Windows > App inspection" and click on "Background Task Inspecto" tab, here you can also inspect database
+  and newtork. If you have multiple APIs acquiring wake locks and you excesive usage is reported in vital then use perfetto to debug issues, you can collect system traces manually
+  over a long period of time, you would be interested in looking for the "Device State" section, in that section look for "Top App", "Long Wakelocks", "Foreground Apps" and "Jobs,
+  and pin them, you will be able to see the number of long wakelocks that occurred, if you're expecting to see some wakelocks like location wakelocks but you're not seeing it in the
+  tracks I just mentioned it is probably because those are short, they can be quite often but they are not long, so you can search in perfetto top search input with something like
+  this "\*location\*" (include the stars) and they probably will be in the "Wakelock" track
 
 In order to understand the impact of performance changes/improvements you can do local tracing (inspact), bencharking (after doing changed meassure improvements), and 
 take in field metrics (monitoring) so we can know when we need to improve.
@@ -573,7 +590,45 @@ before the changes land and then compare to another group of builds taken after 
 
 When Creating the pipeline that cna do the step fitting alogrithm look [this article](https://medium.com/androiddevelopers/fighting-regressions-with-benchmarks-in-ci-6ea9a14b5c71)
 
-You can also collect data in the field with `ProfilingManager`, `ApplicationStartInfo`, and `ApplicationExitInfo`
+You can also collect data in the field with `ProfilingManager`, `ApplicationStartInfo`, and `ApplicationExitInfo`. `ApplicationStartInfo` can show you the reason why an app started.
+`ApplicationExitInfo` can give info about crashes and ANRs. You can see a demo of how to use `ApplicationExitInfo` in [this video](https://youtu.be/xMylnxek5a4?si=vJvtOO7z2O9vFOvx)(40:00).
+
+```
+class AppExitLogger(private val context: Context) {
+	@RequiresApi(Build.VERSION_CODES.R)
+	fun logAppExitInfo() {
+		val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+		val exitReasons = activityManager.getHistoricalProcessExitReasons(null, 0, 0)
+
+		if (exitReasons.isNotEmpty()) {
+			val logEntries = mutableLIstOF<String>()
+			val dateFormatter = SimpleDateFormat("yyy-MM-dd HH:mm:ss.SSS", Locale.US)
+
+			for (reason in exitReasons) {
+				val timestamp = dateFormatter.format(Date(reason.timestamp))
+				val description = reaons.description ?: "No Description"
+
+				val logEntry = """
+					Timestamp: $timestamp
+					Reason Code: ${getReasonCodeStr(reason.reason)}
+					Description: $description
+					Importance: ${getProcessImportanceStr(reason.importance) /* consider checking if importance is CHADED state */ }
+					Process State Summary: ${reason.processStateSummary}
+					Tombstone stream: ${reason.traceInputStream?.converToString() /* usually collected for ARN */ }
+					""".trimIndent()
+
+				// Filter reaons to only include ANR
+				if (reason.reason == ApplicationExitInfo.REASON_ANR) {
+					logEntried.add(logEntry)
+				}
+			}
+		}
+	}
+}
+```
+
+`reason.traceInputStream` will gives us a trace of every single thread at the time of exit, so it is helpful in ARNs. App vitals also gives you some info about ARNs but without
+the level of detail you can get by using the exit info but is a good place to start
 
 ### [Profiling Manager](https://developer.android.com/topic/performance/tracing/profiling-manager/overview)
 `ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles (system traces and heap dumps) programmatically, it gives you 
