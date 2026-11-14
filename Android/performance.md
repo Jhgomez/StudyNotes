@@ -479,13 +479,30 @@ process which in the first command I didn't get, but dropped frames are only sho
 helpful functionality at development time, it automatically check the connected device to get info like API level, it also offers backwards compatibility in devices with 
 Android 10 and lower. it saves the traces in the correct directory in the device, it can stop the trace automatically if you set a time duration, and it launches pefetto UI
 automatically which means it pulls the trace file automatically for you. You can configure it further either with a config file or you can pass sort options (only when not 
-using `-c/--config`, short options of "Atrace" events are: sched, gfx, am, wm (see --list). short options of "Ftrace" events are: sched/sched_switch, kmem/kmem (see --list-ftrace),
+using `-c/--config`, short options of "Atrace" events are: sched, gfx, am, wm (see --list). Short options of "Ftrace" events are: sched/sched_switch, kmem/kmem (see --list-ftrace),
 to see those options run `python3 ./record_android_trace --list`
 
 ```
 python3 ./record_android_trace -o starup-trace.perfetto-trace -a '*' sched freq idle am wm gfx view binder_driver dalvik input res
 ```
 
+Perfetto command line tool is useful for creating scripts. The short options I was talking about are sources, they are declared in the configuration file and define what info
+we want to collect in a trace. In Perfetto all tracing data sources are idle by default and record data only when instructed to do so. Some data sources are:
+
+* ftrace: for information from the kernel
+* atrace: for user-space annotation in services and apps
+* heapprofd: for native memory usage information of services and apps
+
+The configurations options are really large as you can see [here](https://perfetto.dev/docs/reference/trace-config-proto). Some useful is the ring buffer, you define the size of the
+trace and when it is full it stops.
+
+Reading these traces can be hard if you don't know how the system should behave and also there is a lot of documentation. Some interesting data is "Android App Startup Breakdown" and
+look for "Optimization Status", it can show if you're start up time is being JIT compiled or not, if it is JITting too much your start time migh be slow. "HeapTaksDaemon" is the GC
+if, it is too bussy collecting garbage your app created, it will drain battery faster. You can also look out for a thread's "running" state which means that the thread is ready but
+is waiting for the CPU scheduler to schedule work on that thread, and it could be because the thread has low priority. You can also create a custom track, first select the duration of
+time, then go to the "slices" option in the bottom panel, there is an arrow when you hover a line, click it, and now you have an option on the top right corner of the bottom pannel
+that says "add debug track"/"show dedug track", create your track there. [Here](https://perfetto.dev/docs/getting-started/cpu-profiling) is how you can do method sampling and from 
+there you can see flame graphs. WorkManager owns its own thread and you can see enque work in that thread.
 
 https://perfetto.dev/docs/analysis/trace-processor
 https://perfetto.dev/docs/tracing-101
