@@ -351,6 +351,9 @@ of extreme high frequency events e.g. every function call. Profiling on the othe
 info they store by taking samples. Profiles that collect every function call output GB of data everysecond so it they are impractical for anything beyond investigating small snippets
 of code. Traces show you resource usage but doesn't tell why it happened nor what code is beign executed during that time.
 
+If a method is called 50 times method profiles will just show you an statistical amount of how much time did the app spend executing those calls to the same method through a period 
+of time while the trace will actually tell you "this fucntion was called 50 times and is slow because a method it calls inside it is slow"
+
 * System trace: They provide a bird eye view of CPU usage, you can see system how your app interacts with the system/hardware, it is timing information so you can see the info
   through time, like how long did a frame take. Almost every video I have seen about performance debugging says this is the first step when debugging performance because it helps
   you understand more or less where **where** is the reason for a drop frame, how many drop frames there where. For example I intentionally blocked the main thread for 2S, it just
@@ -378,7 +381,7 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   performance issues, however instead of using those you can actually take some stack samples / stack traces using "stack sample profiles". A good example of how traces helps you,
   since you can see relationships between different pieces of work being done you can visually see that every frame that needs to update what the users sees on screen delegates drawing
   to the render thread, this means you can see that when render thread returns from the `drawFrames` request on the first frame (for example) only then the frame is considered done
-  which means the user now sees your UI.
+  which means the user now sees your UI. System tracing can be more of a performance measure tool but also a performance measure debugging tool.
  
   System traces also contain metrics which can be created from PerfettoSQL queries and can be used to perform analysis or compare traces. System traces work great for finding
   latency issues caused by delays, waits, or scheduling problems, so you can diagnose latency problems. It can help you spot duplicated computations. Finding lock contentions
@@ -434,6 +437,7 @@ of code. Traces show you resource usage but doesn't tell why it happened nor wha
   In AS profiler you have "Callstack Sample" for method profiling with samples, and ["Java/Kotlin Method recording"](https://developer.android.com/studio/profile/record-java-kotlin-methods)
   which are really resource heavy because it records method calls with timing info, so they are some special kind of profile because they also seem to have some tracing characteristics
 
+  Callstack samples is more of a debugging tool for performance not to measure performance.
 
 * Heap Dumps: they're a snapshot of your app's Java heap memory. They help you understand memory usage, this means you can spot object using a lot of memory which you can then
 optimize. This info can help you spot memory leaks, duplicated objects and bad memory usage patterns in general. They do require a debug build. See [this](https://developer.android.com/studio/profile/capture-heap-dump)
@@ -448,7 +452,8 @@ are recorded using [Track memory consumption (Java/Kotlin allocations)](https://
 ## Perfetto
 There is perefetto command line tool and perfetto UI. The command line tool (part of android SDK) lets you collect performance information from Android devices via the Android 
 Debug Bridge (ADB). Invoke the `perfetto` tool using the `adb shell perfetto ...` command, more info [here](https://developer.android.com/tools/perfetto). However instead of
-using the command line to record traces you can also do that directly from Perfetto UI or from a device as previously mentioned.
+using the command line to record traces you can also do that directly from Perfetto UI or from a device as previously mentioned. It is also said that perfetto traces are more
+lightweight than using AS profilers.
 
 Perfetto command line traces needs a config file which uses textproto format. You can use this base configuration provided in [here](https://perfetto.dev/docs/getting-started/system-tracing) 
 by the perfetto team `curl -O https://raw.githubusercontent.com/google/perfetto/main/tools/record_android_trace`,  that website is also a guide on how to get started, this will 
@@ -546,20 +551,22 @@ therefoe, they are less complete than manual locally collected profiles.
 
 ## [Performance Monitoring](https://youtu.be/GiBu21pP9I0?si=L4A9BnFe_O5DMcMa)
 For performance monitoring in the field you can use "Android Vitals" available in the play console. Use Firebase Performance Monitoring, it can collect performance
-info about specific fucntions with the annoation `@AddTrace(name, enable)`, usingn its gradle plugin you can get network request durations report in firebase console. even crashlytics can help debug OOM errors. Use the "JankStats" library
-`androidx.metrics:metrics-performance`
+info about specific fucntions with the annoation `@AddTrace(name, enable)`, usingn its gradle plugin you can get network request durations report in firebase console. 
+even crashlytics can help debug OOM errors. Use the "JankStats" library `androidx.metrics:metrics-performance`
 
 You can use Firebase Test Lab in your CI pipeline to run benchmark tests, they have a scripting interface you can use to run bencharmks on every build. On every commit 
-that lands to your release branch or before it is merged onto the main branch
-  your CI pipeline can run your benchmark suite, this way you can compare between releases and catch performance regressions if metrics rise above a well defined threshold
-  before they land to production. To automate reporting you need to set thresholds for every important metric to you and then compare it to a previous benchmark. Google
-  recommends to not compare a build against another build, instead take a group of builds before the changes land and then compare to another group of builds taken after the changes have been landed to the codebase. So the steps would be
+that lands to your release branch or before it is merged onto the main branch your CI pipeline can run your benchmark suite, this way you can compare between releases 
+and catch performance regressions if metrics rise above a well defined threshold before they land to production. To automate reporting you need to set thresholds for 
+every important metric to you and then compare it to a previous benchmark. Google recommends to not compare a build against another build, instead take a group of builds 
+before the changes land and then compare to another group of builds taken after the changes have been landed to the codebase. So the steps would be
 
 * Write Macrobenchmarks
 * Run on physical devices
 * Collect Metrics
 * Store benchmark results for processing
 * Run step fitting algorithm in CI to detect regressions
+
+When Creating the pipeline that cna do the step fitting alogrithm look [this article](https://medium.com/androiddevelopers/fighting-regressions-with-benchmarks-in-ci-6ea9a14b5c71)
 
 ### [Profiling Manager](https://developer.android.com/topic/performance/tracing/profiling-manager/overview)
 `ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles (system traces and heap dumps) programmatically, it gives you 
@@ -575,6 +582,27 @@ to your servers, then you can use perfetto to inspect the heap dump as shown in 
 ## Macrobenchmark
 Jetpack Benchmarks are standard JUnit instrumentation tests that run on an Android device,  Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running also config changes, 
 hot start is  `Activity.onStarrt` happens when app is briefly in the background and is moved to the foreground again 
+
+
+## Microbenchmark
+These are great for everything that is CPU-bound or processing a lot of data, so you can meassure the CPU of the code you execute 
+
+## Baseline Profiles
+A baseline profile is just a list of classes and methods with annotations, this list is used later on by the system at installation time 
+
+You can measure Macrobenchmark Baseline Profiles improvements in your app using Macrobenchmark since you can start your app in the test using different compilation modes, so you
+can see what is the start up time with no compilation and compare it to the start up time using pre compilation, and you can even compare again full AOT compilation which should
+be even slower because that fully precompile code means your app needs to read more code from storage making the startup time slower. With no precompile code the JIT threadpool 
+in a systrace will be doing more work than with precompile code and for partial precompile you'll see some work there.
+
+To get a baseline profile for app start up that is behind a login wall you have at least two options, you can either use the `UIAutomator` to navigate through your app by actually 
+typing login info of a test account or an even more advance way to do this is to have a different variant of the app that has an additional broadcast receiver which will receive
+information from the benchmark with a username and password or to initialize with a data file
+
+You can generate baseline profiles from a CI pipeline, firts write the tests that generate baseline profiles, the on the CI pipeline you can use "Gradle Managed Devices" to run
+the tests on an emulator, then the pipeline needs to copy the generated profile into `source/main` folder and then build the app with the profile, this means that you first need
+to build the benchmark variant that generates the profile but then you build the release version and optionally you can copy the profile as a commit to your version control so
+you can use it to build the next release if its needed
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
