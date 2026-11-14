@@ -252,7 +252,9 @@ in its manifest declaration. I think this applies to the firebase messaging serv
 actually is the most responsible resource use.
 
 # [Inspecting Performance](https://developer.android.com/topic/performance/inspecting-overview)
-You most likely want to or may actually need to inspect your app's performance of one or more of the following events:
+Perfromant apps consume resources efficiently, RAM(no leaks, no churns therefore no highly frequent or long GCs), baterry friendly, is CPU optimized, efficient storage footprint, 
+has immediate response, starts fast, UI is smooth and fluent, low network usage. You most likely want to or may actually need to inspect your app's performance of one or more of the 
+following events:
 
 * App startup
 * Slow rendering (jank)
@@ -526,6 +528,25 @@ however less customization. They are very useful because you can collect a profi
 issue using data collected in the field. Data from other apps is removed because by redacting the profiles before returning the information so they protect user's privacy,
 therefoe, they are less complete than manual locally collected profiles.
 
+## Optimizng in Practice
+* Stay off the main thread, you can guarantee using strict mode
+  ```
+  if (debug) {
+  	StrictMode.setThreadPolicy(
+  		StrictMode.ThreadPolicy.Builder()
+  			.detectAll()
+  			.penaltyLog()
+  			.build() 
+  	)
+  }
+  ```
+* Since system can kill the app in low end devices, always use creation extras in VM, use `SavedStateHandle`, in activities and fragments use `savedInstanceState` in the
+  `onSaveInstanceState` and `onCreate` methods. In compose use `rememberSaveable` or `rememberSerializable`
+
+* For performance monitoring in the field you can use "Android Vitals" available in the play console, use Firebase Performance Monitoring, it collects can collect performance
+  info about specific fucntions with the annoation `@AddTrace(name, enable)`, even crashlytics can help debug OOM errors. Use the "JankStats" library
+  `androidx.metrics:metrics-performance`
+`
 ### [Profiling Manager](https://developer.android.com/topic/performance/tracing/profiling-manager/overview)
 `ProfilingManager`, introduced in Android 15, is an API that lets you collect real user Perfetto profiles (system traces and heap dumps) programmatically, it gives you 
 two types of profile collection `App-driven` and `Event-driven`, in the former you define the start and the end of the collection process and the latter are automatically collected by the system. As
@@ -818,6 +839,8 @@ model that you throw anything at
   callback be caused due to a memory leak it is a good starting point to troubleshoot potential leaks.
 
 * Avoid manual `WakeLock` management; use `WorkManager` for background tasks to keep the CPU running while the device screen is off
+
+* You can use Firebase Test Lab in your CI pipeline to run benchmark tests.
 
 
 Heap Dump Vs Allocation Tracking, Sampling vs Instrumenting
