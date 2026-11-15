@@ -397,20 +397,41 @@ approach makes using unstable collections a better choice in cases where the lis
 the instance and not each property of each item, this is why you have to know the performance implications before you annotate a class with `@immutable` or `@Stable` as it
 can have a performance overhead. 
 
-All functions in compose are marked by the compiler as restartable, skippable, or neither. We already saw that prior strong skipping mode, skippable functions are the ones with stable types. Restartable composables are the ones from where a recomposition can start from. All composable functions that return Unit are Restartable composables as long as they don't do any of the following: Are inline functions, return some value. Previously strong skipping mode not all restartable functions would be skippable, but after strong skipping mode this has changed as all restartable functions are also skippable this is because strong skipping mode checks for instance equality of unstable types making every composable function skippable and also the reason why you would not want to mark every class that has an unstable list in it as stable as it is more performant to do an instance check than a structure equals check.
+All functions in compose are marked by the compiler as restartable, skippable, or neither. We already saw that prior strong skipping mode, skippable functions are the ones with 
+stable types. Restartable composables are the ones from where a recomposition can start from. All composable functions that return Unit are Restartable composables as long as they
+don't do any of the following: Are inline functions, return some value. Previously strong skipping mode not all restartable functions would be skippable, but after strong skipping 
+mode this has changed as all restartable functions are also skippable this is because strong skipping mode checks for instance equality of unstable types making every composable 
+function skippable and also the reason why you would not want to mark every class that has an unstable list in it as stable as it is more performant to do an instance check than a 
+structure equals check.
 
-When working with collections be careful of choosing the right type, if you expect frequent changes in a large collection either by adding, removing, or editing the properties of the objects it contains it is better to use a collection backed by the compose snapshot system because they track each item separately and also make sure to pass them as a reference to the `List` interface as it will use the instance checked, if you pass it as a `SnapshotStateList` reference it will do a structure equality check because that type is stable. But if you just use a list without changing it or if you replace the whole list with different items then just use either an unstable list so you get instance equality or a stable list that is not backed by the snapshot system because reads to the snapshot system are more expensive. When fine-grained element tracking is not needed (`SnapshotStateList`), back your collection with a standard `MutableList` wrapped in `mutableStateOf(list, neverEqualPolicy())` and trigger recomposition using a load-bearing assignment (after you modify it off course, `state.value = list`). If you use `SnapshotStateList` Iterating or querying a `SnapshotStateList` (or `SnapshotStateMap`) repeatedly inside a composable registers snapshot read observations on each accessed index or element which would be expensive if performing repeated queries (such as checking .contains() in a loop), filtering, sorting, or multi-step processing on a snapshot collection, instead you should take an atomic snapshot using `.toList()` (or `.toSet()` / `.toMap()`) once at the start of the scope and perform operations on that read-only snapshot.
+When working with collections be careful of choosing the right type, if you expect frequent changes in a large collection either by adding, removing, or editing the properties of 
+the objects it contains it is better to use a collection backed by the compose snapshot system because they track each item separately and also make sure to pass them as a reference 
+to the `List` interface as it will use the instance checked, if you pass it as a `SnapshotStateList` reference it will do a structure equality check because that type is stable. But 
+if you just use a list without changing it or if you replace the whole list with different items then just use either an unstable list so you get instance equality or a stable list 
+that is not backed by the snapshot system because reads to the snapshot system are more expensive. When fine-grained element tracking is not needed (`SnapshotStateList`), back your 
+collection with a standard `MutableList` wrapped in `mutableStateOf(list, neverEqualPolicy())` and trigger recomposition using a load-bearing assignment (after you modify it off 
+course, `state.value = list`). If you use `SnapshotStateList` Iterating or querying a `SnapshotStateList` (or `SnapshotStateMap`) repeatedly inside a composable registers snapshot 
+read observations on each accessed index or element which would be expensive if performing repeated queries (such as checking .contains() in a loop), filtering, sorting, or 
+multi-step processing on a snapshot collection, instead you should take an atomic snapshot using `.toList()` (or `.toSet()` / `.toMap()`) once at the start of the scope and perform 
+operations on that read-only snapshot.
 
-Reading Compose State properties (such as transition.currentState, scrollState.value, or state.value) multiple times in a function registers redundant snapshot lookups. Cache the state read into a local variable at the top of the block.
+Reading Compose State properties (such as transition.currentState, scrollState.value, or state.value) multiple times in a function registers redundant snapshot lookups. Cache the 
+state read into a local variable at the top of the block.
 
-Prefer computedStateOf (Compose 1.13+) or remember { derivedStateOf { ... } } (Compose < 1.13) for simple condition checks, boolean flags, or lightweight derivations driven by fast-changing states (such as scroll offsets or slider positions). Use derivedStateOf when the calculation itself is computationally heavy and is read multiple times across the composition pass, so that the benefits of multi-read caching outweigh the cache invalidation cost.
+Prefer computedStateOf (Compose 1.13+) or remember { derivedStateOf { ... } } (Compose < 1.13) for simple condition checks, boolean flags, or lightweight derivations driven by 
+fast-changing states (such as scroll offsets or slider positions). Use derivedStateOf when the calculation itself is computationally heavy and is read multiple times across the 
+composition pass, so that the benefits of multi-read caching outweigh the cache invalidation cost.
 
-If you pass a stable object containing a stable collection (like kotlin immutable lists) as param to a composable and that composable unwraps the collection and pass it as a param to another composable like `object.list` then you will have structure equality twice, so be careful with this. 
+If you pass a stable object containing a stable collection (like kotlin immutable lists) as param to a composable and that composable unwraps the collection and pass it as a param 
+to another composable like `object.list` then you will have structure equality twice, so be careful with this. 
 
 Merge related effects and state, minimize the number of remembered objects and dispatched effects to reduce slot table overhead.
 
+The Compose compiler can only infer whether a class is stable if all of the non-primitive types that it references are either explicitly marked as stable or in a module that was 
+also built with the Compose compiler.
 
-
+Strong skipping mode also enables more memoization of lambdas inside composables. With strong skipping enabled, every lambda inside a composable function will be automatically 
+remembered.
 
 
 
