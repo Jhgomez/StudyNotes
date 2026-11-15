@@ -722,8 +722,8 @@ to your servers, then you can use perfetto to inspect the heap dump as shown in 
 Jetpack Benchmarks are standard JUnit instrumentation tests that run on an Android device,  Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running also config changes, 
 hot start is  `Activity.onStarrt` happens when app is briefly in the background and is moved to the foreground again. Always run these tests in a physical device or using "Firebase Test Lab"
 
-These test allows you to meassure startup timming, frame timming, CPU and memory usage (they record system traces automatically which you can use to track regressions), and you
-can add custom metrics.
+These test allows you to meassure startup timming, frame timming, CPU, memory usage, power (they record system traces automatically which you can use to track regressions), and you
+can add custom metrics. Since Macrobenchmark can install your app with baseiline profiles you can test using the most similar performance to what your users will see.
 
 ```
 // cusotm metrics shown in https://youtu.be/xMylnxek5a4?si=lpjxJCcreBMvbL6Z 12:50
