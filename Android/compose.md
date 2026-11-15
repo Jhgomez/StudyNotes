@@ -345,3 +345,8 @@ the `DrawScope` to draw custom graphics. You can also override the `intrinsicSiz
 
 * `TabRow` vs `PrimaryTabRow` vs `ScrollableTabRow`: The former was the early implementation of a tab layout in compose, the latter two are the new ones, you can combine them
   with `HorizontalViewPager` for a full experience
+
+# [Debugging Errors With Stack Traces](https://developer.android.com/develop/ui/compose/tooling/stacktraces)
+If you ever have an error difficult to understand in compose follow "Stack traces in Compose" documentation. This will add info to your stack traces useful for debugging.<
+
+# Performance 
