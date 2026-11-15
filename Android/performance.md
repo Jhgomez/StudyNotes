@@ -517,7 +517,82 @@ https://perfetto.dev/docs/getting-started/system-tracing
 https://perfetto.dev/docs/analysis/stdlib-docs
 https://perfetto.dev/docs/getting-started/android-trace-analysis
 
-## Tracing in Compose
+## [Tracing in Compose](https://developer.android.com/develop/ui/compose/tooling/tracing)
+By default, system traces do not include individual composable functions because system tracing only tracks areas specifically marked for tracing, these traces are great for seeing
+how long particular sections of your code are taking to run and at a low overhead cost. However, composable function calls are available in method traces as method traces tracks
+every function call in my app but doing this affects the performance of your app. Composition tracing shows composable functions inside system traces, they gives you the low 
+intrusiveness from system tracing, with method tracing levels of detail in composition.
+
+Just add this artifact, if you use the compose bom just add `implementation("androidx.compose.runtime:runtime-tracing")`. With this dependency, when you take a system trace that 
+includes recomposition, you can see the composable functions automatically. Double-clicking on a composable in the chart takes you to its source code. There is an APK size increase 
+for Compose apps coming from tracing strings embedded in the APK by the Compose compiler but they can be removed in your production build by adding the following Proguard rule:
+
+```
+-assumenosideeffects public class androidx.compose.runtime.ComposerKt {
+   boolean isTraceInProgress();
+   void traceEventStart(int,int,int,java.lang.String);
+   void traceEventStart(int,java.lang.String);
+   void traceEventEnd();
+}
+```
+
+Note that keeping the functions in, while incurring some APK size cost, ensures that the APK being profiled is the same one that the app users run.
+
+It is possible to capture a composition trace from terminal. To do so, you have to perform the steps that Android Studio normally does for you automatically. First, add the 
+additional dependencies to your app.
+
+```
+implementation("androidx.tracing:tracing-perfetto:1.0.0")
+implementation("androidx.tracing:tracing-perfetto-binary:1.0.0")
+```
+
+Don't ship these libs with your production app as it has a large effect on your app size. Start a trace with perfetto with the below configuration. The important part is 
+`track_event` data source
+
+```
+buffers: {
+    size_kb: 63488
+    fill_policy: RING_BUFFER
+}
+buffers: {
+    size_kb: 2048
+    fill_policy: RING_BUFFER
+}
+data_sources: {
+    config {
+        name: "track_event"
+    }
+}
+duration_ms: 10000
+flush_period_ms: 30000
+incremental_state_config {
+    clear_period_ms: 5000
+}
+```
+
+Launch the app and enable tracing with this command
+
+```
+# set app package variable, e.g. com.google.samples.apps.nowinandroid.debug
+# can be found through `adb shell ps -ef` or `adb shell cmd package list packages`
+package=<your app process>
+
+# issue a broadcast to enable tracing
+adb shell am broadcast \
+-a androidx.tracing.perfetto.action.ENABLE_TRACING \
+$package/androidx.tracing.perfetto.TracingReceiver
+```
+
+You can also enable compose tracing in Macrobenchmark test, just add the same last two artifacts I mentioned and add this `androidx.benchmark.fullTracing.enable=true`
+instrumentation argument. You can see [here](https://developer.android.com/topic/performance/benchmarking/macrobenchmark-instrumentation-args#fulltracing) to see how
+you can add this argument through Gradle, or through the run configuration, or from the command line with the task `./gradlew :benchmark:connectedAndroidTes` or even
+if you're running it in a CI pipeline
+
+You can also add a recomposition trace which which adds the composable functions from composition tracing, and also records state reads and writes that cause composable 
+functions to recompose to the trace. This helps you find which state change triggered a recomposition. Recording both in a single pass have a high pergormance overhead 
+so use them for debugging, not for measuring performance. Just copy the [record_recomposition_trace.py](https://github.com/android/performance-samples/tree/main/RecompositionTracing)
+and execute this command ``
+
 https://developer.android.com/develop/ui/compose/tooling/tracing
 https://developer.android.com/develop/ui/compose/performance
 
