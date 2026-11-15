@@ -206,16 +206,16 @@ specific value which would ignore the parent's constraints applied on this child
 
 * **Custom layouts with `SubCompositionLayout`**: This is the only UI element that does not follow the composition-layout-draw phase order, this is what lazy lists use, with this layout you can optimize
 performance because lets imagine you have a huge list of items you need to render (normally you just use a lazy list) what you would want to do is measure all these items then calculate how many of them
-can fit the available viewport and then only compose the ones that are visible, this is possible with `SubComposeLayout`, again, normally you would have the composition=layout(measure, place)-draw phases
+can fit the available viewport and then only compose the ones that are visible, this is possible with `SubComposeLayout`, again, normally you would have the composition-layout(measure, place)-draw phases
 but here what we have is, in the measurement pass of the layout phase, we only measure some of the children(not all) and then using the size info of the ones we already measured(placebles) determine if
 we need to compose more children, this means that the measurement pass of the layout phase needs to happen before the composition phase of some children, this is called "Subcomposition", it is basically
 a deferred composition, this enables lazy components to add content on demand, lazy lists are built on top of this element. `BoxWithConstraints` uses a `SubComposeLayout` under the hood, this element
 grants you access to incoming constraints, since it uses a `SubComposeLayout` it is doing what we mentioned before, that is, following a different rendering pipeline phases, so it goes from
 composition-layout(measure some children - use those masurements to define whether it should trigger the rendering pipeline of other children(composition phase) - placement)-Drawing, sub composition can
-have performance impact so only use it one child composition phase depends on another child's measurement but don't use it if what you have is a child measurement just depending on another child measurement.
+have performance impact so only use it when one child composition phase depends on another child's measurement but don't use it if what you have is a child measurement just depending on another child measurement.
 **BE AWARE COMPOSE ONLY ALLOWS YOU TO MEASURE A CHILD ONCE** but there are cases where a parent needs to know its child measure before you can measure all of them, that is what intrinsics are for, they
  allow a parent to query its children before they're actually measured, once it gets information it can pass down its children a proper constraint, intrinsic size is the natural or ideal size that a
-component requires to display its elements correctly, if you say I want the max intrinsic height then the children height with the highest hight will be used, and you can imagine what the min height
+component requires to display its elements correctly, if you say I want the max intrinsic height then the children height with the highest height will be used, and you can imagine what the min height
 will do, and similarly choosing either the highest or min width. Intrinsics don't break the single measurement rule, what they do is they do some sort of premeasure, so they bend the single measurement rule
 a little.
 
@@ -349,4 +349,35 @@ the `DrawScope` to draw custom graphics. You can also override the `intrinsicSiz
 # [Debugging Errors With Stack Traces](https://developer.android.com/develop/ui/compose/tooling/stacktraces)
 If you ever have an error difficult to understand in compose follow "Stack traces in Compose" documentation. This will add info to your stack traces useful for debugging.<
 
-# Performance 
+# [Performance](https://developer.android.com/develop/ui/compose/performance)
+When Compose updates a frame, it goes through three phases: Composition (creates the UI tree by running composable funcs), Layout (measurement, placement), draw. Compose can 
+intelligently skip any of those phases if they aren't needed. However, coding mistakes can make it hard for Compose to know which phases it can safely skip, in which case 
+Compose runs all three phases, which can slow down your UI. So, many of the performance best practices are to help Compose skip the phases it doesn't need to do.
+
+In general, you should aim to improve performance by moving calculations out of your composable functions whenever possible and deferring state reads for as long as possible.
+
+Whenever a Compose State is read during any phase, Compose automatically records a dependency between that state and the corresponding phase. A backwards write occurs whenever 
+a state is modified in a later phase (or in a downstream scope—meaning a composable scope executed later in order within the same composition pass) than where it was read. 
+Backwards writes aren't necessarily a bad thing, and they don't always trigger crashes, but they are inefficient and can harm app performance in several ways:
+
+* If backwards write occurs too often or in an infinite loop in can cause dropped frames (janks)
+* First-frame correctness issues, this is a very common mistake we do when we read the height or width of a component and change the position of another component when we
+  that dimension changes.
+
+State changes should always flow forward through the phases. This means that you shouldn't read the size of a composable in the composition phase for example to change the
+padding or spacing of a composable while updating the value in a latter phase such as in the layout phase using modifiers such as `onSizeChanged` which is a very common wrong
+appoach, if you find yourself doing this then be sure what you need is a custom layout using the `Layout` composable, some people use `BOxWthConstraints` but this should be used
+when you want to display different screens depending on the size of the screen. Don't write to state in `onGloballyPositioned`, 
+`onSizeChanged`, `onPlaced`, `onLayoutRectChanged`, or `LayoutModifier` if that state is read in Composition. I you need window level size use `WindowWidthSizeClass`.  Use a 
+single custom Layout or components like `FlowRow` or `LazyVerticalGrid` that adjust measurement and placement during Phase 2 without recomposing or altering state used in 
+composition. If it is totatlly necessary then you can allow the first frame to be wrong but make sure the backward writes only happens once or very few times and not in an
+infinite loop.
+
+## Modifiers Breakdown By Phase
+In [this](https://developer.android.com/develop/ui/compose/performance/modifier-phases) documentation you can see a list of modifiers by phase, you can also use it to find
+interesting modifiers. You can find the correct modifier to deffer state read into later phase.
+
+
+
+
+
