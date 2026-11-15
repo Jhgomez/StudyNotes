@@ -377,7 +377,29 @@ infinite loop.
 In [this](https://developer.android.com/develop/ui/compose/performance/modifier-phases) documentation you can see a list of modifiers by phase, you can also use it to find
 interesting modifiers. You can find the correct modifier to deffer state read into later phase.
 
+## [Stability](https://developer.android.com/develop/ui/compose/performance/stability)
+Compose considers types to be either stable or unstable. A type is stable if it is immutable, or if the type guarantees that compose will be notified whenever its values changes
+then it is mutable and compose considers it stable. his means that immutable types are effectively stable but mutable types can also be stable if they complye to notify compose
+whenever their value changes. A type is unstable if Compose can't know whnen its value has changed between recompositions. 
+Mutable stable types hold a contract with compose, you could implement the contract yourself or
+just wrap those properties around `mutableStateOf` this creates a `SnapshotMutableState`, `mutableStateListOf` this creates `SnapshotStateLIst` (you can instantiate it directly
+as opposed to `SnapshotMutableState` which is an interface), `mutableStateMapOf` this creates `SnapshotStateMap` (you can instantiate it directly), and `mutableStateSetOf`. 
 
+Before strong skipping mode only functions with stable/immutable parameters were skippable. Skippable functions can be skipped during recompositions if their parameters have
+not changed, before strong skipping mode parameters in skippable functions were compared using structural equility which means they use the `Object.equals` method, that implies
+all its properties are checked for structural equality, but this can have a performance impact as for large list that are stable (immutable kotlin list and snapshotstatelist if 
+passed as a snapshotstatelist are considered stable) checking every item for structural equality can consume more resources than checking for instance equality and if the collection 
+was unstable which is any list that implements the `List` interface and is passed as a `List` reference can not be compared for equality and compose will recompose the composable
+that receives the list as a paraemter even if the list didn't change and the recomposition was launched by another composable that lives in the same scope, as you can see
+using the correct reference is important as if you pass an immutable list as an implementation of the `List` interface it would be treated as unstable. However, with strong 
+skipping mode this has changed, the behavior is the same with stable collections but now unstable collections and unstable parameters are checked using instance equality, this
+approach makes using unstable collections a better choice in cases where the list doesn't change often or if the items in the list are immutable also because it just checks
+the instance and not each property of each item, this is why you have to know the performance implications before you annotate a class with `@immutable` or `@Stable` as it
+can have a performance overhead. 
+
+All functions in compose are marked by the compiler as restartable, skippable, or neither. We already saw that prior strong skipping mode, skippable functions are the ones with stable types. Restartable composables are the ones from where a recomposition can start from. All composable functions that return Unit are Restartable composables as long as they don't do any of the following: Are inline functions, return some value. Previously strong skipping mode not all restartable functions would be skippable, but after strong skipping mode this has changed as all restartable functions are also skippable this is because strong skipping mode checks for instance equality of unstable types making every composable function skippable and also the reason why you would not want to mark every class that has an unstable list in it as stable as it is more performant to do an instance check than a structure equals check.
+
+When working with collections be careful of choosing the right type, if you expect frequent changes in a large collection either by adding, removing, or editing the properties of the objects it contains it is better to use a collection backed by the compose snapshot system because they track each item separately and also make sure to pass them as a reference to the `List` interface as it will use the instance checked, if you pass it as a `SnapshotStateList` reference it will do a structure equality check because that type is stable. But if you just use a list without changing it or if you replace the whole list with different items then just use either an unstable list so you get instance equality or a stable list that is not backed by the snapshot system because reads to the snapshot system are more expensive.
 
 
 
