@@ -400,8 +400,10 @@ of time while the trace will actually tell you "this fucntion was called 50 time
   You can define trace points to see app's code execution time directly in a system trace as explained [here](https://developer.android.com/topic/performance/tracing/custom-events).
 
   You can add in-process trace events, it is useful for debugging coroutines as shown [here](https://developer.android.com/topic/performance/tracing/in-process-tracing). This library
-  seems to be a replacement to `androidx.tracing` library because this library performance is not that good, everysingle trace section can add 1,220ns in a Pixel 6A, and it can't add
-  additional app context, its labels can only be 147 charcters, and is Android only. While this other option supports KMP, has no label length limit, 
+  seems to be a replacement to `androidx.tracing` library because this library performance is not that good, every single trace section can add 1,220ns in a Pixel 6A while this new
+  API adds less overhead and executes faster, and it can't add additional app context, its labels can only be 147 charcters, and is Android only. While this other option supports KMP,
+  has no label length limit, It seems like when you start it it creates a separate process, you can see it being used in a KMP/CMP desktop app [here](https://youtu.be/BhUf_Sv_Bv0?si=tmdAaHUMJcOh6uVW)
+  to track recompositions
 
 * Stack Sample Profiles: They record samples of code execution and saves call stack information at a set rate. In android studio that feature has changed name over time,
   I think it was previously called method tracing, but now is called "Find CPU Hotspots (Callstack Sample) or Method Sampling". There is another stack method sample profile
@@ -746,9 +748,25 @@ By tracking JIT you can see how effecting a baseline profile is because baseline
 | frameDurationCpuMs | P50 | 3.8 | P90 | 6.8 | P95 | 13.1 | P99 | 64.4 |
 | frameOverrunMs | P50 | -9.7 | P90 | -4.3 | P95 | 7.4 | P99 | 141.0 |
 
-An interesting part of this benchmark is the inflection point in P90 to P95 in "frameOverrunMs" because it shows good numbers replaced by bad numbers,
-in this metrics a negative number means we are renderign framse earlier that its deadline and a positive number means I'm missing the deadline so they
-are janky frames. BTW reddit start up time using R8 and profile guided optimizations is 881ms
+The results are delivered as a statistical distribution. An interesting part of this benchmark is the inflection point in P90 to P95 in "frameOverrunMs" because it shows good numbers replaced by bad numbers,
+in this metrics a negative number means we are rendering frames earlier than its deadline and a positive number means you missed the frame's deadline so they
+are janky frames. BTW reddit start up time using R8 and profile guided optimizations is 881ms. You can read the "P"s values like for example the "P90" means
+90% render faster than "this" and the rest (10%) render slower
+
+It is important that you call `reportFullyDrawn()` or `ReportDrawn()`, or even newer versions like `ReportDrawnWhen` (don't worry if it is called multiple times, android handles it for you so you can add it
+as a call in any composable's body). There is a suspending function called `ReportDrawnAfter` where you can call a suspeding function from. Reporting this to the system Allows Benchmarks to meassure TTFD. And optimzie Baseline Profiles, you can call it as many times as needed in case you have asynchronous parts of your home screen that load separately, you can even wait for content to be loaded from the network
+
+You need to choose the `startupMode` parameter, you can choose between `StartupMode.COLD` for start up benchmarks, this will kill the app's process between the `setupBlock()` and `meassureBlock` and the app restarts in each iteration of the test. `StartupMode.WARN` useful for frame timming benchmarks or cached startup benchmarks, in here the process is created before the test runs and is not killed between iterations, it also clears the activities before iteration, is like running the `onStart` method in an activity, in these tests you usually want to run some operations before the benchmark test starts and the app is not killed between the setup and the test. `StartupMode.HOT` could be useful for some per-activity caching mechanisms, the app's process and the previously-running activity won't be restarted so is like running the `onResume` method of an activity. You can also pass `null` and handle the process lifecycle yourself. There is also an optional `compilationMode` parameter, you can choose between: `Partial` (`CompilationMode.DEFAULT`), is the default value, is used for understanding initial performance, it uses information from Baseline Profile or warmupIterations to pre-compile your app. `Full`, useful when you're in the middle of finding and improving performance and you want to compare runtime improvements, it removes the number of factors contributing to performance variance (JIT) so you can focus on the improvements delivered by changes you have made, but the startup might be slower than partial due to bigger OAT file, remember that loading the whole pre-compiled app from disk might take longer. `None` used for comparing Baseline Profiles, it doesn't use any baseline profiles even the ones coming from libraries, this is the only way to compare base line profiles in a benchmark.
+
+In frame metric benchmarks always set the margin with similar code to below
+```
+val feed = device.findObject(By.res("feed"))
+feed.setGestrueMargin(device.displayWidth/3)
+feed.fling(Direction.DOWN) // this doesn't scroll the same distance everytime
+feed.drag(Point(feed.visibleCenterX, 0)) // use this to get consistent scrolling
+```
+
+Traces from the benchmark are store at the following URI: "$Project/benchmark/build/outputs/connected_android_test+additional_output/build_variant_name/connected/$Device/$TestName.trace"
 
 #### App Startup Insights
 They enhance benchmark results by providing you with detail info on issues that occurred while benchmarking. These insights can alert you if there is issues with blocking operations, lock conentions,
@@ -812,6 +830,10 @@ if R8 moves more code into start up path then more code needs to be loaded at st
 
 They remove the need for JIT compile the code at start up (baseline profiles also do this but this is more focused on start up as described above) and makes it faster because
 a lot of JIT can cause slow rendering and startup performance.
+
+It is important that you call `reportFullyDrawn()` or `ReportDrawn()`, or even newer versions like `ReportDrawnWhen` (don't worry if it is called multiple times, android handles it 
+for you so you can add it as a call in any composable's body). There is a suspending function called `ReportDrawnAfter` where you can call a suspeding function from. Rerporting this 
+to the system Allows Benchmarks to create a more precise baseline y profile
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
