@@ -748,7 +748,10 @@ can add custom metrics. Since Macrobenchmark can install your app with baseiline
 
 ```
 // cusotm metrics shown in https://youtu.be/xMylnxek5a4?si=lpjxJCcreBMvbL6Z 12:50
-val jitCompilationMetric = TraceSectionMetric(sectionName = "JIT Compiling %", label = "JIT compilation")
+// https://youtu.be/Z96wfbID_Yc?si=V0zWWy3ytIPNZt9k 20:50
+// used to measure how much code is running in interpreted mode, it measures all JITting that occurred during benchmark
+// With no baseline profile you will see a larger number, with baseline profile you should see a shorter duration
+val jitCompilationMetric = TraceSectionMetric(sectionName = "JIT Compiling %", label = "JIT compilation", Mode.SUM) 
 
 // tracks time spent in class initialization. It should go down when a baseline profile is applied
 val classInitMetric = TraceSectionMetric(sectionName = "L%/%;", label = "ClassInit")
