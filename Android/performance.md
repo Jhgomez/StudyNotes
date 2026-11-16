@@ -405,6 +405,9 @@ of time while the trace will actually tell you "this fucntion was called 50 time
   has no label length limit, It seems like when you start it it creates a separate process, you can see it being used in a KMP/CMP desktop app [here](https://youtu.be/BhUf_Sv_Bv0?si=tmdAaHUMJcOh6uVW)
   to track recompositions
 
+  If you ever need to find out what objects are taking too much time to be created or needs too many resources when it is creating and therefore creating is slow you can debug knowing
+  that dependencies are injected in order, knowing this you can add dummy dependencies in between these objects, the dummy dependencies will do nothing more than adding tracing points
+
 * Stack Sample Profiles: They record samples of code execution and saves call stack information at a set rate. In android studio that feature has changed name over time,
   I think it was previously called method tracing, but now is called "Find CPU Hotspots (Callstack Sample) or Method Sampling". There is another stack method sample profile
   option in AS, it was previously called "Trace Java Methods" which seems to have changed its name to "Find CPU Hotspots (Java/Kotiln method recording)" which will instrument
@@ -664,6 +667,10 @@ therefoe, they are less complete than manual locally collected profiles.
   tracks I just mentioned it is probably because those are short, they can be quite often but they are not long, so you can search in perfetto top search input with something like
   this "\*location\*" (include the stars) and they probably will be in the "Wakelock" track
 
+* Get off the main thread asap, you might want to have a thread that is created with high priority that runs in parallel to the main thread and you can use that custom thread to run
+  high priority/important tasks, you wouldn't want to run high priority tasks on a low priority background thread because you could have a situation where you priority inversion, where
+  the main thread is waiting on a low priority thread so that is why you would want this parallel high priority thread
+
 In order to understand the impact of performance changes/improvements you can do local tracing (inspact), bencharking (after doing changed meassure improvements), and 
 take in field metrics (monitoring) so we can know when we need to improve.
 
@@ -739,8 +746,8 @@ to your servers, then you can use perfetto to inspect the heap dump as shown in 
 
 ## Benchmark
 
-### Macrobenchmark
-Jetpack Benchmarks are standard JUnit instrumentation tests that run on an Android device,  Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running also config changes, 
+### [Macrobenchmark[(https://developer.android.com/topic/performance/benchmarking/benchmarking-overview)
+The Macrobenchmark library measures larger end-user interactions, such as startup, interacting with the UI, and animations, it injects events and monitors results externally from a test app that is built with your tests. Therefore, when writing the benchmarks, you don't call your app code directly and instead navigate within your app as a user. Macrobenchmark and UI automator is the recommended tool for testing UIs created with Jetpack Compose. Jetpack Benchmarks are standard JUnit instrumentation tests that run on an Android device, Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running also config changes, 
 hot start is  `Activity.onStarrt` happens when app is briefly in the background and is moved to the foreground again. Always run these tests in a physical device or using "Firebase Test Lab"
 
 These test allows you to meassure startup timming, frame timming, CPU, memory usage, power (they record system traces automatically which you can use to track regressions), and you
@@ -799,6 +806,26 @@ TraceSectionMetric("%jetsnack.HighlightedSnackItem%") TraceSectionMetric("%myPac
 ```
 
 See [this video](https://youtu.be/Z96wfbID_Yc?si=siHG_R-8tBl0Fg8C)(17:48) to see how to read the results
+
+#### Writting a Benchmark
+1. You almost always would like to use the android studio option to create a benchmark module, this add a dedicated Gradle module just for benchmarking, this module measures the app built
+   by an app module, the built app is also referred as the "target of the macrobenchmark"
+
+2. The target app module needs to add the `ProfileInstaller` library which Macrobenchmark needs to enable profile capture and other things like restarting the app, etc.
+
+3. The benchmarked version of the app has to be as close as possible to the release version(no debuggable and optimized with R8), you can copy relase version configurations like this
+
+   ```
+   create("benchmark") {
+        initWith(getByName("release"))
+        signingConfig = signingConfigs.getByName("debug")
+    }
+   ```
+
+4. To make sure that the benchmark, both, builds and tests the correct variant of your app make sure you select the benchmark variant of both the app and the Macrobenchmark module in the
+   Build Variants panel, [This](https://github.com/android/performance-samples/tree/main/MacrobenchmarkSample/macrobenchmark) is a sample of a Macrobenchmark module.
+
+
 
 #### App Startup Insights
 They enhance benchmark results by providing you with detail info on issues that occurred while benchmarking. These insights can alert you if there is issues with blocking operations, lock conentions,
@@ -874,7 +901,7 @@ to the system Allows Benchmarks to create a more precise baseline y profile
 
 Beware that starting `WorkManager` is resource heavy, so starting it during startup might not be the best for performance, the solution to this is adding a proxy in front of 
 `workManager` so it doesn't get executed during startup, it could be implemented by creating your own API, also direct calls to `WorkManager` should be forbiden and instead you 
-should call your own API exclusively. After all startup done is done your API should start `WorkManager` automatically
+should call your own API exclusively. After all startup done is done your API should start `WorkManager` automatically. You could get some ideas from [this article](https://medium.com/@ahmed.ally2/customizing-workmanager-fundamentals-ba81fe430ec8)
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
@@ -1161,4 +1188,11 @@ model that you throw anything at
 
 Heap Dump Vs Allocation Tracking, Sampling vs Instrumenting
   
-  
+
+# Testing
+https://developer.android.com/develop/ui/compose/testing/interoperability
+https://developer.android.com/training/testing/ui-tests
+
+# Continuous Integration
+https://developer.android.com/training/testing/continuous-integration
+https://developer.android.com/studio/projects/continuous-integration
