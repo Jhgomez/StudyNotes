@@ -366,8 +366,8 @@ Backwards writes aren't necessarily a bad thing, and they don't always trigger c
 
 State changes should always flow forward through the phases. This means that you shouldn't read the size of a composable in the composition phase for example to change the
 padding or spacing of a composable while updating the value in a latter phase such as in the layout phase using modifiers such as `onSizeChanged` which is a very common wrong
-appoach, if you find yourself doing this then be sure what you need is a custom layout using the `Layout` composable, some people use `BOxWthConstraints` but this should be used
-when you want to display different screens depending on the size of the screen. Don't write to state in `onGloballyPositioned`, 
+appoach, if you find yourself doing this then be sure what you need is a custom layout using the `Layout` composable, some people use `BoxWithConstraints` but this should be used
+when you want to display different UI depending on the size of the screen (don't use it just to get size of screen). Don't write to state in `onGloballyPositioned`, 
 `onSizeChanged`, `onPlaced`, `onLayoutRectChanged`, or `LayoutModifier` if that state is read in Composition. I you need window level size use `WindowWidthSizeClass`.  Use a 
 single custom Layout or components like `FlowRow` or `LazyVerticalGrid` that adjust measurement and placement during Phase 2 without recomposing or altering state used in 
 composition. If it is totatlly necessary then you can allow the first frame to be wrong but make sure the backward writes only happens once or very few times and not in an
@@ -376,6 +376,31 @@ infinite loop.
 You can use layout inspector or composition debuger explained in [this video](https://youtu.be/Z96wfbID_Yc?si=siHG_R-8tBl0Fg8C)(18:49). Static params won't change during
 the whole process life, unchanged means param is the same as in previous composition, evaluating means which a nested composable is consuming it and it will determine if
 it changed or not, unstable for unstable types so it causes recompositions, and changed which means the value is different from the value in the previous recomposition.
+
+For loading images use something like Coil and load them asynchrounously
+
+```
+// insted of
+val painter: Painter = painterResource(R.drawable.big_image)
+// do
+val painter: Painter = rememberAsynImagePainter(R.drawable.big_image)
+
+// if you load it from the network load your placeholder with rememberAsynImagePainter
+```
+
+When you are transitioning to a heavy-UI screen you could do something like
+
+```
+val showVideo by produceState(initialValue = false) { value = true }
+
+if (!showVIdeo) {
+ // Display a placeholder during transition if video is loading from network users won't see video anyway
+ PlaceHodlerUi()
+} else {
+ // DIsplay video player after transition
+ VideoPlayer()
+}
+```
 
 ## Modifiers Breakdown By Phase
 In [this](https://developer.android.com/develop/ui/compose/performance/modifier-phases) documentation you can see a list of modifiers by phase, you can also use it to find
