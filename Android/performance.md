@@ -821,11 +821,23 @@ See [this video](https://youtu.be/Z96wfbID_Yc?si=siHG_R-8tBl0Fg8C)(17:48) to see
         signingConfig = signingConfigs.getByName("debug")
     }
    ```
+   
+4. If you have a multimodular app set the build variant you want to compile by declaring it in the `benchmark` build type configurations of the `:app` and `:macrobenchmark` modules with this line ` matchingFallbacks += listOf("release")` this means that when you run the benchmark you need to select the `benchmark` build type in the `:app` and `:macrobenchmark` modules and the `release` build type in all other modules
 
-4. To make sure that the benchmark, both, builds and tests the correct variant of your app make sure you select the benchmark variant of both the app and the Macrobenchmark module in the
-   Build Variants panel, [This](https://github.com/android/performance-samples/tree/main/MacrobenchmarkSample/macrobenchmark) is a sample of a Macrobenchmark module.
+5. If you have multiple build flavors then add the same flavors in your `:macrobenchmark` module so you can build and benchmark different flavors. 
 
+6. To make sure that the benchmark, both, builds and tests the correct variant of your app make sure you select the benchmark variant of both the app and the Macrobenchmark module in the
+   Build Variants panel and the proper variant in other modules which you declared using `matchingFallbacks`, [This](https://github.com/android/performance-samples/tree/main/MacrobenchmarkSample/macrobenchmark) is a sample of a Macrobenchmark module.
 
+7. For running the benchmarks use Android 14 (API level 34) or later to persist state when benchmarking. The Macrobenchmark library fully resets the compilation state for each compile, which on Android versions earlier than 14 requires reinstalling the APK. As a workaround, control app compilation separately and skip compilation using CompilationMode.Ignore.
+
+8. To run all benchmarks from command line  use `./gradlew :macrobenchmark:connectedCheck` or a single test use `./gradlew :macrobenchmark:connectedCheck -P android.testInstrumentationRunnerArguments.class=com.example.macrobenchmark.startup.SampleStartupBenchmark#startup`
+
+9. If you want to use the resutls after a successful benchmark run for your CI pipeline, metrics are displayed directly in Android Studio and are output for CI usage in a JSON file. JSON reports and any profiling traces are automatically copied from the device to the host. These are written on the host machine in the following location: `project_root/module/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/device_id/`
+
+10. Macrobenchmarks can specify a `CompilationMode`, which defines how much of the app must be pre-compiled. The defualt mode is `CompilationMode.DEFAULT`, which installs a Baseline Profile—if you already generated and copied it—on Android 7 (API level 24) and later. The Baseline Profile will be installed only if the target app contains both a Baseline Profile and the `ProfileInstaller` library. If you want to control the compilation yourself you need to pass `CompilationMode.Ignore` and control the JIT manually using the command shown [here](https://source.android.com/docs/core/runtime/jit-compiler#turn-on-jit-logging) using `adb`
+
+11. 
 
 #### App Startup Insights
 They enhance benchmark results by providing you with detail info on issues that occurred while benchmarking. These insights can alert you if there is issues with blocking operations, lock conentions,
@@ -859,6 +871,8 @@ onElement { id == "Parent" }.
 	onElement { id == "Grandchild" }
 	.click()
 ```
+
+You can enable `testTagAsResourceId` to interact with Compose modifiers. To allow UI Automator to find your Compose elements, enable `testTagAsResourceId = true` on the semantics modifier of your top-level Compose element.
 
 ## Baseline Profiles
 A baseline profile is just a list of classes and methods with annotations, this list is used later on by the system at installation time.
