@@ -511,7 +511,11 @@ if, it is too bussy collecting garbage your app created, it will drain battery f
 is waiting for the CPU scheduler to schedule work on that thread, and it could be because the thread has low priority. You can also create a custom track, first select the duration of
 time, then go to the "slices" option in the bottom panel, there is an arrow when you hover a line, click it, and now you have an option on the top right corner of the bottom pannel
 that says "add debug track"/"show dedug track", create your track there. [Here](https://perfetto.dev/docs/getting-started/cpu-profiling) is how you can do method sampling and from 
-there you can see flame graphs. WorkManager owns its own thread and you can see enque work in that thread.
+there you can see flame graphs. WorkManager owns its own thread and you can see enque work in that thread. The actual timeline shows if a frame was missed or rendered on time or 
+after it was expected, red color means a frame took longer than expected (jank), light green means the frame had enough time to be produced but they were produced too late, dark green
+means it was rendered on time and without delays.
+
+
 
 https://perfetto.dev/docs/analysis/trace-processor
 https://perfetto.dev/docs/tracing-101
@@ -594,6 +598,21 @@ You can also add a recomposition trace which which adds the composable functions
 functions to recompose to the trace. This helps you find which state change triggered a recomposition. Recording both in a single pass have a high pergormance overhead 
 so use them for debugging, not for measuring performance. Just copy the [record_recomposition_trace.py](https://github.com/android/performance-samples/tree/main/RecompositionTracing)
 and execute this command ``
+
+If you need information of the layout or drawing you can add a `trace` block, in the layout phase you can do it like this, just add the layout modifier to any composable
+that you want to track the layout phase for like in the below code. The below code will tell you how long it took to measure all children of the composable you add it to.
+If you want to knwo how long it took to place the children you can also wrap that call.
+
+```
+Modifier.layout { measurable, constraints ->
+	trace("MyComposable:measure") {
+		val placeable = measurable.measure(constraitns)
+		layout(placeable.width, placeable.height) {
+			placeable.place(IntOffset.Zero)
+		}
+	}
+}
+```
 
 https://developer.android.com/develop/ui/compose/tooling/tracing
 https://developer.android.com/develop/ui/compose/performance
@@ -766,7 +785,17 @@ feed.fling(Direction.DOWN) // this doesn't scroll the same distance everytime
 feed.drag(Point(feed.visibleCenterX, 0)) // use this to get consistent scrolling
 ```
 
-Traces from the benchmark are store at the following URI: "$Project/benchmark/build/outputs/connected_android_test+additional_output/build_variant_name/connected/$Device/$TestName.trace"
+Traces from the benchmark are store at the following URI: "$Project/benchmark/build/outputs/connected_android_test+additional_output/build_variant_name/connected/$Device/$TestName.trace", if you want to keep the results, make sure to copy them if you need to use then for later.
+
+You can measure any custom trace section, for example I mentioned how to add a custom trace section in [compose](#tracing-in-compose), using `TraceSectionMetric()`, it measures a section by using its name. It has two modes, `Mode.First` for measuring the first occurence only and `Mode.Sum` for combining timing information of section with the same name together. You can use wildcards in the section name. 
+
+```
+TraceSectionMetric("MyComposable", Mode.sum) 
+TraceSectionMetric("MyComposable:measure", Mode.Sum)
+TraceSectionMetric("%jetsnack.HighlightedSnackItem%") TraceSectionMetric("%myPackage.MyComposable%") // finds all section names produces by composition tracing
+```
+
+See [this video](https://youtu.be/Z96wfbID_Yc?si=siHG_R-8tBl0Fg8C)(17:48) to see how to read the results
 
 #### App Startup Insights
 They enhance benchmark results by providing you with detail info on issues that occurred while benchmarking. These insights can alert you if there is issues with blocking operations, lock conentions,
