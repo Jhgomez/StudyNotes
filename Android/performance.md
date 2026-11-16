@@ -854,6 +854,11 @@ Meassuring performance improvements delivered by  baseline profiles in productio
 start up profiles you can query start up time using `ApplicationStartInfo`. You can also measure baseline profiles improvements in the field using profile verifiers to confirm 
 profile compilation has succeeded. You can also roll out two different APKs in the playstore but is a little difficult to do so.
 
+As explained before, what you get by creating baseline profiles is some text files that can be easily read, these are a list of classes and methods that profile recorded, you then 
+include this list when building the release bundle, when app is installed in user's device the OS uses that list of classes and methods to compile them. You can also get a nice
+insight of what classes the app uses at startup or at whatever time the benchmark runs, you could use this info to do some kind of debugging or improvements by identifying code
+that shouldn't run or can run latter.
+
 ## Startup Profiles
 Is another form of profile guided optimization which takes the most important code for users interaction and allows the system to precompile it at installation time, it is loaded
 separately from the other app's code making startup time even faster. Start up profiles guide R8 to be able to perform optimization through R8. For example, R8 could inline some
@@ -866,6 +871,10 @@ a lot of JIT can cause slow rendering and startup performance.
 It is important that you call `reportFullyDrawn()` or `ReportDrawn()`, or even newer versions like `ReportDrawnWhen` (don't worry if it is called multiple times, android handles it 
 for you so you can add it as a call in any composable's body). There is a suspending function called `ReportDrawnAfter` where you can call a suspeding function from. Rerporting this 
 to the system Allows Benchmarks to create a more precise baseline y profile
+
+Beware that starting `WorkManager` is resource heavy, so starting it during startup might not be the best for performance, the solution to this is adding a proxy in front of 
+`workManager` so it doesn't get executed during startup, it could be implemented by creating your own API, also direct calls to `WorkManager` should be forbiden and instead you 
+should call your own API exclusively. After all startup done is done your API should start `WorkManager` automatically
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
