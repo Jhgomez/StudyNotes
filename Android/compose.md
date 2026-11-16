@@ -373,6 +373,10 @@ single custom Layout or components like `FlowRow` or `LazyVerticalGrid` that adj
 composition. If it is totatlly necessary then you can allow the first frame to be wrong but make sure the backward writes only happens once or very few times and not in an
 infinite loop.
 
+You can use layout inspector or composition debuger explained in [this video](https://youtu.be/Z96wfbID_Yc?si=siHG_R-8tBl0Fg8C)(18:49). Static params won't change during
+the whole process life, unchanged means param is the same as in previous composition, evaluating means which a nested composable is consuming it and it will determine if
+it changed or not, unstable for unstable types so it causes recompositions, and changed which means the value is different from the value in the previous recomposition.
+
 ## Modifiers Breakdown By Phase
 In [this](https://developer.android.com/develop/ui/compose/performance/modifier-phases) documentation you can see a list of modifiers by phase, you can also use it to find
 interesting modifiers. You can find the correct modifier to deffer state read into later phase.
