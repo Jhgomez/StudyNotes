@@ -817,10 +817,14 @@ method in an activity, in these tests you usually want to run some operations be
 `StartupMode.HOT` could be useful for some per-activity caching mechanisms, the app's process and the previously-running activity won't be restarted so is like running the 
 `onResume` method of an activity. You can also pass `null` and handle the process lifecycle yourself. There is also an optional `compilationMode` parameter, you can choose 
 between: `Partial` (`CompilationMode.DEFAULT`), is the default value, is used for understanding initial performance, it uses information from Baseline Profile or 
-warmupIterations to pre-compile your app. `Full`, useful when you're in the middle of finding and improving performance and you want to compare runtime improvements, it 
+warmupIterations to pre-compile your app, meaning that if a baseline profile exists it will precompile the classes and methods listed in the profile so it is useful when
+you want to know the performance improvements delivered by the base line profile which means this is similar to a regular app installation, so you should compare it against 
+a `none` compilation mode. `Full`, useful when you're in the middle of finding and improving performance and you want to compare runtime improvements, it 
 removes the number of factors contributing to performance variance (JIT) so you can focus on the improvements delivered by changes you have made, but the startup might be 
 slower than partial due to bigger OAT file, remember that loading the whole pre-compiled app from disk might take longer. `None` used for comparing Baseline Profiles, it 
-doesn't use any baseline profiles even the ones coming from libraries, this is the only way to compare base line profiles in a benchmark.
+doesn't use any baseline profiles even the ones coming from libraries, it basically disables all precompilation and therefore any existing baseline profile is disabled 
+also, this is the only way to compare base line profiles in a benchmark. In Android versions 5 and 6 apps used to be fully compiled which can cause slow start ups because
+compiled code has a bigger footprint on storage and therefore reading all that code from disk needed a lot of I/O
 
 In frame metric benchmarks always set the margin with similar code to below
 ```
@@ -857,7 +861,7 @@ TraceSectionMetric("%jetsnack.HighlightedSnackItem%") TraceSectionMetric("%myPac
 // and measure how long they took and how many times they recomposed.
 // WARNING: This metric only shows results when running with composition tracing, otherwise it won't be visible in the outputs.
 TraceSectionMetric("%EntryRow%", TraceSectionMetric.Mode.Sum)
-```
+``` 
 
 See [this video](https://youtu.be/Z96wfbID_Yc?si=siHG_R-8tBl0Fg8C)(17:48) to see how to read the results
 
@@ -1020,7 +1024,37 @@ When you write the benchmark that defines the baseline profile you have to defin
 several times, the info of classes and methods than run while the benchmark is in progress will be collected. Since baseline profiles do not measure performance they can run
 on an emulators. The device you use for running your profiles needs to have root access because the profile is saved in a system folder that is not accessible for the app you
 need to run these tests in a rooted device or just an emulator (an emulator without play services can be considered an effectively rooted device) because we are not meassuring
-performance, instead we are just collecting the classes name and methods, therefore it is ok to use an emulator 5:49
+performance, instead we are just indexing classes and method calls, therefore it is ok to use an emulator. You can switch an emulator to root access with the command `adb root`
+and run the test manually, however you could use "Grade Managed Devices", this is a AGP feature which lets you configure an emulator in your build script. Gradle enables you to
+run instrumentation tests without the need to manually handle the emulator they run on, making builds more reproducible, AGP will automatically download the emulator image
+if needed, start emulator up, run the tests you specify, copy the resutls to the host machine, tear down the emulator which clears the device state for next use. To declare a
+managed device add the following configurations to the `android` block in your benchmark module build script
+
+```
+testOptions {
+	managedDevices {
+		create(name = "pixel2Api31", ManagedVirtualDevice::class) {
+			device = "Pixel 2"
+			apiLevel = 31
+			systemImageSource = "AOSP" // AOSP images has root access but doesn't come with Google Play, You can get an image that comes with google play but it won't have root access
+		}
+	}
+}
+```
+
+You run the tests using the following command `./gradlew :benchmark:pixel2Api31NameOfBuildVariantAndroidTest`, for example `./gradlew :benchmark:pixel2Api31BenchmarkAndroidTest`,
+this will run all test in the benchmark module, if you only want to run the test that generates the baseline profile do 
+`./gradlew :benchmark:pixel2Api31NameOfBuildVariantAndroidTest -P android.testInstrumentationArguments.androidx.benchmark.enableRules=BaselineProfile`. Once the test runs the profile
+is create in the benchmark module in the URI `build/outputs/managed_device_android_test_additional_output/pixel2Api31` you need to copy the profile into you app module in the
+`src/main` folder right next to the `AndroidManifest` and rename it to `baseline-prof.txt `, now you need to add the profile installer dependency to your app module 
+`"androidx.profileinstaller:profileinstaller "`, this library allows benchmarks to pick up the compiled baseline profile locally for benchmarking but it also enables the benefits
+of baseline profiles on older android platform versions and even on devices where google play services are not available.
+
+If you want to measure performance improvements delivered by installing a baseline profile in the app you can use Macrobenchmarks, in the compilation mode use `CompilationMode.DEFAULT1`
+which is `Partial` compilation, this mode will try to apply an existing baseline profile if it exists which means the classes and methods defined in the profile will be pre-compiled
+when running the test. Compare `Partial` compilation mode against `None` because it runs the test without pre-compiling any code, meaning the baseline profiles are not applied, 
+this way you are comparing a situation where you have base line profiles against a build where base line profiles are not applied so you can know what performance improvements you're
+getting from baseline profiles, but remember to run benchmarks on a physical device.
 
 You can measure Macrobenchmark Baseline Profiles improvements in your app using Macrobenchmark since you can start your app in the test using different compilation modes, so you
 can see what is the start up time with no compilation and compare it to the start up time using pre compilation, and you can even compare again full AOT compilation which should
@@ -1044,6 +1078,8 @@ As explained before, what you get by creating baseline profiles is some text fil
 include this list when building the release bundle, when app is installed in user's device the OS uses that list of classes and methods to compile them. You can also get a nice
 insight of what classes the app uses at startup or at whatever time the benchmark runs, you could use this info to do some kind of debugging or improvements by identifying code
 that shouldn't run or can run latter.
+
+These performance enhancements directly result in improved business metrics such as user retention, transactions, and ratings. 
 
 ## Startup Profiles
 Is another form of profile guided optimization which takes the most important code for users interaction and allows the system to precompile it at installation time, it is loaded
