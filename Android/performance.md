@@ -1001,7 +1001,26 @@ issues
 * 
 
 ## Baseline Profiles
-A baseline profile is just a list of classes and methods with annotations, this list is used later on by the system at installation time.
+A baseline profile is just a list of classes and methods with annotations that are ahead-or-time compiled by the system at installation time. When generating a Baseli Profile 
+the app should not be obfuscated because we need the actual namess (do this using proguard `-dontobfuscate`, you should create a `benchmark` build type in the app module
+as indicated in the [benchmark](#benchmark) section in this document and create a proguard file only for the mentioned rule and add it to that build type only), the benchmark
+build type in the app module should can be declared as in the below code.
+
+```
+val macrobenchmark by creating {
+	initWith(release)
+	signingConfig = signingConfig.getByName("debug)
+	matchingFallbacks += listOf("release")
+	isDebuggable = false
+	proguardFiles("baseline-profiles-rules.pro")
+}
+```
+
+When you write the benchmark that defines the baseline profile you have to define the interactions you are interested in, the interactions defined in the test body will be ran
+several times, the info of classes and methods than run while the benchmark is in progress will be collected. Since baseline profiles do not measure performance they can run
+on an emulators. The device you use for running your profiles needs to have root access because the profile is saved in a system folder that is not accessible for the app you
+need to run these tests in a rooted device or just an emulator (an emulator without play services can be considered an effectively rooted device) because we are not meassuring
+performance, instead we are just collecting the classes name and methods, therefore it is ok to use an emulator 5:49
 
 You can measure Macrobenchmark Baseline Profiles improvements in your app using Macrobenchmark since you can start your app in the test using different compilation modes, so you
 can see what is the start up time with no compilation and compare it to the start up time using pre compilation, and you can even compare again full AOT compilation which should
@@ -1010,9 +1029,9 @@ in a systrace will be doing more work than with precompile code and for partial 
 
 To get a baseline profile for app start up that is behind a login wall you have at least two options, you can either use the `UIAutomator` to navigate through your app by actually 
 typing login info of a test account or an even more advance way to do this is to have a different variant of the app that has an additional broadcast receiver which will receive
-information from the benchmark with a username and password or to initialize with a data file
+information from the benchmark with a username and password or to initialize with a data file.
 
-You can generate baseline profiles from a CI pipeline, firts write the tests that generate baseline profiles, the on the CI pipeline you can use "Gradle Managed Devices" to run
+You can generate baseline profiles from a CI pipeline, first write the tests that generate baseline profiles, then on the CI pipeline you can use "Gradle Managed Devices" to run
 the tests on an emulator, then the pipeline needs to copy the generated profile into `source/main` folder and then build the app with the profile, this means that you first need
 to build the benchmark variant that generates the profile but then you build the release version and optionally you can copy the profile as a commit to your version control so
 you can use it to build the next release if its needed
@@ -1028,7 +1047,7 @@ that shouldn't run or can run latter.
 
 ## Startup Profiles
 Is another form of profile guided optimization which takes the most important code for users interaction and allows the system to precompile it at installation time, it is loaded
-separately from the other app's code making startup time even faster. Start up profiles guide R8 to be able to perform optimization through R8. For example, R8 could inline some
+separately from the other app's code making startup time even faster. Start up profiles guide R8 to be able to perform optimization through R8. For example, R8 could inline code	
 that actually only runs after start up into the start up path but when R8 has start up profiles it can avoid this "optimizations" that actually could regress start up time because 
 if R8 moves more code into start up path then more code needs to be loaded at start up. These profiles trade application size for application performance
 
@@ -1037,11 +1056,11 @@ a lot of JIT can cause slow rendering and startup performance.
 
 It is important that you call `reportFullyDrawn()` or `ReportDrawn()`, or even newer versions like `ReportDrawnWhen` (don't worry if it is called multiple times, android handles it 
 for you so you can add it as a call in any composable's body). There is a suspending function called `ReportDrawnAfter` where you can call a suspeding function from. Rerporting this 
-to the system Allows Benchmarks to create a more precise baseline y profile
+to the system Allows Benchmarks to create a more precise baseline profile
 
 Beware that starting `WorkManager` is resource heavy, so starting it during startup might not be the best for performance, the solution to this is adding a proxy in front of 
 `workManager` so it doesn't get executed during startup, it could be implemented by creating your own API, also direct calls to `WorkManager` should be forbiden and instead you 
-should call your own API exclusively. After all startup done is done your API should start `WorkManager` automatically. You could get some ideas from [this article](https://medium.com/@ahmed.ally2/customizing-workmanager-fundamentals-ba81fe430ec8)
+should call your own API exclusively. After all startup is done your API should start `WorkManager` automatically. You could get some ideas from [this article](https://medium.com/@ahmed.ally2/customizing-workmanager-fundamentals-ba81fe430ec8)
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
