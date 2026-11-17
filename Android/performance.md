@@ -491,7 +491,7 @@ process which in the first command I didn't get, but dropped frames are only sho
 helpful functionality at development time, it automatically check the connected device to get info like API level, it also offers backwards compatibility in devices with 
 Android 10 and lower. it saves the traces in the correct directory in the device, it can stop the trace automatically if you set a time duration, and it launches pefetto UI
 automatically which means it pulls the trace file automatically for you. You can configure it further either with a config file or you can pass sort options (only when not 
-using `-c/--config`, short options of "Atrace" events are: sched, gfx, am, wm (see --list). Short options of "Ftrace" events are: sched/sched_switch, kmem/kmem (see --list-ftrace),
+using `-c/--config`, short options of "Atrace" events are: sched, gfx (frame timing info), am, wm (see --list). Short options of "Ftrace" events are: sched/sched_switch, kmem/kmem (see --list-ftrace),
 to see those options run `python3 ./record_android_trace --list`
 
 ```
@@ -981,7 +981,24 @@ the semantics modifier of your top-level Compose element. Find the Composable us
 
 ### Benchmarks in CI
 [Here](https://developer.android.com/topic/performance/benchmarking/benchmarking-in-ci) is more info of how to set this. The idea when I implement this is to do it using a 
-step fitting algorithm, as described in [this video](https://youtu.be/ynBPcFs6OOk)
+step fitting algorithm, as described in [this video](https://youtu.be/ynBPcFs6OOk), the resources I can use for this is [this](https://medium.com/androiddevelopers/fighting-regressions-with-benchmarks-in-ci-6ea9a14b5c71) 
+article which also points to the actual set fitting algorithm google uses written in go. Also use [this](https://github.com/android/performance-samples/tree/main/MacrobenchmarkSample/ftl) 
+document that describes how to set up benchmarks using github actions and firebase test lab
+
+## Measure Performance
+Usually you wouldn't want users to report performance issues, so here is a list of things you can look out for make sure the user experience is not affected by performance
+issues
+
+* App startup: Basically the main thread is doing some IO to read your application from storage and load it to ram, so starting an app is quite expenive. Try to make cold
+  starts take 500ms or less. Aim to keep warm starts under 200ms and hot starts under 150ms. P95 and P99 latencies very close to the median latency. Try to avoid Interprocess
+  communications (IPCs, Tip: You can use `am trace-ipc start` to get more information about these calls. Disable it before resuming benchmarking, because it has significant
+  overhead and otherwise persists until device restart.) and unnecessary I/O during during startup as it can introduce lock contention problems (when different threads, processes
+  or db queries try to access the same resources at same time)
+* Avoid visual Janks, specially common in lazy list or complex screens. Spot them using a physical device using **Developer Options > Show refresh rate **in the **Debugging**
+  section.
+* Animations, navigating screens, transitions that are not running smoothly.
+* Performance in long running tasks and important and high traffic flows.
+* 
 
 ## Baseline Profiles
 A baseline profile is just a list of classes and methods with annotations, this list is used later on by the system at installation time.
