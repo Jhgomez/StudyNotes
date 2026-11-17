@@ -600,7 +600,7 @@ if you're running it in a CI pipeline
 You can also add a recomposition trace which which adds the composable functions from composition tracing, and also records state reads and writes that cause composable 
 functions to recompose to the trace. This helps you find which state change triggered a recomposition. Recording both in a single pass have a high pergormance overhead 
 so use them for debugging, not for measuring performance. Just copy the [record_recomposition_trace.py](https://github.com/android/performance-samples/tree/main/RecompositionTracing)
-and execute this command ``
+and execute this command `./record_recomposition_trace.py -p <your app package>`
 
 If you need information of the layout or drawing you can add a `trace` block, in the layout phase you can do it like this, just add the layout modifier to any composable
 that you want to track the layout phase for like in the below code. The below code will tell you how long it took to measure all children of the composable you add it to.
@@ -745,13 +745,32 @@ This manager lets you register a result listener which will only provide you wit
 to your servers, then you can use perfetto to inspect the heap dump as shown in [this video](https://youtu.be/fOXJR5qLq54?si=nZ7ufFkzV3UgiXXq). Check perfetto heap profiles
 
 ## Benchmark
+[This](https://github.com/android/performance-samples) repo contains the samples using the `JankStats` library, Macrobenchmark, Microbrenchmark, and recompositino tracing.
+[Compose Hero Benchmarks](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/integration-tests/hero/README.md) example, [performance-samples](https://github.com/android/performance-samples) 
+contains macrobenchmarks, microbenchmarks, JankStats samples, it also has information on how on how to set up a benchmarks in CI in 
+"performance-samples/MacrobenchmarkSample/ftl/README.md"
+
+Both Macro and Micro benchmarks are instrumented JUnit tests however macro usually interacts with the UI using UI Automator or some other library, its most commonly used 
+to test UI performance but it can track anything, object allocation time, in theory anything at any scale. Microbenchmakrs where existed first and they where known as just
+benchmarks you can still use them, as it name implies you usually use them smaller pieces of code, for example to test how long it takes for a repository to execute a 
+function, in theory you could also test a function in your viewmodel, serialization times and similart tasks. Microbenchmarks returns us the following info on the console 
+Execution Time in nano seconds of the code being measured, Allocation Counts: Shows the number of object allocations or garbage collection hits if tracking memory allocations 
+is enabled and it also generates some JSON files useful for automated CI/CD pipelines for detecting regressions, those files gives you Per-Run Timings which is a detail by 
+run and not aggreated as in the console, detailed Metrics which Includes CPU time, real (wall-clock) time, and allocation metrics, and Device Metadata to help contextualize 
+the results
 
 ### [Macrobenchmark[(https://developer.android.com/topic/performance/benchmarking/benchmarking-overview)
-The Macrobenchmark library measures larger end-user interactions, such as startup, interacting with the UI, and animations, it injects events and monitors results externally from a test app that is built with your tests. Therefore, when writing the benchmarks, you don't call your app code directly and instead navigate within your app as a user. Macrobenchmark and UI automator is the recommended tool for testing UIs created with Jetpack Compose. Jetpack Benchmarks are standard JUnit instrumentation tests that run on an Android device, Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running also config changes, 
-hot start is  `Activity.onStarrt` happens when app is briefly in the background and is moved to the foreground again. Always run these tests in a physical device or using "Firebase Test Lab"
+The Macrobenchmark library measures larger end-user interactions, such as startup, interacting with the UI, and animations, it injects events and monitors results externally 
+from a test app that is built with your tests. Therefore, when writing the benchmarks, you don't call your app code directly and instead navigate within your app as a user. 
+Macrobenchmark and UI automator is the recommended tool for testing UIs created with Jetpack Compose. Jetpack Benchmarks are standard JUnit instrumentation tests that run on 
+an Android device, Cold start is `Application.create`, warm start is `Activity.create` like when you open an app after the activity was destroyed but the proces still running 
+also config changes, hot start is  `Activity.onStarrt` happens when app is briefly in the background and is moved to the foreground again. Always run these tests in a physical 
+device or using "Firebase Test Lab"
 
-These test allows you to meassure startup timming, frame timming, CPU, memory usage, power (they record system traces automatically which you can use to track regressions), and you
-can add custom metrics. Since Macrobenchmark can install your app with baseiline profiles you can test using the most similar performance to what your users will see.
+These test allows you to meassure startup timming, frame timming, CPU, memory usage, power (they record system traces automatically which you can use to track regressions), and
+you can add custom metrics. Since Macrobenchmark can install your app with baseiline profiles you can test using the most similar performance to what your users will see. Unlike 
+most Android UI tests, Macrobenchmark tests run in a separate process from the app itself. This is necessary to enable things like stopping the app process and compiling from DEX 
+bytecode to machine code.
 
 ```
 // cusotm metrics shown in https://youtu.be/xMylnxek5a4?si=lpjxJCcreBMvbL6Z 12:50
@@ -764,7 +783,8 @@ val jitCompilationMetric = TraceSectionMetric(sectionName = "JIT Compiling %", l
 val classInitMetric = TraceSectionMetric(sectionName = "L%/%;", label = "ClassInit")
 ```
 
-By tracking JIT you can see how effecting a baseline profile is because baseline profiles remove the need of JIT compilation. High percentages of JIT compilation can cause slow rendering and slower startup time.
+By tracking JIT you can see how effecting a baseline profile is because baseline profiles remove the need of JIT compilation. High percentages of JIT compilation can cause 
+slow rendering and slower startup time.
 
 | | | | | | | | | |
 | - | - | - | - | - | - | - | - | - |
@@ -777,15 +797,30 @@ By tracking JIT you can see how effecting a baseline profile is because baseline
 | frameDurationCpuMs | P50 | 3.8 | P90 | 6.8 | P95 | 13.1 | P99 | 64.4 |
 | frameOverrunMs | P50 | -9.7 | P90 | -4.3 | P95 | 7.4 | P99 | 141.0 |
 
-The results are delivered as a statistical distribution. An interesting part of this benchmark is the inflection point in P90 to P95 in "frameOverrunMs" because it shows good numbers replaced by bad numbers,
-in this metrics a negative number means we are rendering frames earlier than its deadline and a positive number means you missed the frame's deadline so they
-are janky frames. BTW reddit start up time using R8 and profile guided optimizations is 881ms. You can read the "P"s values like for example the "P90" means
-90% render faster than "this" and the rest (10%) render slower
+The results are delivered as a statistical distribution. An interesting part of this benchmark is the inflection point in P90 to P95 in "frameOverrunMs" because it shows 
+good numbers replaced by bad numbers, in this metrics a negative number means we are rendering frames earlier than its deadline and a positive number means you missed the 
+frame's deadline so they are janky frames. BTW reddit start up time using R8 and profile guided optimizations is 881ms. You can read the "P"s values like for example the 
+"P90" means 90% render faster than "this" and the rest (10%) render slower. "frameDurationCpuMs" is the amount of time the frame spent actively being produced on the CPU 
+across both the main application UI thread and the Compose RenderThread. When optimizing Jetpack Compose layout hierarchies, look at your worst-performing frames and If 
+"frameOverrunMs" spikes into positive integers at the high percentiles, it indicates that recompositions are stalling the main thread during heavy scroll 
+animations. Always focus on median values, since they provide the best estimate of typical user startup times.
 
-It is important that you call `reportFullyDrawn()` or `ReportDrawn()`, or even newer versions like `ReportDrawnWhen` (don't worry if it is called multiple times, android handles it for you so you can add it
-as a call in any composable's body). There is a suspending function called `ReportDrawnAfter` where you can call a suspeding function from. Reporting this to the system Allows Benchmarks to meassure TTFD. And optimzie Baseline Profiles, you can call it as many times as needed in case you have asynchronous parts of your home screen that load separately, you can even wait for content to be loaded from the network
+It is important that you call `reportFullyDrawn()` or `ReportDrawn()`, or even newer versions like `ReportDrawnWhen` (don't worry if it is called multiple times, android 
+handles it for you so you can add it as a call in any composable's body). There is a suspending function called `ReportDrawnAfter` where you can call a suspeding function 
+from. Reporting this to the system Allows Benchmarks to meassure TTFD. And optimzie Baseline Profiles, you can call it as many times as needed in case you have asynchronous 
+parts of your home screen that load separately, you can even wait for content to be loaded from the network
 
-You need to choose the `startupMode` parameter, you can choose between `StartupMode.COLD` for start up benchmarks, this will kill the app's process between the `setupBlock()` and `meassureBlock` and the app restarts in each iteration of the test. `StartupMode.WARN` useful for frame timming benchmarks or cached startup benchmarks, in here the process is created before the test runs and is not killed between iterations, it also clears the activities before iteration, is like running the `onStart` method in an activity, in these tests you usually want to run some operations before the benchmark test starts and the app is not killed between the setup and the test. `StartupMode.HOT` could be useful for some per-activity caching mechanisms, the app's process and the previously-running activity won't be restarted so is like running the `onResume` method of an activity. You can also pass `null` and handle the process lifecycle yourself. There is also an optional `compilationMode` parameter, you can choose between: `Partial` (`CompilationMode.DEFAULT`), is the default value, is used for understanding initial performance, it uses information from Baseline Profile or warmupIterations to pre-compile your app. `Full`, useful when you're in the middle of finding and improving performance and you want to compare runtime improvements, it removes the number of factors contributing to performance variance (JIT) so you can focus on the improvements delivered by changes you have made, but the startup might be slower than partial due to bigger OAT file, remember that loading the whole pre-compiled app from disk might take longer. `None` used for comparing Baseline Profiles, it doesn't use any baseline profiles even the ones coming from libraries, this is the only way to compare base line profiles in a benchmark.
+You need to choose the `startupMode` parameter, you can choose between `StartupMode.COLD` for start up benchmarks, this will kill the app's process between the 
+`setupBlock()` and `meassureBlock` and the app restarts in each iteration of the test. `StartupMode.WARN` useful for frame timming benchmarks or cached startup benchmarks, 
+in here the process is created before the test runs and is not killed between iterations, it also clears the activities before iteration, is like running the `onStart` 
+method in an activity, in these tests you usually want to run some operations before the benchmark test starts and the app is not killed between the setup and the test. 
+`StartupMode.HOT` could be useful for some per-activity caching mechanisms, the app's process and the previously-running activity won't be restarted so is like running the 
+`onResume` method of an activity. You can also pass `null` and handle the process lifecycle yourself. There is also an optional `compilationMode` parameter, you can choose 
+between: `Partial` (`CompilationMode.DEFAULT`), is the default value, is used for understanding initial performance, it uses information from Baseline Profile or 
+warmupIterations to pre-compile your app. `Full`, useful when you're in the middle of finding and improving performance and you want to compare runtime improvements, it 
+removes the number of factors contributing to performance variance (JIT) so you can focus on the improvements delivered by changes you have made, but the startup might be 
+slower than partial due to bigger OAT file, remember that loading the whole pre-compiled app from disk might take longer. `None` used for comparing Baseline Profiles, it 
+doesn't use any baseline profiles even the ones coming from libraries, this is the only way to compare base line profiles in a benchmark.
 
 In frame metric benchmarks always set the margin with similar code to below
 ```
@@ -795,25 +830,45 @@ feed.fling(Direction.DOWN) // this doesn't scroll the same distance everytime
 feed.drag(Point(feed.visibleCenterX, 0)) // use this to get consistent scrolling
 ```
 
-Traces from the benchmark are store at the following URI: "$Project/benchmark/build/outputs/connected_android_test+additional_output/build_variant_name/connected/$Device/$TestName.trace", if you want to keep the results, make sure to copy them if you need to use then for later.
+Traces from the benchmark are store at the following URI: "$Project/benchmark/build/outputs/connected_android_test+additional_output/build_variant_name/connected/$Device/$TestName.trace", 
+if you want to keep the results, make sure to copy them if you need to use then for later.
 
-You can measure any custom trace section, for example I mentioned how to add a custom trace section in [compose](#tracing-in-compose), using `TraceSectionMetric()`, it measures a section by using its name. It has two modes, `Mode.First` for measuring the first occurence only and `Mode.Sum` for combining timing information of section with the same name together. You can use wildcards in the section name. 
+You can measure any custom trace section, for example I mentioned how to add a custom trace section in [compose](#tracing-in-compose), using `TraceSectionMetric()`, it 
+measures a section by using its name. It has two modes, `Mode.First` for measuring the first occurence only and `Mode.Sum` for combining timing information of section with 
+the same name together. You can use wildcards in the section name. 
 
 ```
+PowerMetric(PowerMetric.Type.Power(
+	mapOf(
+		PowerCategory.CPU to PowerCategoryDisplayLevel.TOTAL,
+		PowerCategory.DISPLAY to PowerCategoryDisplayLevel.TOTAL,
+		PowerCategory.GPU to PowerCategoryDisplayLevel.TOTAL,
+		PowerCategory.NETWORK to PowerCategoryDisplayLevel.TOTAL,
+	)
+))
+
 TraceSectionMetric("MyComposable", Mode.sum) 
 TraceSectionMetric("MyComposable:measure", Mode.Sum)
 TraceSectionMetric("%jetsnack.HighlightedSnackItem%") TraceSectionMetric("%myPackage.MyComposable%") // finds all section names produces by composition tracing
+
+// This trace section takes into account the SQL wildcard character %,
+// which can find trace sections without the full name.
+// This way, you can measure composables produced by the composition tracing
+// and measure how long they took and how many times they recomposed.
+// WARNING: This metric only shows results when running with composition tracing, otherwise it won't be visible in the outputs.
+TraceSectionMetric("%EntryRow%", TraceSectionMetric.Mode.Sum)
 ```
 
 See [this video](https://youtu.be/Z96wfbID_Yc?si=siHG_R-8tBl0Fg8C)(17:48) to see how to read the results
 
 #### Writting a Benchmark
-1. You almost always would like to use the android studio option to create a benchmark module, this add a dedicated Gradle module just for benchmarking, this module measures the app built
-   by an app module, the built app is also referred as the "target of the macrobenchmark"
+1. You almost always would like to use the android studio option to create a benchmark module, this add a dedicated Gradle module just for benchmarking, this module
+   measures the app built by an app module, the built app is also referred as the "target of the macrobenchmark"
 
-2. The target app module needs to add the `ProfileInstaller` library which Macrobenchmark needs to enable profile capture and other things like restarting the app, etc.
+3. The target app module needs to add the `ProfileInstaller` library which Macrobenchmark needs to enable profile capture and other things like restarting the app, etc.
 
-3. The benchmarked version of the app has to be as close as possible to the release version(no debuggable and optimized with R8), you can copy relase version configurations like this
+4. The benchmarked version of the app has to be as close as possible to the release version(no debuggable and optimized with R8), you can copy relase version
+   configurations like this
 
    ```
    create("benchmark") {
@@ -822,37 +877,83 @@ See [this video](https://youtu.be/Z96wfbID_Yc?si=siHG_R-8tBl0Fg8C)(17:48) to see
     }
    ```
    
-4. If you have a multimodular app set the build variant you want to compile by declaring it in the `benchmark` build type configurations of the `:app` and `:macrobenchmark` modules with this line ` matchingFallbacks += listOf("release")` this means that when you run the benchmark you need to select the `benchmark` build type in the `:app` and `:macrobenchmark` modules and the `release` build type in all other modules
+6. If you have a multimodular app set the build variant you want to compile by declaring it in the `benchmark` build type configurations of the `:app` and
+   `:macrobenchmark` modules with this line ` matchingFallbacks += listOf("release")` this means that when you run the benchmark you need to select the `benchmark`
+   build type in the `:app` and `:macrobenchmark` modules and the `release` build type in all other modules
 
-5. If you have multiple build flavors then add the same flavors in your `:macrobenchmark` module so you can build and benchmark different flavors. 
+8. If you have multiple build flavors then add the same flavors in your `:macrobenchmark` module so you can build and benchmark different flavors. 
 
-6. To make sure that the benchmark, both, builds and tests the correct variant of your app make sure you select the benchmark variant of both the app and the Macrobenchmark module in the
-   Build Variants panel and the proper variant in other modules which you declared using `matchingFallbacks`, [This](https://github.com/android/performance-samples/tree/main/MacrobenchmarkSample/macrobenchmark) is a sample of a Macrobenchmark module.
+9. To make sure that the benchmark, both, builds and tests the correct variant of your app make sure you select the benchmark variant of both the app and the
+   Macrobenchmark module in the Build Variants panel and the proper variant in other modules which you declared using `matchingFallbacks`,
+   [This](https://github.com/android/performance-samples/tree/main/MacrobenchmarkSample/macrobenchmark) is a sample of a Macrobenchmark module.
 
-7. For running the benchmarks use Android 14 (API level 34) or later to persist state when benchmarking. The Macrobenchmark library fully resets the compilation state for each compile, which on Android versions earlier than 14 requires reinstalling the APK. As a workaround, control app compilation separately and skip compilation using CompilationMode.Ignore.
+11. For running the benchmarks use Android 14 (API level 34) or later to persist state when benchmarking. The Macrobenchmark library fully resets the compilation state
+    for each compile, which on Android versions earlier than 14 requires reinstalling the APK. As a workaround, control app compilation separately and skip compilation
+    using CompilationMode.Ignore.
 
-8. To run all benchmarks from command line  use `./gradlew :macrobenchmark:connectedCheck` or a single test use `./gradlew :macrobenchmark:connectedCheck -P android.testInstrumentationRunnerArguments.class=com.example.macrobenchmark.startup.SampleStartupBenchmark#startup`
+13. To run all benchmarks from command line  use `./gradlew :macrobenchmark:connectedCheck` or a single test use `./gradlew :macrobenchmark:connectedCheck -P android.testInstrumentationRunnerArguments.class=com.example.macrobenchmark.startup.SampleStartupBenchmark#startup`
 
-9. If you want to use the resutls after a successful benchmark run for your CI pipeline, metrics are displayed directly in Android Studio and are output for CI usage in a JSON file. JSON reports and any profiling traces are automatically copied from the device to the host. These are written on the host machine in the following location: `project_root/module/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/device_id/`
+14. If you want to use the resutls after a successful benchmark run for your CI pipeline, metrics are displayed directly in Android Studio and are output for CI usage in
+    a JSON file. JSON reports and any profiling traces are automatically copied from the device to the host. These are written on the host machine in the following
+    location: `project_root/module/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/device_id/`
 
-10. Macrobenchmarks can specify a `CompilationMode`, which defines how much of the app must be pre-compiled. The defualt mode is `CompilationMode.DEFAULT`, which installs a Baseline Profile—if you already generated and copied it—on Android 7 (API level 24) and later. The Baseline Profile will be installed only if the target app contains both a Baseline Profile and the `ProfileInstaller` library. If you want to control the compilation yourself you need to pass `CompilationMode.Ignore` and control the JIT manually using the command shown [here](https://source.android.com/docs/core/runtime/jit-compiler#turn-on-jit-logging) using `adb`
+16. Macrobenchmarks can specify a `CompilationMode`, which defines how much of the app must be pre-compiled. The defualt mode is `CompilationMode.DEFAULT`, which installs
+    a Baseline Profile—if you already generated and copied it—on Android 7 (API level 24) and later. The Baseline Profile will be installed only if the target app contains
+    both a Baseline Profile and the `ProfileInstaller` library. If you want to control the compilation yourself you need to pass `CompilationMode.Ignore` and control the
+    JIT manually using the command shown [here](https://source.android.com/docs/core/runtime/jit-compiler#turn-on-jit-logging) using `adb`
 
-11. 
+18. Your benchmark doesn't have to define UI interctions using UI Automator. Instead, it can run an animation, for example. It also doesn't need to use UI Automator
+    specifically. It collects performance metrics as long as frames are being produced. The benchmark can us something different to UI Automator but UI Automator may
+    be preffered.
+
+Configure the behavior of the library with the following instrumentation arguments. You can either add these to your Gradle configuration or apply them directly when 
+running instrumentation from the command line. To set these arguments for all Android Studio and command line test runs, add them to testInstrumentationRunnerArguments:
+
+```
+android {
+    defaultConfig {
+        // ...
+        testInstrumentationRunnerArguments["androidx.benchmark.dryRunMode.enable"] = "true"
+    }
+}
+```
+
+If you're running the macrobenchmark from the command line, use `-P android.testInstrumentationRunnerArguments.[name of the argument]`: `adb shell am instrument -e androidx.benchmark.enabledRules BaselineProfile -w com.example.macrobenchmark/androidx.test.runner.AndroidJUnitRunner`
+
+If you're invoking the am instrument command directly (which may be the case in CI testing environments), pass the argument to am instrument with `-e`:
+`adb shell am instrument -e androidx.benchmark.enabledRules BaselineProfile -w com.example.macrobenchmark/androidx.test.runner.AndroidJUnitRunner`
+
+For all the arguments available see [here](https://developer.android.com/topic/performance/benchmarking/macrobenchmark-instrumentation-args)
+
+##### [Metrics](https://developer.android.com/topic/performance/benchmarking/macrobenchmark-metrics)
+`PowerMetric` is a little different that the other metrics, it captures the change in power or energy over the duration of your Macrobenchmark run. Each 
+selected category is broken down into its measurable hardware components, while unselected categories are grouped into an "unselected" bucket. It requires 
+some spceidif hardware, these metrics measure system-wide consumption rather than per-app calculations. Consequently, data collection is limited to physical 
+Google Pixel 6, Pixel 6 Pro, and newer physical devices.
+
 
 #### App Startup Insights
-They enhance benchmark results by providing you with detail info on issues that occurred while benchmarking. These insights can alert you if there is issues with blocking operations, lock conentions,
-installation time, DEX processing, application binding, JIT compilation, resource loading, high number of broadcasts. Add it to your project with `androidx.benchmark:benchmark-traceprocessor` and 
-add it to a test benchmark like this
+They enhance benchmark results by providing you with detail info on issues that occurred while benchmarking. These insights can alert you if there is issues 
+with blocking operations, lock conentions, installation time, DEX processing, application binding, JIT compilation, resource loading, high number of broadcasts. 
+Add it to your project with `androidx.benchmark:benchmark-traceprocessor` and add it to a test benchmark like this
 
 ```
 benchmarRule.measureRepeated(experimentConfig = ExperimentalConfig(StartupInsightsConfig(true))) { // your benchmark }
 ```
 
-### Microbenchmark
-These are great for everything that is CPU-bound or processing a lot of data, so you can meassure the CPU of the code you execute 
+### [Microbenchmark](https://developer.android.com/topic/performance/benchmarking/microbenchmark-overview)
+These are great for everything that is CPU-bound or processing a lot of data, so you can meassure the CPU of the code you execute. It can also show why the operations 
+are slow by showing what is happening while they run, such as running on a low-priority thread, sleeping due to disk access, or unexpectedly calling into an expensive 
+function, like bitmap decoding.
+
+Microbenchmarks are most useful for CPU work that is run many times in your app, also known as hot code paths. Good examples are RecyclerView scrolling with one item 
+shown at a time, data conversions or processing, and other pieces of code that get used repeatedly.
+
+Because benchmarks run in a loop, any code that isn't run frequently or performs differently when called multiple times might not be a good fit for benchmarking.
 
 ### UI Automator
-It is used in benchmark to define and perform interactions with your app. Previously you had to explictly wait if a screen is loading but now it waits 10S automatically
+It is used in benchmark to define and perform interactions with your app. Previously you had to explictly wait if a screen is loading but now it waits 10S 
+automatically
 
 ```
 // start app
@@ -870,9 +971,17 @@ onElement { id == "Parent" }.
 	onElement { id == "Child" }.
 	onElement { id == "Grandchild" }
 	.click()
+
+// 3. Wait until the target screen settles and is fully rendered
+waitForStableInActiveWindow()
 ```
 
-You can enable `testTagAsResourceId` to interact with Compose modifiers. To allow UI Automator to find your Compose elements, enable `testTagAsResourceId = true` on the semantics modifier of your top-level Compose element.
+You can enable `testTagAsResourceId` to interact with Compose modifiers. To allow UI Automator to find your Compose elements, enable `testTagAsResourceId = true` on 
+the semantics modifier of your top-level Compose element. Find the Composable using its `testTag` mapped as a `viewIdResourceName` like this `onElement { viewIdResourceName == "my_lazy_column" }`
+
+### Benchmarks in CI
+[Here](https://developer.android.com/topic/performance/benchmarking/benchmarking-in-ci) is more info of how to set this. The idea when I implement this is to do it using a 
+step fitting algorithm, as described in [this video](https://youtu.be/ynBPcFs6OOk)
 
 ## Baseline Profiles
 A baseline profile is just a list of classes and methods with annotations, this list is used later on by the system at installation time.
