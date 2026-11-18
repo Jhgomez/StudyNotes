@@ -518,7 +518,27 @@ there you can see flame graphs. WorkManager owns its own thread and you can see 
 after it was expected, red color means a frame took longer than expected (jank), light green means the frame had enough time to be produced but they were produced too late, dark green
 means it was rendered on time and without delays.
 
+If you want to know the app start up look for the "Android App Startups" track/slice/bar metric. Beware that it represents the time to initial display, even if you're using 
+`reportFullyDrawn()`. To identify the time to full display, search for `reportFullyDrawn()` in the Perfetto search box.
 
+To find the main thread, find the row with your app's package name and expand it. The two rows with the same name as the package (usually the first two rows in the section) represent 
+the main thread. Of the two main thread rows, the first represents CPU state and the second row represents tracepoints.
+
+Now check the time spent in OpenDexFilesFromOat*; in the trace, it happens at the same time as the bindApplication slice. This slice represents the time taken to read the DEX files of 
+the application. To reduce the time spent in the OpenDexFilesFromOat* state, use R8 minification to reduce the amount of code that needs to be converted to DEX files. Make sure that the 
+app doesn't make unnecessary binder transactions during startup, since they increase the risk of CPU contention. If you have to make binder transactions, make sure they don't take longer 
+than your device's Vsync refresh rate. If you have to make binder transactions, make sure they don't take longer than your device's Vsync refresh rate. The CPU profiler in Android 
+Studio can show you your app's activity with respect to the device's Vsync rate.
+
+To know how a binder transaction is being prioritized, click the binder transaction slice of interest. go to the **Current Selectio**n panel and click** binder reply** under the 
+Following threads section. The **Thread** field also tells you the thread that the binder reply occurs on if you want to navigate there manually. To see how the system server is 
+handling this binder transaction you will have to look in the CPUs. Find the system processes that handle the binder reply by finding the slices that include the binder reply 
+thread name, for example "Binder:687_11 [2542]". Click the relevant system processes to get more information about the binder transaction. Take a look at this system server 
+associated with the binder transaction of interest. **End State** says **Runnable (Preempted)**, which means that the process is getting delayed because the CPU is doing something 
+else. To find out why, expand the **Ftrace Events** track. In the **Ftrace Events** tab that becomes available, scroll through and look for events related to the binder thread of 
+interest **"Binder:687_11 [2542]"**
+
+Learn from [this](https://developer.android.com/topic/performance/appstartup/case-study-gmail-wear) start up performance debuging example.
 
 https://perfetto.dev/docs/analysis/trace-processor
 https://perfetto.dev/docs/tracing-101
