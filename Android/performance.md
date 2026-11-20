@@ -1045,7 +1045,7 @@ several times, the info of classes and methods than run while the benchmark is i
 on an emulators. The device you use for running your profiles needs to have root access because the profile is saved in a system folder that is not accessible for the app you
 need to run these tests in a rooted device or just an emulator (an emulator without play services can be considered an effectively rooted device) because we are not meassuring
 performance, instead we are just indexing classes and method calls, therefore it is ok to use an emulator. You can switch an emulator to root access with the command `adb root`
-and run the test manually, however you could use "Grade Managed Devices", this is a AGP feature which lets you configure an emulator in your build script. Gradle enables you to
+and run the test manually, however you could use "Gradle Managed Devices", this is a AGP feature which lets you configure an emulator in your build script. Gradle enables you to
 run instrumentation tests without the need to manually handle the emulator they run on, making builds more reproducible, AGP will automatically download the emulator image
 if needed, start emulator up, run the tests you specify, copy the resutls to the host machine, tear down the emulator which clears the device state for next use. To declare a
 managed device add the following configurations to the `android` block in your benchmark module build script
@@ -1059,6 +1059,10 @@ testOptions {
 			systemImageSource = "AOSP" // AOSP images has root access but doesn't come with Google Play, You can get an image that comes with google play but it won't have root access
 		}
 	}
+}
+
+baselineProfile {
+    useConnectedDevices = false
 }
 ```
 
@@ -1159,6 +1163,50 @@ When using Jetpack Macrobenchmark `1.2.0-alpha06 `and higher, you can generate t
 
 [Here](https://developer.android.com/topic/performance/baselineprofiles/create-baselineprofile#create-new-profile-plugin) is how you can create a Baseline Profile module manually.
 
+The Baseline Profile Gradle plugin creates additional build types automatically to generate the profiles and to run benchmarks. These build types are prefixed with `benchmark` and 
+`nonMinified`.  For example, for the release build type, the plugin creates the `benchmarkRelease` and `nonMinifiedRelease` build types. These build types are automatically configured 
+for the specific use case and don't generally need any customization. But there are some cases in which it might still be useful to apply some custom options, for example to apply a 
+different signing config.
+
+```
+android {
+    buildTypes {
+        release {
+            ...
+        }
+        create("benchmarkRelease") {
+            // Customize properties for the `benchmarkRelease` build type here.
+            // For example, you can change the signing config (by default
+            // it's the same as for the `release` build type).
+            signingConfig = signingConfigs.getByName("benchmarkRelease")
+        }
+        create("nonMinifiedRelease") {
+            // Customize properties for the `nonMinifiedRelease` build type here.
+            signingConfig = signingConfigs.getByName("nonMinifiedRelease")
+
+            // From Baseline Profile Gradle plugin 1.2.4 and higher, you can't
+            // customize the following properties, which are always overridden to
+            // avoid breaking Baseline Profile generation:
+            //
+            // isJniDebuggable = false
+            // isDebuggable = false
+            // isMinifyEnabled = false
+            // isShrinkResources = false
+            // isProfileable = true
+            // enableAndroidTestCoverage = false
+            // enableUnitTestCoverage = false
+        }
+    }
+}
+```
+
+Compiled Baseline Profiles **must be smaller than 1.5 MB**. This doesn't apply to the text format in your source files, which are typically much larger prior to compilation. 
+Using AS APK Analyzer you can verify the size of your binary Baseline Profile by locating it in the output artifact under `assets/dexopt/baseline.prof` for APK or `BUNDLE-METADATA/com.android.tools.build.profiles/baseline.prof` for AAB.
+
+Broad rules that compile too much of the application can slow down startup due to increased disk access, so depending on your app and the size and number of journeys, adding 
+a lot of journeys can result in suboptimal performance. Test the performance of your app by trying different profiles and verifying that the performance doesn't regress after 
+the additions.
+
 ### Create a Baseline Profile for a Library
 The previous instructions work for an app with a single module, if the app is in a single module you're all covered but if you have a multi-modular app then you actually have
 two options (I think), just like a lot of things in programming, there is more than one way to achieve the same, you can collect all the profiles and benchmarks from a single
@@ -1174,11 +1222,79 @@ library there are three modules involved in creating Baseline Profiles for a lib
 Basically you can create the library´s "Baseline Profile module" just like you if you were creating the app's baseline profile module, so you can use android studio, or do it
 manually, then apply the plugin `androidx.baselineprofile` to the library module, then it seems like you need to add the androidx `baselineProfile` library to the Baseline
 Profile Module. Your library module has to have a dependency to the Baseline Profile Module like this `baselineProfile(project(":baseline-profile"))` then your app module
-has to add the Baseline profile gradle plugin and then you can generate the profile from the command line with `./gradlew :library:generateBaselineProfile`, then you will get
+has to add the Baseline profile gradle plugin then you can generate the profile from the command line with `./gradlew :library:generateBaselineProfile`, then you will get
 the profile at this URI `library/src/main/generated/baselineProfiles.`, I think you will need to copy it manually and paste it to the correct source set of the correct flavor
 with the name `baseline-prof.txt`. If you don't automate the process with CI then you need to repeat this process every time the code that executes in the corresponding test
 changes.
 
+### Configure Baseline Profile Generation
+If you want to generate a generate a single profile for all build variants set the below property to true (it will be merged in the main source set profile file, run it with 
+the `generateBaselineProfile` gradle task), if you want a different profile for each variant you can set it to false. You can define this by variant, define it inside a 
+`baselineProfile.variants.freeRelease` block. By default, `mergeIntoMain` is set to true for libraries and false for apps.
+
+```
+baselineProfile {
+    mergeIntoMain = true
+}
+```
+
+Instead of manually run a gradle task to generate the profile you can have the profiles generated automatically on every release build using this config, this can also be 
+specified at a variant level.
+```
+baselineProfile {
+    automaticGenerationDuringBuild = true
+}
+```
+
+If you'd want to generate a release build that doesn't include profiles you could use the following argument instead of creating another build variant.
+
+```
+./gradlew assembleRelease -Pandroid.baselineProfile.automaticGenerationDuringBuild=false
+```
+
+You can also control whether the BP is automatically store in the source set using the flag `saveInSrc = true`, if true then it is saved in `src/<variant>/generated/baselineProfiles`
+which you can commit to your source control, if false it is stored in the intermediate files in the build directory.
+
+You can configure some useful warnings
+
+```
+baselineProfile {
+    warnings {
+
+        /**
+        * Warn when the Android Gradle Plugin version is higher than the max
+        * tested one.
+        */
+        maxAgpVersion = true
+
+        /**
+        * Warn when a benchmark or baseline profile variant has been disabled.
+        */
+        disabledVariants = true
+
+        /**
+        * Warn that running `generateBaselineProfile` with AGP 8.0 doesn't
+        * support running instrumentation tests for multiple build types at
+        * once.
+        */
+        multipleBuildTypesWithAgp80 = true
+
+        /**
+        * Warn when no baseline profiles are generated after running the
+        * generate baseline profile command.
+        */
+        noBaselineProfileRulesGenerated = true
+
+        /**
+        * Warn when no startup profiles are generated after running the generate
+        * baseline profile command.
+        */
+        noStartupProfileRulesGenerated = true
+    }
+}
+```
+
+The Baseline Profile Gradle plugin lets you filter the Baseline Profile rules generated. This is particularly helpful for libraries, if you want to exclude profile rules for classes and methods that are part of other dependencies of the sample app or the library itself. These filters can also be applied at a variant level
 
 ## Startup Profiles
 Is another form of profile guided optimization which takes the most important code for users interaction and allows the system to precompile it at installation time, it is loaded
