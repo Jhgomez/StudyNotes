@@ -1159,6 +1159,27 @@ When using Jetpack Macrobenchmark `1.2.0-alpha06 `and higher, you can generate t
 
 [Here](https://developer.android.com/topic/performance/baselineprofiles/create-baselineprofile#create-new-profile-plugin) is how you can create a Baseline Profile module manually.
 
+### Create a Baseline Profile for a Library
+The previous instructions work for an app with a single module, if the app is in a single module you're all covered but if you have a multi-modular app then you actually have
+two options (I think), just like a lot of things in programming, there is more than one way to achieve the same, you can collect all the profiles and benchmarks from a single
+benchmark/Baseline Profile module, or as far as I'm understanding I could create a baseline profile module for each of the modules I want a baseline profile for, if I choose to
+create a baseline profile module for each module I want a baseline profile for and for that I need to follow this instructions, or if I'm a library developer you can create and
+distribute a baseline profile for your library following this instructions. The Baseline Profile Gradle plugin makes things much easier for you. When generating a profile for a 
+library there are three modules involved in creating Baseline Profiles for a library:
+
+* Sample app module: contains the sample app that uses the library you want to create the baseline profile for.
+* Library module: The module you want to generate the profile for.
+* Baseline Profile module: the test module that generates the Baseline Profiles.
+
+Basically you can create the library´s "Baseline Profile module" just like you if you were creating the app's baseline profile module, so you can use android studio, or do it
+manually, then apply the plugin `androidx.baselineprofile` to the library module, then it seems like you need to add the androidx `baselineProfile` library to the Baseline
+Profile Module. Your library module has to have a dependency to the Baseline Profile Module like this `baselineProfile(project(":baseline-profile"))` then your app module
+has to add the Baseline profile gradle plugin and then you can generate the profile from the command line with `./gradlew :library:generateBaselineProfile`, then you will get
+the profile at this URI `library/src/main/generated/baselineProfiles.`, I think you will need to copy it manually and paste it to the correct source set of the correct flavor
+with the name `baseline-prof.txt`. If you don't automate the process with CI then you need to repeat this process every time the code that executes in the corresponding test
+changes.
+
+
 ## Startup Profiles
 Is another form of profile guided optimization which takes the most important code for users interaction and allows the system to precompile it at installation time, it is loaded
 separately from the other app's code making startup time even faster. Start up profiles guide R8 to be able to perform optimization through R8. For example, R8 could inline code	
