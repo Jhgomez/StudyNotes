@@ -1099,7 +1099,39 @@ include this list when building the release bundle, when app is installed in use
 insight of what classes the app uses at startup or at whatever time the benchmark runs, you could use this info to do some kind of debugging or improvements by identifying code
 that shouldn't run or can run latter.
 
-These performance enhancements directly result in improved business metrics such as user retention, transactions, and ratings. 
+These performance enhancements directly result in improved business metrics such as user retention, transactions, and ratings.
+
+When capturing a Baseline Profile with a test, your app must not be obfuscated. If you aren't using the Baseline Profile Gradle plugin, you should also make sure that `-dontobfuscate` 
+and `-dontoptimize` are applied. The Baseline Profile Gradle Plugin automatically handles this configuration for you. In your release builds R8 automatically rewrites the rules from 
+your unobfuscated profile files to match the obfuscated and optimized code in your release APK. The build takes advantage of the unobfuscated text file by transforming the rules 
+correctly. If you use an advanced, non-Gradle workflow such as custom CI automation pipelines to generate your profiles, you must still follow the same principles. However, when you 
+build your release app, you must obfuscate it. R8 processes the unobfuscated text rules file and correctly transforms the rules to apply to the obfuscated release app.
+
+These dependencies and their minimum version are required at different times and work together as a toolchain to enable an optimal Baseline Profile.
+* Android Gradle plugin: `com.android.tools.build:8.0.0`
+* Macrobenchmark library: `androidx.benchmark:benchmark-macro-junit4:1.5.0`
+* Profile Installer: `androidx.profileinstaller:profileinstaller:1.4.1`
+
+Functinallities and capabilities when gnerating a baseline profile with the aid ofAGP have changed over time. It seems like the baseline profile Gradle plugin was added on AGP version
+8.0, it seems like the baseline profiles plugin automated the capability of creating/using multiple Baseline Profile source files and created them in variant-aware directories such as
+`src/free/generated/baselineProfiles/baseline-prof1.txt`, I'm still not sure if they mean I can include more than one baseline profile text file or if they mean that the capability of
+creating multiple Baseline Profiles like one in one variant and another one in another variant and if I create one in a variant source set what happens to profile file created in the
+main one. In AGP version 8.2 D8 and R8 can transform the human-readable Baseline and Startup Profile rules to fully capture all the rules you need to optimize app performance. 
+So from here we were now able** generate profiles from an unminified build and apply them to a minified release build**. Increases Baseline Profile coverage of methods by ~30% and 
+increases app performance by ~15%. In AGP 8.3 we where now able to declare variant-aware Baseline Profile files in library modules also, previously this was only posible in the app
+module only. In AGP 8.4 **Local app installations of non-debuggable builds using the Gradle wrapper command line tool or Android Studio install Baseline Profiles**, so the performance of 
+your local release build more closely matches production. This update doesn't affect production performance of Baseline Profiles. In AGP 9.1 In addition to variant-aware directories, 
+you can declare multiple Baseline Profile source files with an arbitrary name, such as `src/free/generated/baselineProfiles/baseline-prof1.txt`, for library modules as well as app modules.
+
+In my setup with the latests verstions as of 11/19/26 I can place Baseline Profile rules in a dedicated source set directory and enabling multiple files. I'm not constrained to a single,
+fixed path profile. This means I can define distinct Baseline Profiles tailored to specific build flavors and types (for example, using directories like `src/variant/baselineProfiles/`),
+which makes sure performance optimization rules are precisely applied for each unique application or library binary. 
+
+As mentioned before, you should use the Baseline Profile Gradle Plugin to define and produce profile files. This plugin hooks into the build process, and AGP compiles these 
+human-readable profile rules into a binary format that you can find the packaged in an APK or AAB in `assets/dexopt/baseline.prof`, ART then uses the profile in the binary format to do
+on-device compilation provided that the profile is smaller than 1.5 MB.
+
+Play Store "internal app sharing" doesn't support Baseline Profiles; however, the "internal testing track" does.
 
 ## Startup Profiles
 Is another form of profile guided optimization which takes the most important code for users interaction and allows the system to precompile it at installation time, it is loaded
@@ -1117,6 +1149,21 @@ to the system Allows Benchmarks to create a more precise baseline profile
 Beware that starting `WorkManager` is resource heavy, so starting it during startup might not be the best for performance, the solution to this is adding a proxy in front of 
 `workManager` so it doesn't get executed during startup, it could be implemented by creating your own API, also direct calls to `WorkManager` should be forbiden and instead you 
 should call your own API exclusively. After all startup is done your API should start `WorkManager` automatically. You could get some ideas from [this article](https://medium.com/@ahmed.ally2/customizing-workmanager-fundamentals-ba81fe430ec8)
+
+Startup profiles are similar to Baseline Profiles, but they are used at compile time to optimize DEX layout for faster startup times, rather than for on-device optimization.
+
+## [Start Profiles vs Baseline Profiles](https://developer.android.com/topic/performance/baselineprofiles/overview#compare-baseline-startup)
+The human readable version of the former is usually named `startup-prof.txt` and the latter `baseline-prof.txt`. While their contents might sometimes appear similar, especially 
+if you're primarily focused on startup, they serve distinct purposes and influence performance at different stages.
+
+Baseline profiles are used at installation time by the ART to precompile the methods and classes declared in the profile, the profile can include rules required for app startup 
+optimization, along with additional profiles for other critical user journeys.
+
+Startup Profiles contains rules specifically optimized for your app's startup path and it is used during compilation and not during installation, after D8 converts your source
+code to DEX files, then R8 uses the startup profiles to influence the layout of your DEX files, R8 makes sure that startup code is placed in the primary DEX file for faster 
+execution.
+
+You should generally set `includeInStartupProfile` to `true` only for test scenarios essential to the app's initial display.
 
 # [Micro Optimizations](https://www.youtube.com/watch?v=Z9-Z16glXRU)
 Set initial size values in you collections, it avoids copying and resizing the collections every time they add a value. Use inline value classes this means add the annotation 
