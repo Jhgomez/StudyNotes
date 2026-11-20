@@ -1133,6 +1133,32 @@ on-device compilation provided that the profile is smaller than 1.5 MB.
 
 Play Store "internal app sharing" doesn't support Baseline Profiles; however, the "internal testing track" does.
 
+### [Generating a Baseline Profile](https://developer.android.com/topic/performance/baselineprofiles/create-baselineprofile)
+These are the general steps to create a new Baseline Profile:
+
+1. Set up the Baseline Profile module.
+2. Define the JUnit test that helps generate Baseline Profiles. Add the critical user journeys (CUJs) that you want to optimize.
+3. Generate the Baseline Profile.
+4. Measure improvements with Benchmarks
+
+You can use android studio to create a baseline profile module, it automates the creation of a new module to generate and benchmark Baseline Profiles, it adds a typical build 
+configuration, and creates code to generate and benchmark Baseline Profiles to measure app startup.
+
+Make sure that any tests related to app startup are in a `rule` block with `includeInStartupProfile` set to `true` and make sure to leave out any code that is not related to app
+startup becuase if app startup optimizatin grow too much it can move start up code out the startup dex file meaning that the startup needs to load more DEX code to start the app
+whcih will hurt startup time. Abstract CUJs outside of the generated Baseline Profile and benchmark code, thiw way they can be used for both. This means that changes to your CUJs 
+are used consistently.
+
+If you use product flavors, Android Studio creates multiple run configurations so that you can generate separate Baseline Profiles for each flavor and it also adds a new run config
+so you can generate the baseline profiles. To generate and install BP from command line run `:app:generateBaselineProfile` or `:app:generateVariantBaselineProfile` Gradle task. If
+you run the configuration, when it completes it copies the generated Baseline Profile to the `src/variant/generated/baselineProfiles/baseline-prof.txt` file in the module that is 
+being profiled. The variant options are either the release build type or a build variant involving the release build type. The generated Baseline Profile is originally created in 
+`build/outputs`. The full path is dictated by the variant or flavor of the app being profiled and whether you use a Gradle-managed device or a connected device for profiling.
+
+When using Jetpack Macrobenchmark `1.2.0-alpha06 `and higher, you can generate the Baseline Profile on devices running Android 13 (API 33) and higher without root access.
+
+[Here](https://developer.android.com/topic/performance/baselineprofiles/create-baselineprofile#create-new-profile-plugin) is how you can create a Baseline Profile module manually.
+
 ## Startup Profiles
 Is another form of profile guided optimization which takes the most important code for users interaction and allows the system to precompile it at installation time, it is loaded
 separately from the other app's code making startup time even faster. Start up profiles guide R8 to be able to perform optimization through R8. For example, R8 could inline code	
